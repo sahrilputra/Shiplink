@@ -1,0 +1,14 @@
+.container {
+    background-color: #ECEDEE;
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    flex: 1;
+    
+}
+
+.main {
+    flex: 5;
+}
