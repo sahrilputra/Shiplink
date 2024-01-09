@@ -10,7 +10,7 @@ export const Sidebar = () => {
 
     return (
         <>
-            <aside className={`w-[280px] h-screen px-[5px] pt-5 bg-white flex-col justify-start items-center gap-5 inline-flex`}>
+            <aside className={`w-[280px] h-screen  px-[5px] pt-5 bg-white flex-col justify-start items-center gap-5 inline-flex`}>
                 <div className={`flex gap-3 flex-col `}>
                     <div className="text-center text-red-700 text-[28px] font-bold font-['Poppins'] ">ShipLink</div>
                     <SidebarMenu title="" className="flex-col justify-start items-center flex">

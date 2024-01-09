@@ -3,7 +3,9 @@ import { Inter } from 'next/font/google'
 import styles from './styles.module.scss';
 import { Navbar } from '@/components/navbar/Navbar';
 import { PromoOne } from '@/components/ads/promoOne';
-
+import { Button } from '@mui/material';
+import { SearchIcon } from '@/components/icons/iconCollection';
+import { PromoTwo } from '@/components/ads/promoTwo';
 export const metadata = {
     title: 'ShipLink',
     description: 'Canada\'s best package forwarding service',
@@ -47,14 +49,16 @@ export default function DashboardMenu({ children }) {
                             </div>
                         </div>
 
-                        <div className={styles.rightContent}>
+
+                        <div className={`${styles.rightContent} mx-5 relative  right-[20.87px]`}>
                             <div className="w-[373px] h-10 justify-between items-start inline-flex">
-                                <input
-                                    type="search"
-                                    className="text-zinc-500 text-xs font-normal font-['Poppins'] leading-tight"
-                                    placeholder='Search ...'
-                                />
-                                <button className=' px-10 '>Consolidate </button>
+                                <div type='text' className="w-[207px] h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
+                                    <div className="text-zinc-500 text-xs font-normal font-['Poppins'] leading-tight">Search ...</div>
+                                    <SearchIcon />
+                                </div>
+                                <button className="w-[154px] h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
+                                    <p className="text-white text-xs font-medium font-['Poppins']">Consolidate</p>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -62,6 +66,7 @@ export default function DashboardMenu({ children }) {
                 </div>
                 <div className={styles.rightPanel}>
                     <PromoOne />
+                    <PromoTwo />
                 </div>
             </div >
 
