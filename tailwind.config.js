@@ -25,6 +25,10 @@ module.exports = {
         'blue-status-bg': '#3E9EFF4D ',
         'red-status': ' #D90429',
         'red-status-bg': '#D9042933 ',
+        'outline-input': "#E7E8EC",
+        'inputBg' : '#F7F7FA',
+        'blue-light-button': '#F3F8FF'
+        
       },
     },
   },

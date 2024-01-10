@@ -1,5 +1,16 @@
 import React from 'react'
+import { TableDashboard } from '../table/Type/TableDashboard'
 
+export const CrossBorderTable = () => {
+    return (
+        <>
+            <div className="my-[10px] ">
+                <div className="left-[3px] top-0 text-zinc-900 text-[14px] font-medium font-['Poppins']">Declare Content</div>
+                <TableDashboard />
+            </div>
+        </>
+    )
+}
 export const CrossBorder = () => {
     return (
         <>

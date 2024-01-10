@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { CrossBorder } from './CrossBorder';
+import { CrossBorder, CrossBorderTable } from './CrossBorder';
 
 
 export default function ItemsPackage() {
@@ -18,9 +18,10 @@ export default function ItemsPackage() {
         setIsExpanded(!isExpanded);
     }
 
+    const [clicked, setIsClicked] = useState(false);
+
 
     return (
-
         <div className="container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 ">
             <div className="flex flex-row justify-between items-center gap-5 relative">
                 <div className="justify-start items-center gap-[15px] flex">
@@ -141,7 +142,9 @@ export default function ItemsPackage() {
 
 
                     {/* Cross Border */}
-                    <CrossBorder />
+                    <div className="w-[90%] flex justify-center align-middle mx-auto ">
+                        <CrossBorderTable />
+                    </div>
                 </div>
 
 

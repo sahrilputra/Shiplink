@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 export const PromoTwo = () => {
     return (
-        <div className="w-full h-[665px] relative bg-white bg-white">
+        <div className="w-[378px] h-[665px] relative bg-white">
             <div className="h-[665px] left-0 top-0 absolute bg-white rounded-md" />
             <div className="left-[105px] top-[549px] absolute flex-col justify-start items-center gap-[13px] inline-flex">
                 <div className="text-sky-700 text-xl font-normal font-['Poppins']">Follow Us</div>
