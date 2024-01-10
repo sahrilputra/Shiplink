@@ -13,12 +13,6 @@ export default function dashboard() {
                     <ItemsPackage />
                     <ItemsPackage />
                     <ItemsPackage />
-                    
-                    <SelectBroker />
-                    <ButtonUploadInvoice />
-                    <ButtonPARS />
-                    <ButtonEntryNumber />
-                    <SelectWarehouse />
                 </div>
             </div>
 
