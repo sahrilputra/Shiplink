@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/sidebar/sidebar'
 import ItemsPackage from '@/components/items/itemsPackage'
 import Image from 'next/image'
 import styles from './styles.module.scss'
+import { SelectBroker, ButtonUploadInvoice, ButtonPARS, ButtonEntryNumber, SelectWarehouse } from '@/components/buttons/ButtonGroup'
 export default function dashboard() {
     return (
         <>
@@ -12,6 +13,12 @@ export default function dashboard() {
                     <ItemsPackage />
                     <ItemsPackage />
                     <ItemsPackage />
+                    
+                    <SelectBroker />
+                    <ButtonUploadInvoice />
+                    <ButtonPARS />
+                    <ButtonEntryNumber />
+                    <SelectWarehouse />
                 </div>
             </div>
 

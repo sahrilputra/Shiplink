@@ -3,8 +3,7 @@ import { TableBody } from '../TableBody'
 import { TableHeader } from '../TableHeader'
 import { TableRowCell } from '../TableRowCell'
 import { data } from 'autoprefixer'
-import { ButtonAddOtherContent } from '@/components/buttons/ButtonGroup'
-
+import { ButtonAddOtherContent, SelectBroker, ButtonUploadInvoice, ButtonPARS, ButtonEntryNumber, SelectWarehouse } from '@/components/buttons/ButtonGroup'
 export const TableDashboard = ({ header, body, columns }) => {
     return (
         <>
@@ -28,6 +27,12 @@ export const TableDashboard = ({ header, body, columns }) => {
                     Totals
                 </div>
                 <ButtonAddOtherContent />
+            </div>
+            <div className='body w-full px-[5px] py-1.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
+                <SelectBroker />
+                <ButtonUploadInvoice />
+                <ButtonPARS />
+                <ButtonEntryNumber />
             </div>
 
         </>
