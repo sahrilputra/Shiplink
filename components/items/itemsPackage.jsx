@@ -141,7 +141,7 @@ export default function ItemsPackage() {
 
 
                     {/* Cross Border */}
-                    {/* <CrossBorder /> */}
+                    <CrossBorder />
                 </div>
 
 

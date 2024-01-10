@@ -1,19 +1,23 @@
 .container {
     background-color: #ECEDEE;
     display: flex;
-
+    flex-direction: row;
 }
 
 .sidebar {
     flex: 1;
+    height: 100vh;
     min-height: 100vh;
     max-height: max-content;
-    position: sticky;
     position: fixed;
     z-index: 1;
 
 }
 
+
+.nav{
+    width: 100% !important;
+}
 .main {
     flex: 5;
 }
