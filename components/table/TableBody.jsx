@@ -9,22 +9,22 @@ export const TableBody = ({ body }) => {
     return (
         <>
             <tr className='body px-[15px] py-2.5 bg-white border border-neutral-200 gap-2.5 '>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className='px-[10px] py-2.5 bg-white  gap-2.5'>
                     <InputNumber />
                 </td>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputNumberMoney />
                 </td>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputDescription />
                 </td>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputSearchHS />
                 </td>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputHSCode />
                 </td>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
                     <SelectMadeIn />
                 </td>
                 <td className='px-[15px] py-2.5 bg-white  gap-2.5'>

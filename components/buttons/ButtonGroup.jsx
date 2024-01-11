@@ -22,7 +22,7 @@ export const SelectBroker = () => {
             <button className="text-zinc-400 text-xs font-normal font-['Poppins'] gap-1
                 h-9 px-1.5 py-2 bg-stone-50 rounded-tr rounded-br border border-neutral-200 justify-center items-center flex ">
                 <p>Use Own Broker</p>
-                <div className="w-[19px] h-[19px] relative">
+                <div className="">
                     <Image
                         src={"/icon/BoldArrow.svg"}
                         width={15}
@@ -37,7 +37,7 @@ export const SelectBroker = () => {
 
 export const ButtonUploadInvoice = () => {
     return (
-        <div className="w-[262px] h-9 rounded-lg justify-start items-start inline-flex">
+        <div className="h-9 rounded-lg justify-start items-start inline-flex">
             <div className="w-[100px] h-9 px-2.5 py-2 bg-zinc-400 rounded-tl rounded-bl justify-center items-center gap-2.5 flex">
                 <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">Invoice</div>
             </div>
@@ -50,7 +50,7 @@ export const ButtonUploadInvoice = () => {
 
 export const ButtonPARS = () => {
     return (
-        <div className="w-[231px] h-9 rounded-lg justify-start items-start inline-flex">
+        <div className=" h-9 rounded-lg justify-start items-start inline-flex">
             <div className="w-[100px] h-9 px-2.5 py-2 bg-neutral-900 rounded-tl rounded-bl justify-center items-center gap-2.5 flex">
                 <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">PARS/PAPS</div>
             </div>
@@ -63,7 +63,7 @@ export const ButtonPARS = () => {
 
 export const ButtonEntryNumber = () => {
     return (
-        <div className="w-64 h-9 rounded-lg justify-start items-start inline-flex">
+        <div className=" h-9 rounded-lg justify-start items-start inline-flex">
             <div className="w-[100px] h-9 px-1.5 py-2 bg-secondary rounded-tl rounded-bl justify-center items-center gap-2.5 flex">
                 <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">Entry Number</div>
             </div>

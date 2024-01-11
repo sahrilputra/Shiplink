@@ -139,10 +139,8 @@ export default function ItemsPackage() {
                     </div>
 
 
-
-
                     {/* Cross Border */}
-                    <div className="w-[90%] flex justify-center align-middle mx-auto ">
+                    <div className="w-[100%] flex justify-center align-middle mx-auto ">
                         <CrossBorderTable />
                     </div>
                 </div>

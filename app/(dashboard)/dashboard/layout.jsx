@@ -1,17 +1,22 @@
+
+import React from 'react';
 import { Sidebar } from '@/components/sidebar/sidebar'
 import { Inter } from 'next/font/google'
 import styles from './styles.module.scss';
 import { Navbar } from '@/components/navbar/Navbar';
 import { PromoOne } from '@/components/ads/promoOne';
-import { Button } from '@mui/material';
 import { SearchIcon } from '@/components/icons/iconCollection';
 import { PromoTwo } from '@/components/ads/promoTwo';
+import { ForwadPakage } from '@/components/dashboardMenus/ForwadPakage';
+
 export const metadata = {
     title: 'ShipLink',
     description: 'Canada\'s best package forwarding service',
 }
 
 export default function DashboardMenu({ children }) {
+
+
     return (
         <>
 
@@ -65,9 +70,13 @@ export default function DashboardMenu({ children }) {
                     {children}
                 </div>
                 <div className={styles.rightPanel}>
-                    <PromoOne />
-                    <PromoTwo />
+                    <div className="ads hidden ">
+                        <PromoOne />
+                        <PromoTwo />
+                    </div>
+                    <ForwadPakage />
                 </div>
+
             </div >
 
         </>
