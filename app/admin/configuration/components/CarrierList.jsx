@@ -1,7 +1,7 @@
 'use client'
 import { React, useState } from 'react'
 import Image from 'next/image'
-// import { ToggleSwitch } from 'flowbite-react'
+import { ToggleSwitch } from 'flowbite-react'
 
 export const CarrierList = () => {
     const [togled, setTogled] = useState(true);
@@ -33,12 +33,12 @@ export const CarrierList = () => {
                     </div>
                 </div>
                 <div className=" justify-between items-center flex flex-row gap-5">
-                    {/* <ToggleSwitch
+                    <ToggleSwitch
                         checked={togled}
                         onChange={setTogled}
-                        // color={'bg-secondary border-secondary '}
-                        // className='bg-secondary'
-                    /> */}
+                    // color={'bg-secondary border-secondary '}
+                    // className='bg-secondary'
+                    />
                     <button className="px-2.5 py-[5px] bg-sky-50 rounded justify-center items-center gap-2.5 flex">
                         <p className="text-secondary text-xs font-medium ">Edit</p>
                     </button>
