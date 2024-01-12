@@ -3,13 +3,6 @@ import { React, useState } from 'react'
 import Image from 'next/image'
 import { ToggleSwitch } from 'flowbite-react'
 
-
-const customTheme = {
-    color: {
-        "blue": " bg-blue-700 border-blue-700",
-    }
-}
-
 export const CarrierList = () => {
     const [togled, setTogled] = useState(true);
 
@@ -41,7 +34,6 @@ export const CarrierList = () => {
                 </div>
                 <div className=" justify-between items-center flex flex-row gap-5">
                     <ToggleSwitch
-                        theme={customTheme}
                         checked={togled}
                         onChange={setTogled}
                         color={'bg-secondary border-secondary '}
