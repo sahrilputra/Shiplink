@@ -8,9 +8,15 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      poppins : ['Poppins', 'sans-serif'],
+      poppins: ['Poppins', 'sans-serif'],
     },
     extend: {
+      borderColor: ['focus-visible'],
+      ring: {
+        '0': '0',
+        '1': '1px',
+        '2': '2px',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -30,9 +36,9 @@ module.exports = {
         'red-status': ' #D90429',
         'red-status-bg': '#D9042933 ',
         'outline-input': "#E7E8EC",
-        'inputBg' : '#F7F7FA',
+        'inputBg': '#F7F7FA',
         'blue-light-button': '#F3F8FF'
-        
+
       },
     },
   },

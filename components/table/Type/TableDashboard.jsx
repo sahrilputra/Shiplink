@@ -3,7 +3,6 @@ import { TableBody } from '../TableBody'
 import { TableHeader } from '../TableHeader'
 import { TableRowCell } from '../TableRowCell'
 import { data } from 'autoprefixer'
-import { Button } from '@mui/material'
 import { ButtonAddOtherContent, SelectBroker, ButtonUploadInvoice, ButtonPARS, ButtonEntryNumber, SelectWarehouse } from '@/components/buttons/ButtonGroup'
 export const TableDashboard = ({ header, body, columns }) => {
     return (

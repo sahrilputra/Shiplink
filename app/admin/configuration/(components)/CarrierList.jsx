@@ -2,6 +2,14 @@
 import { React, useState } from 'react'
 import Image from 'next/image'
 import { ToggleSwitch } from 'flowbite-react'
+
+
+const customTheme = {
+    color: {
+        "blue": " bg-blue-700 border-blue-700",
+    }
+}
+
 export const CarrierList = () => {
     const [togled, setTogled] = useState(true);
 
@@ -32,7 +40,13 @@ export const CarrierList = () => {
                     </div>
                 </div>
                 <div className=" justify-between items-center flex flex-row gap-5">
-                    <ToggleSwitch checked={togled} onChange={setTogled} />
+                    <ToggleSwitch
+                        theme={customTheme}
+                        checked={togled}
+                        onChange={setTogled}
+                        color={'bg-secondary border-secondary '}
+                        // className='bg-secondary'
+                    />
                     <button className="px-2.5 py-[5px] bg-sky-50 rounded justify-center items-center gap-2.5 flex">
                         <p className="text-secondary text-xs font-medium ">Edit</p>
                     </button>

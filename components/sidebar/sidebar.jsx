@@ -4,13 +4,17 @@ import { SidebarMenu } from './sidebarMenu'
 import { SidebarItem } from './sidebarItem'
 import Image from 'next/image'
 import { useRouter, usePathname } from "next/navigation";
-
+import { SwitchButton } from '../buttons/SwitchButton'
+import { LocationCard } from './LocationCard'
+import styles from './styles.module.scss'
 export const Sidebar = () => {
     const router = usePathname();
 
     return (
         <>
-            <aside className={`w-[280px] h-screen  px-[5px] pt-5 bg-white flex-col justify-start items-center gap-5 inline-flex`}>
+            <aside className={`w-[280px] min-h-max max-h-full px-[5px] pt-5 bg-white flex-col justify-start items-center gap-5 inline-flex
+             ${styles.sideBarRespon}
+             `}>
                 <div className={`flex gap-3 flex-col `}>
                     <div className="text-center text-red-700 text-[28px] font-bold font-['Poppins'] ">ShipLink</div>
                     <SidebarMenu title="" className="flex-col justify-start items-center flex">
@@ -27,7 +31,7 @@ export const Sidebar = () => {
                                 href="/dashboard"
                             />
                             <SidebarItem
-                                isActive={router === "/shipping-mailbox"}
+                                isActive={router === "/mailbox"}
                                 title="Shipping Mailbox"
                                 icon={<Image
                                     src={"/Sidebar/IconShippingMailbox.svg"}
@@ -35,7 +39,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='dashboard icon'
                                 />}
-                                href="#"
+                                href="/mailbox"
                             />
 
                             <SidebarItem
@@ -45,12 +49,12 @@ export const Sidebar = () => {
                                     src={"/Sidebar/IconShippingLebel.svg"}
                                     width={25}
                                     height={25}
-                                    alt='dashboard icon'
+                                    alt='shipping-lebels'
                                 />}
-                                href="#"
+                                href="/shipping-lebels"
                             />
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/saved-quotes"}
                                 title="Saved Quotes"
                                 icon={<Image
                                     src={"/Sidebar/IconSavedQuote.svg"}
@@ -58,10 +62,10 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='dashboard icon'
                                 />}
-                                href="#"
+                                href="/saved-quotes"
                             />
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/assisted-purchase"}
                                 title="Assisted Purchase"
                                 icon={<Image
                                     src={"/Sidebar/IconAssistedPurhase.svg"}
@@ -69,7 +73,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/assisted-purchase"
                             />
                         </div>
                     </SidebarMenu>
@@ -159,7 +163,14 @@ export const Sidebar = () => {
                                 href="#"
                             />
                         </div>
+
+                        <SidebarMenu
+                            title={"card"}
+                            className="w-[90%] flex items-center justify-center my-3" >
+                            <LocationCard />
+                        </SidebarMenu>
                     </SidebarMenu>
+
                 </div>
             </aside>
 

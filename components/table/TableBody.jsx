@@ -1,9 +1,11 @@
 import React from 'react'
 import { TableRowCell } from './TableRowCell';
 import { InputNumber, InputNumberMoney, InputDescription, InputSearchHS, InputHSCode, SelectMadeIn } from '../form/dashboardForm';
-import { IconButton } from '@mui/material';
-import { DeleteIcons } from '../icons/iconCollection';
+// import { DeleteIcons } from '../icons/iconCollection';
+import Image from 'next/image';
 import { ButtonAddOtherContent } from '../buttons/ButtonGroup';
+import { Button } from 'flowbite-react';
+import { DeleteIcons } from '../icons/iconCollection';
 
 export const TableBody = ({ body }) => {
     return (
@@ -28,12 +30,12 @@ export const TableBody = ({ body }) => {
                     <SelectMadeIn />
                 </td>
                 <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
-                    <IconButton aria-label="arrow" size='small' className='w-[30px] h-[30px] '>
-                        <DeleteIcons className="outline fill-white" />
-                    </IconButton>
+                    <Button color='bg-blue-100' aria-label="arrow" size='small' className='w-[30px] h-[30px] bg-blue-100 rounded-md border border-black border-opacity-20'>
+                        <DeleteIcons fill="#00509D" width='20px' height='20px' />
+                    </Button>
                 </td>
             </tr>
-         
+
         </>
 
     );

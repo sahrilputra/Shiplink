@@ -2,13 +2,8 @@
 import Image from 'next/image'
 import { React, useState } from 'react'
 import { ArrowDownIcon } from '../icons/iconCollection'
-// import { Checkbox } from '@mui/material'
-import IconButton from '@mui/material/IconButton';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { CrossBorder, CrossBorderTable } from './CrossBorder';
-
+import { Checkbox, Button } from 'flowbite-react';
 
 export default function ItemsPackage() {
 
@@ -74,9 +69,9 @@ export default function ItemsPackage() {
                         <div className="h-[23px] px-2.5 py-[5px] bg-blue-200 rounded border border-blue-500 justify-center items-center gap-2.5 flex">
                             <div className="text-center text-blue-500 text-xs font-medium font-['Poppins']">Received</div>
                         </div>
-                        {/* <input type="checkbox" /> */}
-                        {/* <FormControlLabel control={<Checkbox defaultChecked size='small' />} /> */}
-                        <Checkbox defaultChecked size='small' className='w-[30px]' />
+                        <div className="w-[30px]">
+                            <Checkbox defaultChecked color={"bg-secondary"} size='small' />
+                        </div>
                     </div>
 
                     <div className="flex flex-row justify-end items-center gap-5 relative right-0">
@@ -84,9 +79,11 @@ export default function ItemsPackage() {
                             <div className="text-right text-zinc-600 text-sm font-medium font-['Poppins']">Boston, USA</div>
                         </div>
                         {/* <div className=""> <ArrowDownIcon /></div> */}
-                        <IconButton aria-label="arrow" size='small' className={`w-[30px] ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
-                            <ArrowDownIcon />
-                        </IconButton>
+                        <div className="w-[30px]">
+                            <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
+                                <ArrowDownIcon />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

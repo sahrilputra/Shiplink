@@ -1,13 +1,13 @@
 import React from 'react'
-
+import Image from 'next/image'
 export const SearchIcon = () => {
     return (
-        <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="search">
-                <path id="Vector" d="M6.875 12.375C9.63642 12.375 11.875 10.1364 11.875 7.375C11.875 4.61358 9.63642 2.375 6.875 2.375C4.11358 2.375 1.875 4.61358 1.875 7.375C1.875 10.1364 4.11358 12.375 6.875 12.375Z" stroke="#D90429" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                <path id="Vector_2" d="M13.125 13.625L10.4375 10.9375" stroke="#D90429" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </g>
-        </svg>
+        <Image
+            src={'/icon/searchIcon.svg'}
+            width={20}
+            height={20}
+            alt='search icon'
+        />
 
     )
 }
@@ -30,9 +30,19 @@ export const ArrowBoldDownIcon = () => {
 }
 
 
-export const DeleteIcons = () => {
+export const DeleteIcons = (props) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" data-name="Layer 2" width="512" height="512" viewBox="0 0 24 24"><path d="M19,7a1,1,0,0,0-1,1V19.191A1.92,1.92,0,0,1,15.99,21H8.01A1.92,1.92,0,0,1,6,19.191V8A1,1,0,0,0,4,8V19.191A3.918,3.918,0,0,0,8.01,23h7.98A3.918,3.918,0,0,0,20,19.191V8A1,1,0,0,0,19,7Z" /><path d="M20,4H16V2a1,1,0,0,0-1-1H9A1,1,0,0,0,8,2V4H4A1,1,0,0,0,4,6H20a1,1,0,0,0,0-2ZM10,4V3h4V4Z" /><path d="M11,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z" /><path d="M15,17V10a1,1,0,0,0-2,0v7a1,1,0,0,0,2,0Z" /></svg>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={512}
+            height={512}
+            data-name="Layer 2"
+            viewBox="0 0 24 24"
+            {...props}
+        >
+            <path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1ZM20 4h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" />
+            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0ZM15 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z" />
+        </svg>
     )
 }
 

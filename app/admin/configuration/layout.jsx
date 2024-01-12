@@ -3,12 +3,11 @@ import React from 'react';
 import styles from './styles.module.scss'
 import Image from 'next/image';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { ConfigMenus } from './(components)/ConfigMenus';
 
 
 export default function ConfigurationMenus({ children }) {
-    const router = usePathname();
-    console.log(router)
+    
     return (
         <>
             <div className={styles.container}>
@@ -30,22 +29,7 @@ export default function ConfigurationMenus({ children }) {
                         </div>
 
                         <div className={`${styles.menus}`}>
-                            <button className="w-[93px] h-[25px] px-2.5 flex-col justify-center items-center gap-1 inline-flex">
-                                <div className="text-secondary text-sm font-medium font-['Poppins']">Carrier</div>
-                            </button>
-                            <button className="w-[93px] h-[25px] px-2.5 flex-col justify-center items-center gap-1 inline-flex">
-                                <div className="text-secondary text-sm font-medium font-['Poppins']">Tax</div>
-                            </button>
-                            <button className="w-[93px] h-[25px] px-2.5 flex-col justify-center items-center gap-1 inline-flex">
-                                <div className="text-secondary text-sm font-medium font-['Poppins']">Coutries</div>
-                            </button>
-                            <button className="w-[93px] h-[25px] px-2.5 flex-col justify-center items-center gap-1 inline-flex">
-                                <div className="text-secondary text-sm font-medium font-['Poppins']">Province</div>
-                            </button>
-                            <button className="w-[93px] h-[25px] px-2.5 flex-col justify-center items-center gap-1 inline-flex">
-                                <div className="text-secondary text-sm font-medium font-['Poppins']">Services</div>
-                            </button>
-
+                            <ConfigMenus />
                         </div>
                     </div>
 

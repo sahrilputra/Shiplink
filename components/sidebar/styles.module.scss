@@ -1,0 +1,19 @@
+.sideBarRespon {}
+
+// @media screen and (max-width: 1380px) {
+
+//     .sideBarRespon {
+//         zoom: 80%;
+//     }
+// }
+
+@media screen and (max-width: 1420px) {
+    .sideBarRespon {
+        zoom: 90%;
+    }
+}
+@media screen and (max-width: 1240px) {
+    .sideBarRespon {
+        zoom: 80%;
+    }
+}

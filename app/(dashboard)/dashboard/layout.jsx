@@ -56,11 +56,11 @@ export default function DashboardMenu({ children }) {
                         <div className={`${styles.rightContent} mx-5 relative  right-[20.87px]`}>
                             <div className="w-[373px] h-10 justify-between items-start inline-flex gap-3">
                                 <div type='text' className="w-full h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
-                                    <input type="text" className='text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
+                                    <input type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
                                     {/* <div className="text-zinc-500 text-xs font-normal font-['Poppins'] leading-tight">Search ...</div> */}
                                     <SearchIcon className="w-4 h-4" />
                                 </div>
-                                <button className="w-full h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
+                                <button className="h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
                                     <p className="text-white text-xs font-medium font-poppins ">Consolidate</p>
                                 </button>
                             </div>

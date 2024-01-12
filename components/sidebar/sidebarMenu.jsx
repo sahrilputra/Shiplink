@@ -10,8 +10,15 @@ export const SidebarMenu = ({ title, children }) => {
                         <div className="w-[223px] h-[0px] border border-neutral-200"></div>
                     </div>
                 </>
+            ) : title === 'card' ? (
+                <>
+                    <div className="flex flex-col justify-center items-center px-2 mt-3">
+                    </div>
+                </>
             ) : (
-                <> </>
+                <>
+
+                </>
             )}
             {children}
         </div>
