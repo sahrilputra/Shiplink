@@ -26,13 +26,13 @@ export const InputNumberMoney = () => {
          py-1 rounded-sm justify-start items-center flex
          h-[31px]  border  border-outline-input 
          bg-inputBg text-center
-         px-2
         text-neutral-900 text-sm font-normal font-['Poppins']
         ">
-            <p clas>$</p>
+            <p className='px-2'>$</p>
             <input
+                id='value'
                 type='number'
-                className="outline-none w-full bg-gray-100 text-center "
+                className="outline-none w-full bg-gray-100 text-center border-none h-[30px]"
                 placeholder='1.00' />
         </div>
     )

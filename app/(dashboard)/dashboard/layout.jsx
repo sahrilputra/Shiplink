@@ -19,7 +19,6 @@ export default function DashboardMenu({ children }) {
 
     return (
         <>
-
             <div className={styles.container}>
                 <div className={styles.main}>
                     <div className={styles.header}>
@@ -55,14 +54,14 @@ export default function DashboardMenu({ children }) {
                         </div>
 
                         <div className={`${styles.rightContent} mx-5 relative  right-[20.87px]`}>
-                            <div className="w-[373px] h-10 justify-between items-start inline-flex">
-                                <div type='text' className="w-[207px] h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
-                                    <input type="text" className='text-zinc-500 text-xs font-normal focus:outline-none' placeholder='Search ...' />
+                            <div className="w-[373px] h-10 justify-between items-start inline-flex gap-3">
+                                <div type='text' className="w-full h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
+                                    <input type="text" className='text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
                                     {/* <div className="text-zinc-500 text-xs font-normal font-['Poppins'] leading-tight">Search ...</div> */}
-                                    <SearchIcon />
+                                    <SearchIcon className="w-4 h-4" />
                                 </div>
-                                <button className="w-[154px] h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
-                                    <p className="text-white text-xs font-medium font-['Poppins']">Consolidate</p>
+                                <button className="w-full h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
+                                    <p className="text-white text-xs font-medium font-poppins ">Consolidate</p>
                                 </button>
                             </div>
                         </div>

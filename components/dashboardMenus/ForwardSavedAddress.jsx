@@ -15,7 +15,7 @@ export const ForwardSavedAddress = () => {
     return (
         <>
             <div type='text' className="w-[100%] h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
-                <input type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none' placeholder='Search ...' />
+                <input type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
                 {/* <div className="text-zinc-500 text-xs font-normal font-['Poppins'] leading-tight">Search ...</div> */}
                 <SearchIcon className="w-[10%]" />
             </div>

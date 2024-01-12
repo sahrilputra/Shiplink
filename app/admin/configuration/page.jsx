@@ -1,10 +1,8 @@
 'use client'
 import React, { useState } from 'react'
-import ItemsPackage from '@/components/items/itemsPackage'
 import styles from './styles.module.scss'
-import { SearchIcon } from '@/components/icons/iconCollection'
 import { CarrierList } from './(components)/carrierList'
-
+import Image from 'next/image'
 export default function configuration() {
 
     return (
@@ -14,12 +12,18 @@ export default function configuration() {
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                         <div type='text' className="w-[329px]  h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
                             <input
-                                type="text"
                                 id='search'
-                                className='text-zinc-500 text-xs font-normal focus:outline-none w-[90%]'
+                                type="text"
+                                className='text-zinc-500 text-xs font-normal w-[90%] outline-none border-none focus:border-none focus:outline-none autofill:bg-none'
                                 placeholder='Search ...'
                             />
-                            <SearchIcon className='' />
+                            <Image
+                                src={'/icon/searchIcon.svg'}
+                                width={20}
+                                height={20}
+                                alt='search icon'
+                            />
+                            {/* <SearchIcon className='' /> */}
                         </div>
                         <div className="w-[39px] h-[35px] p-2 bg-white rounded border border-neutral-200 justify-center items-center gap-2.5 inline-flex" />
                     </div>
@@ -34,9 +38,6 @@ export default function configuration() {
                     <CarrierList />
                     <CarrierList />
                 </div>
-
-
-
 
             </div>
         </>

@@ -13,7 +13,6 @@ export const SidebarMenu = ({ title, children }) => {
             ) : (
                 <> </>
             )}
-
             {children}
         </div>
     )
