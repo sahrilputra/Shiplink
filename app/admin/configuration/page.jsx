@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import styles from './styles.module.scss'
-import { CarrierList } from './_configComponents/carrierList'
+import { CarrierList } from './_components/carrierList'
 // import Image from 'next/image'
 import { TextInput } from 'flowbite-react'
 import { SearchIcon } from '@/components/icons/iconCollection'
