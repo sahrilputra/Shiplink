@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './styles.module.scss'
 import Image from 'next/image';
 
-import { ConfigMenus } from './configComponents/ConfigMenus';
+import { ConfigMenus } from './_configComponents/ConfigMenus';
 
 
 export default function ConfigurationMenus({ children }) {
