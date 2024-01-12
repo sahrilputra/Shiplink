@@ -4,9 +4,14 @@ import { Button } from 'flowbite-react'
 import styles from './styles.module.scss'
 import { Select } from 'flowbite-react'
 import { ArrowDownIcon } from '@/components/icons/iconCollection'
-import { ProvinceList } from './(components)/ProvinceList'
-import { TaxDetails } from './(components)/TaxDetails'
-import { NewType } from './(components)/NewType'
+// import { ProvinceList } from './components/ProvinceList'
+// import { TaxDetails } from './components/TaxDetails'
+// import { NewType } from './components/NewType'
+
+import { ProvinceList } from './components/ProvinceList'
+import { TaxDetails } from './components/TaxDetails'
+import { NewType } from './components/NewType'
+
 export default function Tax() {
     const [clicked, setClicked] = useState(false);
     const handleClick = (isClicked) => { setClicked(isClicked) }
@@ -50,7 +55,7 @@ export default function Tax() {
                                 <NewType />
                             </>
                         )}
-                        <TaxDetails  />
+                        <TaxDetails />
                     </div>
                 </div>
             </div>
