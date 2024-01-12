@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import styles from './styles.module.scss'
 import { CarrierList } from './(components)/carrierList'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { TextInput } from 'flowbite-react'
 import { SearchIcon } from '@/components/icons/iconCollection'
 export default function configuration() {
