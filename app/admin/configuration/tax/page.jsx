@@ -47,7 +47,7 @@ export default function Tax() {
                                 className="px-2.5 py-[5px] bg-sky-50 rounded border border-sky-700 justify-center items-center gap-2.5 inline-flex"
                                 onClick={() => handleClick(true)}
                             >
-                                <div className="text-sky-700 text-md font-medium font-['Poppins']">Create New Type</div>
+                                <div className="text-sky-700 text-sm font-medium font-['Poppins']">Create New Type</div>
                             </button>
                         </div>
                         {clicked && (

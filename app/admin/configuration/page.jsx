@@ -4,7 +4,7 @@ import styles from './styles.module.scss'
 // import { CarrierList } from './components/carrierList'
 // import Image from 'next/image'
 import { TextInput } from 'flowbite-react'
-import { SearchIcon } from '@/components/icons/iconCollection'
+import { SearchIcon, FilterIcons } from '@/components/icons/iconCollection'
 import { CarrierList } from './components/CarrierList'
 
 
@@ -20,7 +20,9 @@ export default function configuration() {
                             items-center justify-center flex rounded-sm
                             '
                         />
-                        <div className="w-[39px] h-[35px] p-2 bg-white rounded border border-neutral-200 justify-center items-center gap-2.5 inline-flex" />
+                        <button className='w-[39px] h-[35px] p-2 bg-red-700 rounded border border-neutral-200 flex items-center'>
+                            <FilterIcons fill="#ffff" />
+                        </button>
                     </div>
                     <button className="w-[215px] h-10 px-8 bg-red-700 rounded shadow justify-center items-center gap-2 inline-flex">
                         <div className="text-white text-sm font-medium font-['Poppins']">Connect New Carrier</div>

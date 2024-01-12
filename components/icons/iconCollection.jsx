@@ -53,3 +53,36 @@ export const PlusIcons = () => {
             id="Capa_1" enable-background="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g><path d="m467 211h-166v-166c0-24.853-20.147-45-45-45s-45 20.147-45 45v166h-166c-24.853 0-45 20.147-45 45s20.147 45 45 45h166v166c0 24.853 20.147 45 45 45s45-20.147 45-45v-166h166c24.853 0 45-20.147 45-45s-20.147-45-45-45z" /></g></svg>
     )
 }
+
+
+export const OptionIcons = (props) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={512}
+            height={512}
+            viewBox="0 0 24 24"
+            {...props}
+        >
+            <circle cx={12} cy={12} r={2} />
+            <circle cx={4} cy={12} r={2} />
+            <circle cx={20} cy={12} r={2} />
+        </svg>
+    )
+}
+
+export const FilterIcons = (props) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={18}
+            height={18}
+            fill="none"
+            {...props}
+        >
+            <path
+                d="M17.282 0H.716C.166 0-.179.671.098 1.207l5.234 9.94v6.048c0 .445.32.805.715.805h5.905c.396 0 .715-.36.715-.805v-6.048l5.237-9.94C18.178.67 17.834 0 17.282 0Zm-6.226 16.19H6.943v-3.922h4.115v3.922h-.002Zm.216-5.948-.214.417H6.941l-.214-.417L2.265 1.81h13.47l-4.463 8.432Z"
+            />
+        </svg>
+    )
+}
