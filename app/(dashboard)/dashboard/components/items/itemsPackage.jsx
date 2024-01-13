@@ -1,10 +1,10 @@
 "use client"
 import Image from 'next/image'
 import { React, useState } from 'react'
-import { ArrowDownIcon } from '../icons/iconCollection'
 import { CrossBorder, CrossBorderTable } from './CrossBorder';
-import { Checkbox, Button } from 'flowbite-react';
-
+// import { Checkbox, Button } from 'flowbite-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ArrowDownIcon } from '@/components/icons/iconCollection';
 export default function ItemsPackage() {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -20,7 +20,7 @@ export default function ItemsPackage() {
         <div className="container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 ">
             <div className="flex flex-row justify-between items-center gap-5 relative">
                 <div className="justify-start items-center gap-[15px] flex">
-                    <div className="w-[50px] h-[50px] p-2.5 bg-secondary rounded-md justify-center items-center gap-2.5 flex">
+                    <div className="w-[50px] h-[50px] p-2.5 bg-blue-900 rounded-md justify-center items-center gap-2.5 flex">
                         <div className="w-[25px] h-[25px] relative">
                             <Image
                                 src={"/assets/mailbox.svg"}
@@ -31,10 +31,10 @@ export default function ItemsPackage() {
                         </div>
                     </div>
                     <div className="flex-col justify-start items-start inline-flex">
-                        <div className="text-black text-sm font-medium font-['Poppins']">#5635-342808</div>
-                        <div className="text-sky-700 text-sm font-medium font-['Poppins']">Shipping Mailbox</div>
+                        <div className="text-black text-sm font-['Poppins']">#5635-342808</div>
+                        <div className="text-sky-700 text-sm font-['Poppins']">Shipping Mailbox</div>
                         <div className="justify-start items-start gap-[9px] inline-flex">
-                            <div className="text-zinc-600 text-sm font-medium font-['Poppins']">Express</div>
+                            <div className="text-zinc-600 text-sm font-['Poppins']">Express</div>
                             <div className="justify-start items-center gap-2.5 flex">
                                 <div className="text-red-700 text-opacity-80 text-sm font-semibold font-['Poppins']">872812138328</div>
                             </div>
@@ -60,23 +60,23 @@ export default function ItemsPackage() {
                             <div className="w-[30px] h-[5px] bg-green-400 rounded-[63px]" />
                             <div className="w-[30px] h-[5px] bg-neutral-200 bg-opacity-95 rounded-[63px]" />
                         </div>
-                        <div><span className=" w-[150px] text-zinc-600 text-[13px] font-medium font-['Poppins']">Shipped</span><span className="text-zinc-600 text-[13px] font-normal font-['Poppins']">, 12 jun, 2023</span></div>
+                        <div><span className=" w-[150px] text-zinc-600 text-[13px] ">Shipped</span><span className="text-zinc-600 text-[13px] font-light">, 12 jun, 2023</span></div>
                     </div>
                 </div>
 
                 <div className="rightItems flex flex-col gap-1 w-2/3 justify-end relative">
                     <div className="flex flex-row justify-end align-middle items-center gap-5 relative right-0 ">
                         <div className="h-[23px] px-2.5 py-[5px] bg-blue-200 rounded border border-blue-500 justify-center items-center gap-2.5 flex">
-                            <div className="text-center text-blue-500 text-xs font-medium font-['Poppins']">Received</div>
+                            <div className="text-center text-blue-500 text-xs ">Received</div>
                         </div>
                         <div className="w-[30px]">
-                            <Checkbox defaultChecked color={"bg-secondary"} size='small' />
+                            <Checkbox />
                         </div>
                     </div>
 
                     <div className="flex flex-row justify-end items-center gap-5 relative right-0">
                         <div className="h-[23px] justify-end items-center gap-2.5 flex">
-                            <div className="text-right text-zinc-600 text-sm font-medium font-['Poppins']">Boston, USA</div>
+                            <div className="text-right text-zinc-600 text-sm ">Boston, USA</div>
                         </div>
                         {/* <div className=""> <ArrowDownIcon /></div> */}
                         <div className="w-[30px]">
@@ -106,14 +106,14 @@ export default function ItemsPackage() {
                                 </div>
                             </div>
                             <div className="flex-col justify-start items-start gap-px inline-flex">
-                                <div className="text-black text-xs font-medium font-['Poppins']">Name Or Something</div>
-                                <div className="text-zinc-600 text-xs font-normal font-['Poppins']">12mm x 10mm</div>
-                                <div className="text-zinc-600 text-xs font-normal font-['Poppins']">1 kg</div>
+                                <div className="text-black text-xs ">Name Or Something</div>
+                                <div className="text-zinc-600 text-xs ">12mm x 10mm</div>
+                                <div className="text-zinc-600 text-xs ">1 kg</div>
                             </div>
                         </div>
                         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
                             <div className="w-[470px] justify-between items-start inline-flex ">
-                                <div className="text-zinc-900 text-sm font-medium font-['Poppins']">Confirm Your Order</div>
+                                <div className="text-zinc-900 text-sm font-normal ">Confirm Your Order</div>
                             </div>
                             <div className="justify-start items-start gap-2.5 inline-flex">
                                 <button className="w-[150px] h-[37px] px-3 py-[5px] bg-red-700 rounded justify-center items-center gap-2.5 flex">

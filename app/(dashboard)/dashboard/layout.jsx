@@ -1,14 +1,13 @@
 
 import React from 'react';
 import { Sidebar } from '@/components/sidebar/sidebar'
-import { Inter } from 'next/font/google'
 import styles from './styles.module.scss';
 import { Navbar } from '@/components/navbar/Navbar';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
 import { PromoTwo } from '@/components/ads/promoTwo';
 import { ForwadPakage } from '@/components/dashboardMenus/ForwadPakage';
-
+import { Button } from '@/components/ui/button';
 export const metadata = {
     title: 'ShipLink',
     description: 'Canada\'s best package forwarding service',
@@ -60,9 +59,15 @@ export default function DashboardMenu({ children }) {
                                     {/* <div className="text-zinc-500 text-xs font-normal font-['Poppins'] leading-tight">Search ...</div> */}
                                     <SearchIcon className="w-4 h-4" />
                                 </div>
-                                <button className="h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
+                                <Button
+                                    variant="secondary"
+                                    className ="h-10 px-10 text-xs"
+                                    >
+                                    <p>Consolidate</p>
+                                </Button>
+                                {/* <button className="h-10 px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
                                     <p className="text-white text-xs font-medium font-poppins ">Consolidate</p>
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </div>

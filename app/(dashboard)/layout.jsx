@@ -1,8 +1,11 @@
 import { Sidebar } from '@/components/sidebar/sidebar'
-import { Inter } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import styles from './styles.module.scss';
 import { Navbar } from '@/components/navbar/Navbar';
-const inter = Inter({ subsets: ['latin'] })
+const poppins = Poppins({
+    subsets: ['latin'],
+    weight: ['100', '200']
+})
 
 export const metadata = {
     title: 'ShipLink',

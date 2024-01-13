@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import ItemsPackage from '@/components/items/itemsPackage'
+import ItemsPackage from './components/items/itemsPackage'
 import styles from './styles.module.scss'
 
 

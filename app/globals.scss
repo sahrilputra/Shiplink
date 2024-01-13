@@ -6,50 +6,71 @@
 @font-face {
     font-family: 'Poppins';
     src: url('../public/font/Poppins/Poppins-Light.ttf');
-    font-weight: normal;
+    font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Poppins';
     src: url('../public/font/Poppins/Poppins-Medium.ttf');
-    font-weight: 200;
+    font-weight: 300;
     font-style: normal;
 }
 
-@font-face {
-    font-family: 'Poppins';
-    src: url('../public/font/Poppins/Poppins-Regular.ttf');
-    font-weight: normal;
-    font-style: normal;
-}
+// @font-face {
+//     font-family: 'Poppins';
+//     src: url('../public/font/Poppins/Poppins-Regular.ttf');
+//     font-weight: 200;
+//     font-style: normal;
+// }
 
-@font-face {
-    font-family: 'Poppins';
-    src: url('../public/font/Poppins/Poppins-Black.ttf');
-    font-weight: normal;
-    font-style: normal;
-}
+// @font-face {
+//     font-family: 'Poppins';
+//     src: url('../public/font/Poppins/Poppins-Black.ttf');
+//     font-weight: 500;
+//     font-style: normal;
+// }
 
-@font-face {
-    font-family: 'Poppins';
-    src: url('../public/font/Poppins/Poppins-Bold.ttf');
-    font-weight: normal;
-    font-style: normal;
-}
+// @font-face {
+//     font-family: 'Poppins';
+//     src: url('../public/font/Poppins/Poppins-Bold.ttf');
+//     font-weight: 700;
+//     font-style: normal;
+// }
 
-@font-face {
-    font-family: 'Poppins';
-    src: url('../public/font/Poppins/Poppins-ExtraBold.ttf');
-    font-weight: normal;
-    font-style: normal;
-}
+// @font-face {
+//     font-family: 'Poppins';
+//     src: url('../public/font/Poppins/Poppins-ExtraBold.ttf');
+//     font-weight: 900;
+//     font-style: normal;
+// }
 
 body {
     background-color: #ECEDEE;
-    font-family: 'Poppins', sans-serif;
 }
 
 * {
     font-family: 'Poppins', sans-serif;
+    font-weight: 200;
+}
+
+
+@layer base {
+    :root {
+        --primary: #CC0019;
+        --secondary: #00509D;
+        --blue-dark: #3E9EFF;
+        --blue-light: #D1E9FF;
+        --green-status: #50CD8D;
+        --green-status-bg: #50CD8D;
+        --yellow-status: #FFC149;
+        --yellow-status-bg: #FFC1494D;
+        --blue-status: #3E9EFF;
+        --blue-status-bg: #3E9EFF4D;
+        --red-status: #D90429;
+        --red-status-bg: #D9042933;
+        --outline-input: #E7E8EC;
+        --inputBg: #F7F7FA;
+        --blue-light-button: #F3F8FF;
+    }
 }

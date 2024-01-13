@@ -1,46 +1,56 @@
+const { fontFamily } = require("tailwindcss/defaultTheme")
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    'node_modules/flowbite-react/lib/esm/**/*.js',
+    './pages/**/*.{js,jsx}',
+    './components/**/*.{js,jsx}',
+    './app/**/*.{js,jsx}',
+    './src/**/*.{js,jsx}',
   ],
+  prefix: "",
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     fontFamily: {
-      poppins: ['Poppins', 'sans-serif'],
+      sans: ["var(--font-sans)", "sans-serif"],
+      poppins: ["var(--font-poppins)", "Poppins", "sans-serif"],
+    },
+    fontWeight: {
+      thin: 100,
+      light: 200,
+      normal: 300,
+      medium: 400,
+      'semi-bold': 600,
+      bold: 700,
+      'extra-bold': 800,
+      black: 900,
+
     },
     extend: {
-      borderColor: ['focus-visible'],
-      ring: {
-        '0': '0',
-        '1': '1px',
-        '2': '2px',
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        fontFamily: {
+          poppins: ["var(--font-poppins)", "Poppins", "sans-serif"],
+        },
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-      colors: {
-        'primary': '#CC0019  ',
-        'secondary': '#00509D   ',
-        'blue-dark': '#3E9EFF ',
-        'blue-light': '#D1E9FF ',
-        'green-status': '#50CD8D',
-        'green-status-bg': '#50CD8D ',
-        'yellow-status': '#FFC149 ',
-        'yellow-status-bg': '#FFC1494D ',
-        'blue-status': '#3E9EFF ',
-        'blue-status-bg': '#3E9EFF4D ',
-        'red-status': ' #D90429',
-        'red-status-bg': '#D9042933 ',
-        'outline-input': "#E7E8EC",
-        'inputBg': '#F7F7FA',
-        'blue-light-button': '#F3F8FF'
-
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [require("tailwindcss-animate")],
 }

@@ -1,6 +1,5 @@
 import React from 'react'
-import { ArrowBoldDownIcon } from '../icons/iconCollection'
-
+import { ArrowBoldDownIcon } from '@/components/icons/iconCollection'
 export const InputNumber = () => {
     return (
         <div className="">
