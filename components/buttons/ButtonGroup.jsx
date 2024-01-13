@@ -1,6 +1,7 @@
 import React from 'react'
 import { PlusIcons } from '../icons/iconCollection'
 import Image from 'next/image'
+
 export const ButtonAddOtherContent = () => {
     return (
         <>
@@ -17,9 +18,9 @@ export const SelectBroker = () => {
     return (
         <div className=" h-9 rounded-lg justify-start items-start inline-flex">
             <div className="w-[100px] h-9 px-1 py-2 bg-green-500 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
-                <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">Select Broker</div>
+                <div className="text-white text-xs leading-tight">Select Broker</div>
             </div>
-            <button className="text-zinc-400 text-xs font-normal font-['Poppins'] gap-1
+            <button className="text-zinc-400 text-xs font-['Poppins'] gap-1
                 h-9 px-1.5 py-2 bg-stone-50 rounded-tr rounded-br border border-neutral-200 justify-center items-center flex ">
                 <p>Use Own Broker</p>
                 <div className="">
@@ -52,7 +53,7 @@ export const ButtonPARS = () => {
     return (
         <div className=" h-9 rounded-lg justify-start items-start inline-flex">
             <div className="w-[100px] h-9 px-2.5 py-2 bg-neutral-900 rounded-tl rounded-bl justify-center items-center gap-2.5 flex">
-                <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">PARS/PAPS</div>
+                <div className="text-white text-xs leading-tight">PARS/PAPS</div>
             </div>
             <div className="h-9 px-2.5 py-2 bg-stone-50 rounded-tr rounded-br border border-neutral-200 justify-start items-center gap-[29px] flex">
                 <div className="text-zinc-400 text-xs font-normal font-['Poppins'] leading-tight">12313131231</div>
@@ -64,8 +65,8 @@ export const ButtonPARS = () => {
 export const ButtonEntryNumber = () => {
     return (
         <div className=" h-9 rounded-lg justify-start items-start inline-flex">
-            <div className="w-[100px] h-9 px-1.5 py-2 bg-secondary rounded-tl rounded-bl justify-center items-center gap-2.5 flex">
-                <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">Entry Number</div>
+            <div className="w-[100px] h-9 px-1.5 py-2 bg-blue-900 rounded-tl rounded-bl justify-center items-center gap-2.5 flex">
+                <div className="text-white text-xs  leading-tight">Entry Number</div>
             </div>
             <div className="h-9 px-2.5 py-2 bg-stone-50 rounded-tr rounded-br border border-neutral-200 first-line:justify-center items-center gap-[29px] flex">
                 <div className="text-zinc-400 text-xs font-normal font-['Poppins'] leading-tight">1231321</div>
@@ -77,8 +78,8 @@ export const ButtonEntryNumber = () => {
 export const SelectWarehouse = () => {
     return (
         <div className=" h-9 rounded-lg justify-start items-start inline-flex">
-            <div className="w-[100px] h-9 px-2.5 py-2 bg-secondary rounded-tl rounded-bl justify-start gap-2.5 flex items-center">
-                <div className="text-white text-xs font-medium font-['Poppins'] leading-tight">Warehouse</div>
+            <div className="w-[100px] h-9 px-2.5 py-2 bg-blue-900 rounded-tl rounded-bl justify-start gap-2.5 flex items-center">
+                <div className="text-white text-xs  leading-tight">Warehouse</div>
             </div>
             <button className="text-zinc-400 text-xs font-normal font-['Poppins'] leading-tight gap-2
                 h-9 px-2.5 py-2 bg-stone-50 rounded-tr rounded-br border border-neutral-200 justify-center items-center flex ">

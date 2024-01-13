@@ -4,7 +4,8 @@ import { InputNumber, InputNumberMoney, InputDescription, InputSearchHS, InputHS
 // import { DeleteIcons } from '../icons/iconCollection';
 import Image from 'next/image';
 import { ButtonAddOtherContent } from '@/components/buttons/ButtonGroup';
-import { Button } from 'flowbite-react';
+import { Button } from '@/components/ui/button';
+// import { Button } from 'flowbite-react';
 import { DeleteIcons } from '@/components/icons/iconCollection';
 
 export const TableBody = ({ body }) => {
@@ -30,11 +31,15 @@ export const TableBody = ({ body }) => {
                     <SelectMadeIn />
                 </td>
                 <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
-                    <Button color='bg-blue-100' aria-label="arrow" size='small' className='w-[30px] h-[30px] bg-blue-100 rounded-md border border-black border-opacity-20'>
-                        <DeleteIcons fill="#00509D" width='20px' height='20px' />
+                    <Button
+                        className="w-[30px] h-[30px]"
+                        variant="tableBlue"
+                        size="icon"
+                    >
+                        <DeleteIcons fill="#00509D" width='15px' height='15px' />
                     </Button>
                 </td>
-            </tr>
+            </tr >
 
         </>
 

@@ -1,13 +1,8 @@
 'use client'
 import { React, useState } from 'react'
-import { Button } from 'flowbite-react'
 import styles from './styles.module.scss'
 import { Select } from 'flowbite-react'
-import { ArrowDownIcon } from '@/components/icons/iconCollection'
-// import { ProvinceList } from './components/ProvinceList'
-// import { TaxDetails } from './components/TaxDetails'
-// import { NewType } from './components/NewType'
-
+import { Button } from '@/components/ui/button'
 import { ProvinceList } from './components/ProvinceList'
 import { TaxDetails } from './components/TaxDetails'
 import { NewType } from './components/NewType'
@@ -21,7 +16,7 @@ export default function Tax() {
 
                 <div className={styles.left}>
                     <div className="w-[100%]  p-5 bg-white rounded-md border border-neutral-200 flex-col justify-start items-start gap-[15px] inline-flex">
-                        <div className="w-[201px] text-zinc-800 text-lg font-semibold font-['Poppins'] leading-tight">Tax Configuration</div>
+                        <div className="w-[201px] text-zinc-700 text-lg font-[400] leading-tight" >Tax Configuration</div>
                         <Select
                             className=" bg-stone-50 rounded-tl rounded-bl justify-start items-center gap-3 flex text-zinc-400 text-sm font-medium font-['Poppins'] leading-tight"
                             id="countries"
@@ -41,14 +36,15 @@ export default function Tax() {
 
                 <div className={styles.right}>
                     <div className="w-[100%] p-5 bg-white rounded-md border border-neutral-200 flex-col justify-start items-start gap-[15px] inline-flex">
-                        <div className="w-[201px] text-zinc-800 text-lg font-semibold font-['Poppins'] leading-tight">Tax Assignment</div>
+                        <div className="w-[201px] text-zinc-700 text-lg font-semi-bold leading-tight">Tax Assignment</div>
                         <div className="py-[5px] flex-col justify-start items-start gap-2.5 flex">
-                            <button
+                            <Button
+                                variant="softBlue"
                                 className="px-2.5 py-[5px] bg-sky-50 rounded border border-sky-700 justify-center items-center gap-2.5 inline-flex"
                                 onClick={() => handleClick(true)}
                             >
-                                <div className="text-sky-700 text-sm font-medium font-['Poppins']">Create New Type</div>
-                            </button>
+                                <div className="text-sky-700 text-sm font-normal px-2 ">Create New Type</div>
+                            </Button>
                         </div>
                         {clicked && (
                             <>

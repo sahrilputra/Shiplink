@@ -2,7 +2,8 @@
 import { React, useState } from 'react'
 import Image from 'next/image'
 import { ToggleSwitch } from 'flowbite-react'
-
+import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
 export const CarrierList = () => {
     const [togled, setTogled] = useState(true);
 
@@ -22,7 +23,7 @@ export const CarrierList = () => {
                     <div className="justify-start items-center gap-[54px] flex">
                         <div className="justify-center items-center gap-[41px] flex">
                             <div className="h-[21px] justify-start items-end gap-[120px] flex">
-                                <div className="text-zinc-600 text-sm font-normal font-poppins">FedEx</div>
+                                <div className="text-zinc-600 text-sm font-medium font-poppins">FedEx</div>
                             </div>
                         </div>
                         <div className="justify-center items-center gap-[41px] flex">
@@ -33,15 +34,13 @@ export const CarrierList = () => {
                     </div>
                 </div>
                 <div className=" justify-between items-center flex flex-row gap-5">
-                    <ToggleSwitch
-                        checked={togled}
-                        onChange={setTogled}
-                    // color={'bg-secondary border-secondary '}
-                    // className='bg-secondary'
-                    />
-                    <button className="px-2.5 py-[5px] bg-sky-50 rounded justify-center items-center gap-2.5 flex">
-                        <p className="text-secondary text-xs font-medium ">Edit</p>
-                    </button>
+                    <Switch />
+                    <Button
+                        variant="tableBlue"
+                        size="sm"
+                        className="px-2.5 py-[5px] border-none w-[60px] h-[30px] ">
+                        <p className="text-blue-800 text-sm font-normal ">Edit</p>
+                    </Button>
 
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { CrossBorder, CrossBorderTable } from './CrossBorder';
 // import { Checkbox, Button } from 'flowbite-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowDownIcon } from '@/components/icons/iconCollection';
+import { Button } from '@/components/ui/button';
 export default function ItemsPackage() {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -34,9 +35,9 @@ export default function ItemsPackage() {
                         <div className="text-black text-sm font-['Poppins']">#5635-342808</div>
                         <div className="text-sky-700 text-sm font-['Poppins']">Shipping Mailbox</div>
                         <div className="justify-start items-start gap-[9px] inline-flex">
-                            <div className="text-zinc-600 text-sm font-['Poppins']">Express</div>
+                            <div className="text-zinc-600 text-sm font-normal">Express</div>
                             <div className="justify-start items-center gap-2.5 flex">
-                                <div className="text-red-700 text-opacity-80 text-sm font-semibold font-['Poppins']">872812138328</div>
+                                <div className="text-red-700 text-opacity-80 text-sm font-medium">872812138328</div>
                             </div>
                         </div>
                     </div>
@@ -93,7 +94,7 @@ export default function ItemsPackage() {
                     <div className="flex flex-row justify-between items-center gap-5 relative">
                         <div className="justify-start items-center gap-[15px] flex">
                             <div className="p-2.5 bg-red-700 rounded justify-center items-center gap-2.5 flex">
-                                <div className="w-[25px] h-[25px] relative">
+                                <button className="w-[25px] h-[25px] relative">
                                     {/* <img className="w-[25px] h-[25px] left-0 top-0 absolute" src="https://via.placeholder.com/25x25" /> */}
                                     <Image
                                         src={"/icon/details.svg"}
@@ -103,7 +104,7 @@ export default function ItemsPackage() {
                                         className='w-[25px] h-[25px] left-0 top-0 absolute'
                                     />
                                     {/* <div className="w-[39.06px] h-[44.53px] left-[-7.03px] top-[-9.38px] absolute bg-white" /> */}
-                                </div>
+                                </button>
                             </div>
                             <div className="flex-col justify-start items-start gap-px inline-flex">
                                 <div className="text-black text-xs ">Name Or Something</div>
@@ -116,18 +117,26 @@ export default function ItemsPackage() {
                                 <div className="text-zinc-900 text-sm font-normal ">Confirm Your Order</div>
                             </div>
                             <div className="justify-start items-start gap-2.5 inline-flex">
-                                <button className="w-[150px] h-[37px] px-3 py-[5px] bg-red-700 rounded justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold font-['Poppins']">Hold for Pickup</div>
-                                </button>
-                                <button className="w-[150px] h-[37px] px-3 py-[5px] bg-red-700 rounded justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold font-['Poppins']">Cross Border Pickup</div>
-                                </button>
-                                <button className="w-[150px] h-[37px] px-3 py-[5px] bg-red-700 rounded justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold font-['Poppins']">Forward Package</div>
-                                </button>
-                                <button className=" h-[37px] px-3 py-[5px] bg-red-700 rounded justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold font-['Poppins']">Cross Border Forward</div>
-                                </button>
+                                <Button
+                                    variant="destructive"
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
+                                    <div className="text-justify text-white text-xs font-semibold ">Hold for Pickup</div>
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
+                                    <div className="text-justify text-white text-xs font-semibold ">Cross Border Pickup</div>
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
+                                    <div className="text-justify text-white text-xs font-semibold ">Forward Package</div>
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
+                                    <div className="text-justify text-white text-xs font-semibold ">Cross Border Forward</div>
+                                </Button>
                             </div>
                             <div className="h-[0px] flex-col justify-start items-start gap-2.5 flex">
                                 <div className="min-w-[471px] max-w-screen-sm h-[0px] border-2 border-neutral-200"></div>

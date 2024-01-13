@@ -6,7 +6,7 @@ import styles from './styles.module.scss'
 import { TextInput } from 'flowbite-react'
 import { SearchIcon, FilterIcons } from '@/components/icons/iconCollection'
 import { CarrierList } from './components/CarrierList'
-
+import { Button } from '@/components/ui/button'
 
 export default function configuration() {
 
@@ -24,9 +24,9 @@ export default function configuration() {
                             <FilterIcons fill="#ffff" />
                         </button>
                     </div>
-                    <button className="w-[215px] h-10 px-8 bg-red-700 rounded shadow justify-center items-center gap-2 inline-flex">
-                        <div className="text-white text-sm font-medium font-['Poppins']">Connect New Carrier</div>
-                    </button>
+                    <Button className="w-[215px] h-10 px-8" variant="destructive">
+                        <div className="text-white text-sm font-normal ">Connect New Carrier</div>
+                    </Button>
                 </div>
 
                 <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>

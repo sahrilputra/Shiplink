@@ -1,5 +1,7 @@
 import React from 'react'
-import { Checkbox } from 'flowbite-react'
+// import { Checkbox } from 'flowbite-react'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 export const NewType = () => {
     return (
         <>
@@ -55,18 +57,22 @@ export const NewType = () => {
                 <div className=" justify-between items-start inline-flex">
                     <div className="justify-end items-center gap-2.5 flex">
                         <div className="h-3.5 justify-start items-start gap-2.5 flex" />
-                        <Checkbox color={'secondary'} size={'sm'} />
-                        <div className="text-black text-sm font-normal font-['Poppins'] leading-tight">Show Tax Number on Invoice</div>
+                        <Checkbox size={'sm'} />
+                        <div className="text-zinc-700 text-sm font-normal font-['Poppins'] leading-tight">Show Tax Number on Invoice</div>
                     </div>
                 </div>
                 <div className=" w-full px-[22px] justify-end items-end gap-2.5 inline-flex">
                     <div className="justify-end items-start gap-[22px] flex">
-                        <button className="w-[137px] h-10 px-8 rounded border border-red-700 justify-center items-center gap-2 flex">
-                            <div className="text-red-700 text-sm font-medium font-['Poppins']">Cancel</div>
-                        </button>
-                        <button className="w-[137px] h-10 px-8 bg-red-700 rounded shadow justify-center items-center gap-2 flex">
-                            <div className="text-white text-sm font-medium font-['Poppins']">Save</div>
-                        </button>
+                        <Button
+                            variant="redOutline"
+                            className="w-[137px] h-10 px-8 rounded ">
+                            <div className="text-red-700 text-sm ">Cancel</div>
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            className="w-[137px] h-10 px-8 ">
+                            <div className="text-white text-sm">Save</div>
+                        </Button>
                     </div>
                 </div>
             </div>
