@@ -1,8 +1,9 @@
 import { React, useState } from 'react'
-import { SearchIcon } from '../icons/iconCollection'
+import { SearchIcon } from '@/components/icons/iconCollection'
 import Image from 'next/image'
 import { Carrier } from './carrier/Carrier'
 import { ForwardShippingOption } from './ForwardShippingOption'
+import { Button } from '@/components/ui/button'
 export const ForwardSavedAddress = () => {
     const [confirm, setConfirm] = useState(false)
 
@@ -58,11 +59,13 @@ export const ForwardSavedAddress = () => {
                 <ForwardShippingOption />
             ) : (
                 <div className="w-[100%]  h-10 flex-col justify-start items-end gap-2.5 inline-flex">
-                    <button
+                    <Button
                         onClick={toggleConfirm}
-                        className="h-[35px] px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
-                        <p className="text-white text-xs font-medium font-['Poppins']">Confirm</p>
-                    </button>
+                        className="h-[35px] px-10 "
+                        variant="secondary"
+                    >
+                        <p className="text-white text-xs font-medium ">Confirm</p>
+                    </Button>
                 </div>
             )}
 

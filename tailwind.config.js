@@ -27,11 +27,11 @@ module.exports = {
       normal: 300,
       'medium-var': 400,
       medium: 400,
-      semiBold: 500,
+      semiBold: 600,
       bold: 700,
       extraBold: 800,
       black: 900,
-
+      semibold: 600,
     },
     extend: {
       keyframes: {

@@ -15,8 +15,8 @@ export const Carrier = () => {
                         />
                     </div>
                     <div className="flex-col justify-start items-start gap-0.5 inline-flex">
-                        <div className="text-black text-[12px] font-normal font-['Poppins']">Canada Post Regular Parcel</div>
-                        <div className="text-black text-[12px] font-semibold font-['Poppins']">CA$ 24.20</div>
+                        <div className="text-black text-[12px] font-normal ">Canada Post Regular Parcel</div>
+                        <div className="text-black text-[12px] font-semiBold ">CA$ 24.20</div>
                     </div>
                 </div>
                 <div className="text-zinc-500 text-[12px] font-normal font-['Poppins']">4 day</div>

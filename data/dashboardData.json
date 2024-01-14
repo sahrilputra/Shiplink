@@ -1,0 +1,53 @@
+[
+    {
+        "package": {
+            "id": "1",
+            "shippingId": "#5635-342808",
+            "shippingType": "Shipping Mailbox",
+            "carrierType": "Express",
+            "carrierTrackingNumber": "872812138328",
+            "from": "USA",
+            "to": "Canada",
+            "dimension": "12mm x 10mm",
+            "weight": "1.2kg",
+            "status": "received",
+            "date": "12 jun 2023",
+            "time": "11:30am",
+            "isShipped": true
+        }
+    },
+    {
+        "package": {
+            "id": "2",
+            "shippingId": "#5635-342809",
+            "shippingType": "Air Mail",
+            "carrierType": "Standard",
+            "carrierTrackingNumber": "983746235678",
+            "from": "UK",
+            "to": "Germany",
+            "dimension": "15mm x 12mm",
+            "weight": "0.8kg",
+            "status": "in transit",
+            "date": "15 jun 2023",
+            "time": "2:45pm",
+            "isShipped": true
+        }
+    },
+    {
+        "package": {
+            "id": "3",
+            "shippingId": "#5635-342810",
+            "shippingType": "Ground Shipping",
+            "carrierType": "Economy",
+            "carrierTrackingNumber": "745892173456",
+            "from": "Australia",
+            "to": "New Zealand",
+            "dimension": "18mm x 14mm",
+            "weight": "2.5kg",
+            "status": "pending",
+            "date": "20 jun 2023",
+            "time": "9:15am",
+            "isShipped": false
+        }
+    }
+]

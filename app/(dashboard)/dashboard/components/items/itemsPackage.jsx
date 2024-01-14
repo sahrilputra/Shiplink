@@ -6,7 +6,7 @@ import { CrossBorder, CrossBorderTable } from './CrossBorder';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowDownIcon } from '@/components/icons/iconCollection';
 import { Button } from '@/components/ui/button';
-export default function ItemsPackage() {
+export default function ItemsPackage({ onClickButton }) {
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -16,6 +16,15 @@ export default function ItemsPackage() {
 
     const [clicked, setIsClicked] = useState(false);
 
+
+    // button Control 
+    const [selectedButton, setSelectedButton] = useState(null);
+    const [buttonEnabled, setButtonEnabled] = useState(true);
+    const handleButtonClick = (buttonName) => {
+        setSelectedButton(buttonName);
+        onClickButton(buttonName);
+        setButtonEnabled(false); // Disable other buttons when one is clicked
+    };
 
     return (
         <div className="container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 ">
@@ -112,28 +121,36 @@ export default function ItemsPackage() {
                         </div>
                         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
                             <div className="w-[470px] justify-between items-start inline-flex ">
-                                <div className="text-zinc-900 text-sm font-semibold ">Confirm Your Order</div>
+                                <div className="text-zinc-900 text-sm font-semiBold ">Confirm Your Order</div>
                             </div>
-                            <div className="justify-start items-start gap-2.5 inline-flex">
+                            <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
                                 <Button
-                                    variant="destructive"
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold ">Hold for Pickup</div>
+                                    variant={`${selectedButton === "Hold Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                    onClick={() => handleButtonClick("Hold Pickup")}
+                                >
+                                    <div className="text-justify text-white text-xs font-semiBold ">Hold for Pickup</div>
                                 </Button>
                                 <Button
-                                    variant="destructive"
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold ">Cross Border Pickup</div>
+                                    variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                    onClick={() => handleButtonClick("Cross Border Pickup")}
+                                >
+                                    <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
                                 </Button>
                                 <Button
-                                    variant="destructive"
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold ">Forward Package</div>
+                                    variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                    onClick={() => handleButtonClick("Forward Package")}
+                                >
+                                    <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
                                 </Button>
                                 <Button
-                                    variant="destructive"
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex">
-                                    <div className="text-justify text-white text-xs font-semibold ">Cross Border Forward</div>
+                                    variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                    onClick={() => handleButtonClick("Cross Border Forward")}
+                                >
+                                    <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
                                 </Button>
                             </div>
                             <div className="h-[0px] flex-col justify-start items-start gap-2.5 flex">
@@ -145,10 +162,17 @@ export default function ItemsPackage() {
 
                     {/* Cross Border */}
                     <div className="w-[100%] flex justify-center align-middle mx-auto ">
-                        <CrossBorderTable />
+                        {
+                            selectedButton === "Cross Border Forward" ? (
+                                <CrossBorderTable />
+                            ) : (
+                                <>
+                                </>
+                            )
+                        }
+
                     </div>
                 </div>
-
 
             ) : (
                 <></>

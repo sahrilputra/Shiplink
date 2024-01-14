@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Button } from '@/components/ui/button'
 export const ForwardForms = () => {
     return (
         <>
@@ -86,9 +86,11 @@ export const ForwardForms = () => {
             </div>
             <div className="flex-col justify-start items-end gap-[7px] flex">
                 <div className="w-[312px] h-[0px] border border-neutral-200 border-opacity-60"></div>
-                <div className="h-[35px] px-10 bg-secondary rounded shadow justify-start items-center gap-2 inline-flex">
+                <Button
+                    className="h-[35px] px-10"
+                    variant="secondary">
                     <div className="text-white text-xs font-medium font-['Poppins']">Confirm</div>
-                </div>
+                </Button>
             </div>
         </>
     )

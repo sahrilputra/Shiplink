@@ -2,7 +2,7 @@ import React from 'react'
 import { ArrowBoldDownIcon } from '@/components/icons/iconCollection'
 export const InputNumber = () => {
     return (
-        <div className="">
+        <div className="w-max">
             <input
                 type='number'
                 className="
@@ -22,9 +22,9 @@ export const InputNumberMoney = () => {
     return (
         <div className=" 
         max-w-[50px] min-w-[100px] 
-         py-1 rounded-sm justify-start items-center flex
-         h-[31px]  border  border-outline-input 
-         bg-inputBg text-center
+        py-1 rounded-sm justify-start items-center flex
+        h-[31px]  border  border-outline-input 
+        bg-inputBg text-center
         text-neutral-900 text-sm font-normal font-['Poppins']
         ">
             <p className='px-2'>$</p>
@@ -44,7 +44,7 @@ export const InputDescription = () => {
                 type='text'
                 className="
                 px-[8px]
-                max-w-[317px] min-w-[100px]
+                w-full
                 py-1 rounded-sm justify-start items-center flex
                 h-[31px]  border  border-gray-200
                 grow bg-inputBg
@@ -63,7 +63,7 @@ export const InputSearchHS = () => {
                 type='text'
                 className="
                 px-[8px]
-                max-w-[317px] min-w-[100px]
+                w-full
                 py-1 rounded-sm justify-start items-center flex
                 h-[31px]  border  border-gray-200
                 grow bg-inputBg
@@ -81,7 +81,7 @@ export const InputHSCode = () => {
                 type='text'
                 className="
                 px-[8px]
-                max-w-[50px] min-w-[100px]
+                w-[80px] max-w-[full]
                 py-1 rounded-sm justify-start items-center flex
                 h-[31px]  border  border-gray-200
                 grow bg-inputBg
@@ -99,7 +99,7 @@ export const SelectMadeIn = () => {
                 type='text'
                 className="
                 px-[8px]
-                max-w-[50px] min-w-[60px]
+                w-[80px] max-w-[full]
                 py-1 rounded-sm justify-start items-center flex
                 h-[31px]  border  border-gray-200
                 grow bg-inputBg

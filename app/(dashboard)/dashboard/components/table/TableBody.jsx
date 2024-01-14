@@ -14,26 +14,26 @@ export const TableBody = ({ id, onDelete }) => {
     }
     return (
         <>
-            <tr className='body px-[15px] py-2.5 bg-white border border-neutral-200 gap-2.5 '>
-                <td className='px-[10px] py-2.5 bg-white  gap-2.5'>
+            <tr className='w-[90%] px-[15px] py-2.5 bg-white border border-neutral-200 gap-2.5 '>
+                <td className='w-[65px] px-[10px]  py-2.5 bg-white  gap-2.5'>
                     <InputNumber />
                 </td>
-                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
+                <td className='w-[200px] px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputNumberMoney />
                 </td>
-                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
+                <td className='w-[50%] px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputDescription />
                 </td>
-                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
+                <td className='w-[50%]  px-[5px] py-2.5 bg-white  gap-2.5'>
                     <InputSearchHS />
                 </td>
-                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
-                    <InputHSCode />
+                <td className='w-[100px] px-[5px] py-2.5 bg-white  gap-2.5'>
+                    <InputHSCode className="" />
                 </td>
-                <td className='px-[5px] py-2.5 bg-white  gap-2.5'>
+                <td className='w-[60px] px-[5px] py-2.5 bg-white  gap-2.5'>
                     <SelectMadeIn />
                 </td>
-                <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
+                <td className=' w-full px-[15px] py-2.5 bg-white  gap-2.5'>
                     {id !== 1 && (
                         <Button
                             className="w-[30px] h-[30px]"

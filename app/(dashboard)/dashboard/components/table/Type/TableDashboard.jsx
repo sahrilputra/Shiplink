@@ -5,7 +5,8 @@ import { TableRowCell } from '../TableRowCell'
 import { data } from 'autoprefixer'
 import { Button } from '@/components/ui/button'
 import { PlusIcons } from '@/components/icons/iconCollection'
-import { ButtonAddOtherContent, SelectBroker, ButtonUploadInvoice, ButtonPARS, ButtonEntryNumber, SelectWarehouse } from '@/components/buttons/ButtonGroup'
+import { SelectBroker, SelectWarehouse, PARSInput, UploadInvoice, EntryNumber} from '../../ActionGroup/Action'
+
 export const TableDashboard = ({ header, body, columns }) => {
 
     const [tableBody, setTableBody] = useState([{ id: 1 }])
@@ -50,11 +51,11 @@ export const TableDashboard = ({ header, body, columns }) => {
                     <div className="text-blue-800 text-sm font-normal">Add Other Content</div>
                 </Button>
             </div>
-            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
+            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
                 <SelectBroker />
-                <ButtonUploadInvoice />
-                <ButtonPARS />
-                <ButtonEntryNumber />
+                <UploadInvoice />
+                <PARSInput />
+                <EntryNumber />
             </div>
             <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
                 <SelectWarehouse />
