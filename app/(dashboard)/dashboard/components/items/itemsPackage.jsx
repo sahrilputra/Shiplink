@@ -32,12 +32,12 @@ export default function ItemsPackage() {
                         </div>
                     </div>
                     <div className="flex-col justify-start items-start inline-flex">
-                        <div className="text-black text-sm font-['Poppins']">#5635-342808</div>
-                        <div className="text-sky-700 text-sm font-['Poppins']">Shipping Mailbox</div>
+                        <div className="text-black text-sm font-semiBold">#5635-342808</div>
+                        <div className="text-sky-700 text-sm font-semiBold">Shipping Mailbox</div>
                         <div className="justify-start items-start gap-[9px] inline-flex">
-                            <div className="text-zinc-600 text-sm font-normal">Express</div>
+                            <div className="text-zinc-600 text-sm font-semiBold">Express</div>
                             <div className="justify-start items-center gap-2.5 flex">
-                                <div className="text-red-700 text-opacity-80 text-sm font-medium">872812138328</div>
+                                <div className="text-red-700 text-opacity-80 text-sm font-bold">872812138328</div>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ export default function ItemsPackage() {
                             <div className="w-[30px] h-[5px] bg-green-400 rounded-[63px]" />
                             <div className="w-[30px] h-[5px] bg-neutral-200 bg-opacity-95 rounded-[63px]" />
                         </div>
-                        <div><span className=" w-[150px] text-zinc-600 text-[13px] ">Shipped</span><span className="text-zinc-600 text-[13px] font-light">, 12 jun, 2023</span></div>
+                        <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-[13px] font-normal">, 12 jun, 2023</span></div>
                     </div>
                 </div>
 
@@ -95,7 +95,6 @@ export default function ItemsPackage() {
                         <div className="justify-start items-center gap-[15px] flex">
                             <div className="p-2.5 bg-red-700 rounded justify-center items-center gap-2.5 flex">
                                 <button className="w-[25px] h-[25px] relative">
-                                    {/* <img className="w-[25px] h-[25px] left-0 top-0 absolute" src="https://via.placeholder.com/25x25" /> */}
                                     <Image
                                         src={"/icon/details.svg"}
                                         width={25}
@@ -103,18 +102,17 @@ export default function ItemsPackage() {
                                         alt='details icon'
                                         className='w-[25px] h-[25px] left-0 top-0 absolute'
                                     />
-                                    {/* <div className="w-[39.06px] h-[44.53px] left-[-7.03px] top-[-9.38px] absolute bg-white" /> */}
                                 </button>
                             </div>
                             <div className="flex-col justify-start items-start gap-px inline-flex">
-                                <div className="text-black text-xs ">Name Or Something</div>
+                                <div className="text-black text-xs font-semiBold ">Name Or Something</div>
                                 <div className="text-zinc-600 text-xs ">12mm x 10mm</div>
                                 <div className="text-zinc-600 text-xs ">1 kg</div>
                             </div>
                         </div>
                         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
                             <div className="w-[470px] justify-between items-start inline-flex ">
-                                <div className="text-zinc-900 text-sm font-normal ">Confirm Your Order</div>
+                                <div className="text-zinc-900 text-sm font-semibold ">Confirm Your Order</div>
                             </div>
                             <div className="justify-start items-start gap-2.5 inline-flex">
                                 <Button

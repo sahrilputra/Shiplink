@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState } from 'react'
 import { TableBody } from '../TableBody'
 import { TableHeader } from '../TableHeader'
 import { TableRowCell } from '../TableRowCell'
@@ -7,6 +7,17 @@ import { Button } from '@/components/ui/button'
 import { PlusIcons } from '@/components/icons/iconCollection'
 import { ButtonAddOtherContent, SelectBroker, ButtonUploadInvoice, ButtonPARS, ButtonEntryNumber, SelectWarehouse } from '@/components/buttons/ButtonGroup'
 export const TableDashboard = ({ header, body, columns }) => {
+
+    const [tableBody, setTableBody] = useState([{ id: 1 }])
+    const addTableBody = () => {
+        const newId = tableBody.length + 1;
+        setTableBody([...tableBody, { id: newId }])
+    }
+    const deleteTableBody = (id) => {
+        // Filter out the TableBody with the given id
+        const updatedBodies = tableBody.filter((body) => body.id !== id);
+        setTableBody(updatedBodies);
+    };
     return (
         <>
             <table className='w-full'>
@@ -20,8 +31,9 @@ export const TableDashboard = ({ header, body, columns }) => {
                     <TableHeader columns={""} />
                 </tr>
                 <tbody>
-                    <TableBody />
-                    <TableBody />
+                    {tableBody.map((body) => (
+                        <TableBody key={body.id} id={body.id} onDelete={deleteTableBody} />
+                    ))}
                 </tbody>
             </table>
             <div className='body w-full px-[5px] py-1.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
@@ -32,6 +44,7 @@ export const TableDashboard = ({ header, body, columns }) => {
                     variant="tableBlue"
                     size="sm"
                     className="border-none flex flex-row gap-[10px] px-[15px]"
+                    onClick={addTableBody}
                 >
                     <PlusIcons />
                     <div className="text-blue-800 text-sm font-normal">Add Other Content</div>

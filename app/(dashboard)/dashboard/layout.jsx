@@ -22,6 +22,7 @@ export default function DashboardMenu({ children }) {
                 <div className={styles.main}>
                     <div className={styles.header}>
                         <div className={styles.tabs}>
+                        
                             <div className="w-[311px] h-[46px] p-[5px] justify-start items-start gap-[19px] inline-flex">
                                 <div className="flex-col justify-start items-center gap-1.5 inline-flex">
                                     <div className="justify-start items-start gap-[5px] inline-flex">

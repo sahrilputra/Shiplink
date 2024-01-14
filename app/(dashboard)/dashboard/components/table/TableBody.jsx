@@ -8,7 +8,10 @@ import { Button } from '@/components/ui/button';
 // import { Button } from 'flowbite-react';
 import { DeleteIcons } from '@/components/icons/iconCollection';
 
-export const TableBody = ({ body }) => {
+export const TableBody = ({ id, onDelete }) => {
+    const handleDelete = () => {
+        onDelete(id);
+    }
     return (
         <>
             <tr className='body px-[15px] py-2.5 bg-white border border-neutral-200 gap-2.5 '>
@@ -31,13 +34,16 @@ export const TableBody = ({ body }) => {
                     <SelectMadeIn />
                 </td>
                 <td className='px-[15px] py-2.5 bg-white  gap-2.5'>
-                    <Button
-                        className="w-[30px] h-[30px]"
-                        variant="tableBlue"
-                        size="icon"
-                    >
-                        <DeleteIcons fill="#00509D" width='15px' height='15px' />
-                    </Button>
+                    {id !== 1 && (
+                        <Button
+                            className="w-[30px] h-[30px]"
+                            variant="tableBlue"
+                            size="icon"
+                            onClick={handleDelete}
+                        >
+                            <DeleteIcons fill="#00509D" width='15px' height='15px' />
+                        </Button>
+                    )}
                 </td>
             </tr >
 
