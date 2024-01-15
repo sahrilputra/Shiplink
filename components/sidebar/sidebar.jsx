@@ -93,7 +93,7 @@ export const Sidebar = () => {
                             />
 
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/saved-box"}
                                 title="Saved Box Sizes"
                                 icon={<Image
                                     src={"/Sidebar/IconSavedBox.svg"}
@@ -101,7 +101,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/saved-box"
                             />
 
                             <SidebarItem
