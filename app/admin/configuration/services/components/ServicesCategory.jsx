@@ -2,6 +2,7 @@ import React from 'react'
 import { TextInput } from 'flowbite-react'
 import { SearchIcon } from '@/components/icons/iconCollection'
 import { CatergoryList } from './CatergoryList'
+import { SearchBar } from '@/components/ui/searchBar'
 
 export const ServicesCategory = () => {
     return (
@@ -10,10 +11,7 @@ export const ServicesCategory = () => {
                 <div className="w-[201px] text-zinc-800 text-md font-semibold">All Service Category</div>
                 <div className={`flex flex-row justify-between items-center w-[100%] mt-5`}>
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                        <TextInput id="email4" type="text" rightIcon={SearchIcon} placeholder="Search..."
-                            className='h-[25px] w-full bg-none text-zinc-500 text-xs font-normal outline-none border-zinc-500 focus:border-none focus:ring-0
-                            items-center justify-center flex rounded-sm '
-                        />
+                        <SearchBar />
                     </div>
                 </div>
 

@@ -2,14 +2,14 @@
     display: flex;
     margin: 5px;
     gap: 5px;
+    height: 100vh;
     // width: 100%;
 }
 
 .main {
     flex: 5;
     width: 100%;
-    max-height: max-content;
-    min-height: 90vh;
+    height: 100vh;
     background-color: #ffff;
     border-radius: 6px;
     -webkit-border-radius: 6px;

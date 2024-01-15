@@ -8,7 +8,6 @@ export const PromoOne = () => {
     return (
         <>
             <div className={styles.adContainer}>
-
                 <div className={`${styles.adTop} w-[378px] min-w-full  bg-white rounded-md flex items-center justify-center`}>
                     <div className="flex-col justify-start items-center gap-px inline-flex ">
                         <div className="text-zinc-600 text-lg font-normal ">Your Status</div>

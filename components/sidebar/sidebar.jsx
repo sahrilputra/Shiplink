@@ -12,7 +12,7 @@ export const Sidebar = () => {
 
     return (
         <>
-            <aside className={`w-[280px] min-h-max max-h-full px-[5px] pt-5 bg-white flex-col justify-start items-center gap-5 inline-flex
+            <aside className={`w-[280px] min-h-max px-[5px] pt-5 bg-white flex-col justify-start items-center gap-5 inline-flex
              ${styles.sideBarRespon}
              `}>
                 <div className={`flex gap-3 flex-col `}>

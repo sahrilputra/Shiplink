@@ -1,4 +1,6 @@
 import { OptionIcons, SearchIcon, FilterIcons } from '@/components/icons/iconCollection';
+import { SearchBar } from '@/components/ui/searchBar';
+import { Button } from '@/components/ui/button';
 import { TextInput } from 'flowbite-react';
 import React from 'react'
 export default function province() {
@@ -48,13 +50,15 @@ export default function province() {
             <div className="container w-full mx-auto">
                 <div className={`flex flex-row justify-between items-center w-[100%]`}>
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                        <TextInput id="email4" type="text" rightIcon={SearchIcon} placeholder="Search..."
-                            className='h-[25px] w-full bg-none text-zinc-500 text-xs font-normal outline-none border-zinc-500 focus:border-none focus:ring-0
-                            items-center justify-center flex rounded-sm '
-                        />
-                        <button className='w-[39px] h-[35px] p-2 bg-white rounded border border-neutral-200 flex items-center'>
-                            <FilterIcons fill="#5A5A5A" opacity="50%" />
-                        </button>
+                    <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                        <SearchBar />
+                        <Button
+                            variant="filter"
+                            size="icon"
+                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                            <FilterIcons fill="#CC0019" />
+                        </Button>
+                    </div>
                     </div>
                     <button className="w-[215px] h-10 px-8 bg-secondary rounded shadow justify-center items-center gap-2 inline-flex">
                         <div className="text-white text-sm font-medium font-['Poppins']">Add New Province</div>

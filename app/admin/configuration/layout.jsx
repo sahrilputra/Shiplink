@@ -7,7 +7,7 @@ import { ConfigMenus } from './components/ConfigMenus';
 
 
 export default function ConfigurationMenus({ children }) {
-    
+
     return (
         <>
             <div className={styles.container}>
@@ -23,8 +23,8 @@ export default function ConfigurationMenus({ children }) {
                                 />
                             </div>
                             <div className={`${styles.title} flex flex-col`}>
-                                <h1 className=" text-zinc-900 text-sm font-semi-bold font-['Poppins']">Configuration</h1>
-                                <p className=" text-blue-900 text-xs font-normal font-['Poppins']">Showing All Carriers</p>
+                                <h1 className=" text-zinc-900 text-sm font-semibold ">Configuration</h1>
+                                <p className=" text-blue-900 text-xs font-normal">Showing All Carriers</p>
                             </div>
                         </div>
 
