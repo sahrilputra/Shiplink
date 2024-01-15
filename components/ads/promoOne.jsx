@@ -23,7 +23,7 @@ export const PromoOne = () => {
                     </div>
                 </div>
 
-                <div className={`${styles.adBottom} w-[378px] bg-white flex flex-col justify-around gap-3 rounded-md `}>
+                <div className={`${styles.adBottom} w-[378px] min-w-full bg-white flex flex-col justify-around gap-3 rounded-md `}>
                     <div className="content w-[90%] flex flex-col justify-between items-center mx-auto gap-5">
                         <div className="text-center text-black text-md font-semibold">If you have any questions or need any help, please contact us</div>
                         <div className=" flex-col justify-center items-center gap-[21px] inline-flex">

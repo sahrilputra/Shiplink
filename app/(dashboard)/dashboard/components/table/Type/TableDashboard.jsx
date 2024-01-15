@@ -5,10 +5,15 @@ import { TableRowCell } from '../TableRowCell'
 import { data } from 'autoprefixer'
 import { Button } from '@/components/ui/button'
 import { PlusIcons } from '@/components/icons/iconCollection'
-import { SelectBroker, SelectWarehouse, PARSInput, UploadInvoice, EntryNumber} from '../../ActionGroup/Action'
+import { SelectBroker, SelectWarehouse, PARSInput, UploadInvoice, EntryNumber } from '../../ActionGroup/Action'
 
 export const TableDashboard = ({ header, body, columns }) => {
 
+    const [selectedBroker, setSelectedBroker] = useState(null);
+    const handleSelectBroker = (value) => {
+        console.log("Selected Broker: ", value);
+        setSelectedBroker(value);
+    };
     const [tableBody, setTableBody] = useState([{ id: 1 }])
     const addTableBody = () => {
         const newId = tableBody.length + 1;
@@ -51,30 +56,67 @@ export const TableDashboard = ({ header, body, columns }) => {
                     <div className="text-blue-800 text-sm font-normal">Add Other Content</div>
                 </Button>
             </div>
-            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
-                <SelectBroker />
-                <UploadInvoice />
-                <PARSInput />
-                <EntryNumber />
-            </div>
-            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
-                <SelectWarehouse />
-                <div className="flex flex-row gap-3">
-                    <Button
-                        variant="redOutline"
-                        className="h-[35px] w-[100px] px-4 shadow"
-                    >
-                        <div className="text-red-700 text-sm  font-normal ">Cancel</div>
-                    </Button>
 
-                    <Button
-                        variant="destructive"
-                        className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
-                    >
-                        <div className="text-white text-sm font-normal">Save</div>
-                    </Button>
-                </div>
-            </div>
+
+            {
+                selectedBroker === "Shiplink Broker" ? (
+                    <>
+                        <div className="use-shiplink-broker">
+                            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
+                                <SelectBroker onSelect={handleSelectBroker} />
+                                <UploadInvoice />
+                                <SelectWarehouse />
+                            </div>
+                            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-end items-center'>
+                                <div className="flex flex-row gap-3">
+                                    <Button
+                                        variant="redOutline"
+                                        className="h-[35px] w-[100px] px-4 shadow"
+                                    >
+                                        <div className="text-red-700 text-sm  font-normal ">Cancel</div>
+                                    </Button>
+
+                                    <Button
+                                        variant="destructive"
+                                        className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
+                                    >
+                                        <div className="text-white text-sm font-normal">Save</div>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className="use-own-broker">
+                            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
+                                <SelectBroker onSelect={handleSelectBroker} />
+                                <UploadInvoice />
+                                <PARSInput />
+                                <EntryNumber />
+                            </div>
+                            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
+                                <SelectWarehouse />
+                                <div className="flex flex-row gap-3">
+                                    <Button
+                                        variant="redOutline"
+                                        className="h-[35px] w-[100px] px-4 shadow"
+                                    >
+                                        <div className="text-red-700 text-sm  font-normal ">Cancel</div>
+                                    </Button>
+
+                                    <Button
+                                        variant="destructive"
+                                        className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
+                                    >
+                                        <div className="text-white text-sm font-normal">Save</div>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+            }
             <div className='body w-full px-[5px] py-2.5 bg-whit gap-2.5 flex flex-row justify-between items-center'>
                 <div className="text-zinc-500 text-sm font-normal font-['Poppins']">Select your Broker option. If using ShipLinks Brokerage, please upload the purchase invoice. If using your own Broker, a PARS/PAPS number will be generated when you Save this form. Then register the Entry Number provided by your broker to clear this package for Transport.</div>
             </div>

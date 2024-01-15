@@ -12,7 +12,7 @@ export const ForwadPakage = () => {
 
     return (
         <>
-            <div className="w-[378px] h-full px-[31px] pt-[18px] bg-white rounded-md flex-col justify-start items-center inline-flex">
+            <div className=" w-[378px] min-w-full h-full px-[31px] pt-[18px] bg-white rounded-md flex-col justify-start items-center inline-flex">
                 <div className="self-stretch flex-col justify-start items-start gap-[15px] inline-flex">
                     <div className="text-zinc-900 text-lg font-semiBold">Forward Package</div>
                     {/* switch button */}

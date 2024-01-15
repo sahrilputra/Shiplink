@@ -1,15 +1,26 @@
 'use client'
-import React, { useState } from 'react'
-import { Sidebar } from '@/components/sidebar/sidebar'
+import React, { useState, useContext } from 'react'
 import styles from './styles.module.scss';
-import { Navbar } from '@/components/navbar/Navbar';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
-import { PromoTwo } from '@/components/ads/promoTwo';
 import { ForwadPakage } from './components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
 import ItemsPackage from './components/items/itemsPackage';
+import { PaymentModals } from './components/dashboardMenus/payments/paymentModals';
+import { ModalContext } from '@/context/ModalContext';
 export default function Dashboard() {
+    const { isOpen, openModal, closeModal } = useContext(ModalContext);
+
+    const [selectedTab, setSelectedTab] = useState("all");
+    const handleTabClick = (tabName) => {
+        setSelectedTab(tabName);
+    }
+
+
+    console.log("isOpen", isOpen);
+    console.log("openModal", openModal);
+    console.log("closeModal", closeModal);
+
 
     const [selectedButton, setSelectedButton] = useState(null);
     const handleButtonClick = (buttonName) => {
@@ -19,35 +30,49 @@ export default function Dashboard() {
     return (
         <>
 
+            <PaymentModals isOpen={isOpen} isClose={closeModal} />
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.tabs}>
 
                         <div className="w-[311px] h-[46px] p-[5px] justify-start items-start gap-[19px] inline-flex">
                             <div className="flex-col justify-start items-center gap-1.5 inline-flex">
-                                <div className="justify-start items-start gap-[5px] inline-flex">
-                                    <div className="text-zinc-900 text-base font-semibold font-['Poppins']">All</div>
-                                    <div className="p-2 bg-red-700 rounded flex-col justify-center items-center gap-2.5 inline-flex">
-                                        <div className="text-white text-xs font-semibold font-['Poppins']">0</div>
-                                    </div>
+                                <div
+                                    onClick={() => handleTabClick("all")}
+                                    className="justify-start items-start gap-[5px] inline-flex cursor-pointer"
+                                >
+                                    <div className="text-zinc-900 text-base font-semibold ">All</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">0</div>
                                 </div>
-                                <div className="w-[44.25px] h-1.5 relative">
+                                <div className={`${selectedTab === 'all' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
                                     <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
                                     <div className="w-[5.38px] h-1.5 left-[38.87px] top-0 absolute bg-red-700 rounded-sm" />
                                 </div>
                             </div>
-                            <div className="justify-start items-start gap-[5px] flex">
-                                <div className="text-zinc-900 text-base font-semibold font-['Poppins']">Incoming</div>
-                                <div className="p-2 bg-red-700 rounded flex-col justify-center items-center gap-2.5 inline-flex">
-                                    <div className="text-white text-xs font-semibold font-['Poppins']">0</div>
+                            <div className="flex-col justify-start items-center gap-1.5 inline-flex">
+                                <div
+                                    className="justify-start items-start gap-[5px] inline-flex cursor-pointer"
+                                    onClick={() => handleTabClick("incoming")}
+                                >
+                                    <div className="text-zinc-900 text-base font-semibold ">Incoming</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">0</div>
+                                </div>
+                                <div className={`${selectedTab === 'incoming' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
+                                    <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
+                                    <div className="w-[5.38px] h-1.5 left-[38.87px] top-0 absolute bg-red-700 rounded-sm" />
                                 </div>
                             </div>
                             <div className="flex-col justify-start items-center gap-1.5 inline-flex">
-                                <div className="justify-start items-start gap-[5px] inline-flex">
-                                    <div className="text-zinc-900 text-base font-semibold font-['Poppins']">Outgoing</div>
-                                    <div className="p-2 bg-red-700 rounded flex-col justify-center items-center gap-2.5 inline-flex">
-                                        <div className="text-white text-xs font-semibold font-['Poppins']">0</div>
-                                    </div>
+                                <div
+                                    className="justify-start items-start gap-[5px] inline-flex cursor-pointer"
+                                    onClick={() => handleTabClick("outgoing")}
+                                >
+                                    <div className="text-zinc-900 text-base font-semibold ">Outgoing</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">0</div>
+                                </div>
+                                <div className={`${selectedTab === 'outgoing' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
+                                    <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
+                                    <div className="w-[5.38px] h-1.5 left-[38.87px] top-0 absolute bg-red-700 rounded-sm" />
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,15 @@
-import React from 'react'
+'use client'
+import { React, useContext } from 'react'
 import { Button } from '@/components/ui/button'
+import { ModalContext } from '@/context/ModalContext'
 export const ForwardForms = () => {
+
+    const { openModal } = useContext(ModalContext);
+
+    const handleOpenModal = () => {
+        openModal();
+    }
+
     return (
         <>
             <div className="flex-col justify-start items-start gap-0.5 flex">
@@ -88,7 +97,9 @@ export const ForwardForms = () => {
                 <div className="w-[312px] h-[0px] border border-neutral-200 border-opacity-60"></div>
                 <Button
                     className="h-[35px] px-10"
-                    variant="secondary">
+                    variant="secondary"
+                    onClick={handleOpenModal}
+                >
                     <div className="text-white text-xs font-medium font-['Poppins']">Confirm</div>
                 </Button>
             </div>

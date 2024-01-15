@@ -13,27 +13,39 @@ import {
 import { ArrowDownIcon } from '@/components/icons/iconCollection'
 
 
-export const SelectBroker = ({ props }) => {
+export const SelectBroker = ({ onSelect }) => {
+
+    const handleChange = (value) => {
+        onSelect(value);
+    }
     return (
         <>
             <div className=" h-9 rounded-lg justify-start items-start inline-flex">
-                <Select className="flex flex-row gap-0 items-center">
+                <Select
+                    className="flex flex-row gap-0 items-center"
+                    onValueChange={(value) => handleChange(value)}
+                    >
                     <div className="w-[100px] h-9 px-1 py-2 bg-green-500 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
                         <div className="text-white text-xs leading-tight">Select Broker</div>
                     </div>
-                    <SelectTrigger className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400">
+                    <SelectTrigger
+                        className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
+
+                    >
                         <SelectValue placeholder="Choose Broker" />
                     </SelectTrigger>
                     <SelectContent className="text-xs">
                         <SelectItem
                             className="text-xs"
                             value="Shiplink Broker"
+                            onSelect={() => handleChange("Shiplink Broker")}
                         >
                             Use Shiplink Broker
                         </SelectItem>
                         <SelectItem
                             value="Own Broker"
                             className="text-xs"
+                            onSelect={() => handleChange("Own Broker")}
                         >
                             Use Own Broker
                         </SelectItem>
