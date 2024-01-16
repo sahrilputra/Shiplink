@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useContext} from 'react'
+import React, { useState, useContext } from 'react'
 import styles from './styles.module.scss';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
@@ -10,6 +10,7 @@ import { PaymentModals } from '../dashboard/components/dashboardMenus/payments/p
 import { ModalContext } from '@/context/ModalContext';
 
 export default function ShippingLebel() {
+   
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
 
     const [selectedTab, setSelectedTab] = useState("all");
@@ -37,8 +38,8 @@ export default function ShippingLebel() {
                     <div className={styles.tabs}>
 
                         <div className="w-[311px] h-[46px] p-[5px] justify-start items-start gap-[19px] inline-flex">
-                        <h2 className=' text-lg font-bold'>Outgoing Shipment</h2>
-                   
+                            <h2 className=' text-lg font-bold'>Outgoing Shipment</h2>
+
                         </div>
                     </div>
 

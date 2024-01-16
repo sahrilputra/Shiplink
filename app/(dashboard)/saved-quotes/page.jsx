@@ -7,8 +7,15 @@ import { DeleteIcons, IconList, GridIcons, FilterIcons } from '@/components/icon
 import { PlusIcon } from 'lucide-react'
 import { SearchBar } from '@/components/ui/searchBar'
 import { SavedQutoesCard } from './components/savedQutoesCard'
-
+import { SavedQuotesDetails } from './components/SavedQuotesDetails'
 export default function SavedQuotes() {
+
+    const [isSelect, setIsSelect] = useState(false);
+
+    const toggleSelect = () => {
+        setIsSelect(!isSelect);
+    }
+
     const [clicked, isClicked] = useState(false);
 
     const toggleClicked = (clickedButtons) => {
@@ -72,18 +79,32 @@ export default function SavedQuotes() {
                 <div className={styles.item_container}>
                     <div className={styles.items}>
                         {clicked ? (
-                            <SavedQutoesCard variant='list' />
+                            <>
+                                <SavedQutoesCard variant='list' onSelect={toggleSelect} />
+                                <SavedQutoesCard variant='list' onSelect={toggleSelect} />
+                            </>
                         ) : (
-                            <SavedQutoesCard />
+                            <SavedQutoesCard onClick={() => toggleSelect(true)} className={`${isSelect ? ('bg-blue-400 opacity-20') : (`bg-white`)} cursor-pointer`} />
                         )}
                     </div>
                 </div>
             </div>
 
             <div className={styles.rightPanel}>
-                <div className="ads">
-                    <PromoOne />
-                </div>
+                {
+                    isSelect ? (
+                        <>
+                            <SavedQuotesDetails />
+
+                        </>
+                    ) : (
+                        <>
+                            <div className="ads">
+                                <PromoOne />
+                            </div>
+                        </>
+                    )
+                }
 
             </div>
         </>

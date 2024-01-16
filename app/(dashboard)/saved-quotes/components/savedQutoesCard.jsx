@@ -1,12 +1,22 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
-export const SavedQutoesCard = ({ variant }) => {
+export const SavedQutoesCard = ({ variant, onSelect }) => {
+
+    const toggleSelected = () => {
+        onSelect(true);
+    }
+
     return (
         <>
             {variant === 'list' ? (
                 <>
-                    <div className="container w-full px-[30px] py-[30px] relative bg-white rounded-lg shadow border border-zinc-600 border-opacity-50">
+                    <div
+                        onClick={toggleSelected}
+                        className={`container w-full px-[30px] py-[30px] relative rounded-lg shadow border border-zinc-600 border-opacity-50
+                        ${onSelect === true ? "bg-blue-100" : " bg-none"}`}
+                    >
                         <Checkbox className="absolute top-[25px] right-[20px]" />
                         <div className=" w-full flex-col justify-start items-start gap-[5px] inline-flex">
                             <div className="text-zinc-900 text-sm font-semibold ">Quote Date : 2023-09-02</div>
