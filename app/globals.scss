@@ -2,12 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+// @font-face {
+//   font-family: 'Poppins';
+//   src: url('../public/font/Poppins/Poppins-SemiBold.ttf');
+//   font-weight: 400;
+//   font-style: normal;
+// }
+
+
 @font-face {
   font-family: 'Poppins';
   src: url('../public/font/Poppins/Poppins-Medium.ttf');
-  font-weight: normal;
+  font-weight: 200;
   font-style: normal;
 }
+
 
 // body {
 //   background-color: #ECEDEE;
@@ -102,7 +112,8 @@
   * {
     @apply border-border;
   }
-  body{
+
+  body {
     background-color: #ECEDEE;
   }
 
