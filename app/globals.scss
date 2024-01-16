@@ -2,79 +2,129 @@
 @tailwind components;
 @tailwind utilities;
 
-// @import url('../public/font/Poppins/Poppins-Regular.ttf');
-// @import url('../public/font/Poppins/Poppins-Medium.ttf');
-// @import url('../public/font/Poppins/Poppins-Medium.ttf');
-
-// //  font
-// @font-face {
-//     font-family: 'Poppins';
-//     src: url('../public/font/Poppins/Poppins-Light.ttf');
-//     font-weight: normal;
-//     font-style: normal;
-// }
-
 @font-face {
-    font-family: 'Poppins';
-    src: url('../public/font/Poppins/Poppins-Medium.ttf');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Poppins';
+  src: url('../public/font/Poppins/Poppins-Medium.ttf');
+  font-weight: normal;
+  font-style: normal;
 }
 
-// @font-face {
-//     font-family: 'Poppins';
-//     src: url('../public/font/Poppins/Poppins-Regular.ttf');
-//     font-weight: normal;
-//     font-style: normal;
+// body {
+//   background-color: #ECEDEE;
 // }
-
-// @font-face {
-//     font-family: 'Poppins';
-//     src: url('../public/font/Poppins/Poppins-Black.ttf');
-//     font-weight: normal;
-//     font-style: normal;
-// }
-
-// @font-face {
-//     font-family: 'Poppins';
-//     src: url('../public/font/Poppins/Poppins-Bold.ttf');
-//     font-weight: normal;
-//     font-style: normal;
-// }
-
-// @font-face {
-//     font-family: 'Poppins';
-//     src: url('../public/font/Poppins/Poppins-ExtraBold.ttf');
-//     font-weight: normal;
-//     font-style: normal;
-// }
-
-body {
-    background-color: #ECEDEE;
-}
 
 * {
-    font-family: 'Poppins', sans-serif;
-    // font-weight: 200;
+  font-family: 'Poppins', sans-serif;
+  // font-weight: 200;
 }
-
 
 @layer base {
-    :root {
-        --primary: #CC0019;
-        --secondary: #00509D;
-        --blue-dark: #3E9EFF;
-        --blue-light: #D1E9FF;
-        --green-status: #50CD8D;
-        --green-status-bg: #50CD8D;
-        --yellow-status: #FFC149;
-        --yellow-status-bg: #FFC1494D;
-        --blue-status: #3E9EFF;
-        --blue-status-bg: #3E9EFF4D;
-        --red-status: #D90429;
-        --red-status-bg: #D9042933;
-        --outline-input: #E7E8EC;
-        --inputBg: #F7F7FA;
-        --blue-light-button: #F3F8FF;
-    }
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --primary: #CC0019;
+    --secondary: #00509D;
+    --blue-dark: #3E9EFF;
+    --blue-light: #D1E9FF;
+    --green-status: #50CD8D;
+    --green-status-bg: #50CD8D;
+    --yellow-status: #FFC149;
+    --yellow-status-bg: #FFC1494D;
+    --blue-status: #3E9EFF;
+    --blue-status-bg: #3E9EFF4D;
+    --red-status: #D90429;
+    --red-status-bg: #D9042933;
+    --outline-input: #E7E8EC;
+    --inputBg: #F7F7FA;
+    --blue-light-button: #F3F8FF;
+  }
+
+  .dark {
+    --background: #ECEDEE;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
 }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body{
+    background-color: #ECEDEE;
+  }
+
+}
+
+
+// @layer base {
+//   :root {
+//       --primary: #CC0019;
+//       --secondary: #00509D;
+//       --blue-dark: #3E9EFF;
+//       --blue-light: #D1E9FF;
+//       --green-status: #50CD8D;
+//       --green-status-bg: #50CD8D;
+//       --yellow-status: #FFC149;
+//       --yellow-status-bg: #FFC1494D;
+//       --blue-status: #3E9EFF;
+//       --blue-status-bg: #3E9EFF4D;
+//       --red-status: #D90429;
+//       --red-status-bg: #D9042933;
+//       --outline-input: #E7E8EC;
+//       --inputBg: #F7F7FA;
+//       --blue-light-button: #F3F8FF;
+//   }
+// }
