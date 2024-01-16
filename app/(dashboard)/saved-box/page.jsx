@@ -29,7 +29,7 @@ export default function SavedBox() {
                             ${clicked ? 'bg-none text-black' : 'bg-red-700 text-white font-semiBold hover:bg-red-800'}`}
                                     onClick={() => toggleClicked(false)}
                                 >
-                                    <GridIcons width={15} height={15} />
+                                    <GridIcons width={15} height={15} className={`${clicked ? ' text-black' : ' fill-white font-semiBold hover:bg-red-800'}`}/>
                                 </button>
                                 <button
                                     id='newAddress'
@@ -37,7 +37,7 @@ export default function SavedBox() {
                             ${clicked ? 'bg-red-700 text-white font-semiBold hover:bg-red-800' : 'bg-none'}`}
                                     onClick={() => toggleClicked(true)}
                                 >
-                                    <IconList width={15} height={15} />
+                                    <IconList width={15} height={15} className={`${clicked ? ' fill-white font-semiBold hover:bg-red-800' : 'bg-none'}`} />
                                 </button>
                             </div>
                         </div>
