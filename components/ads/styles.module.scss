@@ -13,12 +13,20 @@
     background-position: center;
     height: 250px;
 
-
 }
 
 .adContainer {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    height: 90vh;
+    height: 100vh;
+}
+
+.adTopAssited {
+    background-image: url('/assets/blue.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 250px;
+    height: 100%;
 }

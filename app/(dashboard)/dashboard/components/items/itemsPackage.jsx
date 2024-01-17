@@ -14,6 +14,9 @@ export default function ItemsPackage({ onClickButton }) {
         setIsExpanded(!isExpanded);
     }
 
+    const toggleClicked = (op) => {
+        setIsExpanded(op)
+    }
     const [clicked, setIsClicked] = useState(false);
 
 
@@ -27,7 +30,13 @@ export default function ItemsPackage({ onClickButton }) {
     };
 
     return (
-        <div className="container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 ">
+        <div
+            onClick={() => { toggleClicked(true) }}
+            className={`
+            container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 hover:bg-gray-300/10 cursor-pointer
+            ${isExpanded ? 'hover:bg-white cursor-auto' : ''}
+            `}
+        >
             <div className="flex flex-row justify-between items-center gap-5 relative">
                 <div className="justify-start items-center gap-[15px] flex">
                     <div className="w-[50px] h-[50px] p-2.5 bg-blue-900 rounded-md justify-center items-center gap-2.5 flex">
@@ -90,7 +99,9 @@ export default function ItemsPackage({ onClickButton }) {
                         </div>
                         {/* <div className=""> <ArrowDownIcon /></div> */}
                         <div className="w-[30px]">
-                            <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
+                            {/* <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
+                             */}
+                            <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}>
                                 <ArrowDownIcon />
                             </button>
                         </div>

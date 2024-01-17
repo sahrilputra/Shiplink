@@ -5,9 +5,10 @@ import styles from './styles.module.scss'
 import { AdTop } from '@/components/ads/adTop'
 import { LinkIcons } from '@/components/icons/iconCollection'
 import { Separator } from '@/components/ui/separator'
-import { SearchBar } from '@/components/ui/searchBar'
+import { SearchPayments } from '@/components/ui/searchBar'
 import { PaymentCard } from './components/PaymentCard'
 import { Button } from '@/components/ui/button'
+import { AssitedTableOrder } from './components/TableOrder/Table'
 export default function page() {
     return (
         <>
@@ -17,8 +18,8 @@ export default function page() {
                         <h1 className='m-2 text-xl'>Assisted Purchase</h1>
                         <p className='text-zinc-500 text-md font-normal p-3'> Copy the link / URL of the items you would like and paste them into our order form, and we will do the rest. Your item will be purchased and delivered to your Mailbox.</p>
                     </div>
-                    <div className={`${styles.forms} w-full form flex flex-row gap-5 p-3`}>
-                        <div className=" flex-col w-[50%] justify-start items-center gap-2 inline-flex ">
+                    <div className={`${styles.forms} w-full form flex flex-row flex-wrap gap-8 p-3`}>
+                        <div className=" flex-col w-[60%] justify-start items-center gap-2 inline-flex ">
                             <div className="form w-full">
                                 <div className="text-zinc-800  font-medium leading-tight">Link of Product <span className="text-red-600 text-md font-semibold leading-tight">*</span></div>
                                 <div className="w-full rounded-lg border border-neutral-200 justify-between items-center gap-3 inline-flex">
@@ -69,10 +70,10 @@ export default function page() {
 
                         </div>
 
-                        <div className=" flex-col w-[50%] justify-start items-start gap-2 inline-flex">
-                            <div className=" justify-start flex flex-col">
+                        <div className=" flex-col w-[30%] justify-start items-start gap-2 inline-flex">
+                            <div className=" justify-start w-full flex flex-col">
                                 <h2>Payment Method</h2>
-                                <SearchBar className="w-full" />
+                                <SearchPayments className="w-full" />
                             </div>
                             <PaymentCard />
                             <div className="w-full gap-3 justify-start items-center flex-row flex">
@@ -89,13 +90,13 @@ export default function page() {
                     </div>
                 </div>
 
-                <div className="">
+                <div className={`${styles.ad}`}>
                     <AdTop className="w-full h-full bg-white flex items-center justify-center" />
                 </div>
             </div >
 
             <div className="table bg-white w-full">
-                table here
+                <AssitedTableOrder />
             </div>
         </>
     )
