@@ -17,6 +17,19 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["poppins", "sans-serif"],
+      },
+      fontWeight: {
+        black: 900,
+        bold: 700,
+        'semi-bold': 500,
+        semiBold: 500,
+        semibold: 500,
+        medium: 400,
+        regular: 300,
+        light: 200,
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

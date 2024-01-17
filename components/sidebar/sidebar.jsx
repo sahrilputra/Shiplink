@@ -105,7 +105,7 @@ export const Sidebar = () => {
                             />
 
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/membership"}
                                 title="Membership Plan"
                                 icon={<Image
                                     src={"/Sidebar/IconReferFriend.svg"}
@@ -113,7 +113,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/membership"
                             />
 
                             <SidebarItem
