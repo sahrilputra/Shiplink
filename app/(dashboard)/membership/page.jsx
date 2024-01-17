@@ -30,8 +30,8 @@ export default function page() {
                 </div>
 
                 <div className={styles.membership}>
-                    <div className="flex flex-row">
-                        <div className="left">
+                    <div className="flex flex-row justify-between items-center">
+                        <div className="left p-[20px]">
                             <div className=" text-zinc-800 text-[35px] font-semibold ">Available Membership Plans</div>
                             <div className=" text-zinc-800 text-[20px] font-normal  leading-[33.50px]">Choose the best plan for your needs</div>
                         </div>
