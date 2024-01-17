@@ -81,7 +81,7 @@ export const Sidebar = () => {
                     <SidebarMenu title="setting" className="flex-col justify-start items-center gap-2.5 flex">
                         <div className="flex-col justify-end items-start gap-2.5 flex">
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/address-book"}
                                 title="Address Book"
                                 icon={<Image
                                     src={"/Sidebar/IconMyAddresses.svg"}
@@ -89,7 +89,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/address-book"
                             />
 
                             <SidebarItem
