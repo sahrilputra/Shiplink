@@ -129,7 +129,7 @@ export const Sidebar = () => {
                             />
 
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/billing-history"}
                                 title="Billing History"
                                 icon={<Image
                                     src={"/Sidebar/IconBillingHistory.svg"}
@@ -137,7 +137,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/billing-history"
                             />
 
                             <SidebarItem
