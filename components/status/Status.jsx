@@ -13,7 +13,6 @@ export const Status = ({ status }) => {
         }
     }
 
-    console.log(getStatusMode());
     return (
         <>
             <div className="flex flex-row items-center gap-3">

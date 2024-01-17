@@ -141,7 +141,7 @@ export const Sidebar = () => {
                             />
 
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router === "/reference"}
                                 title="Refer Friends"
                                 icon={<Image
                                     src={"/Sidebar/IconReferFriend.svg"}
@@ -149,7 +149,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/reference"
                             />
 
                             <SidebarItem

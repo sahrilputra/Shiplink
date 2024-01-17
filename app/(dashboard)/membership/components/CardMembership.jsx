@@ -53,7 +53,7 @@ export const CardMembership = () => {
                     <SubsMenu
                         month={"/month"}
                         title={"Premium"}
-                        price={"$0"}
+                        price={"$9.99"}
                         icon={<Image
                             src={'/assets/subscription/premium.svg'}
                             width={25}
@@ -98,7 +98,7 @@ export const CardMembership = () => {
                     <SubsMenu
                         month={"/month"}
                         title={"Business"}
-                        price={"$0"}
+                        price={"$99.99"}
                         icon={<Image
                             src={'/assets/subscription/business.svg'}
                             width={25}
