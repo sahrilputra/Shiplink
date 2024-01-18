@@ -1,11 +1,16 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './styles.module.scss'
 import { CopyIcon, Share2Icon, FacebookIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Pagination } from './components/Pagination'
 import { ReferenceCard } from './components/ReferenceCard'
+import { useToast } from '@/components/ui/use-toast'
+import { ToastAction } from '@/components/ui/toast'
 export default function page() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { toast } = useToast();
+
     return (
         <>
             <div className={styles.main}>
@@ -30,6 +35,12 @@ export default function page() {
                             <Button
                                 variant="destructive"
                                 size="icon"
+                                onClick={() => {
+                                    toast({
+                                        title: 'Copied',
+                                        description: 'Copied to clipboard',
+                                    })
+                                }}
                             >
                                 <Share2Icon />
                             </Button>

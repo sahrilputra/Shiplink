@@ -3,7 +3,7 @@ import { Poppins } from 'next/font/google'
 
 import './globals.scss'
 import { cn } from '@/lib/utils'
-
+import { Toaster } from '@/components/ui/toaster'
 // const poppins = localFont({
 //   src: [
 //     {
@@ -39,7 +39,10 @@ export default function RootLayout({ children }) {
           poppins.variable
         )}
       >
-        {children}
+        <main>
+          {children}
+        </main>
+        <Toaster />
       </body>
     </html>
   )

@@ -117,7 +117,7 @@ export const Sidebar = () => {
                             />
 
                             <SidebarItem
-                                isActive={router === "/#"}
+                                isActive={router.startsWith("/account")}
                                 title="Account Details"
                                 icon={<Image
                                     src={"/Sidebar/IconAcountDetails.svg"}
@@ -125,7 +125,7 @@ export const Sidebar = () => {
                                     height={25}
                                     alt='Icon Assisted Purhase icon'
                                 />}
-                                href="#"
+                                href="/account"
                             />
 
                             <SidebarItem
