@@ -80,7 +80,7 @@ export default function page() {
                 <div className={styles.moneyContent}>
                     <div className="wrap">
                         <div className="h-[49px] text-black text-[26px] font-semibold font-['Poppins']">Here are your Referals that have joined</div>
-                        <div className=" text-zinc-600 text-md font-normal font-['Poppins']">Copy the refferal code below and send for family and friends. When they register with your code and ship their first order, both of you will receive a US $ 15 credit towards future shipments! </div>
+                        <div className=" text-zinc-600 text-md font-normal">Copy the refferal code below and send for family and friends. When they register with your code and ship their first order, both of you will receive a US $ 15 credit towards future shipments! </div>
                         <div className="flex flex-col py-[5px] px-[5px] rounded-md border border-neutral-200">
                             <div className="flex flex-row justify-center items-center">
                                 <p>Mon</p>
