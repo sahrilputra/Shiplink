@@ -2,6 +2,7 @@ import { React, useState, useContext } from 'react'
 import Image from 'next/image';
 import { ArrowDownIcon } from '@/components/icons/iconCollection';
 import { NewCard } from './NewCard';
+import styles from './style.module.scss'
 import { ModalContext } from '@/context/ModalContext';
 export const PaymentModals = ({ isOpen, isClose }) => {
     console.log('modal is open', isOpen);
@@ -20,7 +21,7 @@ export const PaymentModals = ({ isOpen, isClose }) => {
     return (
         <>
             <div className={showModal}>
-                <div className="modals w-full h-full fixed overflow-hidden top-[0] z-10 bg-slate-500 bg-opacity-25">
+                <div className={`${styles.modals} modals w-full h-full absolute top-[0] z-[100] bg-slate-500 bg-opacity-25`}>
                     <div className="container transform translate-x-[5%] translate-y-[25%]">
 
                         <div className="w-[594px] h-max px-5 pt-5 pb-[47px] bg-white rounded-lg shadow border border-neutral-200 flex-col justify-start items-center gap-[23px] inline-flex">

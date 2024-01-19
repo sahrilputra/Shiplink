@@ -4,6 +4,15 @@ import Image from 'next/image'
 import { Carrier } from './carrier/Carrier'
 import { ForwardShippingOption } from './ForwardShippingOption'
 import { Button } from '@/components/ui/button'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Test } from './payments/Test'
 export const ForwardSavedAddress = () => {
     const [confirm, setConfirm] = useState(false)
 
@@ -59,13 +68,15 @@ export const ForwardSavedAddress = () => {
                 <ForwardShippingOption />
             ) : (
                 <div className="w-[100%]  h-10 flex-col justify-start items-end gap-2.5 inline-flex">
-                    <Button
-                        onClick={toggleConfirm}
-                        className="h-[35px] px-10 "
-                        variant="secondary"
-                    >
-                        <p className="text-white text-xs font-medium ">Confirm</p>
-                    </Button>
+                   
+                        <Button
+                            onClick={toggleConfirm}
+                            className="h-[35px] px-10 "
+                            variant="secondary"
+                        >
+                            <p className="text-white text-xs font-medium ">Confirm</p>
+                        </Button>
+                  
                 </div>
             )}
 

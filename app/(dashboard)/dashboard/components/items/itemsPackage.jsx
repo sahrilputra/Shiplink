@@ -6,6 +6,8 @@ import { CrossBorder, CrossBorderTable } from './CrossBorder';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowDownIcon } from '@/components/icons/iconCollection';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+
 export default function ItemsPackage({ onClickButton }) {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -131,7 +133,7 @@ export default function ItemsPackage({ onClickButton }) {
                             </div>
                         </div>
                         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
-                            <div className="w-[470px] justify-between items-start inline-flex ">
+                            <div className="justify-between items-start inline-flex ">
                                 <div className="text-zinc-900 text-sm font-semiBold ">Confirm Your Order</div>
                             </div>
                             <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
@@ -151,7 +153,7 @@ export default function ItemsPackage({ onClickButton }) {
                                 </Button>
                                 <Button
                                     variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                    className="w-[150px] h-[37px]  justify-center items-center gap-2.5 flex"
                                     onClick={() => handleButtonClick("Forward Package")}
                                 >
                                     <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
@@ -164,8 +166,8 @@ export default function ItemsPackage({ onClickButton }) {
                                     <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
                                 </Button>
                             </div>
-                            <div className="h-[0px] flex-col justify-start items-start gap-2.5 flex">
-                                <div className="min-w-[471px] max-w-screen-sm h-[0px] border-2 border-neutral-200"></div>
+                            <div className="w-[100%]">
+                                <Separator className="py-[1.5px]" />
                             </div>
                         </div>
                     </div>

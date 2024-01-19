@@ -2,6 +2,16 @@ import { React, useState } from 'react'
 import { Carrier } from './carrier/Carrier'
 import { PaymentModals } from './payments/paymentModals'
 import { Button } from '@/components/ui/button'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Test } from './payments/Test'
+import { PaymentsDialog } from './PaymentsV2/Payments'
 export const ForwardShippingOption = () => {
 
     const [select, isSelect] = useState(false)
@@ -39,14 +49,19 @@ export const ForwardShippingOption = () => {
                 <Carrier />
             </div>
             <div className="w-[100%]  h-10 flex-col justify-start items-end gap-2.5 inline-flex">
-                <Button
-                    onClick={handleConfirmClick}
-                    className="h-[35px] px-10"
-                    variant="secondary"
-                >
-                    <p className="text-white text-xs font-medium ">Confirm</p>
-                </Button>
-            </div>
+                <DialogTrigger asChild>
+                    <Button
+                        onClick={handleConfirmClick}
+                        className="h-[35px] px-10"
+                        variant="secondary"
+                    >
+                        <p className="text-white text-xs font-medium ">Confirm</p>
+                    </Button>
+                </DialogTrigger >
+                <DialogContent>
+                    <PaymentsDialog />
+                </DialogContent>
+            </div >
 
         </>
     )

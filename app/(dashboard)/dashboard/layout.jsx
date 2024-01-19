@@ -13,9 +13,7 @@ export default function DashboardMenu({ children }) {
     return (
         <>
             <div className={styles.container}>
-                <ModalProvider>
                     {children}
-                </ModalProvider>
             </div >
         </>
     )
