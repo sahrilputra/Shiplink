@@ -1,0 +1,56 @@
+{
+    "tickets": [
+      {
+        "ticket_id": 1,
+        "subject": "Masalah Koneksi Internet",
+        "description": "Saya mengalami kesulitan mengakses internet di kantor.",
+       "customer" : "John Doe",
+        "status": "Open",
+        "priority": "High",
+        "created_at": "2024-01-18T09:00:00",
+        "updated_at": null,
+        "assigned_to": "JohnDoe",
+        "comments": [
+          {
+            "user": "JohnDoe",
+            "comment": "Sedang dalam proses penanganan."
+          }
+        ]
+      },
+      {
+        "ticket_id": 2,
+        "subject": "Gangguan Email",
+        "description": "Tidak bisa mengirim atau menerima email.",
+        "customer" : "Jane Smith",
+        "status": "Closed",
+        "priority": "Medium",
+        "created_at": "2024-01-18T10:30:00",
+        "updated_at": null,
+        "assigned_to": "JaneSmith",
+        "comments": [
+          {
+            "user": "JaneSmith",
+            "comment": "Sedang dalam pemeriksaan."
+          }
+        ]
+      },
+      {
+        "ticket_id": 3,
+        "subject": "Masalah Aplikasi Penggajian",
+        "description": "Tidak dapat mengakses aplikasi penggajian.",
+        "customer" : "Bob Johnson",
+        "status": "Open",
+        "priority": "Low",
+        "created_at": "2024-01-18T11:45:00",
+        "updated_at": null,
+        "assigned_to": "BobJohnson",
+        "comments": [
+          {
+            "user": "BobJohnson",
+            "comment": "Akan segera ditangani."
+          }
+        ]
+      }
+    ]
+  }
+  

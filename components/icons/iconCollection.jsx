@@ -15,6 +15,40 @@ export const PhoneIcon = ({ props }) => {
         />
     </svg>
 }
+
+export const SendIcons = (props) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 17"
+            {...props}
+        >
+            <path
+                fill="#fff"
+                d="M15.981.037.205 6.913a.362.362 0 0 0 .013.658l4.267 2.41a.688.688 0 0 0 .787-.077l8.414-7.254c.056-.047.19-.138.241-.086.056.056-.03.185-.077.24l-7.28 8.2a.686.686 0 0 0-.07.821L9.29 16.3c.138.27.529.266.653-.009L16.467.514a.362.362 0 0 0-.486-.477z"
+            />
+        </svg>
+    )
+}
+
+export const ArrowIcon = (props) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 15 9"
+            {...props}
+        >
+            <path
+                fill="#5A5A5A"
+                fillRule="evenodd"
+                d="M6.837 8.163a.937.937 0 0 0 1.326 0L14.725 1.6A.937.937 0 0 0 13.4.275l-5.9 5.9-5.9-5.9A.937.937 0 1 0 .275 1.6l6.562 6.563z"
+                clipRule="evenodd"
+            />
+        </svg>
+    )
+}
 export const SearchIcon = () => {
     return (
         <Image
