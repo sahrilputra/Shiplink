@@ -2,15 +2,17 @@
     {
         "package": {
             "id": "1",
+            "orderType": "outgoing",
+            "variant": "outgoing",
             "shippingId": "#5635-342808",
-            "shippingType": "Shipping Mailbox",
-            "carrierType": "Express",
+            "shippingType": "Express",
+            "carrierType": "Feedex",
             "carrierTrackingNumber": "872812138328",
             "from": "USA",
-            "to": "Canada",
+            "to": "Toronto, Canada",
             "dimension": "12mm x 10mm",
             "weight": "1.2kg",
-            "status": "received",
+            "status": "Received",
             "date": "12 jun 2023",
             "time": "11:30am",
             "isShipped": true
@@ -19,12 +21,14 @@
     {
         "package": {
             "id": "2",
+            "orderType": "incoming",
+            "variant": "incoming",
             "shippingId": "#5635-342809",
-            "shippingType": "Air Mail",
-            "carrierType": "Standard",
+            "shippingType": "Standard",
+            "carrierType": "Feedex",
             "carrierTrackingNumber": "983746235678",
-            "from": "UK",
-            "to": "Germany",
+            "from": "Canada",
+            "to": "Boston, USA",
             "dimension": "15mm x 12mm",
             "weight": "0.8kg",
             "status": "in transit",
@@ -36,18 +40,58 @@
     {
         "package": {
             "id": "3",
+            "orderType": "incoming",
+            "variant": "consolidate",
             "shippingId": "#5635-342810",
-            "shippingType": "Ground Shipping",
-            "carrierType": "Economy",
+            "shippingType": "Economy",
+            "carrierType": "Greenex",
             "carrierTrackingNumber": "745892173456",
-            "from": "Australia",
-            "to": "New Zealand",
+            "from": "Canada",
+            "to": "Texas, USA",
             "dimension": "18mm x 14mm",
             "weight": "2.5kg",
-            "status": "pending",
+            "status": "Complete",
             "date": "20 jun 2023",
             "time": "9:15am",
             "isShipped": false
+        }
+    },
+    {
+        "package": {
+            "id": "4",
+            "orderType": "incoming",
+            "variant": "incoming",
+            "shippingId": "#5635-342811",
+            "shippingType": "Economy",
+            "carrierType": "Express",
+            "carrierTrackingNumber": "987654321",
+            "from": "USA",
+            "to": "Vancouver, Canada",
+            "dimension": "14mm x 12mm",
+            "weight": "1.8kg",
+            "status": "in transit",
+            "date": "25 jun 2023",
+            "time": "3:30pm",
+            "isShipped": true
+        }
+    },
+    {
+        "package": {
+            "id": "5",
+            "orderType": "outgoing",
+            "variant": "outgoing",
+            "shippingId": "#5635-342812",
+            "shippingType": "Standard",
+            "carrierType": "Feedex",
+            "carrierTrackingNumber": "876543210",
+            "from": "Canada",
+            "to": "New York, USA",
+            "dimension": "16mm x 13mm",
+            "weight": "2.0kg",
+            "status": "Received",
+            "date": "18 jun 2023",
+            "time": "10:45am",
+            "isShipped": true
         }
     }
 ]

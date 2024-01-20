@@ -27,7 +27,7 @@ module.exports = {
         semiBold: 500,
         semibold: 500,
         medium: 400,
-        normal:300,
+        normal: 300,
         regular: 300,
         light: 200,
       },
@@ -68,6 +68,18 @@ module.exports = {
         myBlue: {
           DEFAULT: "#00509D",
           foreground: "hsl(var(--card-foreground))",
+        },
+        blueStatus: {
+          DEFAULT: "rgba(62, 158, 255, 1)",
+          foreground: "rgba(62, 158, 255, 0.3)",
+        },
+        greenStatus: {
+          DEFAULT: "#50CD8D",
+          foreground: "rgba(80, 205, 141, 0.3)",
+        },
+        yellowStatus: {
+          DEFAULT: "#FFC149",
+          foreground: "rgba(255, 193, 73, 0.3)",
         },
       },
       borderRadius: {

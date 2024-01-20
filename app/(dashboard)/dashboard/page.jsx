@@ -8,7 +8,11 @@ import { Button } from '@/components/ui/button';
 import ItemsPackage from './components/items/itemsPackage';
 import { PaymentModals } from './components/dashboardMenus/payments/paymentModals';
 import { ModalContext } from '@/context/ModalContext';
+import data from '../../../data/dashboardData.json'
+
 export default function Dashboard() {
+
+
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
 
     const [selectedTab, setSelectedTab] = useState("all");
@@ -16,17 +20,14 @@ export default function Dashboard() {
         setSelectedTab(tabName);
     }
 
-
-    console.log("isOpen", isOpen);
-    console.log("openModal", openModal);
-    console.log("closeModal", closeModal);
-
-
     const [selectedButton, setSelectedButton] = useState(null);
     const handleButtonClick = (buttonName) => {
         setSelectedButton(buttonName);
         console.log(selectedButton)
     }
+    
+    const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
+    console.log("data", filterData.map(item => item.orderType))
     return (
         <>
 
@@ -95,7 +96,15 @@ export default function Dashboard() {
                 </div>
                 <div className={styles.item_container}>
                     <div className={styles.items}>
-                        <ItemsPackage onClickButton={handleButtonClick} />
+                        {
+                            filterData.map((item, i) => (
+                                <ItemsPackage
+                                    key={i}
+                                    onClickButton={handleButtonClick}
+                                    item={item}
+                                />
+                            ))
+                        }
                         {/* <ItemsPackage />
                         <ItemsPackage /> */}
                     </div>

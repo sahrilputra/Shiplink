@@ -67,11 +67,11 @@
     --blue-dark: #3E9EFF;
     --blue-light: #D1E9FF;
     --green-status: #50CD8D;
-    --green-status-bg: #50CD8D;
+    --green-status-bg: rgba(80, 205, 141, 0.3);
     --yellow-status: #FFC149;
-    --yellow-status-bg: #FFC1494D;
-    --blue-status: #3E9EFF;
-    --blue-status-bg: #3E9EFF4D;
+    --yellow-status-bg: rgba(255, 193, 73, 0.3);
+    --blue-status: rgba(62, 158, 255, 1);
+    --blue-status-bg: rgba(62, 158, 255, 0.3);
     --red-status: #D90429;
     --red-status-bg: #D9042933;
     --outline-input: #E7E8EC;

@@ -2,8 +2,9 @@
 import { React, useContext } from 'react'
 import { Button } from '@/components/ui/button'
 import { ModalContext } from '@/context/ModalContext'
+import { useToast } from '@/components/ui/use-toast'
 export const ForwardForms = () => {
-
+    const {toast} = useToast();
     const { openModal } = useContext(ModalContext);
 
     const handleOpenModal = () => {
@@ -98,7 +99,12 @@ export const ForwardForms = () => {
                 <Button
                     className="h-[35px] px-10"
                     variant="secondary"
-                    onClick={handleOpenModal}
+                    onClick={() => {
+                        toast({
+                            title: "Success!",
+                            description: "New Address Added Successfully!",
+                        })
+                    }}
                 >
                     <div className="text-white text-xs font-medium font-['Poppins']">Confirm</div>
                 </Button>

@@ -1,5 +1,5 @@
 'use client'
-import React, {useContext, useState} from 'react'
+import React, { useContext, useState } from 'react'
 import styles from './styles.module.scss';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/button';
 import ItemsPackage from '../dashboard/components/items/itemsPackage';
 import { PaymentModals } from '../dashboard/components/dashboardMenus/payments/paymentModals';
 import { ModalContext } from '@/context/ModalContext';
+import data from '../../../data/dashboardData.json'
 
 export default function Mailbox() {
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
 
-    const [selectedTab, setSelectedTab] = useState("all");
+    const [selectedTab, setSelectedTab] = useState("incoming");
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     }
@@ -28,6 +29,7 @@ export default function Mailbox() {
         setSelectedButton(buttonName);
         console.log(selectedButton)
     }
+    const filterData = data.filter(item => item.package.orderType === selectedTab);
     return (
         <>
 
@@ -37,8 +39,8 @@ export default function Mailbox() {
                     <div className={styles.tabs}>
 
                         <div className="w-[311px] h-[46px] p-[5px] justify-start items-start gap-[19px] inline-flex">
-                        <h2 className=' text-lg font-bold'>Incoming Shipment</h2>
-                   
+                            <h2 className=' text-lg font-bold'>Incoming Shipment</h2>
+
                         </div>
                     </div>
 
@@ -59,7 +61,15 @@ export default function Mailbox() {
                 </div>
                 <div className={styles.item_container}>
                     <div className={styles.items}>
-                        <ItemsPackage onClickButton={handleButtonClick} />
+                        {
+                            filterData.map((item, i) => (
+                                <ItemsPackage
+                                    key={i}
+                                    onClickButton={handleButtonClick}
+                                    item={item}
+                                />
+                            ))
+                        }
                         {/* <ItemsPackage />
                         <ItemsPackage /> */}
                     </div>

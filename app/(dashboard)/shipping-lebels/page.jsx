@@ -8,12 +8,13 @@ import { Button } from '@/components/ui/button';
 import ItemsPackage from '../dashboard/components/items/itemsPackage';
 import { PaymentModals } from '../dashboard/components/dashboardMenus/payments/paymentModals';
 import { ModalContext } from '@/context/ModalContext';
+import data from '../../../data/dashboardData.json'
 
 export default function ShippingLebel() {
-   
+
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
 
-    const [selectedTab, setSelectedTab] = useState("all");
+    const [selectedTab, setSelectedTab] = useState("outgoing");
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     }
@@ -29,6 +30,7 @@ export default function ShippingLebel() {
         setSelectedButton(buttonName);
         console.log(selectedButton)
     }
+    const filterData = data.filter(item => item.package.orderType === selectedTab);
     return (
         <>
 
@@ -60,7 +62,15 @@ export default function ShippingLebel() {
                 </div>
                 <div className={styles.item_container}>
                     <div className={styles.items}>
-                        <ItemsPackage onClickButton={handleButtonClick} />
+                        {
+                            filterData.map((item, i) => (
+                                <ItemsPackage
+                                    key={i}
+                                    onClickButton={handleButtonClick}
+                                    item={item}
+                                />
+                            ))
+                        }
                         {/* <ItemsPackage />
                         <ItemsPackage /> */}
                     </div>

@@ -7,8 +7,36 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowDownIcon } from '@/components/icons/iconCollection';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { PackageType } from '@/components/PackageItemsUI/PackageType';
+import { DetailsIcons } from '@/components/icons/iconCollection';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { DialogContent } from '@radix-ui/react-dialog';
+import { Details } from '../DialogDetails/Details';
+import { PackageStatus } from '@/components/PackageItemsUI/PackageStatus';
+import { PackageIndicator } from '@/components/PackageItemsUI/PackageIndicator';
+import { CopyIcons } from '@/components/icons/iconCollection';
+import { useToast } from '@/components/ui/use-toast';
+export default function ItemsPackage({ onClickButton, item }) {
+    const { toast } = useToast();
 
-export default function ItemsPackage({ onClickButton }) {
+    const {
+        id,
+        orderType,
+        shippingId,
+        shippingType,
+        carrierType,
+        carrierTrackingNumber,
+        from,
+        to,
+        variant,
+        dimension,
+        weight,
+        status,
+        date,
+        time,
+        isShipped,
+    } = item.package;
+
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -41,71 +69,106 @@ export default function ItemsPackage({ onClickButton }) {
         >
             <div className="flex flex-row justify-between items-center gap-5 relative">
                 <div className="justify-start items-center gap-[15px] flex">
-                    <div className="w-[50px] h-[50px] p-2.5 bg-blue-900 rounded-md justify-center items-center gap-2.5 flex">
-                        <div className="w-[25px] h-[25px] relative">
-                            <Image
-                                src={"/assets/mailbox.svg"}
-                                width={25}
-                                height={25}
-                                alt='mailbox icon'
-                            />
-                        </div>
-                    </div>
+
+                    <PackageType variant={variant} notif={"notif"} />
                     <div className="flex-col justify-start items-start inline-flex">
-                        <div className="text-black text-sm font-semiBold">#5635-342808</div>
+                        <div className="text-black text-sm font-semiBold">{shippingId}</div>
                         <div className="text-sky-700 text-sm font-semiBold">Shipping Mailbox</div>
-                        <div className="justify-start items-start gap-[9px] inline-flex">
-                            <div className="text-zinc-600 text-sm font-semiBold">Express</div>
+                        <div className="justify-start items-start inline-flex">
                             <div className="justify-start items-center gap-2.5 flex">
-                                <div className="text-red-700 text-opacity-80 text-sm font-bold">872812138328</div>
+                                <div className="text-zinc-600 text-sm font-semiBold">{shippingType}</div>
+                                <p className='text-red-700 text-opacity-80 text-sm font-bold'>{carrierTrackingNumber}</p>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className=" w-2/3 justify-start items-start gap-[11px] flex">
-                    <div className="w-[36.14px] h-[23.55px] relative">
-                        <div className="border-l h-10 border-gray-600"></div>
+                <div className="p-1 h-100% flex items-end justify-center flex-col">
+                    <Button
+                        variant="ghost"
+                        className="w-[30px] h-[30px]"
+                        size="icon"
+                        onClick={() => {
+                            toast({
+                                title: "Copied!",
+                                description: "Your tracking number has been copied to your clipboard.",
+                            })
+                        }}
+                    >
+                        <CopyIcons width={15} height={15} />
+                    </Button>
+
+                </div>
+                <div className=" w-2/3 justify-start items-center gap-[10px] flex">
+                    <div className="w-[36.14px] h-[50px]">
+                        <Separator orientation="vertical" className="px-[1px] h-[100%] bg-zinc-600/50 " />
                     </div>
-                    <div className="w-[36.14px] h-[23.55px] relative">
-                        <Image
-                            src={"/assets/USA.svg"}
-                            width={66}
-                            height={70}
-                            className='left-[-10.19px] top-[-23.55px]'
-                            alt='USA icon'
-                        />
-                    </div>
-                    <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
-                        <div className="justify-start items-start gap-[5px] inline-flex">
-                            <div className="w-[30px] h-[5px] bg-green-400 rounded-[63px]" />
-                            <div className="w-[30px] h-[5px] bg-green-400 rounded-[63px]" />
-                            <div className="w-[30px] h-[5px] bg-neutral-200 bg-opacity-95 rounded-[63px]" />
+                    <div className="flex flex-row items-center gap-3">
+                        <div className="w-[36.14px] h-[23.55px] relative">
+                            {
+                                from === "USA" ? (
+                                    <>
+                                        <Image
+                                            src={"/assets/country/USA-flag.png"}
+                                            width={66}
+                                            height={70}
+                                            className='left-[-10.19px] top-[-23.55px]'
+                                            alt='USA icon'
+                                        />
+                                    </>
+                                ) : from === "Canada" ? (
+                                    <>
+                                        <Image
+                                            src={"/assets/country/cad-flag.png"}
+                                            width={66}
+                                            height={70}
+                                            className='left-[-10.19px] top-[-23.55px]'
+                                            alt='USA icon'
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Image
+                                            src={"/assets/country/USA-flag.png"}
+                                            width={66}
+                                            height={70}
+                                            className='left-[-10.19px] top-[-23.55px]'
+                                            alt='USA icon'
+                                        />
+                                    </>
+                                )
+                            }
                         </div>
-                        <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-[13px] font-normal">, 12 jun, 2023</span></div>
+                        <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
+                            <PackageIndicator status={status} />
+                            <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-[13px] font-normal">, {date}</span></div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="rightItems flex flex-col gap-1 w-2/3 justify-end relative">
-                    <div className="flex flex-row justify-end align-middle items-center gap-5 relative right-0 ">
-                        <div className="h-[23px] px-2.5 py-[5px] bg-blue-200 rounded border border-blue-500 justify-center items-center gap-2.5 flex">
-                            <div className="text-center text-blue-500 text-xs ">Received</div>
-                        </div>
-                        <div className="w-[30px]">
-                            <Checkbox />
+                <div className="rightItems gap-5 flex flex-row  w-2/3 justify-end relative">
+                    <div className="flex flex-col justify-end items-end ">
+                        <PackageStatus variant={status} />
+                        <div className="h-[30px] justify-end items-center gap-2.5 flex">
+                            <div className="text-right text-zinc-600 text-sm ">{to}</div>
                         </div>
                     </div>
-
-                    <div className="flex flex-row justify-end items-center gap-5 relative right-0">
-                        <div className="h-[23px] justify-end items-center gap-2.5 flex">
-                            <div className="text-right text-zinc-600 text-sm ">Boston, USA</div>
+                    <div className="flex flex-col justify-end items-center ">
+                        <div className="">
+                            <Checkbox />
                         </div>
-                        {/* <div className=""> <ArrowDownIcon /></div> */}
-                        <div className="w-[30px]">
+                        <div className="w-[30px] h-[30px]">
                             {/* <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
                              */}
-                            <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}>
+                            <Button
+                                aria-label="arrow"
+                                variant="ghost"
+                                size='small'
+                                className={` w-[30px] h-[30px] ${isExpanded ? 'rotate-180' : ''}`}
+                                onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}
+                            >
                                 <ArrowDownIcon />
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -115,21 +178,20 @@ export default function ItemsPackage({ onClickButton }) {
                 <div className="expanded">
                     <div className="flex flex-row justify-between items-center gap-5 relative">
                         <div className="justify-start items-center gap-[15px] flex">
-                            <div className="p-2.5 bg-red-700 rounded justify-center items-center gap-2.5 flex">
-                                <button className="w-[25px] h-[25px] relative">
-                                    <Image
-                                        src={"/icon/details.svg"}
-                                        width={25}
-                                        height={25}
-                                        alt='details icon'
-                                        className='w-[25px] h-[25px] left-0 top-0 absolute'
-                                    />
-                                </button>
-                            </div>
+                            <Button
+                                className="relative w-[40px] h-[40px] p-3 px-[5px] flex justify-center items-center"
+                                variant="destructive"
+
+                            >
+                                <div className="w-[40px] h-[40px] p-3 relative">
+                                    <DetailsIcons width={30} height={30} className="w-[40px] h-[40px] px-2 absolute top-0 left-[-5px]" />
+                                </div>
+                            </Button>
+
                             <div className="flex-col justify-start items-start gap-px inline-flex">
                                 <div className="text-black text-xs font-semiBold ">Name Or Something</div>
-                                <div className="text-zinc-600 text-xs ">12mm x 10mm</div>
-                                <div className="text-zinc-600 text-xs ">1 kg</div>
+                                <div className="text-zinc-600 text-xs ">{dimension}</div>
+                                <div className="text-zinc-600 text-xs ">{weight}</div>
                             </div>
                         </div>
                         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
