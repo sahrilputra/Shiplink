@@ -1,63 +1,115 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
-export const SavedAddressCard = ({variant}) => {
+export const SavedAddressCard = ({ variant, addressBook, select, onClick }) => {
+    const {
+        id,
+        country,
+        fullName,
+        countryCode,
+        address,
+        city,
+        postalCode,
+        phone,
+        email,
+        state,
+        isPrimary
+    } = addressBook;
+
+
+    const handleSelect = () => {
+        onClick(id);
+        select();
+    }
+
     return (
         <>
             {
                 variant === 'list' ? (
                     <>
-                        <div className="py-[10px] w-full px-[20px] min-w-[300px] shadow-md rounded-md border border-zinc-600 border-opacity-60 flex flex-row relative justify-start gap-4 items-center">
-                            <div className="Country flex flex-col justify-center items-center gap-2 py-[10px]">
-                                <Image
+                        <div
+                            className="py-[10px] w-full cursor-pointer hover:bg-slate-200/30 px-[20px] min-w-[300px] shadow-md rounded-md border border-zinc-600 border-opacity-60 flex flex-row relative justify-start gap-4 items-center"
+                            onClick={handleSelect}
+                        >
+                            <div className="Country w-[100px] flex flex-col justify-center items-center gap-2 py-[10px] text-center">
+                                <div className="rounded-full border border-gray-300 w-[30px] h-[30px] object-cover">
+                                    <img
+                                        src={`https://flagcdn.com/${countryCode.toLowerCase()}.svg`}
+                                        alt=""
+                                        className='rounded-full  border border-gray-300  w-[30px] h-[30px] object-cover'
+                                    />
+                                </div>
+                                {/* <Image
                                     src={'/assets/country/cad-flag.png'}
                                     width={80}
                                     height={80}
                                     style={{ objectFit: "cover" }}
                                     className='rounded-full border border-gray-300 w-[30px] h-[30px] object-cover'
                                     alt='country-flag'
-                                />
-                                <p className=' text-md font-semibold'>Canada</p>
+                                /> */}
+                                <p className=' text-md font-semibold'>{country}</p>
                             </div>
-                            <div className="separator w-3 h-5 m-2 ">
-                                <Separator orientation="vertical" decorative="" />
+                            <div className="separator w-3 h-[50px] ">
+                                <Separator orientation="vertical" className="px-[1px]" />
                             </div>
                             <div className="content flex flex-col ">
-                                <p className='text-md font-semibold'>123 Birchwood Lane, Apt 4D, Springfield</p>
-                                <p>IL, 62701</p>
-                                <p>217-555-9876</p>
-                                <p className='text-sm font-light'>john.smith@email.com</p>
+                                <p className='text-md font-semibold'> {fullName} | {address}</p>
+                                <p>{state}, {postalCode}</p>
+                                <p>{phone}</p>
+                                <p className='text-sm font-light'>{email}</p>
                             </div>
-                            <div className="p-1 border border-red-700 rounded-sm status absolute bottom-[10px] right-[10px]">
-                                <p className='font-light text-xs text-red-700'>Primary</p>
-                            </div>
+                            {
+                                isPrimary && (
+                                    <div className="p-1 border border-red-700 rounded-sm status absolute bottom-[10px] right-[10px]">
+                                        <p className='font-light text-xs text-red-700'>Primary</p>
+                                    </div>
+                                )
+                            }
+
                         </div>
                     </>
                 ) : (
                     <>
-                        <div className="py-[15px] px-[20px] shadow-md rounded-md border border-zinc-600 border-opacity-60 flex flex-col relative">
+                        <div
+                            className="cursor-pointer hover:bg-slate-200/30 py-[15px] w-[300px] min-h-[240px] max-h-max px-[20px] shadow-md rounded-md border border-zinc-600 border-opacity-60 flex flex-col relative"
+                            onClick={handleSelect}
+                        >
                             <div className="Country flex flex-row justify-start items-center gap-2 py-[10px]">
-                                <Image
+
+                                <div className="rounded-full border border-gray-300 w-[30px] h-[30px] object-cover">
+                                    <img
+                                        src={`https://flagcdn.com/${countryCode.toLowerCase()}.svg`}
+                                        alt=""
+                                        className='rounded-full  border border-gray-300  w-[30px] h-[30px] object-cover'
+                                    />
+                                </div>
+                                {/* <Image
                                     src={'/assets/country/cad-flag.png'}
                                     width={80}
                                     height={80}
                                     style={{ objectFit: "cover" }}
                                     className='rounded-full  border border-gray-300  w-[30px] h-[30px]'
                                     alt='country-flag'
-                                />
-                                <p className=' text-md font-semibold'>Canada</p>
+                                /> */}
+                                <p className=' text-md font-semibold'>{country}</p>
                             </div>
 
                             <div className="content flex flex-col ">
-                                <p className='text-md font-semibold'>123 Birchwood Lane, Apt 4D, Springfield</p>
-                                <p>IL, 62701</p>
-                                <p>217-555-9876</p>
-                                <p className='text-sm font-light'>john.smith@email.com</p>
+                                <p className='text-lg font-normal'>{fullName}</p>
+                                <p className='text-md font-semibold'>{address}</p>
+                                <p>{state}, {postalCode}</p>
+                                <p>{phone}</p>
+                                <p className='text-sm font-light'>{email}</p>
                             </div>
+                            {
+                                isPrimary && (
+                                    <div className="p-1 border border-red-700 rounded-sm status absolute top-[10px] right-[10px]">
+                                        <p className='font-light text-xs text-red-700'>Primary</p>
+                                    </div>
+                                )
+                            }
 
-                            <div className="p-1 border border-red-700 rounded-sm status absolute top-[10px] right-[10px]">
-                                <p className='font-light text-xs text-red-700'>Primary</p>
-                            </div>
 
                         </div>
                     </>

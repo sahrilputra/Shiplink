@@ -9,6 +9,9 @@
 .main {
     flex: 5;
     width: 100%;
+    height: max-content;
+    min-height: 100vh;
+    padding-bottom: 30px;
     // height: 100vh;
     background-color: #ffff;
     border-radius: 6px;

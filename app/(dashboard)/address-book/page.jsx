@@ -7,19 +7,58 @@ import { PlusIcon } from 'lucide-react'
 import { PromoOne } from '@/components/ads/promoOne'
 import styles from './styles.module.scss'
 import { SavedAddressCard } from './components/SavedAddressCard'
-
+import data from '../../../data/countryData.json'
+import { NewAdressMenus } from './components/NewAdressMenus'
+import { EditAddressMenu } from './components/EditedAddressMenu'
 export default function AssitedPurchase() {
-    const [isSelect, setIsSelect] = useState(false);
+    const [newAddress, setIsNew] = useState(false);
+    const [editAddress, setIsEdit] = useState(false);
+    const [selectedData, setSelectedData] = useState(null);
+    const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
+    // List grid view
 
-    const toggleSelect = () => {
-        setIsSelect(!isSelect);
-    }
-
-    const [clicked, isClicked] = useState(false);
+    const [clicked, isClicked] = useState(true);
 
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
+
+    // end list grid view
+
+    const toggleSelectNewAddress = () => {
+        setIsNew(true);
+        setIsEdit(false);
+    }
+
+    const toggleEditedAddress = () => {
+        setIsEdit(true);
+        setIsNew(false);
+        setKeyForEditAddressMenu(prevKey => prevKey + 1); // Update key unik
+    }
+
+    const toggleClose = () => {
+        setIsEdit(false);
+        setIsNew(false);
+    }
+
+
+    const handleCardSelected = (id) => {
+        const selectedAddress = data.find(item => item.id === id);
+        setSelectedData(selectedAddress);
+    }
+
+
+    const renderMenus = () => {
+        switch (true) {
+            case newAddress:
+                return <NewAdressMenus close={toggleClose} />;
+            case editAddress:
+                return <EditAddressMenu keyProp={keyForEditAddressMenu} close={toggleClose} data={selectedData} />;
+            default:
+                return <PromoOne />;
+        }
+    }
+
     return (
         <>
             <>
@@ -69,6 +108,7 @@ export default function AssitedPurchase() {
                                 <Button
                                     variant="destructive"
                                     className="h-10 px-10 text-xs flex flex-row justify-around items-center gap-2"
+                                    onClick={toggleSelectNewAddress}
                                 >
                                     <PlusIcon width={15} height={15} fontWeight={20} fill="#ffff" />
                                     <p className='text-sm font-semibold'>Add New</p>
@@ -79,29 +119,24 @@ export default function AssitedPurchase() {
                     </div>
                     <div className={styles.item_container}>
                         <div className={`${styles.items} w-full flex flex-row gap-5 justify-center items-center`}>
-                            {clicked ? (
-                                <>
-                                    <SavedAddressCard variant='list' />
-                                    <SavedAddressCard variant='list' />
-                                    <SavedAddressCard variant='list' />
-                                </>
-                            ) : (
-                                <>
-                                    <SavedAddressCard className="" />
-                                    <SavedAddressCard className="" />
-                                    <SavedAddressCard className="" />
-                                </>
-                            )}
+                            {
+                                data.map((item, i) => (
+                                    <SavedAddressCard
+                                        key={i}
+                                        addressBook={item}
+                                        select={toggleEditedAddress}
+                                        onClick={handleCardSelected}
+                                        variant={clicked ? 'list' : ""}
+                                    />
+                                ))
+                            }
 
                         </div>
                     </div>
                 </div>
 
                 <div className={styles.rightPanel}>
-                    <div className="ads">
-                        <PromoOne />
-                    </div>
-
+                    {renderMenus()}
                 </div>
             </>
         </>
