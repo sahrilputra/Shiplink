@@ -9,12 +9,21 @@ import styles from './styles.module.scss'
 import { SavedAddressCard } from './components/SavedAddressCard'
 import data from '../../../data/countryData.json'
 import { NewAdressMenus } from './components/NewAdressMenus'
+import { useToast } from '@/components/ui/use-toast'
 import { EditAddressMenu } from './components/EditedAddressMenu'
 export default function AssitedPurchase() {
+
+    const { toast } = useToast();
+
     const [newAddress, setIsNew] = useState(false);
     const [editAddress, setIsEdit] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
+    const [isCheck, setIsCheck] = useState(false);
+
+    const [selectedItemId, setSelectedItemId] = useState(null); // State untuk ID item yang dipilih
+    const [isDeleteButtonActive, setIsDeleteButtonActive] = useState(false);
+
     // List grid view
 
     const [clicked, isClicked] = useState(true);
@@ -24,6 +33,11 @@ export default function AssitedPurchase() {
     }
 
     // end list grid view
+
+    const toggleCheck = () => {
+        setIsCheck(!isCheck);
+
+    }
 
     const toggleSelectNewAddress = () => {
         setIsNew(true);
@@ -45,6 +59,14 @@ export default function AssitedPurchase() {
     const handleCardSelected = (id) => {
         const selectedAddress = data.find(item => item.id === id);
         setSelectedData(selectedAddress);
+
+        if (selectedItemId === id) {
+            setSelectedItemId(null);
+            setIsDeleteButtonActive(false);
+        } else {
+            setSelectedItemId(id);
+            setIsDeleteButtonActive(true);
+        }
     }
 
 
@@ -99,9 +121,11 @@ export default function AssitedPurchase() {
 
                             <div className="left flex flex-row justify-center items-center gap-5">
                                 <Button
-                                    variant="destructive"
+                                    variant={isDeleteButtonActive ? "destructive" : "disable"}
                                     size="icon"
-                                    className="px-2 py-2"
+                                    onClick={() => toast({ title: 'Address Removed', description: 'Success Remove Address', type: 'success' })}
+                                    className={`px-2 py-2 cursor-not-allowed ${isDeleteButtonActive ? 'cursor-pointer' : ''}`}
+
                                 >
                                     <DeleteIcons width={20} height={20} fill="#ffff" />
                                 </Button>
@@ -109,6 +133,7 @@ export default function AssitedPurchase() {
                                     variant="destructive"
                                     className="h-10 px-10 text-xs flex flex-row justify-around items-center gap-2"
                                     onClick={toggleSelectNewAddress}
+                                    
                                 >
                                     <PlusIcon width={15} height={15} fontWeight={20} fill="#ffff" />
                                     <p className='text-sm font-semibold'>Add New</p>
@@ -126,6 +151,7 @@ export default function AssitedPurchase() {
                                         addressBook={item}
                                         select={toggleEditedAddress}
                                         onClick={handleCardSelected}
+                                        isSelected={selectedItemId === item.id}
                                         variant={clicked ? 'list' : ""}
                                     />
                                 ))

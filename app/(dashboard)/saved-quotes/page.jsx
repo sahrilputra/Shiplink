@@ -65,13 +65,6 @@ export default function SavedQuotes() {
                             >
                                 <DeleteIcons width={20} height={20} fill="#ffff" />
                             </Button>
-                            <Button
-                                variant="destructive"
-                                className="h-10 px-10 text-xs flex flex-row justify-around items-center gap-2"
-                            >
-                                <PlusIcon width={15} height={15} fontWeight={20} fill="#ffff" />
-                                <p className='text-sm font-semibold'>Add New</p>
-                            </Button>
                         </div>
                     </div>
 
@@ -84,7 +77,10 @@ export default function SavedQuotes() {
                                 <SavedQutoesCard variant='list' onSelect={toggleSelect} />
                             </>
                         ) : (
-                            <SavedQutoesCard onClick={() => toggleSelect(true)} className={`${isSelect ? ('bg-blue-400 opacity-20') : (`bg-white`)} cursor-pointer`} />
+                            <>
+                                <SavedQutoesCard onClick={() => toggleSelect(true)} className={`${isSelect ? ('bg-blue-400 opacity-20') : (`bg-white`)} cursor-pointer`} />
+                                <SavedQutoesCard onClick={() => toggleSelect(true)} className={`${isSelect ? ('bg-blue-400 opacity-20') : (`bg-white`)} cursor-pointer`} />
+                            </>
                         )}
                     </div>
                 </div>

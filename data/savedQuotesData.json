@@ -1,0 +1,178 @@
+[
+    {
+        "shipFrom": {
+            "location": "USA, California",
+            "contact": {
+                "name": "Alice Johnson",
+                "phone": "555-123-4567",
+                "email": "alice@example.com"
+            },
+            "address": "456 Oak St, ADDR-003, 56789"
+        },
+        "deliveryInfoShipFrom": {
+            "label": "Delivery Info :",
+            "value": "Express Delivery"
+        },
+        "shipTo": {
+            "location": "Germany, Berlin",
+            "contact": {
+                "name": "Max Müller",
+                "phone": "987-654-3210",
+                "email": "max@example.com"
+            },
+            "address": "789 Birch St, ADDR-004, 10123"
+        },
+        "deliveryInfoShipTo": {
+            "label": "Delivery Info :",
+            "value": "Business Address"
+        },
+        "packaging": "Box",
+        "reference": "987654321",
+        "dimensionAndWeight": {
+            "type": "Fragile",
+            "customSize": "metric",
+            "dimensions": "20x30x15 cm",
+            "weight": "2.5 kg"
+        },
+        "description": "Fragile Glassware",
+        "quantity": 3,
+        "insuranceAmount": "$20",
+        "rates": {
+            "amount": "$45.50",
+            "carrier": "DHL Express",
+            "duration": "2 Days"
+        }
+    },
+    {
+        "shipFrom": {
+            "location": "Canada, Vancouver",
+            "contact": {
+                "name": "Eva Davis",
+                "phone": "111-222-3333",
+                "email": "eva@example.com"
+            },
+            "address": "789 Pine St, ADDR-005, V6M 2W1"
+        },
+        "deliveryInfoShipFrom": {
+            "label": "Delivery Info :",
+            "value": "Standard Delivery"
+        },
+        "shipTo": {
+            "location": "Australia, Sydney",
+            "contact": {
+                "name": "Michael Wong",
+                "phone": "333-444-5555",
+                "email": "michael@example.com"
+            },
+            "address": "123 Maple St, ADDR-006, 2000"
+        },
+        "deliveryInfoShipTo": {
+            "label": "Delivery Info :",
+            "value": "Residential"
+        },
+        "packaging": "Envelope",
+        "reference": "789012345",
+        "dimensionAndWeight": {
+            "type": "Standard",
+            "customSize": "metric",
+            "dimensions": "15x25x5 cm",
+            "weight": "0.8 kg"
+        },
+        "description": "Documents",
+        "quantity": 2,
+        "insuranceAmount": "$10",
+        "rates": {
+            "amount": "$15.75",
+            "carrier": "Australia Post",
+            "duration": "5 Days"
+        }
+    },
+    {
+        "shipFrom": {
+            "location": "UK, London",
+            "contact": {
+                "name": "David Wilson",
+                "phone": "777-888-9999",
+                "email": "david@example.com"
+            },
+            "address": "345 Walnut St, ADDR-007, SW1A 1AA"
+        },
+        "deliveryInfoShipFrom": {
+            "label": "Delivery Info :",
+            "value": "Next Day Delivery"
+        },
+        "shipTo": {
+            "location": "France, Paris",
+            "contact": {
+                "name": "Sophie Martin",
+                "phone": "555-666-7777",
+                "email": "sophie@example.com"
+            },
+            "address": "567 Chestnut St, ADDR-008, 75001"
+        },
+        "deliveryInfoShipTo": {
+            "label": "Delivery Info :",
+            "value": "Commercial Address"
+        },
+        "packaging": "Tube",
+        "reference": "567890123",
+        "dimensionAndWeight": {
+            "type": "Large",
+            "customSize": "metric",
+            "dimensions": "40x10x10 cm",
+            "weight": "1.8 kg"
+        },
+        "description": "Artwork Print",
+        "quantity": 1,
+        "insuranceAmount": "$15",
+        "rates": {
+            "amount": "$30.90",
+            "carrier": "Royal Mail",
+            "duration": "1 Day"
+        }
+    },
+    {
+        "shipFrom": {
+            "location": "Japan, Tokyo",
+            "contact": {
+                "name": "Yuki Suzuki",
+                "phone": "999-888-7777",
+                "email": "yuki@example.com"
+            },
+            "address": "901 Sakura St, ADDR-009, 100-0001"
+        },
+        "deliveryInfoShipFrom": {
+            "label": "Delivery Info :",
+            "value": "Express Air Freight"
+        },
+        "shipTo": {
+            "location": "China, Beijing",
+            "contact": {
+                "name": "Li Chen",
+                "phone": "888-777-6666",
+                "email": "li@example.com"
+            },
+            "address": "345 Bamboo St, ADDR-010, 100000"
+        },
+        "deliveryInfoShipTo": {
+            "label": "Delivery Info :",
+            "value": "Warehouse Delivery"
+        },
+        "packaging": "Crate",
+        "reference": "345678901",
+        "dimensionAndWeight": {
+            "type": "Heavy",
+            "customSize": "metric",
+            "dimensions": "80x60x70 cm",
+            "weight": "15 kg"
+        },
+        "description": "Machinery Parts",
+        "quantity": 1,
+        "insuranceAmount": "$50",
+        "rates": {
+            "amount": "$120.25",
+            "carrier": "FedEx International",
+            "duration": "3 Days"
+        }
+    }
+]

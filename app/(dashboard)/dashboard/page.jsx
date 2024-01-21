@@ -9,7 +9,7 @@ import ItemsPackage from './components/items/itemsPackage';
 import { PaymentModals } from './components/dashboardMenus/payments/paymentModals';
 import { ModalContext } from '@/context/ModalContext';
 import data from '../../../data/dashboardData.json'
-
+import { DetailsModals } from './components/DialogDetails/Details';
 export default function Dashboard() {
 
 
@@ -25,13 +25,11 @@ export default function Dashboard() {
         setSelectedButton(buttonName);
         console.log(selectedButton)
     }
-    
+
     const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
     console.log("data", filterData.map(item => item.orderType))
     return (
         <>
-
-            <PaymentModals isOpen={isOpen} isClose={closeModal} />
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.tabs}>
@@ -105,8 +103,6 @@ export default function Dashboard() {
                                 />
                             ))
                         }
-                        {/* <ItemsPackage />
-                        <ItemsPackage /> */}
                     </div>
                 </div>
             </div>
@@ -124,14 +120,6 @@ export default function Dashboard() {
             </div>
 
 
-            {/* <div className={styles.item_container}>
-
-                <div className={styles.items}>
-                    <ItemsPackage />
-                    <ItemsPackage />
-                    <ItemsPackage />
-                </div>
-            </div> */}
 
         </>
     )

@@ -1,8 +1,15 @@
+'use client';
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import Image from 'next/image'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
-export const SavedAddressCard = ({ variant, addressBook, select, onClick }) => {
+export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSelected }) => {
+    const [checkItem, setCheckItem] = React.useState(false);
+
+    const handleCheck = () => {
+        setCheckItem(!checkItem);
+    }
     const {
         id,
         country,
@@ -20,7 +27,7 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick }) => {
 
     const handleSelect = () => {
         onClick(id);
-        select();
+        select(id);
     }
 
     return (
@@ -29,7 +36,9 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick }) => {
                 variant === 'list' ? (
                     <>
                         <div
-                            className="py-[10px] w-full cursor-pointer hover:bg-slate-200/30 px-[20px] min-w-[300px] shadow-md rounded-md border border-zinc-600 border-opacity-60 flex flex-row relative justify-start gap-4 items-center"
+                            className={`py-[10px] w-full cursor-pointer hover:bg-slate-200/30 px-[20px] min-w-[300px] shadow-md rounded-md border border-zinc-600 border-opacity-60 flex flex-row relative justify-start gap-4 items-center
+                            ${checkItem ? 'bg-blue-200/30' : ''}
+                            `}
                             onClick={handleSelect}
                         >
                             <div className="Country w-[100px] flex flex-col justify-center items-center gap-2 py-[10px] text-center">
@@ -60,9 +69,15 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick }) => {
                                 <p className='text-sm font-light'>{email}</p>
                             </div>
                             {
-                                isPrimary && (
+                                isPrimary ? (
                                     <div className="p-1 border border-red-700 rounded-sm status absolute bottom-[10px] right-[10px]">
                                         <p className='font-light text-xs text-red-700'>Primary</p>
+                                    </div>
+                                ) : (
+                                    <div className="status absolute top-[10px] right-[10px]">
+                                        <Checkbox
+                                            onCheckedChange={handleCheck}
+                                        />
                                     </div>
                                 )
                             }
@@ -103,10 +118,16 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick }) => {
                                 <p className='text-sm font-light'>{email}</p>
                             </div>
                             {
-                                isPrimary && (
+                                isPrimary ? (
                                     <div className="p-1 border border-red-700 rounded-sm status absolute top-[10px] right-[10px]">
                                         <p className='font-light text-xs text-red-700'>Primary</p>
                                     </div>
+                                ) : (
+                                    <>
+                                        <div className="absolute top-[10px] right-[10px]">
+                                            <Checkbox />
+                                        </div>
+                                    </>
                                 )
                             }
 

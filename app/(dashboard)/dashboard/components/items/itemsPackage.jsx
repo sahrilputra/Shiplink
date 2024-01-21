@@ -11,7 +11,7 @@ import { PackageType } from '@/components/PackageItemsUI/PackageType';
 import { DetailsIcons } from '@/components/icons/iconCollection';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { DialogContent } from '@radix-ui/react-dialog';
-import { Details } from '../DialogDetails/Details';
+import { DetailsModals } from '../DialogDetails/Details';
 import { PackageStatus } from '@/components/PackageItemsUI/PackageStatus';
 import { PackageIndicator } from '@/components/PackageItemsUI/PackageIndicator';
 import { CopyIcons } from '@/components/icons/iconCollection';
@@ -178,15 +178,7 @@ export default function ItemsPackage({ onClickButton, item }) {
                 <div className="expanded">
                     <div className="flex flex-row justify-between items-center gap-5 relative">
                         <div className="justify-start items-center gap-[15px] flex">
-                            <Button
-                                className="relative w-[40px] h-[40px] p-3 px-[5px] flex justify-center items-center"
-                                variant="destructive"
-
-                            >
-                                <div className="w-[40px] h-[40px] p-3 relative">
-                                    <DetailsIcons width={30} height={30} className="w-[40px] h-[40px] px-2 absolute top-0 left-[-5px]" />
-                                </div>
-                            </Button>
+                            <DetailsModals />
 
                             <div className="flex-col justify-start items-start gap-px inline-flex">
                                 <div className="text-black text-xs font-semiBold ">Name Or Something</div>
