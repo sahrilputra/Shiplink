@@ -1,0 +1,72 @@
+[
+    {
+        "id": "10",
+        "product": "Photo Frame",
+        "dimensions": "8x9x10 In",
+        "weight": "0.5 Ibs",
+        "expiry_date": "8/22/2023"
+    },
+    {
+        "id": "9",
+        "product": "Random Widget",
+        "dimensions": "5x7x12 In",
+        "weight": "1.2 Ibs",
+        "expiry_date": "6/15/2024"
+    },
+    {
+        "id": "1",
+        "product": "Decorative Vase",
+        "dimensions": "6x6x8 In",
+        "weight": "0.8 Ibs",
+        "expiry_date": "4/10/2023"
+    },
+    {
+        "id": "2",
+        "product": "Candle Holder",
+        "dimensions": "4x4x6 In",
+        "weight": "0.3 Ibs",
+        "expiry_date": "9/30/2023"
+    },
+    {
+        "id": "3",
+        "product": "Artificial Plant",
+        "dimensions": "10x10x18 In",
+        "weight": "2.0 Ibs",
+        "expiry_date": "7/5/2024"
+    },
+    {
+        "id": "4",
+        "product": "Bookends Set",
+        "dimensions": "5x3x7 In",
+        "weight": "0.7 Ibs",
+        "expiry_date": "11/12/2023"
+    },
+    {
+        "id": "5",
+        "product": "Desk Organizer",
+        "dimensions": "12x8x5 In",
+        "weight": "1.5 Ibs",
+        "expiry_date": "5/20/2024"
+    },
+    {
+        "id": "6",
+        "product": "Wall Clock",
+        "dimensions": "14x14x2 In",
+        "weight": "1.0 Ibs",
+        "expiry_date": "10/8/2023"
+    },
+    {
+        "id": "7",
+        "product": "Throw Pillow Set",
+        "dimensions": "18x18 In",
+        "weight": "0.9 Ibs",
+        "expiry_date": "3/1/2024"
+    },
+    {
+        "id": "8",
+        "product": "Picture Frame",
+        "dimensions": "5x7 In",
+        "weight": "0.4 Ibs",
+        "expiry_date": "12/15/2023"
+    }
+]

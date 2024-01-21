@@ -1,7 +1,8 @@
 import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableCaption, TableFooter, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 
-export const AssitedTableOrder = () => {
+export const AssitedTableOrder = ({ data, handleData }) => {
+
     return (
         <>
             <div className="w-full p-5">
@@ -19,24 +20,21 @@ export const AssitedTableOrder = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow className="">
-                            <TableCell className="font-medium">#5635342808</TableCell>
-                            <TableCell>27/3/2023 </TableCell>
-                            <TableCell>TechNova Smartwatch</TableCell>
-                            <TableCell className="text-center">1</TableCell>
-                            <TableCell className="text-right">$250.00</TableCell>
-                            <TableCell className="text-right">$150.00</TableCell>
-                            <TableCell className="text-center">Received</TableCell>
-                        </TableRow>
-                        <TableRow className="">
-                            <TableCell className="font-medium">#5635342808</TableCell>
-                            <TableCell>27/3/2023 </TableCell>
-                            <TableCell>TechNova Smartwatch</TableCell>
-                            <TableCell className="text-center">1</TableCell>
-                            <TableCell className="text-right">$250.00</TableCell>
-                            <TableCell className="text-right">$150.00</TableCell>
-                            <TableCell className="text-center">Received</TableCell>
-                        </TableRow>
+                        {data.map((item, i) => (
+                            <TableRow
+                                className=""
+                                key={item.id}
+                                onClick={() => handleData(item.id)}
+                            >
+                                <TableCell className="font-medium">{item.id}</TableCell>
+                                <TableCell>{item.date}</TableCell>
+                                <TableCell>{item.productName}</TableCell>
+                                <TableCell className="text-center">{item.Qty}</TableCell>
+                                <TableCell className="text-right">{item.productPrice}</TableCell>
+                                <TableCell className="text-right">{item.priceAmount}</TableCell>
+                                <TableCell className="text-center">{item.status}</TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </div>

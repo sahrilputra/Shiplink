@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import styles from './styles.module.scss'
 import { AdTop } from '@/components/ads/adTop'
@@ -9,7 +9,32 @@ import { SearchPayments } from '@/components/ui/searchBar'
 import { PaymentCard } from './components/PaymentCard'
 import { Button } from '@/components/ui/button'
 import { AssitedTableOrder } from './components/TableOrder/Table'
-export default function page() {
+import data from '../../../data/AssistedPurchaseData.json'
+import { OrderDetails } from './components/Details/OrderDetails'
+export default function AssistedPurchasePage() {
+
+    const [clickedID, setDataID] = useState(null)
+    const [clickedData, setClickedData] = useState(null);
+    const [key, setKey] = useState(0);
+    const handleDataID = (id) => {
+        const filterData = data.find((item) => item.id === id)
+        setClickedData(filterData);
+        setDataID(id);
+        setKey((prevKey) => prevKey + 1);
+    }
+
+    console.log(clickedData)
+
+    const CloseMenus = () => {
+        setDataID(null);
+    }
+    const renderMenus = () => {
+        if (clickedID !== null) {
+            return <OrderDetails key={key} data={clickedData} onClose={CloseMenus}/>
+        } else {
+            return <AdTop />
+        }
+    }
     return (
         <>
             <div className={styles.main}>
@@ -91,12 +116,15 @@ export default function page() {
                 </div>
 
                 <div className={`${styles.ad}`}>
-                    <AdTop className="w-full h-full bg-white flex items-center justify-center" />
+                    {
+                        renderMenus()
+                    }
+
                 </div>
             </div >
 
             <div className="table bg-white w-full">
-                <AssitedTableOrder />
+                <AssitedTableOrder data={data} handleData={handleDataID} />
             </div>
         </>
     )

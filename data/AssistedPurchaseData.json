@@ -1,0 +1,47 @@
+[
+    {
+        "id": "#5635342809",
+        "date": "28/3/2023",
+        "productName": "GigaPhone X",
+        "Qty": 2,
+        "productPrice": "$500.00",
+        "priceAmount": "$1000.00",
+        "status": "Shipped"
+    },
+    {
+        "id": "#5635342810",
+        "date": "29/3/2023",
+        "productName": "UltraBook Pro",
+        "Qty": 1,
+        "productPrice": "$1200.00",
+        "priceAmount": "$1200.00",
+        "status": "Delivered"
+    },
+    {
+        "id": "#5635342811",
+        "date": "30/3/2023",
+        "productName": "VR Experience Kit",
+        "Qty": 3,
+        "productPrice": "$300.00",
+        "priceAmount": "$900.00",
+        "status": "Processing"
+    },
+    {
+        "id": "#5635342812",
+        "date": "31/3/2023",
+        "productName": "SmartHome Starter Pack",
+        "Qty": 1,
+        "productPrice": "$800.00",
+        "priceAmount": "$800.00",
+        "status": "Shipped"
+    },
+    {
+        "id": "#5635342813",
+        "date": "1/4/2023",
+        "productName": "PixelPad Pro Tablet",
+        "Qty": 2,
+        "productPrice": "$350.00",
+        "priceAmount": "$700.00",
+        "status": "Cancelled"
+    }
+]
