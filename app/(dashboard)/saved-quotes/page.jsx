@@ -8,19 +8,29 @@ import { PlusIcon } from 'lucide-react'
 import { SearchBar } from '@/components/ui/searchBar'
 import { SavedQutoesCard } from './components/savedQutoesCard'
 import { SavedQuotesDetails } from './components/SavedQuotesDetails'
+import data from '../../../data/savedQuotesData.json'
+
 export default function SavedQuotes() {
+    const [selectedData, setSelectedData] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const [isSelect, setIsSelect] = useState(false);
-
-    const toggleSelect = () => {
-        setIsSelect(!isSelect);
+    const handleCardSelected = (id) => {
+        console.log("my id is", id)
+        const selectedAddress = data.find(item => item.id === id);
+        setIsOpen(true);
+        setSelectedData(selectedAddress);
     }
+    const handleClose = () => {
+        setIsOpen(false);
+    }
+
 
     const [clicked, isClicked] = useState(false);
 
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
+
     return (
         <>
             <div className={styles.main}>
@@ -71,26 +81,30 @@ export default function SavedQuotes() {
                 </div>
                 <div className={styles.item_container}>
                     <div className={styles.items}>
-                        {clicked ? (
-                            <>
-                                <SavedQutoesCard variant='list' onSelect={toggleSelect} />
-                                <SavedQutoesCard variant='list' onSelect={toggleSelect} />
-                            </>
-                        ) : (
-                            <>
-                                <SavedQutoesCard onClick={() => toggleSelect(true)} className={`${isSelect ? ('bg-blue-400 opacity-20') : (`bg-white`)} cursor-pointer`} />
-                                <SavedQutoesCard onClick={() => toggleSelect(true)} className={`${isSelect ? ('bg-blue-400 opacity-20') : (`bg-white`)} cursor-pointer`} />
-                            </>
-                        )}
+                        <>
+                            {
+                                data.map((item, i) => (
+                                    <>
+                                        <SavedQutoesCard
+                                            key={i}
+                                            variant={clicked ? 'list' : ""}
+                                            onSelect={handleCardSelected}
+                                            className="hover:bg-green-400"
+                                            data={item}
+                                        />
+                                    </>
+                                ))
+                            }
+                        </>
                     </div>
                 </div>
             </div>
 
             <div className={styles.rightPanel}>
                 {
-                    isSelect ? (
+                    isOpen ? (
                         <>
-                            <SavedQuotesDetails />
+                            <SavedQuotesDetails data={selectedData} handleClose={handleClose} />
 
                         </>
                     ) : (
