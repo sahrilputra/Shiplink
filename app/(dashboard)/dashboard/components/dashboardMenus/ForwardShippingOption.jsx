@@ -49,18 +49,7 @@ export const ForwardShippingOption = () => {
                 <Carrier />
             </div>
             <div className="w-[100%]  h-10 flex-col justify-start items-end gap-2.5 inline-flex">
-                <DialogTrigger asChild>
-                    <Button
-                        onClick={handleConfirmClick}
-                        className="h-[35px] px-10"
-                        variant="secondary"
-                    >
-                        <p className="text-white text-xs font-medium ">Confirm</p>
-                    </Button>
-                </DialogTrigger >
-                <DialogContent>
-                    <PaymentsDialog />
-                </DialogContent>
+                <PaymentsDialog />
             </div >
 
         </>

@@ -16,6 +16,8 @@ import { PackageStatus } from '@/components/PackageItemsUI/PackageStatus';
 import { PackageIndicator } from '@/components/PackageItemsUI/PackageIndicator';
 import { CopyIcons } from '@/components/icons/iconCollection';
 import { useToast } from '@/components/ui/use-toast';
+import { PaymentsDialog } from '../dashboardMenus/PaymentsV2/Payments';
+
 export default function ItemsPackage({ onClickButton, item }) {
     const { toast } = useToast();
 
@@ -36,7 +38,6 @@ export default function ItemsPackage({ onClickButton, item }) {
         time,
         isShipped,
     } = item.package;
-
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -179,7 +180,6 @@ export default function ItemsPackage({ onClickButton, item }) {
                     <div className="flex flex-row justify-between items-center gap-5 relative">
                         <div className="justify-start items-center gap-[15px] flex">
                             <DetailsModals />
-
                             <div className="flex-col justify-start items-start gap-px inline-flex">
                                 <div className="text-black text-xs font-semiBold ">Name Or Something</div>
                                 <div className="text-zinc-600 text-xs ">{dimension}</div>
@@ -190,36 +190,55 @@ export default function ItemsPackage({ onClickButton, item }) {
                             <div className="justify-between items-start inline-flex ">
                                 <div className="text-zinc-900 text-sm font-semiBold ">Confirm Your Order</div>
                             </div>
-                            <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
-                                <Button
-                                    variant={`${selectedButton === "Hold Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                    onClick={() => handleButtonClick("Hold Pickup")}
-                                >
-                                    <div className="text-justify text-white text-xs font-semiBold ">Hold for Pickup</div>
-                                </Button>
-                                <Button
-                                    variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                    onClick={() => handleButtonClick("Cross Border Pickup")}
-                                >
-                                    <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
-                                </Button>
-                                <Button
-                                    variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                    className="w-[150px] h-[37px]  justify-center items-center gap-2.5 flex"
-                                    onClick={() => handleButtonClick("Forward Package")}
-                                >
-                                    <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
-                                </Button>
-                                <Button
-                                    variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                    onClick={() => handleButtonClick("Cross Border Forward")}
-                                >
-                                    <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
-                                </Button>
-                            </div>
+                            {
+                                status === 'in transit' ? (
+                                    <>
+                                        <div className="justify-between items-center gap-5 flex flex-row flex-wrap border border-zinc-400/30 px-[5px] py-[5px] w-full">
+                                            <div className="flex-row flex justify-start items-center gap-2 w-max pr-6 ">
+                                                <div className="w-[30px] h-[30px]">
+                                                    <Image
+                                                        src={'/assets/courrier/canadian.png'}
+                                                        width={100}
+                                                        height={100}
+                                                        alt='canadian icon'
+                                                    />
+                                                </div>
+                                                <p className='text-md'>Canada Post Regular Parcel</p>
+                                            </div>
+                                            <div className=" w-max px-2 text-xs text-zinc-500 flex flex-col">
+                                                <p className='w-max'>Estimate 14-16 Apr</p>
+                                                <p className='w-max'>Tracking ID #1231231231</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
+                                        <PaymentsDialog variant="confirm" click={handleButtonClick} isSelectedButton={selectedButton} isButtonEnabled={buttonEnabled} />
+                                        <Button
+                                            variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                            className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                            onClick={() => handleButtonClick("Cross Border Pickup")}
+                                        >
+                                            <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
+                                        </Button>
+                                        <Button
+                                            variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                            className="w-[150px] h-[37px]  justify-center items-center gap-2.5 flex"
+                                            onClick={() => handleButtonClick("Forward Package")}
+                                        >
+                                            <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
+                                        </Button>
+                                        <Button
+                                            variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                            className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                            onClick={() => handleButtonClick("Cross Border Forward")}
+                                        >
+                                            <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
+                                        </Button>
+                                    </div>
+                                )
+                            }
+
                             <div className="w-[100%]">
                                 <Separator className="py-[1.5px]" />
                             </div>
@@ -232,6 +251,14 @@ export default function ItemsPackage({ onClickButton, item }) {
                         {
                             selectedButton === "Cross Border Forward" ? (
                                 <CrossBorderTable />
+                            ) : selectedButton === "Cross Border Pickup" ? (
+                                <>
+                                    <CrossBorderTable />
+                                </>
+                            ) : selectedButton === "Forward Package" ? (
+                                <>
+                                    <CrossBorderTable />
+                                </>
                             ) : (
                                 <>
                                 </>

@@ -110,6 +110,10 @@ export default function Dashboard() {
             <div className={styles.rightPanel}>
                 {selectedButton === "Cross Border Forward" ? (
                     <ForwadPakage />
+                ) : selectedButton === "Forward Package" ? (
+                    <>
+                        <ForwadPakage />
+                    </>
                 ) : (
                     <div className="ads">
                         <PromoOne />
@@ -117,10 +121,7 @@ export default function Dashboard() {
                 )}
 
 
-            </div>
-
-
-
+            </div >
         </>
     )
 }
