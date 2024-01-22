@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import Image from 'next/image'
@@ -17,11 +18,25 @@ import {
 } from '../ui/dropdown-menu'
 import { ShippingLabelIcon, ShippingCalculatorIcon } from '../icons/navbarIcons'
 import { Button } from '../ui/button'
+import { GridIcons } from '../icons/iconCollection'
+// import { useSidebar } from '@/app/(dashboard)/SidebarContext'
 export const Navbar = () => {
+
+    // const { isSidebarOpen, openSidebar, closeSidebar, toggleSidebar } = useSidebar();
+
     return (
         <>
             {/*  */}
-            <div className="w-full h-[68px] left-0 top-0 bg-white" >
+            <div className="w-full h-[68px] left-0 top-0 bg-white flex flex-row justify-between items-center" >
+                <div className="">
+                    {/* <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={toggleSidebar}
+                    >
+                        <GridIcons width={15} height={15} />
+                    </Button> */}
+                </div>
                 <div className="justify-end items-center gap-3 flex py-3 px-10">
                     <DropdownMenu >
                         <DropdownMenuTrigger asChild>

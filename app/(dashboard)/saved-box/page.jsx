@@ -9,12 +9,52 @@ import { DeleteIcons, IconList, GridIcons } from '@/components/icons/iconCollect
 // import { PlusIcons } from '@/components/icons/iconCollection'
 import { PlusIcon } from 'lucide-react'
 import { SearchBar } from '@/components/ui/searchBar'
-export default function SavedBox() {
-    const [clicked, isClicked] = useState(true);
+import { SavedBoxFrame } from './components/SavedBoxFrame'
+import data from '../../../data/SavedSizeBoxData.json'
 
+
+export default function SavedBox() {
+    const [newAddress, setIsNew] = useState(false);
+    const [editAddress, setIsEdit] = useState(false);
+    const [clicked, isClicked] = useState(true);
+    const [selectedData, setSelectedData] = useState(null);
+    
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
+
+    const toggleSelectNewAddress = () => {
+        setIsNew(true);
+        setIsEdit(false);
+    }
+
+    const toggleEditedAddress = () => {
+        setIsEdit(true);
+        setIsNew(false);
+        setKeyForEditAddressMenu(prevKey => prevKey + 1); // Update key unik
+    }
+
+    const toggleClose = () => {
+        setIsEdit(false);
+        setIsNew(false);
+    }
+
+
+    const handleCardSelected = (id) => {
+        const selectedAddress = data.find(item => item.id === id);
+        setSelectedData(selectedAddress);
+    }
+
+
+    const renderMenus = () => {
+        switch (true) {
+            case newAddress:
+                return <SavedBoxFrame close={toggleClose} />;
+            default:
+                return <PromoOne />;
+        }
+    }
+
     return (
         <>
             <div className={styles.main}>
@@ -29,7 +69,7 @@ export default function SavedBox() {
                             ${clicked ? 'bg-none text-black' : 'bg-red-700 text-white font-semiBold hover:bg-red-800'}`}
                                     onClick={() => toggleClicked(false)}
                                 >
-                                    <GridIcons width={15} height={15} className={`${clicked ? ' text-black' : ' fill-white font-semiBold hover:bg-red-800'}`}/>
+                                    <GridIcons width={15} height={15} className={`${clicked ? ' text-black' : ' fill-white font-semiBold hover:bg-red-800'}`} />
                                 </button>
                                 <button
                                     id='newAddress'
@@ -63,6 +103,7 @@ export default function SavedBox() {
                             <Button
                                 variant="destructive"
                                 className="h-10 px-10 text-xs flex flex-row justify-around items-center gap-2"
+                                onClick={toggleSelectNewAddress}
                             >
                                 <PlusIcon width={15} height={15} fontWeight={20} fill="#ffff" />
                                 <p className='text-sm font-semibold'>Add New</p>
@@ -73,20 +114,24 @@ export default function SavedBox() {
                 </div>
                 <div className={styles.item_container}>
                     <div className={styles.items}>
-                        {clicked ? (
-                            <SavedBoxCard variant='list' />
-                        ) : (
-                            <SavedBoxCard variant='grid' />
-                        )}
+                        {
+                            data.map((item, i) => (
+                                <>
+                                    <SavedBoxCard
+                                        variant={clicked ? 'list' : 'grid'}
+                                        data={item}
+                                        key={i} />
+                                </>
+                            ))
+                        }
                     </div>
                 </div>
             </div>
 
             <div className={styles.rightPanel}>
-                <div className="ads">
-                    <PromoOne />
-                </div>
-
+                {
+                    renderMenus()
+                }
             </div>
         </>
     )

@@ -8,15 +8,17 @@ import { SwitchButton } from '../buttons/SwitchButton'
 import { LocationCard } from './LocationCard'
 import styles from './styles.module.scss'
 import { ScrollArea } from '../ui/scroll-area'
-
 export const Sidebar = () => {
+
+    
+
     const router = usePathname();
     // w-[280px] min-h-max px-[5px] 
     // min-h-max bg-white flex-col justify-start items-center gap-5 inline-flex
     return (
         <>
             <aside className={`pt-5 w-[280px]  flex-col justify-start items-center gap-5 flex
-             ${styles.sideBarRespon}
+             ${styles.sideBarRespon} 
              `}>
 
                 <ScrollArea className="h-[100vh]" >
