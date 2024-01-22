@@ -18,7 +18,8 @@ export default function SavedBox() {
     const [editAddress, setIsEdit] = useState(false);
     const [clicked, isClicked] = useState(true);
     const [selectedData, setSelectedData] = useState(null);
-    
+    const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
+
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
@@ -50,6 +51,8 @@ export default function SavedBox() {
         switch (true) {
             case newAddress:
                 return <SavedBoxFrame close={toggleClose} />;
+            case editAddress:
+                return <SavedBoxFrame keyProp={keyForEditAddressMenu} close={toggleClose} data={selectedData} />;
             default:
                 return <PromoOne />;
         }
@@ -120,7 +123,11 @@ export default function SavedBox() {
                                     <SavedBoxCard
                                         variant={clicked ? 'list' : 'grid'}
                                         data={item}
-                                        key={i} />
+                                        key={i}
+                                        selected={toggleEditedAddress} 
+                                        onClick={handleCardSelected}
+                                        />
+
                                 </>
                             ))
                         }
