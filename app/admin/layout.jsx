@@ -14,12 +14,12 @@ export default function BackofficeLayout({ children }) {
     return (
         <>
             <div className={styles.container}>
-                <AdminSidebar className={styles.sidebar} />
+                <div className={styles.sidebar}>
+                    <AdminSidebar />
+                </div>
+                <Navbar className={styles.nav} />
                 <div className={styles.main}>
-                    <Navbar className={styles.nav} />
-                    <div className={styles.content}>
-                        {children}
-                    </div>
+                    {children}
                 </div>
             </div>
         </>

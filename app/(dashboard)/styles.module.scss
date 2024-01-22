@@ -4,7 +4,7 @@
     // flex-direction: row;
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 240px 1fr;
     grid-template-rows: 68px 1fr;
     grid-template-areas:
         "sidebar navbar"
@@ -16,7 +16,7 @@
     // flex: 1;
     // max-height: max-content;
     // position: fixed;
-    background-color: #ffff;
+    // background-color: #ffff;
     height: 100%;
     // overflow: scroll;
     grid-area: sidebar;
@@ -35,4 +35,17 @@
     padding-right: 5px;
     height: max-content;
     // flex: 5;
+}
+
+@media screen and (max-width : 1440px) {
+    .container {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 75px 1fr;
+        grid-template-rows: 68px 1fr;
+        grid-template-areas:
+            "sidebar navbar"
+            "sidebar main";
+        gap: 0;
+    }
 }

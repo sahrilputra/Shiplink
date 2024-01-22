@@ -13,7 +13,7 @@ export const LocationCard = () => {
                 <div className="p-1 rounded-md border border-neutral-200 justify-start items-start gap-2.5 inline-flex">
                     <button
                         id='savedAddress'
-                        className={`w-[100px] font-normal px-2.5 py-[8px] justify-center items-center gap-2.5 flex rounded
+                        className={`w-[80px] font-normal px-2.5 py-[8px] justify-center items-center gap-2.5 flex rounded
                             ${clicked ? 'bg-none' : 'bg-red-700 text-white font-semibold'}`}
                         onClick={() => toggleClicked(false)}
                     >
@@ -21,7 +21,7 @@ export const LocationCard = () => {
                     </button>
                     <button
                         id='newAddress'
-                        className={`w-[100px] font-normal px-2.5 py-[8px] justify-center items-center gap-2.5 flex rounded
+                        className={`w-[80px] font-normal px-2.5 py-[8px] justify-center items-center gap-2.5 flex rounded
                             ${clicked ? 'bg-red-700 text-white font-semibold' : 'bg-none'}`}
                         onClick={() => toggleClicked(true)}
                     >
@@ -32,8 +32,8 @@ export const LocationCard = () => {
                 <div className="w-full p-3">
                     {clicked ? (
                         <div className="flex flex-col justify-start  ">
-                            <p className='font-semibold text-md text-black'>FirstName LastName</p>
-                            <div className="font-normal text-sm text-black">
+                            <p className='font-normal text-sm text-black'>FirstName LastName</p>
+                            <div className="font-regular text-xs">
                                 <p>123 Street Name</p>
                                 <p>Unit/Apt # </p>
                                 <p>City, State, Zipcode</p>
@@ -42,8 +42,8 @@ export const LocationCard = () => {
                         </div>
                     ) : (
                         <div className="flex flex-col justify-start ">
-                            <p className='font-semibold text-md text-black'>FirstName LastName</p>
-                            <div className="font-normal text-sm text-black">
+                            <p className='font-normal text-sm text-black'>FirstName LastName</p>
+                            <div className="font-regular text-xs">
                                 <p>123 Street Name</p>
                                 <p>Unit/Apt # </p>
                                 <p>City, State, Zipcode</p>

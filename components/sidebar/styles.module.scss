@@ -1,6 +1,20 @@
 .sideBarRespon {
-    position:fixed;
-    background-color: #fff;
+    position: fixed;
+    // background-color: #fff;
+    width: max-content;
+}
+
+
+.container {
+    width: 257px;
+}
+
+.icons {
+    width: 25px;
+}
+
+.title {
+    width: 191px;
 }
 
 // @media screen and (max-width: 1380px) {
@@ -20,3 +34,30 @@
 //         zoom: 80%;
 //     }
 // }
+
+
+@media screen and (max-width : 1440px) {
+    .title {
+        display: none;
+    }
+
+    .content {
+        width: fit-content;
+    }
+
+    .icons {
+        width: 25px;
+        padding: 5 5 5 5;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .sideBarRespon {
+        width: max-content;
+    }
+    .deskView{
+        display: none;
+    }
+}

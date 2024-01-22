@@ -22,27 +22,43 @@ import {
     ReferFriendsIcon,
     SupportIcons,
 } from "./icon/clientIcon";
+import { Separator } from "../ui/separator";
+import { useMediaQuery } from "react-responsive";
 export const Sidebar = () => {
     const router = usePathname();
     // w-[280px] min-h-max px-[5px]
     // min-h-max bg-white flex-col justify-start items-center gap-5 inline-flex
+
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+    const isTable = useMediaQuery({ query: '(min-width: 1025px)' })
+    const isDesktop = useMediaQuery({ query: '(min-width: 1440px)' })
+
     return (
         <>
             <aside
-                className={`pt-5 w-[280px]  flex-col justify-start items-center gap-5 flex
+                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex
              ${styles.sideBarRespon} 
-             `}
-            >
-                <ScrollArea className="h-[100vh]">
-                    <div className={`flex gap-3 flex-col pb-[100px] `}>
-                        <div className="text-center text-red-700 text-[28px] font-bold font-['Poppins'] ">
-                            ShipLink
+             `}>
+                <ScrollArea className="h-[100vh] w-max">
+                    <div className={`flex gap-3 flex-col pb-[100px]  `}>
+                        <div className={`${styles.logo} mt-[10px] mb-[10px] text-center text-red-700 h-[28px] w-[full] flex flex-col gap-2 justify-items-center`}>
+                            <Image
+                                src={"/logo.png"}
+                                width={100}
+                                height={100}
+                                alt="shiplink Logo"
+                                className="mx-auto"
+                            />
+                            <div className="w-[200px] flex items-center justify-center mx-auto">
+                                <Separator className='h-[2px]' />
+                            </div>
                         </div>
+
                         <SidebarMenu
                             title=""
                             className="flex-col justify-start items-center flex"
                         >
-                            <div className="flex-col justify-end items-start gap-2.5 flex">
+                            <div className="flex-col justify-center items-start gap-2.5 flex">
                                 <SidebarItem
                                     isActive={router === "/dashboard"}
                                     title="Dashboard"
@@ -162,12 +178,17 @@ export const Sidebar = () => {
                                 />
                             </div>
 
-                            <SidebarMenu
-                                title={"card"}
-                                className="w-[90%] flex items-center justify-center my-3 "
-                            >
-                                <LocationCard />
-                            </SidebarMenu>
+                            {isDesktop ? (
+                                <SidebarMenu
+                                    title={"card"}
+                                    className="w-[90%] flex items-center justify-center my-3 "
+                                >
+                                    <LocationCard />
+                                </SidebarMenu>
+                            ) : (
+                                <>
+                                </>
+                            )}
                         </SidebarMenu>
                     </div>
                 </ScrollArea>

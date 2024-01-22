@@ -1,44 +1,39 @@
 import React from 'react'
 import NextLink from 'next/link';
 import clsx from 'clsx';
+import styles from './styles.module.scss'
 
 export const SidebarItem = ({ icon, title, isActive, href }) => {
+
+
     return (
         <>
             <NextLink
-                className="tw-[257px] px-[21px]  rounded-lg justify-start items-center gap-5 inline-flex"
+                className=" px-[10px] justify-start items-center gap-5 inline-flex"
                 href={href}>
                 {isActive ? (
                     <>
-                        <div className="w-[257px] px-[21px] py-2.5 bg-red-700 rounded-lg justify-start items-center gap-5 inline-flex">
-                            <div className="w-[25px] h-[25px] relative">
-                                <div className="w-[45.83px] h-[50px] left-[-14.17px] text-white top-[-16.67px] fill-white stroke-white">{icon}</div>
+                        <div className={`${styles.content}  px-[15px] py-2.5 bg-red-700 rounded-md justify-start items-center gap-3 flex w-[220px]`}>
+                            <div className={`${styles.icons}  h-[25px] relative`}>
+                                <div className="w-[30px] h-[50px]  text-white top-[-16.67px] fill-white stroke-white">{icon}</div>
                             </div>
-                            <div className="justify-start items-start gap-[18px] flex">
-                                <div className="w-[191px] text-white text-sm font-semibold font-['Poppins']">{title}</div>
+                            <div className={`${styles.title} justify-start items-start gap-[18px] flex`}>
+                                <div className=" text-white text-[12px] font-semibold font-['Poppins']">{title}</div>
                             </div>
                         </div>
                     </>
                 ) : (
                     <>
-                        <div className="w-[257px] px-[21px] py-2.5 rounded-lg justify-start items-center gap-5 inline-flex hover:bg-red-100">
-                            <div className="w-[25px] h-[25px] relative">
-                                <div className="w-[45.83px] h-[50px] left-[-14.17px] top-[-16.67px] fill-black stroke-black opacity-40">{icon}</div>
+                        <div className={`${styles.content} px-[15px] py-2.5 rounded-md justify-start items-center gap-3 flex w-[220px] hover:bg-red-100`}>
+                            <div className={`${styles.icons} h-[25px] relative`}>
+                                <div className="w-[30px] h-[50px]  top-[-16.67px] fill-black stroke-black opacity-40">{icon}</div>
                             </div>
-                            <div className="opacity-50 justify-start items-start gap-[18px] flex">
-                                <div className="w-[191px] text-black text-[15px] font-normal font-['Poppins']">{title}</div>
+                            <div className={`${styles.title} opacity-50 justify-start items-start gap-[18px] flex`}>
+                                <div className=" text-black text-[12px] font-normal font-['Poppins']">{title}</div>
                             </div>
                         </div>
                     </>
                 )}
-                {/* <div className="w-[257px] px-[21px] py-2.5 bg-red-700 rounded-lg justify-start items-center gap-5 inline-flex">
-                    <div className="w-[25px] h-[25px] relative">
-                        <div className="w-[45.83px] h-[50px] left-[-14.17px] top-[-16.67px] fill-white">{icon}</div>
-                    </div>
-                    <div className="justify-start items-start gap-[18px] flex">
-                        <div className="w-[191px] text-white text-sm font-semibold font-['Poppins']">{title}</div>
-                    </div>
-                </div> */}
             </NextLink>
         </>
     )

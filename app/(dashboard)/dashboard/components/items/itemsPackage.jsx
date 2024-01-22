@@ -72,14 +72,13 @@ export default function ItemsPackage({ onClickButton, item }) {
                 <div className="justify-start items-center gap-[15px] flex">
 
                     <PackageType variant={variant} notif={"notif"} />
-                    <div className="flex-col justify-start items-start inline-flex">
+                    <div className="flex-col justify-start items-start inline-flex w-[200px]">
                         <div className="text-black text-sm font-semiBold">{shippingId}</div>
-                        <div className="text-sky-700 text-sm font-semiBold">Shipping Mailbox</div>
+                        <div className="text-sky-700 text-xs font-semiBold">Shipping Mailbox</div>
                         <div className="justify-start items-start inline-flex">
                             <div className="justify-start items-center gap-2.5 flex">
                                 <div className="text-zinc-600 text-sm font-semiBold">{shippingType}</div>
                                 <p className='text-red-700 text-opacity-80 text-sm font-bold'>{carrierTrackingNumber}</p>
-
                             </div>
                         </div>
                     </div>
@@ -193,7 +192,7 @@ export default function ItemsPackage({ onClickButton, item }) {
                             {
                                 status === 'in transit' ? (
                                     <>
-                                        <div className="justify-between items-center gap-5 flex flex-row flex-wrap border border-zinc-400/30 px-[5px] py-[5px] w-full">
+                                        <div className="justify-between items-center gap-5 flex rounded-sm flex-row flex-wrap border border-zinc-400/30 px-[10px] py-[10px] w-full">
                                             <div className="flex-row flex justify-start items-center gap-2 w-max pr-6 ">
                                                 <div className="w-[30px] h-[30px]">
                                                     <Image
@@ -203,7 +202,7 @@ export default function ItemsPackage({ onClickButton, item }) {
                                                         alt='canadian icon'
                                                     />
                                                 </div>
-                                                <p className='text-md'>Canada Post Regular Parcel</p>
+                                                <p className='text-sm'>Canada Post Regular Parcel</p>
                                             </div>
                                             <div className=" w-max px-2 text-xs text-zinc-500 flex flex-col">
                                                 <p className='w-max'>Estimate 14-16 Apr</p>
@@ -212,36 +211,39 @@ export default function ItemsPackage({ onClickButton, item }) {
                                         </div>
                                     </>
                                 ) : (
-                                    <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
-                                        <PaymentsDialog variant="confirm" click={handleButtonClick} isSelectedButton={selectedButton} isButtonEnabled={buttonEnabled} />
-                                        <Button
-                                            variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                            className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                            onClick={() => handleButtonClick("Cross Border Pickup")}
-                                        >
-                                            <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
-                                        </Button>
-                                        <Button
-                                            variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                            className="w-[150px] h-[37px]  justify-center items-center gap-2.5 flex"
-                                            onClick={() => handleButtonClick("Forward Package")}
-                                        >
-                                            <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
-                                        </Button>
-                                        <Button
-                                            variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                            className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                            onClick={() => handleButtonClick("Cross Border Forward")}
-                                        >
-                                            <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
-                                        </Button>
-                                    </div>
+                                    <>
+                                        <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
+                                            <PaymentsDialog variant="confirm" click={handleButtonClick} isSelectedButton={selectedButton} isButtonEnabled={buttonEnabled} />
+                                            <Button
+                                                variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                                className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                                onClick={() => handleButtonClick("Cross Border Pickup")}
+                                            >
+                                                <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
+                                            </Button>
+                                            <Button
+                                                variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                                className="w-[150px] h-[37px]  justify-center items-center gap-2.5 flex"
+                                                onClick={() => handleButtonClick("Forward Package")}
+                                            >
+                                                <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
+                                            </Button>
+                                            <Button
+                                                variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                                className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                                onClick={() => handleButtonClick("Cross Border Forward")}
+                                            >
+                                                <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
+                                            </Button>
+                                        </div>
+                                        <div className="w-[100%]">
+                                            <Separator className="py-[1.5px]" />
+                                        </div>
+                                    </>
                                 )
                             }
 
-                            <div className="w-[100%]">
-                                <Separator className="py-[1.5px]" />
-                            </div>
+
                         </div>
                     </div>
 
