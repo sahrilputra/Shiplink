@@ -11,6 +11,18 @@ import { ModalContext } from '@/context/ModalContext';
 import data from '../../../data/dashboardData.json'
 
 export default function Mailbox() {
+
+    const [expandedItemId, setExpandedItemId] = useState(null);
+
+    const toggleExpand = (itemId) => {
+        if (expandedItemId === itemId) {
+            // If the clicked item is already expanded, close it
+            setExpandedItemId(null);
+        } else {
+            // If another item is expanded, close it and expand the clicked item
+            setExpandedItemId(itemId);
+        }
+    };
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
 
     const [selectedTab, setSelectedTab] = useState("incoming");
@@ -67,6 +79,8 @@ export default function Mailbox() {
                                     key={i}
                                     onClickButton={handleButtonClick}
                                     item={item}
+                                    onExpand={toggleExpand}
+                                    isExpand={expandedItemId === item.package.id}
                                 />
                             ))
                         }

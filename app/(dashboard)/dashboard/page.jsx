@@ -12,31 +12,37 @@ import data from '../../../data/dashboardData.json'
 import { DetailsModals } from './components/DialogDetails/Details';
 export default function Dashboard() {
 
-
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
     const [selectedTab, setSelectedTab] = useState("all");
-    const [expandedItemIndex, setExpandedItemIndex] = useState(null);
-    console.log("expand index ", expandedItemIndex)
+
 
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
-        setExpandedItemIndex(null)
-    }
 
-    const handleItemExpand = (itemId) => {
-        setExpandedItemIndex((prevId) => (prevId === itemId ? null : itemId));
     }
+    const [expandedItemId, setExpandedItemId] = useState(null);
 
+    const toggleExpand = (itemId) => {
+        if (expandedItemId === itemId) {
+            // If the clicked item is already expanded, close it
+            setExpandedItemId(null);
+        } else {
+            // If another item is expanded, close it and expand the clicked item
+            setExpandedItemId(itemId);
+        }
+    };
+    const closeExpand = () => {
+        setExpandedItemId(null)
+    }
     const [selectedButton, setSelectedButton] = useState(null);
     const handleButtonClick = (buttonName) => {
         setSelectedButton(buttonName);
-        setExpandedItemIndex(null)
-        console.log(selectedButton)
     }
 
     const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
-    console.log("data", filterData.map(item => item.orderType))
+
+
     return (
         <>
             <div className={styles.main}>
@@ -109,6 +115,8 @@ export default function Dashboard() {
                                     key={i}
                                     onClickButton={handleButtonClick}
                                     item={item}
+                                    onExpand={toggleExpand}
+                                    isExpand={expandedItemId === item.package.id}
                                 />
                             ))
                         }
