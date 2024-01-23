@@ -129,13 +129,14 @@ export const CardForms = () => {
                             )}
                         />
                     </div>
-                    <div className=" flex justify-end items-end ">
+                    <div className=" flex justify-end items-end text-sm">
                         <Button
                             variant="destructive"
                             type="submit"
+                            size="sm"
 
                         >
-                            <p className=' font-normal '>Save</p>
+                            <p className=' font-normal text-xs '>Save</p>
                         </Button>
                     </div>
                 </form>

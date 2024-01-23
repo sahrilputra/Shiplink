@@ -8,7 +8,7 @@ export const MenusItem = ({ title, icon, isActive, href }) => {
                 <>
                     <NextLink
                         href={href}
-                        className='w-full flex items-center justify-start'
+                        className='w-full flex items-center justify-start text-sm'
                     >
                         <Button
                             variant="ghost"
@@ -17,7 +17,7 @@ export const MenusItem = ({ title, icon, isActive, href }) => {
                             <div className="w-[20px] h-[20px] m-2">
                                 {icon}
                             </div>
-                            <div className="text-black text-lg ">{title}</div>
+                            <div className="text-black text-sm ">{title}</div>
                         </Button>
                     </NextLink>
                 </>
@@ -34,7 +34,7 @@ export const MenusItem = ({ title, icon, isActive, href }) => {
                             <div className="w-[20px] h-[20px] m-2">
                                 {icon}
                             </div>
-                            <div className="text-black text-lg ">{title}</div>
+                            <div className="text-black text-sm ">{title}</div>
                         </Button>
                     </NextLink>
                 </>

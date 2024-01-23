@@ -52,14 +52,14 @@ export const Navbar = () => {
                                 </div>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
+                        <DropdownMenuContent className="gap-5">
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
                                 <p>Shipping Labels</p>
-                                <ShippingLabelIcon width={15} height={15} />
+                                <ShippingLabelIcon width={20} height={20} />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
                                 <p>Shipping Calculator</p>
-                                <ShippingCalculatorIcon width={15} height={15} />
+                                <ShippingCalculatorIcon width={20} height={20} />
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -78,12 +78,12 @@ export const Navbar = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Labels</p>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Track My Package</p>
                                 <ShippingLabelIcon width={15} height={15} />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Calculator</p>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Delivery Status</p>
                                 <ShippingLabelIcon width={15} height={15} />
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -103,12 +103,16 @@ export const Navbar = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Labels</p>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Create Tickets</p>
                                 <ShippingLabelIcon width={15} height={15} />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Calculator</p>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Contact Us</p>
+                                <ShippingLabelIcon width={15} height={15} />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>FAQ</p>
                                 <ShippingLabelIcon width={15} height={15} />
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -134,13 +138,25 @@ export const Navbar = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Labels</p>
-                                <ShippingLabelIcon width={15} height={15} />
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-2">
+                                <div className="w-[20px] h-[20px] rounded-full">
+                                    <img
+                                        src={`https://flagcdn.com/fr.svg`}
+                                        alt=""
+                                        className='object-cover rounded-full w-[20px] h-[20px]'
+                                    />
+                                </div>
+                                <p>English</p>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Calculator</p>
-                                <ShippingCalculatorIcon width={15} height={15} />
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-2">
+                                <div className="w-[20px] h-[20px] rounded-full">
+                                    <img
+                                        src={`https://flagcdn.com/es.svg`}
+                                        alt=""
+                                        className='object-cover rounded-full w-[20px] h-[20px]'
+                                    />
+                                </div>
+                                <p>Spanyol</p>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -169,12 +185,16 @@ export const Navbar = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Labels</p>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Account Setting</p>
                                 <ShippingLabelIcon width={15} height={15} />
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="font-normal text-xs cursor-pointer flex flex-row justify-between gap-2">
-                                <p>Shipping Calculator</p>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Membership Plan</p>
+                                <ShippingCalculatorIcon width={15} height={15} />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="font-normal text-sm cursor-pointer flex flex-row justify-between gap-5">
+                                <p>Logout</p>
                                 <ShippingCalculatorIcon width={15} height={15} />
                             </DropdownMenuItem>
                         </DropdownMenuContent>

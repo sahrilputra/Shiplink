@@ -29,7 +29,8 @@ export const PaymentsDialog = ({ variant = "", click, isSelectedButton, isButton
                             <DialogTrigger asChild>
                                 <Button
                                     variant={`${isSelectedButton === "hold for pickup" ? "destructive" :  (isButtonEnabled ? "destructive" : "disable")}`}
-                                    className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                    className="w-[140px] px-3 py-[5px] justify-center items-center gap-2.5 flex"
+                                    size="sm"
                                     onClick={() => {
                                         click('hold for pickup')
                                     }}

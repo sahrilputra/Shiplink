@@ -16,42 +16,40 @@ export const NotifTable = () => {
         <>
             <div className="tableContent w-full">
                 <Table className="w-full">
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className=" rounded-tl-md "></TableHead>
-                            <TableHead className="w-[100px] text-center ">Email</TableHead>
-                            <TableHead className="w-[100px] text-center rounded-tr-md">Feed</TableHead>
-                        </TableRow>
+                    <TableHeader className="text-sm">
+                        <TableHead className=" rounded-tl-md "></TableHead>
+                        <TableHead className="w-[100px] text-center text-sm ">Email</TableHead>
+                        <TableHead className="w-[100px] text-center rounded-tr-md text-sm">Feed</TableHead>
                     </TableHeader>
                     <TableBody>
                         <TableRow>
-                            <TableCell className="font-medium flex flex-col rounded-bl-md">
-                                <p className='text-zinc-900 text-lg font-medium'>One-day Pickup Reminder</p>
-                                <div className=" text-zinc-600 font-normal text-sm leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
+                            <TableCell className="font-medium flex flex-col rounded-bl-md ">
+                                <p className='text-zinc-900 text-sm font-medium'>One-day Pickup Reminder</p>
+                                <div className=" text-zinc-600 font-normal text-xs leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
                             </TableCell>
                             <TableCell className="text-center px-2"><Checkbox /></TableCell>
                             <TableCell className="text-center rounded-br-md px-2"><Checkbox /></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium flex flex-col rounded-bl-md">
-                                <p className='text-zinc-900 text-lg font-medium'>One-day Pickup Reminder</p>
-                                <div className=" text-zinc-600 font-normal text-sm leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
+                                <p className='text-zinc-900 text-sm font-medium'>One-day Pickup Reminder</p>
+                                <div className=" text-zinc-600 font-normal text-xs leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
                             </TableCell>
                             <TableCell className="text-center px-2"><Checkbox /></TableCell>
                             <TableCell className="text-center rounded-br-md px-2"><Checkbox /></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium flex flex-col rounded-bl-md">
-                                <p className='text-zinc-900 text-lg font-medium'>One-day Pickup Reminder</p>
-                                <div className=" text-zinc-600 font-normal text-sm leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
+                                <p className='text-zinc-900 text-sm font-medium'>One-day Pickup Reminder</p>
+                                <div className=" text-zinc-600 font-normal text-xs leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
                             </TableCell>
                             <TableCell className="text-center px-2"><Checkbox /></TableCell>
                             <TableCell className="text-center rounded-br-md px-2"><Checkbox /></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium flex flex-col rounded-bl-md">
-                                <p className='text-zinc-900 text-lg font-medium'>One-day Pickup Reminder</p>
-                                <div className=" text-zinc-600 font-normal text-sm leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
+                                <p className='text-zinc-900 text-sm font-medium'>One-day Pickup Reminder</p>
+                                <div className=" text-zinc-600 font-normal text-xs leading-snug">Receive a timely reminder one day before your parcel is scheduled for pickup, ensuring youre prepared.</div>
                             </TableCell>
                             <TableCell className="text-center px-2"><Checkbox /></TableCell>
                             <TableCell className="text-center rounded-br-md px-2"><Checkbox /></TableCell>
@@ -62,8 +60,9 @@ export const NotifTable = () => {
                 <div className="py-5 flex justify-end ">
                     <Button
                         variant="destructive"
+                        size="sm"
                     >
-                        Save Settings
+                        <p className='text-xs'>Save Settings</p>
                     </Button>
                 </div>
             </div>

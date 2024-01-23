@@ -19,7 +19,9 @@ export default function SavedBox() {
     const [clicked, isClicked] = useState(true);
     const [selectedData, setSelectedData] = useState(null);
     const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
+    const [isPicked, setIsPicked] = useState(false);
 
+    console.log(selectedData)
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
@@ -38,12 +40,14 @@ export default function SavedBox() {
     const toggleClose = () => {
         setIsEdit(false);
         setIsNew(false);
+        setIsPicked(false)
     }
 
 
     const handleCardSelected = (id) => {
         const selectedAddress = data.find(item => item.id === id);
         setSelectedData(selectedAddress);
+        setIsPicked(true)
     }
 
 
@@ -124,9 +128,10 @@ export default function SavedBox() {
                                         variant={clicked ? 'list' : 'grid'}
                                         data={item}
                                         key={i}
-                                        selected={toggleEditedAddress} 
+                                        selected={toggleEditedAddress}
                                         onClick={handleCardSelected}
-                                        />
+                                        isSelected={isPicked && selectedData.id === item.id}
+                                    />
 
                                 </>
                             ))

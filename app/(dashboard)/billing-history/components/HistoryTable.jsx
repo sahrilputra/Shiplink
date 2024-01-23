@@ -4,20 +4,18 @@ import { Table, TableBody, TableCell, TableHead, TableCaption, TableFooter, Tabl
 export const HistoryTable = () => {
     return (
         <>
-            <div className="w-full p-5">
+            <div className="w-full p-5 text-sm">
                 <Table>
-                    <TableCaption>A list of your recent invoices.</TableCaption>
-                    <TableHeader>
-                        <TableRow>
+                    <TableCaption>A list of your recent billing history.</TableCaption>
+                    <TableHeader className="text-sm">
                             <TableHead className="w-[180px] rounded-tl-md ">Invoice No</TableHead>
                             <TableHead>Date</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead className=" text-right">Total</TableHead>
                             <TableHead className="text-center rounded-tr-md ">Invoice</TableHead>
-                        </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow className="">
+                        <TableRow className="text-xs">
                             <TableCell className="font-medium">12345612</TableCell>
                             <TableCell>27/3/2023 22:22:30 PM </TableCell>
                             <TableCell>Membership Premium </TableCell>
@@ -25,7 +23,7 @@ export const HistoryTable = () => {
                             <TableCell className="text-center text-myBlue underline">Download</TableCell>
 
                         </TableRow>
-                        <TableRow className="">
+                        <TableRow className="text-xs">
                             <TableCell className="font-medium">12345612</TableCell>
                             <TableCell>27/3/2023 22:22:30 PM </TableCell>
                             <TableCell>Membership Premium </TableCell>

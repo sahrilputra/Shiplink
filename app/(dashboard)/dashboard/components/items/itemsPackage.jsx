@@ -47,6 +47,7 @@ export default function ItemsPackage({ onClickButton, item }) {
 
     const toggleClicked = (op) => {
         setIsExpanded(op)
+        itsExpand(id)
     }
     const [clicked, setIsClicked] = useState(false);
 
@@ -62,7 +63,10 @@ export default function ItemsPackage({ onClickButton, item }) {
 
     return (
         <div
-            onClick={() => { toggleClicked(true) }}
+            onClick={() => {
+                toggleClicked(true)
+                itsExpand(id)
+            }}
             className={`
             container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 hover:bg-gray-300/10 cursor-pointer
             ${isExpanded ? 'hover:bg-white cursor-auto' : ''}
@@ -202,7 +206,7 @@ export default function ItemsPackage({ onClickButton, item }) {
                                                         alt='canadian icon'
                                                     />
                                                 </div>
-                                                <p className='text-sm'>Canada Post Regular Parcel</p>
+                                                <p className='text-xs'>Canada Post Regular Parcel</p>
                                             </div>
                                             <div className=" w-max px-2 text-xs text-zinc-500 flex flex-col">
                                                 <p className='w-max'>Estimate 14-16 Apr</p>
@@ -212,25 +216,28 @@ export default function ItemsPackage({ onClickButton, item }) {
                                     </>
                                 ) : (
                                     <>
-                                        <div className="justify-start items-start gap-2.5 inline-flex flex-wrap">
+                                        <div className="justify-start items-start gap-1 inline-flex flex-wrap">
                                             <PaymentsDialog variant="confirm" click={handleButtonClick} isSelectedButton={selectedButton} isButtonEnabled={buttonEnabled} />
                                             <Button
                                                 variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                                className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
                                                 onClick={() => handleButtonClick("Cross Border Pickup")}
+                                                size="sm"
                                             >
                                                 <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
                                             </Button>
                                             <Button
                                                 variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                className="w-[150px] h-[37px]  justify-center items-center gap-2.5 flex"
+                                                className="w-[140px]  justify-center items-center gap-2.5 flex"
+                                                size="sm"
                                                 onClick={() => handleButtonClick("Forward Package")}
                                             >
                                                 <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
                                             </Button>
                                             <Button
                                                 variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                className="w-[150px] h-[37px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                                className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
+                                                size="sm"
                                                 onClick={() => handleButtonClick("Cross Border Forward")}
                                             >
                                                 <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>

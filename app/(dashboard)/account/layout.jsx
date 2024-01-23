@@ -17,19 +17,19 @@ export default function AccountLayout({ children }) {
                         <AvatarImage src="https://source.boringavatars.com/beam" />
                         <AvatarFallback>SP</AvatarFallback>
                     </Avatar>
-                    <div className="info py-5 flex flex-col justify-center items-center">
-                        <div className=" flex flex-row gap-3 items-center">
+                    <div className="info py-5 flex flex-col justify-center items-center gap-[5px]">
+                        <div className=" flex flex-row gap-3 items-center text-sm">
                             <PersonIcons width={15} height={15} />
-                            <p className='font-medium text-lg'>Name</p>
+                            <p className='font-medium '>Name</p>
                         </div>
-                        <div className=" flex flex-row gap-3 items-center">
+                        <div className=" flex flex-row gap-3 items-center text-sm">
                             <Image
                                 src={'/assets/subscription/premium.svg'}
                                 width={20}
                                 height={20}
                                 alt='Subscription'
                             />
-                            <p className='font-medium text-lg'>Premium</p>
+                            <p className='font-medium '>Premium</p>
                         </div>
                     </div>
                 </div>

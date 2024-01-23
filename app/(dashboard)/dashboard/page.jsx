@@ -14,15 +14,24 @@ export default function Dashboard() {
 
 
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
-
     const [selectedTab, setSelectedTab] = useState("all");
+    const [expandedItemIndex, setExpandedItemIndex] = useState(null);
+    console.log("expand index ", expandedItemIndex)
+
+
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
+        setExpandedItemIndex(null)
+    }
+
+    const handleItemExpand = (itemId) => {
+        setExpandedItemIndex((prevId) => (prevId === itemId ? null : itemId));
     }
 
     const [selectedButton, setSelectedButton] = useState(null);
     const handleButtonClick = (buttonName) => {
         setSelectedButton(buttonName);
+        setExpandedItemIndex(null)
         console.log(selectedButton)
     }
 

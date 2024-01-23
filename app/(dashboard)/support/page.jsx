@@ -38,8 +38,8 @@ export default function SupportPage() {
             <div className={styles.main}>
                 <div className={styles.content}>
                     <div className="top">
-                        <h1 className='m-2 text-xl font-bold'>Support</h1>
-                        <p className='text-zinc-500 text-md font-normal p-3'> Get our support from a dedicated team of experts who are committed to assisting you every step of the way. </p>
+                        <h1 className='m-2 text-lg font-bold'>Support</h1>
+                        <p className='text-zinc-500 text-sm font-normal p-3'> Get our support from a dedicated team of experts who are committed to assisting you every step of the way. </p>
                     </div>
 
                     <div className="mid px-3 py-5">

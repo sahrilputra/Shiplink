@@ -58,17 +58,17 @@ export const UserForms = () => {
                 <form
                     className='flex gap-3 flex-col'
                     action="">
-                    <div className="nameWrapper flex flex-row gap-4 w-full">
+                    <div className="nameWrapper flex flex-row gap-4 w-full text-sm">
                         <FormField
                             className="w-full"
                             name="firstName"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
-                                        <FormLabel>First Name</FormLabel>
+                                    <FormItem className="w-full text-sm">
+                                        <FormLabel className="text-sm">First Name</FormLabel>
                                         <FormControl>
-                                            <Input id="firstName" placeholder="john" {...field} />
+                                            <Input id="firstName" className="text-sm" placeholder="john" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -77,14 +77,14 @@ export const UserForms = () => {
                         />
                         <FormField
                             name="lastName"
-                            className="w-full"
+                            className="w-full text-sm"
                             control={form.lastName}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
-                                        <FormLabel>Last Name</FormLabel>
+                                    <FormItem className="w-full text-sm">
+                                        <FormLabel className="text-sm">Last Name</FormLabel>
                                         <FormControl>
-                                            <Input id="lastName" placeholder="Doe" {...field} />
+                                            <Input id="lastName" className="text-sm" placeholder="Doe" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -146,27 +146,27 @@ export const UserForms = () => {
 
                     <FormField
                         name="phoneNumber"
-                        className="w-full"
+                        className="w-full text-sm"
                         control={form.control}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full">
                                     <FormLabel>Phone Number</FormLabel>
                                     <FormControl >
-                                        <Input type="number" id="phoneNumber"  {...field} />
+                                        <Input type="number" className="text-xs" id="phoneNumber"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             </>
                         )}
                     />
-                    <div className=" flex justify-end items-end">
+                    <div className=" flex justify-end items-end py-[20px]">
                         <Button
                             variant="destructive"
                             type="submit"
-
+                            size="sm"
                         >
-                            <p className=' font-normal '>Save Change</p>
+                            <p className=' font-normal text-xs'>Save Change</p>
                         </Button>
                     </div>
 

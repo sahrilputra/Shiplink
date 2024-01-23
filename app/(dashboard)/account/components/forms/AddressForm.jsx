@@ -200,9 +200,10 @@ export const AddressForms = () => {
                             <Button
                                 variant="destructive"
                                 type="submit"
+                                size="sm"
 
                             >
-                                <p className=' font-normal '>Save Change</p>
+                                <p className=' font-normal text-xs'>Save Change</p>
                             </Button>
                         </div>
                     </div>

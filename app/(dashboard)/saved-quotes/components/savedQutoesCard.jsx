@@ -2,16 +2,16 @@
 import React, { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
-export const SavedQutoesCard = ({ variant, onSelect, data }) => {
+export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
 
-
+    console.log("isSelected ?",isSelected)
     const toggleSelected = () => {
         onSelect(data.id);
         console.log(data.id);
     }
 
     const handleClick = () => {
-        console.log(data.id); // Get the data id when the card is clicked
+        console.log(data.id);
     }
 
 
@@ -24,7 +24,7 @@ export const SavedQutoesCard = ({ variant, onSelect, data }) => {
                         onClick={toggleSelected}
                         className={`container w-full px-[15px] py-[15px] relative rounded-lg shadow border border-zinc-600/40
                         hover:bg-slate-200/30 cursor-pointer
-                        ${onSelect === true ? "bg-blue-100" : " bg-none"}`}
+                        ${isSelected ? 'bg-blue-100' : ' bg-none'}`}
                     >
                         <Checkbox className="absolute top-[10px] right-[10px]" />
                         <div className=" w-full flex-col justify-start items-start gap-[5px] inline-flex">
@@ -80,9 +80,9 @@ export const SavedQutoesCard = ({ variant, onSelect, data }) => {
                     <div
                         onClick={toggleSelected}
                         className={`
-                        ${onSelect === true ? "bg-blue-100" : " bg-none"}
+                        ${isSelected ? 'bg-blue-100' : ' bg-none'}
                         hover:bg-slate-200/20 cursor-pointer 
-                        w-[48%] px-[10px] py-2.5  rounded-lg shadow border border-zinc-600 border-opacity-50 flex-col justify-start items-center gap-[3px] inline-flex relative`}
+                        w-max px-[10px] py-2.5  rounded-lg shadow border border-zinc-600 border-opacity-50 flex-col justify-start items-center gap-[3px] inline-flex relative`}
                     >
 
                         <Checkbox className="absolute top-[10px] right-[10px]" />

@@ -12,7 +12,7 @@ export default function page() {
                 <div className={styles.content}>
                     <div className="top">
                         <h1 className='m-2 text-xl font-bold'>Billing History</h1>
-                        <p className='text-zinc-500 text-md font-normal p-3'> Manage Your Billing Information </p>
+                        <p className='text-zinc-500 text-sm font-normal p-3'> Manage Your Billing Information </p>
                     </div>
 
                     <div className="mid px-3 py-5">

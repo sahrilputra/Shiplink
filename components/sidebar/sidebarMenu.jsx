@@ -13,8 +13,10 @@ export const SidebarMenu = ({ title, children }) => {
             {title === 'setting' ? (
                 <>
                     <div className={`${styles.deskView} mx-4 w-[200px]  px-2 py-[11px] flex-col justify-start items-start gap-[9px] flex `}>
-                        <div className="text-black text-opacity-50 text-sm font-normal ">SETTINGS</div>
-                        <Separator orientation="horizontal" className="h-[1px]" />
+                        <p className="text-black text-opacity-50 text-sm font-normal ">SETTINGS</p>
+                        <div className="w-full">
+                            <Separator orientation="horizontal" className="h-[1px]" />
+                        </div>
                     </div>
                 </>
             ) : title === 'card' ? (

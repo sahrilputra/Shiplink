@@ -11,7 +11,7 @@ export default function page() {
         <>
             <div className={styles.content}>
                 <div className="header p-5 flex flex-col gap-2">
-                    <h1 className='text-zinc-900 text-xl font-semiBold'>Billing Details</h1>
+                    <h1 className='text-zinc-900 text-base font-bold'>Billing Details</h1>
                 </div>
 
                 <div className="tableWrapper w-[90%] mx-auto">
@@ -24,7 +24,7 @@ export default function page() {
 
                 <div className="creditDetails p-5 flex flex-row gap-5 w-full justify-between">
                     <div className="w-full p-3">
-                        <h1 className='text-zinc-900 text-xl font-semiBold py-2'>New Credit Cards</h1>
+                        <h1 className='text-zinc-900 text-base font-bold py-2'>New Credit Cards</h1>
                         <CardForms />
                     </div>
                     <div className="separator">
@@ -32,7 +32,7 @@ export default function page() {
                     </div>
 
                     <div className="w-full p-3">
-                        <h1 className='text-zinc-900 text-xl font-semiBold py-2'>Saved Credit Cards</h1>
+                        <h1 className='text-zinc-900 text-base font-bold py-2'>Saved Credit Cards</h1>
                         <div className="flex flex-col gap-3">
                             <PaymentCards />
                             <PaymentCards />

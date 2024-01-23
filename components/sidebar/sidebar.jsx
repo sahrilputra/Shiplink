@@ -74,7 +74,7 @@ export const Sidebar = () => {
 
                                 <SidebarItem
                                     isActive={router === "/shipping-lebels"}
-                                    title="Shipping Lebels"
+                                    title="Shipping Labels"
                                     icon={<ShippingLabelIcon width={25} height={25} />}
                                     href="/shipping-lebels"
                                 />

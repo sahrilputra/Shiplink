@@ -7,8 +7,8 @@ export const SupportTable = ({ data, onRowClick }) => {
     console.log(data)
     return (
         <>
-            <div className="w-full p-5">
-                <Table>
+            <div className="w-full p-2">
+                <Table className="p-3">
                     <TableCaption>A List Support Tickets.</TableCaption>
                     <TableHeader>
                         <TableRow>
@@ -23,7 +23,7 @@ export const SupportTable = ({ data, onRowClick }) => {
                         {data.tickets.map((ticket) => (
                             <>
                                 <TableRow
-                                    className=" cursor-pointer"
+                                    className=" cursor-pointer text-sm"
                                     key={ticket.ticket_id}
                                     onClick={() => onRowClick(ticket)}
                                 >

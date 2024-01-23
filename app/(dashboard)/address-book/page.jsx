@@ -20,10 +20,11 @@ export default function AssitedPurchase() {
     const [selectedData, setSelectedData] = useState(null);
     const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
     const [isCheck, setIsCheck] = useState(false);
+    const [isPicked, setIsPicked] = useState(false);
 
     const [selectedItemId, setSelectedItemId] = useState(null); // State untuk ID item yang dipilih
     const [isDeleteButtonActive, setIsDeleteButtonActive] = useState(false);
-
+    console.log("selectedItemId", selectedItemId)
     // List grid view
 
     const [clicked, isClicked] = useState(true);
@@ -48,18 +49,20 @@ export default function AssitedPurchase() {
         setIsEdit(true);
         setIsNew(false);
         setKeyForEditAddressMenu(prevKey => prevKey + 1); // Update key unik
+
     }
 
     const toggleClose = () => {
         setIsEdit(false);
         setIsNew(false);
+        setIsPicked(false)
     }
 
 
     const handleCardSelected = (id) => {
         const selectedAddress = data.find(item => item.id === id);
         setSelectedData(selectedAddress);
-
+        setIsPicked(true)
         if (selectedItemId === id) {
             setSelectedItemId(null);
             setIsDeleteButtonActive(false);
@@ -133,7 +136,7 @@ export default function AssitedPurchase() {
                                     variant="destructive"
                                     className="h-10 px-10 text-xs flex flex-row justify-around items-center gap-2"
                                     onClick={toggleSelectNewAddress}
-                                    
+
                                 >
                                     <PlusIcon width={15} height={15} fontWeight={20} fill="#ffff" />
                                     <p className='text-sm font-semibold'>Add New</p>
@@ -151,7 +154,7 @@ export default function AssitedPurchase() {
                                         addressBook={item}
                                         select={toggleEditedAddress}
                                         onClick={handleCardSelected}
-                                        isSelected={selectedItemId === item.id}
+                                        isSelected={isPicked && selectedData.id === item.id}
                                         variant={clicked ? 'list' : ""}
                                     />
                                 ))

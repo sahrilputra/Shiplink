@@ -13,15 +13,18 @@ import data from '../../../data/savedQuotesData.json'
 export default function SavedQuotes() {
     const [selectedData, setSelectedData] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isPicked, setIsPicked] = useState(false);
 
     const handleCardSelected = (id) => {
         console.log("my id is", id)
         const selectedAddress = data.find(item => item.id === id);
+        setIsPicked(true);
         setIsOpen(true);
         setSelectedData(selectedAddress);
     }
     const handleClose = () => {
         setIsOpen(false);
+        setIsPicked(false);
     }
 
 
@@ -89,7 +92,7 @@ export default function SavedQuotes() {
                                             key={i}
                                             variant={clicked ? 'list' : ""}
                                             onSelect={handleCardSelected}
-                                            className="hover:bg-green-400"
+                                            isSelected={isPicked && selectedData.id === item.id}
                                             data={item}
                                         />
                                     </>
