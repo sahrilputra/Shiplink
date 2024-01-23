@@ -21,43 +21,43 @@ export const OrderDetails = ({ data, onClose }) => {
                 </div>
                 <div className="flex-col w-full gap-[5px] flex px-[20px] py-[10px]  ">
                     <div className="flex flex-row justify-between w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Payments Method</p>
-                        <p className='w-[50%]'>Visa, *** 3372</p>
+                        <p className='w-[50%] text-black text-sm'>Payments Method</p>
+                        <p className='w-[50%] text-sm'>Visa, *** 3372</p>
                     </div>
                     <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Date</p>
-                        <p className='w-[50%]'>{data?.date}</p>
+                        <p className='w-[50%] text-black text-sm'>Date</p>
+                        <p className='w-[50%] text-sm'>{data?.date}</p>
                     </div>
                     <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Product Link</p>
-                        <p className='w-[50%] text-myBlue underline'>Link</p>
+                        <p className='w-[50%] text-black text-sm'>Product Link</p>
+                        <p className='w-[50%] text-myBlue underline text-sm'>Link</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Product</p>
-                        <p className='w-[50%]'>{data?.productName}</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Product</p>
+                        <p className='w-[50%] '>{data?.productName}</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Qty</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Qty</p>
                         <p className='w-[50%]'>{data?.Qty}</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Product Price</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Product Price</p>
                         <p className='w-[50%]'>{data?.productPrice}</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Total</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Total</p>
                         <p className='w-[50%]'>{data?.priceAmount}</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Processing Fee</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Processing Fee</p>
                         <p className='w-[50%]'>$80.00</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Total Amount</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Total Amount</p>
                         <p className='w-[50%]'>{data?.priceAmount}</p>
                     </div>
-                    <div className="flex flex-row w-full text-gray-500">
-                        <p className='w-[50%] text-black'>Invoice</p>
+                    <div className="flex flex-row w-full text-gray-500 text-sm">
+                        <p className='w-[50%] text-black text-sm'>Invoice</p>
                         <p className='w-[50%] text-myBlue underline'>Link</p>
                     </div>
                 </div>
@@ -66,13 +66,15 @@ export const OrderDetails = ({ data, onClose }) => {
                     <Button
                         variant="redOutline"
                         onClick={onClose}
+                        size="sm"
                     >
-                        <p>Close</p>
+                        <p className='text-sm'>Close</p>
                     </Button>
                     <Button
+                        size="sm"
                         variant="destructive"
                     >
-                        <p>Order Again</p>
+                        <p className='text-sm'>Order Again</p>
                     </Button>
                 </div>
             </div>

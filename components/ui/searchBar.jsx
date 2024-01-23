@@ -18,7 +18,7 @@ export const SearchBar = () => {
 export const SearchPayments = () => {
     return (
         <div className="relative w-[100%]">
-            <Input type="text" placeholder="Search..." className="pr-12 pl-4" />
+            <Input type="text" placeholder="Search..." className="pr-12 pl-4" text-sm />
             <div className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-500 right-3"  >
                 <SearchIcon
                     width={20}
