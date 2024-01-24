@@ -12,7 +12,7 @@ import {
     InvoiceManagerIcon, AssistedPurchaseIcon, SupportTickets, WarehouseIcons, ProductManagerIcon,
     CustomerManagerIcon, UserPemissionIcon, ConfigIcon
 } from './icon/adminIcon'
-
+import { Separator } from "../ui/separator";
 import { useMediaQuery } from "react-responsive";
 export const AdminSidebar = () => {
     const router = usePathname();
@@ -26,23 +26,34 @@ export const AdminSidebar = () => {
     return (
         <>
             <aside
-                className={`pt-5 flex-col justify-start items-center gap-5 flex
+                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex
              ${styles.sideBarRespon} 
              `}
             >
                 <ScrollArea className="h-[100vh]">
                     <div className={` flex gap-3 flex-col pb-[100px] `}>
-                        <div className={`text-center text-red-700 text-[28px] font-bold font-['Poppins'] ${styles.logo} `}>ShipLink</div>
+                        <div className={`${styles.logo} mt-[10px] mb-[10px] text-center text-red-700 h-[28px] w-[full] flex flex-col gap-2 justify-items-center`}>
+                            <Image
+                                src={"/logo.png"}
+                                width={100}
+                                height={100}
+                                alt="shiplink Logo"
+                                className="mx-auto"
+                            />
+                            <div className="w-[200px] flex items-center justify-center mx-auto">
+                                <Separator className='h-[2px]' />
+                            </div>
+                        </div>
                         <SidebarMenu title="" className="flex-col justify-start items-center flex">
                             <div className="flex-col justify-end items-start gap-2.5 flex">
                                 <SidebarItem
-                                    isActive={router === "/admin/dashboard"}
+                                    isActive={router === "/admin/arrival-scan"}
                                     title="Arrival Scan"
                                     icon={
                                         <ArrivalIcon
                                             className="w-[25px] h-[25px] relative"
                                         />}
-                                    href="/admin/dashboard"
+                                    href="/admin/arrival-scan"
                                 />
                                 <SidebarItem
                                     isActive={router === "/mailbox"}
