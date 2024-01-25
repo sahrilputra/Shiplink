@@ -1,4 +1,5 @@
-
+'use client'
+import React, { useState } from "react";
 import {
     Table,
     TableBody,
@@ -10,7 +11,27 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
+import { ExpandedTable } from "./ExpandedTable";
+import { TableAction } from "./TableAction";
+import { ArrowDownV2Icons } from "@/components/icons/iconCollection";
+import { EditMode } from "./EditMode";
+import { VerifiedStatus } from "../status/VerifiedStatus";
 export function VerificationTable({ data, isOpen, setOpen }) {
+
+    const [expandedRows, setExpandedRows] = useState([]);
+    const [isEdit, setIsEdit] = useState(false);
+
+    const toggleEdit = () => {
+        setIsEdit(!isEdit)
+    }
+    const toggleCancel = () => {
+        setIsEdit(false)
+    }
+    const toggleRow = (index) => {
+        const newExpandedRows = [...expandedRows];
+        newExpandedRows[index] = !newExpandedRows[index];
+        setExpandedRows(newExpandedRows);
+    };
     return (
         <Table>
             <TableHeader className="text-sm">
@@ -20,43 +41,61 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                 <TableHead>Destination</TableHead>
                 <TableHead className="text-right">Last Update</TableHead>
                 <TableHead className="">Customs Status</TableHead>
-                <TableHead className=""></TableHead>
+                <TableHead className="w-[30px]"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
-                    data.map((item) => (
+                    data.map((item, index) => (
                         <>
-                            <TableRow key={item.id} >
+                            <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
                                 <TableCell className="font-medium">{item.TrackingID}</TableCell>
                                 <TableCell>{item.CustomerName}</TableCell>
                                 <TableCell>{item.Origin}</TableCell>
                                 <TableCell>{item.Destination}</TableCell>
                                 <TableCell className="text-right">{item.UpdateDate}</TableCell>
-                                <TableCell>{item.CustomsStatus}</TableCell>
                                 <TableCell>
+                                    <VerifiedStatus param={item.CustomsStatus} />
+                                </TableCell>
+                                <TableCell className="w-[30px]">
                                     <Button
                                         variant="tableBlue"
-                                        size="tableIcon"
-                                        className="px-1 py-1"
-                                        onClick={() => setOpen(!isOpen)}
+                                        size="icon"
+                                        className={`h-5 w-5 rounded-sm`}
+                                        onClick={() => toggleRow(index)}
                                     >
-                                        <p className="text-xs">Klik</p>
+                                        <ArrowDownV2Icons
+                                            width={10}
+                                            height={10}
+                                            className={`w-5 h-5 text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`}
+                                        />
                                     </Button>
                                 </TableCell>
                             </TableRow>
-                            <TableRow  key={item.id} className={`${isOpen? "" : "hidden"}`} >
-                                <TableCell className="font-medium" colSpan={7}>Expand</TableCell>
-                            </TableRow>
+                            {expandedRows[index] && (
+                                <>
+                                    <TableRow key={`expanded_${item.id}`} className="bg-blue-100 hover:bg-blue-100">
+                                        <TableCell className="font-medium" colSpan={7}>
+                                            < ExpandedTable type={(isEdit ? "edit" : "")} />
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow className="bg-blue-200 hover:bg-blue-200">
+                                        <TableCell className="font-medium" colSpan={7}>
+                                            {
+                                                isEdit ? (
+                                                    <EditMode cancel={toggleCancel} />
+                                                ) : (
+                                                    <TableAction edit={toggleEdit} />
+                                                )
+                                            }
+                                        </TableCell>
+                                    </TableRow>
+                                </>
+                            )}
                         </>
                     ))
                 }
             </TableBody>
-            <TableFooter>
-                <TableRow>
-                    <TableCell colSpan={6}>Total</TableCell>
-                    <TableCell className="text-right">$2,500.00</TableCell>
-                </TableRow>
-            </TableFooter>
+          
         </Table>
     )
 }

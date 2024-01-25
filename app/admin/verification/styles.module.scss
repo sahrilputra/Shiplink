@@ -2,7 +2,8 @@
     display: inline-block;
     width: 100%;
     // max-width: max-content;
-    height: 95vh;
+    height: max-content;
+    min-height: 100vh;
     // max-height: max-content;
     background-color: #ffff;
     border-radius: 8px;
@@ -15,8 +16,8 @@
 .main {
     flex: 5;
     width: 100%;
-    max-height: max-content;
-    min-height: 90vh;
+    height: max-content;
+    min-height: 100vh;
     background-color: #ffff;
     border-radius: 6px;
     -webkit-border-radius: 6px;

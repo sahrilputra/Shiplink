@@ -3,26 +3,36 @@ import { Menus } from './Menus'
 import { MenuItems } from './MenusItem'
 import { useRouter, usePathname } from 'next/navigation';
 
-export const VerificationMenus = () => {
-    const router = usePathname();
-    console.log(router)
+export const VerificationMenus = ({ selectedTab, isSelected }) => {
+    const handleTabClick = (tabName) => {
+        selectedTab(tabName);
+    }
     return (
         <Menus>
-            <MenuItems
-                isActive={router === "/admin/verification"}
-                title="All"
-                href="/admin/verification"
-            />
-            <MenuItems
-                isActive={router === "/admin/verification/verified"}
-                title="Verified"
-                href="/admin/verification/verified"
-            />
-            <MenuItems
-                isActive={router === "/admin/verification/unverified"}
-                title="Unvarified"
-                href="/admin/verification/unverified"
-            />
+            <div className="">
+                <button
+                    className={`${isSelected === "All" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                    onClick={() => handleTabClick("All")}
+                >
+                    <div className="">All</div>
+                </button>
+            </div>
+            <div className="">
+                <button
+                    onClick={() => handleTabClick("Verified")}
+                    className={`${isSelected === "Verified" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                >
+                    <div className="">Verified</div>
+                </button>
+            </div>
+            <div className="">
+                <button
+                    onClick={() => handleTabClick("Unverified")}
+                    className={`${isSelected === "Unverified" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                >
+                    <div className="">Unverified</div>
+                </button>
+            </div>
         </Menus>
     )
 }
