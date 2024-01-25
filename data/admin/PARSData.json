@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "Type": "PARS",
+        "CreateDate": "2024-01-25",
+        "AssignedTo": "John Doe",
+        "EditDate": "2024-01-26",
+        "SequencesStart": "A",
+        "SequencesEnd": "Z",
+        "SequencesRange": "A-Z",
+        "SequencesNumber": 26
+    },
+    {
+        "id": 2,
+        "Type": "PAPS",
+        "CreateDate": "2024-01-25",
+        "AssignedTo": "Jane Smith",
+        "EditDate": "2024-01-27",
+        "SequencesStart": "1",
+        "SequencesEnd": "10",
+        "SequencesRange": "1-10",
+        "SequencesNumber": 10
+    },
+    {
+        "id": 3,
+        "Type": "PARS",
+        "CreateDate": "2024-01-26",
+        "AssignedTo": "Bob Johnson",
+        "EditDate": "2024-01-28",
+        "SequencesStart": "X",
+        "SequencesEnd": "Y",
+        "SequencesRange": "X-Y",
+        "SequencesNumber": 2
+    },
+    {
+        "id": 4,
+        "Type": "PAPS",
+        "CreateDate": "2024-01-27",
+        "AssignedTo": "Alice Brown",
+        "EditDate": "2024-01-29",
+        "SequencesStart": "5",
+        "SequencesEnd": "15",
+        "SequencesRange": "5-15",
+        "SequencesNumber": 11
+    },
+    {
+        "id": 5,
+        "Type": "PARS",
+        "CreateDate": "2024-01-28",
+        "AssignedTo": "Charlie Lee",
+        "EditDate": "2024-01-30",
+        "SequencesStart": "M",
+        "SequencesEnd": "P",
+        "SequencesRange": "M-P",
+        "SequencesNumber": 4
+    }
+]
