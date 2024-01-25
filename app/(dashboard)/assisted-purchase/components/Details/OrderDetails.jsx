@@ -9,14 +9,14 @@ export const OrderDetails = ({ data, onClose }) => {
             <div className="px-[10px] w-full py-2.5 flex-col justify-start items-center inline-flex">
                 <div className="p-2.5 justify-between items-center inline-flex w-full">
                     <div className="flex-col justify-start items-start inline-flex">
-                        <div className="text-zinc-900 text-xl font-bold ">Product Details</div>
+                        <div className="text-zinc-900 text-base font-bold ">Product Details</div>
                         <div className="text-zinc-600 text-opacity-50 font-medium"></div>
                     </div>
-                    <div className="w-[90px] h-[31px] px-3 py-0.5 bg-orange-300 bg-opacity-75 rounded-[3px] border border-amber-300 justify-center items-center gap-2.5 flex">
-                        <div className="text-amber-500 text-sm font-medium font-['Poppins']">{data?.status}</div>
+                    <div className="w-[90px] h-[25px] px-3 py-0.5 bg-orange-300 bg-opacity-75 rounded-[3px] border border-amber-300 justify-center items-center gap-2.5 flex">
+                        <div className="text-amber-500 text-xs font-medium font-['Poppins']">{data?.status}</div>
                     </div>
                 </div>
-                <div className="w-full py-4">
+                <div className="w-full py-1">
                     <Separator className="py-[1px]" />
                 </div>
                 <div className="flex-col w-full gap-[5px] flex px-[20px] py-[10px]  ">
@@ -62,19 +62,21 @@ export const OrderDetails = ({ data, onClose }) => {
                     </div>
                 </div>
 
-                <div className="w-full flex flex-row justify-evenly gap-3 py-3">
+                <div className="w-[80%] flex flex-row justify-evenly gap-3 py-3">
                     <Button
+                        className="w-full"
                         variant="redOutline"
                         onClick={onClose}
                         size="sm"
                     >
-                        <p className='text-sm'>Close</p>
+                        <p className='text-xs'>Close</p>
                     </Button>
                     <Button
+                        className="w-full"
                         size="sm"
                         variant="destructive"
                     >
-                        <p className='text-sm'>Order Again</p>
+                        <p className='text-xs'>Order Again</p>
                     </Button>
                 </div>
             </div>

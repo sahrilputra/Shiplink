@@ -36,17 +36,18 @@ export const Sidebar = () => {
     return (
         <>
             <aside
-                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex
+                className={`pt-2 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex
              ${styles.sideBarRespon} 
              `}>
                 <ScrollArea className="h-[100vh] w-max">
-                    <div className={`flex gap-3 flex-col pb-[100px]  `}>
-                        <div className={`${styles.logo} mt-[10px] mb-[10px] text-center text-red-700 h-[28px] w-[full] flex flex-col gap-2 justify-items-center`}>
+                    <div className={`flex gap-3 flex-col `}>
+                        <div className={`${styles.logo} mt-[10px] mb-[10px] text-center h-[50px] w-[full] flex flex-col gap-2 justify-items-center`}>
                             <Image
                                 src={"/logo.png"}
-                                width={100}
-                                height={100}
+                                width={150}
+                                height={150}
                                 alt="shiplink Logo"
+                                objectFit="contain"
                                 className="mx-auto"
                             />
                             <div className="w-[200px] flex items-center justify-center mx-auto">

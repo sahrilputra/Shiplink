@@ -6,12 +6,12 @@ export const HistoryTable = () => {
         <>
             <div className="w-full p-5 text-sm">
                 <Table>
-                    <TableCaption>A list of your recent billing history.</TableCaption>
-                    <TableHeader className="text-sm">
-                            <TableHead className="w-[180px] rounded-tl-md ">Invoice No</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead className=" text-right">Total</TableHead>
+                    <TableCaption className="text-xs">A list of your recent billing history.</TableCaption>
+                    <TableHeader className="text-xs">
+                            <TableHead className="w-[10%] rounded-tl-md ">Invoice No</TableHead>
+                            <TableHead className="w-[20%]">Date</TableHead>
+                            <TableHead className="w-[50%]">Name</TableHead>
+                            <TableHead className="w-[10%] text-center">Total</TableHead>
                             <TableHead className="text-center rounded-tr-md ">Invoice</TableHead>
                     </TableHeader>
                     <TableBody>

@@ -40,7 +40,7 @@ export default function AssistedPurchasePage() {
             <div className={styles.main}>
                 <div className={styles.content}>
                     <div className="top">
-                        <h1 className='m-2 text-xl'>Assisted Purchase</h1>
+                        <h1 className='m-2 text-lg font-bold'>Assisted Purchase</h1>
                         <p className='text-zinc-500 text-sm font-normal p-3'> Copy the link / URL of the items you would like and paste them into our order form, and we will do the rest. Your item will be purchased and delivered to your Mailbox.</p>
                     </div>
                     <div className={`${styles.forms} w-full form flex flex-row flex-wrap gap-8 p-3`}>
@@ -106,13 +106,14 @@ export default function AssistedPurchasePage() {
                                     variant="redOutline"
                                     size="sm"
                                     >
-                                    <p className="text-sm">+ New Purchase</p>
+                                    <p className="text-xs">+ New Purchase</p>
                                 </Button>
                                 <Button
                                     variant="destructive"
                                     size="sm"
+                                    className=""
                                 >
-                                    <p className="text-sm">ORDER</p>
+                                    <p className="text-xs">ORDER</p>
                                 </Button>
                             </div>
                         </div>

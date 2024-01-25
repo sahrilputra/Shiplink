@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
 export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
 
-    console.log("isSelected ?",isSelected)
+    console.log("isSelected ?", isSelected)
     const toggleSelected = () => {
         onSelect(data.id);
         console.log(data.id);
@@ -30,7 +30,7 @@ export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
                         <div className=" w-full flex-col justify-start items-start gap-[5px] inline-flex">
                             <div className="text-zinc-900 text-xs font-bold ">Quote Date : {data.date}</div>
                             <div className="justify-between items-start flex flex-row w-full flex-wrap">
-                                <div className="flex-col w-[400px] justify-start items-start leading-tight inline-flex">
+                                <div className="flex-col w-[350px]  justify-start items-start leading-tight inline-flex">
                                     <div className="justify-start items-start gap-2.5 inline-flex">
                                         <div className="text-red-700 text-sm font-bold ">From</div>
                                         <div><span className="text-zinc-900 font-bold text-sm ">{data.shipFrom.contact.name} | </span>
@@ -52,7 +52,7 @@ export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
                                 <div className="h-[50px] ">
                                     <Separator orientation="vertical" className="h-full w-[2px]" />
                                 </div>
-                                <div className="flex-col w-[400px] justify-start items-start inline-flex leading-tight">
+                                <div className="flex-col w-[350px] justify-start items-start inline-flex leading-tight">
                                     <div className="justify-start items-start gap-2.5 inline-flex">
                                         <div className="text-myBlue text-sm font-bold ">To</div>
                                         <div>
@@ -89,7 +89,7 @@ export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
                         <div className="flex flex-col">
                             <div className="text-zinc-900 text-xs font-bold text-left flex justify-start w-[80%]">Quote Date : {data.date}</div>
                             <div className=" justify-between items-center gap-[20px] flex flex-row flex-wrap">
-                                <div className="flex-col justify-center items-start inline-flex w-[250px] p-2">
+                                <div className="flex-col justify-center items-start inline-flex w-[220px] p-2">
                                     <div className="text-zinc-900 font-bold text-sm">From</div>
                                     <p className='text-zinc-900 text-md font-bold text-sm'>{data.shipFrom.contact.name}</p>
                                     <p className="text-zinc-600  font-regular text-sm">{data.shipFrom.contact.phone} </p>
@@ -101,7 +101,7 @@ export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
                                         <div className=" text-zinc-500 font-medium text-xs ">{data.shipFrom.address}</div>
                                     </div>
                                 </div>
-                                <div className="flex-col justify-center items-start inline-flex w-[250px] p-2">
+                                <div className="flex-col justify-center items-start inline-flex w-[220px] p-2">
                                     <div className="text-zinc-900 text-sm font-bold">To</div>
                                     <p className='text-zinc-900 text-sm font-bold '>{data.shipTo.contact.name}</p>
                                     <p className="text-zinc-600 text-sm font-regular ">{data.shipTo.contact.phone} </p>
@@ -118,13 +118,13 @@ export const SavedQutoesCard = ({ variant, onSelect, data, isSelected }) => {
 
                             <Separator orientation="horizontal" className="w-[100%] h-[2px] my-2 bg-zinc-600 bg-opacity-20" />
                             <div className="justify-between w-[100%] items-center gap-[18px] inline-flex">
-                                <div className=" flex-col justify-start items-start inline-flex w-[250px] p-2">
+                                <div className=" flex-col justify-start items-start inline-flex w-[220px] p-2">
                                     <div className=" text-zinc-900 text-sm font-bold ">{data.description}</div>
                                     <div className=" text-zinc-500 text-xs font-normal ">{data.dimensionAndWeight.dimensions}</div>
                                     <div className="text-zinc-500 text-xs font-normal ">{data.dimensionAndWeight.weight}</div>
                                 </div>
                                 <Separator orientation="vertical" className="w-[2px] my-2 bg-zinc-600 bg-opacity-20" />
-                                <div className="flex-col justify-start items-start inline-flex w-[250px] p-2">
+                                <div className="flex-col justify-start items-start inline-flex w-[220px] p-2">
                                     <div className=" text-zinc-900 font-bold text-sm ">{data.rates.carrier}</div>
                                     <div className="text-zinc-500 text-xs font-normal ">{data.rates.duration}</div>
                                 </div>

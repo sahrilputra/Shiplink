@@ -37,21 +37,21 @@ export const OpenedTickets = ({ close }) => {
                     </div>
 
                     <div className=" w-full p-3">
-                        <Separator className="py-[2px]" />
+                        <Separator className="h-[2px]" />
                     </div>
                 </div>
 
 
                 <ScrollArea className="box h-[60%] w-[90%] mx-auto overflow-auto ">
                     <div className="flex flex-col gap-4">
-                        <div className="px-[10px] py-[8px] h-max rounded-md border border-neutral-200 flex-col flex">
+                        <div className="px-[10px] py-[8px] h-max rounded-md border-[3px] border-neutral-200 flex-col flex">
                             <div className="top py-3 px-4">
                                 <div className="text-black text-sm font-medium font-['Poppins']">(You) Re : Hosting terkelola yang didukung Jetpack</div>
                                 <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
                             </div>
 
                             <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
-                                <Separator className="py-[2px] w-[90%]" />
+                                <Separator className="h-[2px] w-[90%]" />
                                 <ArrowIcon width={15} height={15} className="w-[15px] h-[15px]" />
                             </div>
 
@@ -59,14 +59,14 @@ export const OpenedTickets = ({ close }) => {
                                 <p className='text-xs'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sapiente vel qui quo fugiat officiis vitae voluptatibus repellat quos perferendis explicabo!</p>
                             </div>
                         </div>
-                        <div className="px-[10px] py-[8px] h-max rounded-md border border-neutral-200 flex-col flex">
+                        <div className="px-[10px] py-[8px] h-max rounded-md border-[3px] border-neutral-200 flex-col flex">
                             <div className="top py-3 px-4">
                                 <div className="text-black text-sm font-medium font-['Poppins']">(You) Re : Hosting terkelola yang didukung Jetpack</div>
                                 <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
                             </div>
 
                             <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
-                                <Separator className="py-[2px] w-[90%]" />
+                                <Separator className="h-[2px] w-[90%]" />
                                 <ArrowIcon width={15} height={15} className="w-[15px] h-[15px]" />
                             </div>
 
@@ -74,29 +74,14 @@ export const OpenedTickets = ({ close }) => {
                                 <p className='text-xs'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sapiente vel qui quo fugiat officiis vitae voluptatibus repellat quos perferendis explicabo!</p>
                             </div>
                         </div>
-                        <div className="px-[10px] py-[8px] h-max rounded-md border border-neutral-200 flex-col flex">
+                        <div className="px-[10px] py-[8px] h-max rounded-md border-[3px] border-neutral-200 flex-col flex">
                             <div className="top py-3 px-4">
                                 <div className="text-black text-sm font-medium font-['Poppins']">(You) Re : Hosting terkelola yang didukung Jetpack</div>
                                 <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
                             </div>
 
                             <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
-                                <Separator className="py-[2px] w-[90%]" />
-                                <ArrowIcon width={15} height={15} className="w-[15px] h-[15px]" />
-                            </div>
-
-                            <div className="chat px-4 py-3 text-sm font-normal">
-                                <p className='text-xs'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sapiente vel qui quo fugiat officiis vitae voluptatibus repellat quos perferendis explicabo!</p>
-                            </div>
-                        </div>
-                        <div className="px-[10px] py-[8px] h-max rounded-md border border-neutral-200 flex-col flex">
-                            <div className="top py-3 px-4">
-                                <div className="text-black text-sm font-medium font-['Poppins']">(You) Re : Hosting terkelola yang didukung Jetpack</div>
-                                <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
-                            </div>
-
-                            <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
-                                <Separator className="py-[2px] w-[90%]" />
+                                <Separator className="h-[2px] w-[90%]" />
                                 <ArrowIcon width={15} height={15} className="w-[15px] h-[15px]" />
                             </div>
 

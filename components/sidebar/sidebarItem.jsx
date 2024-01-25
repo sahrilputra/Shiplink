@@ -18,7 +18,7 @@ export const SidebarItem = ({ icon, title, isActive, href }) => {
                                 <div className="w-[30px] h-[50px]  text-white top-[-16.67px] fill-white stroke-white">{icon}</div>
                             </div>
                             <div className={`${styles.title} justify-start items-start gap-[18px] flex`}>
-                                <div className=" text-white text-[12px] font-semibold font-['Poppins']">{title}</div>
+                                <div className=" text-white text-[14px] font-semibold font-['Poppins']">{title}</div>
                             </div>
                         </div>
                     </>
@@ -29,7 +29,7 @@ export const SidebarItem = ({ icon, title, isActive, href }) => {
                                 <div className="w-[30px] h-[50px]  top-[-16.67px] fill-black stroke-black opacity-40">{icon}</div>
                             </div>
                             <div className={`${styles.title} opacity-50 justify-start items-start gap-[18px] flex`}>
-                                <div className=" text-black text-[12px] font-normal font-['Poppins']">{title}</div>
+                                <div className=" text-black text-[14px] font-normal font-['Poppins']">{title}</div>
                             </div>
                         </div>
                     </>

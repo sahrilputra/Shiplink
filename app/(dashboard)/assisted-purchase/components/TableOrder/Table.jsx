@@ -15,8 +15,8 @@ export const AssitedTableOrder = ({ data, handleData }) => {
             <div className="w-full p-5">
                 <Table>
                     <TableCaption>A list of your recent invoices.</TableCaption>
-                    <TableHeader>
-                        <TableHead className="w-[100px] rounded-tl-md rounded-bl-md">ID</TableHead>
+                    <TableHeader className="text-xs">
+                        <TableHead className="w-[100px] rounded-tl-md rounded-bl-md ">ID</TableHead>
                         <TableHead>Date</TableHead>
                         <TableHead>Product Name</TableHead>
                         <TableHead className="w-[50px] text-center">Qty</TableHead>
@@ -33,13 +33,13 @@ export const AssitedTableOrder = ({ data, handleData }) => {
                                     handleDataID(item.id)
                                 }
                             >
-                                <TableCell className="font-medium">{item.id}</TableCell>
-                                <TableCell>{item.date}</TableCell>
-                                <TableCell>{item.productName}</TableCell>
-                                <TableCell className="text-center">{item.Qty}</TableCell>
-                                <TableCell className="text-right">{item.productPrice}</TableCell>
-                                <TableCell className="text-right">{item.priceAmount}</TableCell>
-                                <TableCell className="text-center">{item.status}</TableCell>
+                                <TableCell className="font-medium text-xs h-[40px] p-2 px-4 py-3">{item.id}</TableCell>
+                                <TableCell className="font-medium text-xs h-[40px] p-2 px-4 py-3">{item.date}</TableCell>
+                                <TableCell className="font-medium text-xs h-[40px] p-2 px-4 py-3">{item.productName}</TableCell>
+                                <TableCell className="text-center text-xs h-[40px] p-2 px-4 py-3">{item.Qty}</TableCell>
+                                <TableCell className="text-right text-xs h-[40px] p-2 px-4 py-3">{item.productPrice}</TableCell>
+                                <TableCell className="text-right text-xs h-[40px] p-2 px-4 py-3">{item.priceAmount}</TableCell>
+                                <TableCell className="text-center text-xs h-[40px] p-2 px-4 py-3">{item.status}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

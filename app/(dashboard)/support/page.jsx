@@ -55,9 +55,10 @@ export default function SupportPage() {
                             </div>
                             <Button
                                 variant="destructive"
+                                size="sm"
                                 onClick={handleCreateTicket}
                             >
-                                Create New Ticket
+                                <p className='text-xs'>Create New Ticket</p>
                             </Button>
                         </div>
 

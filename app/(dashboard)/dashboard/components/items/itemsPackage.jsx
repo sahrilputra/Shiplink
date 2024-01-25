@@ -41,22 +41,30 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
 
     const [isExpanded, setIsExpanded] = useState(false);
 
+    // button Control 
+    const [selectedButton, setSelectedButton] = useState(null);
+    const [buttonEnabled, setButtonEnabled] = useState(true);
+    const [clicked, setIsClicked] = useState(false);
+
+
     const toggleExpanded = () => {
         onExpand(id); // Call onExpand to toggle expanded state in the parent component
-        setIsExpanded(!isExpanded); // Toggle local expanded state
+        setIsExpanded(!isExpanded);
+        onClickButton(null);
+        if (isExpand === false) {
+            setSelectedButton(null)
+            setButtonEnabled(true);
+         
+        }
     };
 
     const toggleClicked = (op) => {
         onExpand(op)
         setIsExpanded(true)
     }
-    const [clicked, setIsClicked] = useState(false);
 
 
-    // button Control 
-    const [selectedButton, setSelectedButton] = useState(null);
-    const [buttonEnabled, setButtonEnabled] = useState(true);
-    
+
     const handleButtonClick = (buttonName) => {
         setSelectedButton(buttonName);
         onClickButton(buttonName);
