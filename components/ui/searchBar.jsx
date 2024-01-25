@@ -4,11 +4,11 @@ import { SearchIcon } from '../icons/iconCollection'
 export const SearchBar = () => {
     return (
         <div className="relative w-80">
-            <Input type="text" placeholder="Search..." className="pr-12 pl-4" />
-            <div className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-500 right-3"  >
+            <Input type="text" placeholder="Search..." className="pr-8 pl-4 text-xs" />
+            <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
                 <SearchIcon
-                    width={20}
-                    height={20}
+                    width={15}
+                    height={15}
                 />
             </div>
         </div>

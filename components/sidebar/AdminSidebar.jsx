@@ -56,12 +56,12 @@ export const AdminSidebar = () => {
                                     href="/admin/arrival-scan"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/mailbox"}
+                                    isActive={router === "/admin/verification"}
                                     title="Verification"
                                     icon={
                                         <VerificationIcon width={25} height={25} />
                                     }
-                                    href="/mailbox"
+                                    href="/admin/verification"
                                 />
 
                                 <SidebarItem
