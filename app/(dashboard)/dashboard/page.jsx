@@ -10,6 +10,7 @@ import { PaymentModals } from './components/dashboardMenus/payments/paymentModal
 import { ModalContext } from '@/context/ModalContext';
 import data from '../../../data/dashboardData.json'
 import { DetailsModals } from './components/DialogDetails/Details';
+import { ScrollArea } from '@/components/ui/scroll-area';
 export default function Dashboard() {
 
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
@@ -47,7 +48,6 @@ export default function Dashboard() {
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.tabs}>
-
                         <div className="w-[311px] h-[46px] p-[5px] justify-start items-start gap-[19px] inline-flex">
                             <div className="flex-col justify-start items-center gap-1.5 inline-flex">
                                 <div
@@ -124,19 +124,19 @@ export default function Dashboard() {
             </div>
 
             <div className={styles.rightPanel}>
-                {selectedButton === "Cross Border Forward" ? (
-                    <ForwadPakage />
-                ) : selectedButton === "Forward Package" ? (
-                    <>
+                <div className={styles.rightPanelHeader}>
+                    {selectedButton === "Cross Border Forward" ? (
                         <ForwadPakage />
-                    </>
-                ) : (
-                    <div className="ads">
-                        <PromoOne />
-                    </div>
-                )}
-
-
+                    ) : selectedButton === "Forward Package" ? (
+                        <>
+                            <ForwadPakage />
+                        </>
+                    ) : (
+                        <div className="ads">
+                            <PromoOne />
+                        </div>
+                    )}
+                </div >
             </div >
         </>
     )

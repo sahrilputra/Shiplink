@@ -6,7 +6,7 @@ export const SavedQuotesDetails = ({ data, handleClose }) => {
 
     return (
         <>
-            <div className="w-[378px] min-w-full h-max min-full bg-white rounded-md px-[31px] py-[15px] ">
+            <div className="w-[378px] min-w-full h-screen min-full bg-white rounded-md px-[31px] py-[15px] ">
                 <div className="flex flex-col">
                     <h1 className=' text-base font-bold'>Shipping Label Details</h1>
                     <div className="container-details flex flex-col text-sm">

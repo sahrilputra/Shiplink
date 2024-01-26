@@ -104,21 +104,23 @@ export default function SavedQuotes() {
             </div>
 
             <div className={styles.rightPanel}>
-                {
-                    isOpen ? (
-                        <>
-                            <SavedQuotesDetails data={selectedData} handleClose={handleClose} />
+                <div className={styles.rightPanelHeader}>
+                    {
+                        isOpen ? (
+                            <>
+                                <SavedQuotesDetails data={selectedData} handleClose={handleClose} />
 
-                        </>
-                    ) : (
-                        <>
-                            <div className="ads">
-                                <PromoOne />
-                            </div>
-                        </>
-                    )
-                }
+                            </>
+                        ) : (
+                            <>
+                                <div className="ads">
+                                    <PromoOne />
+                                </div>
+                            </>
+                        )
+                    }
 
+                </div>
             </div>
         </>
     )

@@ -2,15 +2,15 @@
     display: flex;
     // margin: 5px;
     gap: 5px;
-    height: 100vh;
+    height: 92vh;
     // width: 100%;
 }
 
 .main {
-    flex: 5;
-    width: 100%;
+    
+    width: 80%;
     height: max-content;
-    min-height: 100vh;
+    min-height: 100%;
     background-color: #ffff;
     border-radius: 6px;
     max-height: max-content;
@@ -18,15 +18,31 @@
     -moz-border-radius: 6px;
     -ms-border-radius: 6px;
     -o-border-radius: 6px;
+
 }
 
 .rightPanel {
+
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 2;
     gap: 5px;
-    // width: 378px;
+    width: 30%;
+    min-width: 378px;
     // min-width: 100%;
+}
+
+.rightPanelHeader {
+    // width: 378px;
+    //min-width: ;
+    position: fixed;
+    height: 100%;
+    background: #ECEDEE;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
 }
 
 .tabs {
@@ -43,7 +59,7 @@
 }
 
 .item_container {
-    margin-top: 25px;
+    padding-top: 25px;
     display: flex;
     justify-content: center;
 }

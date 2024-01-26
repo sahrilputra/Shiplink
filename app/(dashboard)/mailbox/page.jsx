@@ -91,14 +91,15 @@ export default function Mailbox() {
             </div>
 
             <div className={styles.rightPanel}>
-                {selectedButton === "Cross Border Forward" ? (
-                    <ForwadPakage />
-                ) : (
-                    <div className="ads">
-                        <PromoOne />
-                    </div>
-                )}
-
+                <div className={`${styles.rightPanelHeader}`}>
+                    {selectedButton === "Cross Border Forward" ? (
+                        <ForwadPakage />
+                    ) : (
+                        <div className="ads">
+                            <PromoOne />
+                        </div>
+                    )}
+                </div>
 
             </div>
 

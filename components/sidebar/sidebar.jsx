@@ -36,7 +36,7 @@ export const Sidebar = () => {
     return (
         <>
             <aside
-                className={`pt-2 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex
+                className={`pt-2 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex z-[20]
              ${styles.sideBarRespon} 
              `}>
                 <ScrollArea className="h-[100vh] w-max">
@@ -44,8 +44,8 @@ export const Sidebar = () => {
                         <div className={`${styles.logo} mt-[10px] mb-[10px] text-center h-[50px] w-[full] flex flex-col gap-2 justify-items-center`}>
                             <Image
                                 src={"/logo.png"}
-                                width={150}
-                                height={150}
+                                width={120}
+                                height={120}
                                 alt="shiplink Logo"
                                 objectFit="contain"
                                 className="mx-auto"

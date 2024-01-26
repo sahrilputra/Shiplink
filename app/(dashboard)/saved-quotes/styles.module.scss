@@ -7,8 +7,7 @@
 }
 
 .main {
-    flex: 5;
-    width: 100%;
+    width: 80%;
     height: max-content;
     min-height: 100vh;
     padding-bottom: 30px;
@@ -21,16 +20,7 @@
     -o-border-radius: 6px;
 }
 
-.rightPanel {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100vh;
-    max-height: max-content;
-    gap: 5px;
-    // width: 378px;
-    // min-width: 100%;
-}
+
 
 .tabs {
     margin: 20px 10px 0 5px;
@@ -58,4 +48,28 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
+}
+
+.rightPanelHeader {
+    // width: 378px;
+    //min-width: ;
+    position: fixed;
+    height: 100%;
+    background: #ECEDEE;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+
+.rightPanel {
+
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    gap: 5px;
+    width: 30%;
+    min-width: 378px;
+    // min-width: 100%;
 }

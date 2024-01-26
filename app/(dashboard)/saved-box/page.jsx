@@ -141,9 +141,11 @@ export default function SavedBox() {
             </div>
 
             <div className={styles.rightPanel}>
-                {
-                    renderMenus()
-                }
+                <div className={styles.rightPanelHeader}>
+                    {
+                        renderMenus()
+                    }
+                </div>
             </div>
         </>
     )

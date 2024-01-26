@@ -165,7 +165,9 @@ export default function AssitedPurchase() {
                 </div>
 
                 <div className={styles.rightPanel}>
-                    {renderMenus()}
+                    <div className={styles.rightPanelHeader}>
+                        {renderMenus()}
+                    </div>
                 </div>
             </>
         </>

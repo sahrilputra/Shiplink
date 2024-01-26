@@ -8,22 +8,22 @@ export const PromoOne = () => {
     return (
         <>
             <div className={styles.adContainer}>
-                <div className={`${styles.adTop} w-[378px] min-w-full  bg-white rounded-md flex items-center justify-center`}>
+                <div className={`${styles.adTop} min-w-full  bg-white rounded-md flex items-center justify-center h-screen`}>
                     <div className="flex-col justify-start items-center gap-px inline-flex ">
-                        <div className="text-zinc-600 text-lg font-normal ">Your Status</div>
-                        <div className="text-zinc-900 text-[26px] font-semibold">Premium</div>
-                        <div className="text-stone-900 text-lg font-normal ">Level 2 Discount Bonus</div>
+                        <div className="text-zinc-600 text-sm font-normal ">Your Status</div>
+                        <div className="text-zinc-900 text-[20px] font-semibold">Premium</div>
+                        <div className="text-stone-900 text-sm font-normal ">Level 2 Discount Bonus</div>
                         <Button
-                            className="px-10 py-2.5"
+                            className="px-10 py-[8px]"
                             variant="destructive"
                             size="sm"
                         >
-                            <div className="text-white font-medium">Upgrade</div>
+                            <div className="text-white font-medium text-xs">Upgrade</div>
                         </Button>
                     </div>
                 </div>
 
-                <div className={`${styles.adBottom} w-[378px] min-w-full bg-white flex flex-col justify-around gap-3 rounded-md `}>
+                <div className={`${styles.adBottom}  bg-white flex flex-col justify-around gap-3 rounded-md `}>
                     <div className="content w-[90%] flex flex-col justify-between items-center mx-auto gap-5">
                         <div className="text-center text-black text-md font-semibold">If you have any questions or need any help, please contact us</div>
                         <div className=" flex-col justify-center items-center gap-[21px] inline-flex">
