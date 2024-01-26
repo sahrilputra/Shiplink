@@ -14,9 +14,9 @@ export const ParsMenus = () => {
         href="/admin/PARS"
       />
       <MenuItems
-        isActive={router === "/admin/PARS/Assignments"}
+        isActive={router === "/admin/PARS/assignments"}
         title="Assignments"
-        href="/admin/PARS/Assignments"
+        href="/admin/PARS/assignments"
       />
     </Menus>
   )

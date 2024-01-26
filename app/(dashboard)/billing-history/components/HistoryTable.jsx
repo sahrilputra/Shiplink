@@ -21,7 +21,6 @@ export const HistoryTable = () => {
                             <TableCell>Membership Premium </TableCell>
                             <TableCell className="text-right">$298.00</TableCell>
                             <TableCell className="text-center text-myBlue underline">Download</TableCell>
-
                         </TableRow>
                         <TableRow className="text-xs">
                             <TableCell className="font-medium">12345612</TableCell>

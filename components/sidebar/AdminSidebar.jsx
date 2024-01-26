@@ -26,7 +26,7 @@ export const AdminSidebar = () => {
     return (
         <>
             <aside
-                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex
+                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex  z-[20]
              ${styles.sideBarRespon} 
              `}
             >
@@ -65,19 +65,19 @@ export const AdminSidebar = () => {
                                 />
 
                                 <SidebarItem
-                                    isActive={router === "/shipping-lebels"}
+                                    isActive={router.startsWith("/admin/PARS")}
                                     title="PARS Management"
                                     icon={<ParsIcon className={"h-[25px] w-[25px]"} />}
-                                    href="/shipping-lebels"
+                                    href="/admin/PARS"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/saved-quotes"}
+                                    isActive={router === "/admin/custom-brokers"}
                                     title="Custom Broker"
                                     icon={<CustomBrokerIcon
                                         width={25}
                                         height={25}
                                     />}
-                                    href="/saved-quotes"
+                                    href="/admin/custom-brokers"
                                 />
                                 <SidebarItem
                                     isActive={router === "/assisted-purchase"}
@@ -86,7 +86,7 @@ export const AdminSidebar = () => {
                                         width={25}
                                         height={25}
                                     />}
-                                    href="/assisted-purchase"
+                                    href="/#"
                                 />
                                 <SidebarItem
                                     isActive={router === "/assisted-purchase"}

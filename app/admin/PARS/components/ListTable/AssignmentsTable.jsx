@@ -16,9 +16,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
-
 import { MoreHorizontalIcon } from "lucide-react";
-export function PARSTable({ data, isOpen, setOpen }) {
+
+export function AssignmetnsTabled({ data, isOpen, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -62,11 +62,10 @@ export function PARSTable({ data, isOpen, setOpen }) {
                 </TableHead>
             </TableHeader>
             <TableHeader className="text-sm">
-                <TableHead className="w-[60px]"></TableHead>
-                <TableHead>PARS / PAPS Number</TableHead>
-                <TableHead>Create Date</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead className="">Edit Date</TableHead>
+                <TableHead>ID</TableHead>
+                <TableHead>Number Type</TableHead>
+                <TableHead>Number</TableHead>
+                <TableHead className="">Assigned</TableHead>
                 <TableHead className="">Action</TableHead>
             </TableHeader>
             <TableBody className="text-xs">
@@ -74,13 +73,11 @@ export function PARSTable({ data, isOpen, setOpen }) {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`h-[50px] `} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px] w-[50px]">
-                                    <Checkbox className="w-4 h-4" />
-                                </TableCell>
+
+                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.id}</TableCell>
+                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Type}</TableCell>
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.SequencesRange}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CreateDate}</TableCell>
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.AssignedTo}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.EditDate}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
                                         <Button
@@ -89,15 +86,7 @@ export function PARSTable({ data, isOpen, setOpen }) {
                                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                                             onClick={() => toggleRow(index)}
                                         >
-                                            <p className="text-[11px]">Update</p>
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm  w-6 h-6`}
-                                            onClick={() => toggleRow(index)}
-                                        >
-                                            <DeleteIcons className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  w-4 h-4`} />
+                                            <p className="text-[11px]">View Package</p>
                                         </Button>
                                         <Button
                                             variant="tableBlue"

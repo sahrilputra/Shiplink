@@ -1,0 +1,97 @@
+[
+    {
+        "TrackingID": "#872812138328",
+        "CustomerName": "John Doe",
+        "Destination": "Atlanta, USA",
+        "UpdateDate": "12 Apr, 2023",
+        "CustomsStatus": "Clearance Pending",
+        "Items": [
+            {
+                "Qty": 1,
+                "Value": "$100",
+                "Description": "Description",
+                "HSDescription": "Search",
+                "HSCode": "8103.99.0000",
+                "MadeIn": "CAN"
+            }
+        ],
+        "Totals": "$100.00",
+        "PARS": "123456789"
+    },
+    {
+        "TrackingID": "#872812138329",
+        "CustomerName": "Jane Smith",
+        "Destination": "New York, USA",
+        "UpdateDate": "15 Apr, 2023",
+        "CustomsStatus": "Clearance Pending",
+        "Items": [
+            {
+                "Qty": 2,
+                "Value": "$150",
+                "Description": "Cleared Custom",
+                "HSDescription": "Product",
+                "HSCode": "8501.10.0000",
+                "MadeIn": "USA"
+            }
+        ],
+        "Totals": "$150.00",
+        "PARS": "987654321"
+    },
+    {
+        "TrackingID": "#872812138330",
+        "CustomerName": "Robert Johnson",
+        "Destination": "London, UK",
+        "UpdateDate": "18 Apr, 2023",
+        "CustomsStatus": "Cleared Custom",
+        "Items": [
+            {
+                "Qty": 1,
+                "Value": "$75",
+                "Description": "Additional Description",
+                "HSDescription": "Product XYZ",
+                "HSCode": "7210.70.9000",
+                "MadeIn": "UK"
+            }
+        ],
+        "Totals": "$75.00",
+        "PARS": "456789012"
+    },
+    {
+        "TrackingID": "#872812138331",
+        "CustomerName": "Emily Davis",
+        "Destination": "Paris, France",
+        "UpdateDate": "22 Apr, 2023",
+        "CustomsStatus": "Cleared Custom",
+        "Items": [
+            {
+                "Qty": 3,
+                "Value": "$200",
+                "Description": "Additional Product",
+                "HSDescription": "Product ABC",
+                "HSCode": "7214.20.0000",
+                "MadeIn": "France"
+            }
+        ],
+        "Totals": "$200.00",
+        "PARS": "789012345"
+    },
+    {
+        "TrackingID": "#872812138332",
+        "CustomerName": "Michael Brown",
+        "Destination": "Berlin, Germany",
+        "UpdateDate": "25 Apr, 2023",
+        "CustomsStatus": "Clearance Pending",
+        "Items": [
+            {
+                "Qty": 1,
+                "Value": "$120",
+                "Description": "Final Product",
+                "HSDescription": "Product DEF",
+                "HSCode": "8414.59.0000",
+                "MadeIn": "Germany"
+            }
+        ],
+        "Totals": "$120.00",
+        "PARS": "234567890"
+    }
+]
