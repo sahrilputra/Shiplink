@@ -1,0 +1,92 @@
+[
+    {
+        "LotsID": "#872812138328",
+        "LotsLabels": "Goes To Canada",
+        "ManifestNumber": "ABC12345678",
+        "Destination": "Toronto, Canada",
+        "CurrentStatus": "Arrived at Destination Country",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138329",
+        "LotsLabels": "Shipped to USA",
+        "ManifestNumber": "DEF87654321",
+        "Destination": "New York, USA",
+        "CurrentStatus": "In Transit",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138330",
+        "LotsLabels": "European Shipment",
+        "ManifestNumber": "GHI98765432",
+        "Destination": "Paris, France",
+        "CurrentStatus": "Customs Clearance",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138331",
+        "LotsLabels": "Shipping to Asia",
+        "ManifestNumber": "JKL56789012",
+        "Destination": "Tokyo, Japan",
+        "CurrentStatus": "In Transit",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138332",
+        "LotsLabels": "South American Delivery",
+        "ManifestNumber": "MNO12345678",
+        "Destination": "Sao Paulo, Brazil",
+        "CurrentStatus": "Delivered",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138333",
+        "LotsLabels": "Shipping to Australia",
+        "ManifestNumber": "PQR34567890",
+        "Destination": "Sydney, Australia",
+        "CurrentStatus": "Customs Clearance",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138334",
+        "LotsLabels": "North American Delivery",
+        "ManifestNumber": "STU09876543",
+        "Destination": "Los Angeles, USA",
+        "CurrentStatus": "In Transit",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138335",
+        "LotsLabels": "Shipment to Africa",
+        "ManifestNumber": "VWX12345678",
+        "Destination": "Cape Town, South Africa",
+        "CurrentStatus": "Arrived at Destination Country",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138336",
+        "LotsLabels": "Middle East Delivery",
+        "ManifestNumber": "YZA98765432",
+        "Destination": "Dubai, UAE",
+        "CurrentStatus": "Delivered",
+        "AllInvoice": [],
+        "PackageDetails": []
+    },
+    {
+        "LotsID": "#872812138337",
+        "LotsLabels": "Asian Import",
+        "ManifestNumber": "BCD56789012",
+        "Destination": "Seoul, South Korea",
+        "CurrentStatus": "In Transit",
+        "AllInvoice": [],
+        "PackageDetails": []
+    }
+]

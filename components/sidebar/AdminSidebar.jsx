@@ -89,14 +89,14 @@ export const AdminSidebar = () => {
                                     href="/#"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/custom-clearance"}
                                     title="Custom Clearance"
                                     icon={<CustomClearanceIcon
                                         width={25}
                                         height={25}
                                         className="relative"
                                     />}
-                                    href="/assisted-purchase"
+                                    href="/admin/custom-clearance"
                                 />
                                 <SidebarItem
                                     isActive={router === "/assisted-purchase"}
