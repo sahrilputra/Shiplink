@@ -80,13 +80,13 @@ export const AdminSidebar = () => {
                                     href="/admin/custom-brokers"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/transport"}
                                     title="Transport Preparation"
                                     icon={<TransportIcon
                                         width={25}
                                         height={25}
                                     />}
-                                    href="/#"
+                                    href="/admin/transport"
                                 />
                                 <SidebarItem
                                     isActive={router === "/admin/custom-clearance"}

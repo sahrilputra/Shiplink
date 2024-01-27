@@ -32,7 +32,7 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
     };
 
     const toggleOpenChange = () => {
-        setOpen(!isOpen)
+        setOpen(true)
     }
     return (
         <Table>
@@ -60,7 +60,7 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
                                             variant="tableBlue"
                                             size="tableIcon"
                                             className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleRow(index)}
+                                            onClick={() => toggleOpenChange()}
                                         >
                                             <p className="text-[11px]">Update</p>
                                         </Button>

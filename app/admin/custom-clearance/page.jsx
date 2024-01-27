@@ -12,12 +12,14 @@ import data from '../../../data/admin/ClearanceData.json'
 import { CustomClearanceTable } from './components/Table/CustomClearanceTable'
 import Image from 'next/image'
 import { CustomBrokerDropdownMenus } from './components/Menus/DropdownMenus'
+import { UpdateDialog } from './components/Menus/UpdateDialog'
 export default function VerificationPages() {
 
     const [open, setOpen] = useState(false);
 
     const [selectedTab, setSelectedTab] = useState("All");
     console.log("parent : ", selectedTab)
+    console.log("isOpen : ", open)
 
     const filterData = selectedTab === 'All' ? data : data.filter(item => item.CustomsStatus === selectedTab);
 
@@ -57,11 +59,12 @@ export default function VerificationPages() {
 
                         <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
                             <CustomClearanceTable data={data} isOpen={open} setOpen={setOpen} />
+                            <UpdateDialog open={open} setOpen={setOpen} />
                         </div>
                     </div>
                 </div>
             </div>
-         
+
         </>
     )
 }

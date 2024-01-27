@@ -1,0 +1,112 @@
+[
+    {
+        "LotsID": "#872812138328",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345678",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 11:30:30",
+        "PARS": "12131231231",
+        "LotsContainer": 100
+    },
+    {
+        "LotsID": "#872812138329",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345679",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 11:35:30",
+        "PARS": "12131231232",
+        "LotsContainer": 101
+    },
+    {
+        "LotsID": "#872812138330",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345680",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 11:40:30",
+        "PARS": "12131231233",
+        "LotsContainer": 102
+    },
+    {
+        "LotsID": "#872812138331",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345681",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 11:45:30",
+        "PARS": "12131231234",
+        "LotsContainer": 103
+    },
+    {
+        "LotsID": "#872812138332",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345682",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 11:50:30",
+        "PARS": "12131231235",
+        "LotsContainer": 104
+    },
+    {
+        "LotsID": "#872812138333",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345683",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 11:55:30",
+        "PARS": "12131231236",
+        "LotsContainer": 105
+    },
+    {
+        "LotsID": "#872812138334",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345684",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 12:00:30",
+        "PARS": "12131231237",
+        "LotsContainer": 106
+    },
+    {
+        "LotsID": "#872812138335",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345685",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 12:05:30",
+        "PARS": "12131231238",
+        "LotsContainer": 107
+    },
+    {
+        "LotsID": "#872812138336",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345686",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 12:10:30",
+        "PARS": "12131231239",
+        "LotsContainer": 108
+    },
+    {
+        "LotsID": "#872812138337",
+        "LotsLabel": "Goes To Somewhere",
+        "Destination": "Nevada, USA",
+        "Documents": 2,
+        "Manifest": "ABC12345687",
+        "Status": "Cleared Customs",
+        "LastUpdate": "11/04/2023 12:15:30",
+        "PARS": "12131231240",
+        "LotsContainer": 109
+    }
+]

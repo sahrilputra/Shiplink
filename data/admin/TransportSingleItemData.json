@@ -1,0 +1,82 @@
+[
+    {
+        "TrackingID": "#872812138328",
+        "CustomerName": "John Doe",
+        "Origin": "Nevada, USA",
+        "Destination": "Toronto, CAD",
+        "LastUpdate": "11/04/2023",
+        "CustomStatus": "Cleared Customs"
+    },
+    {
+        "TrackingID": "#987654321001",
+        "CustomerName": "Alice Smith",
+        "Origin": "California, USA",
+        "Destination": "Vancouver, CAD",
+        "LastUpdate": "10/25/2023",
+        "CustomStatus": "In Customs Processing"
+    },
+    {
+        "TrackingID": "#456789012345",
+        "CustomerName": "Bob Johnson",
+        "Origin": "Texas, USA",
+        "Destination": "Montreal, CAD",
+        "LastUpdate": "09/15/2023",
+        "CustomStatus": "Awaiting Customs Clearance"
+    },
+    {
+        "TrackingID": "#112233445566",
+        "CustomerName": "Emily Davis",
+        "Origin": "Florida, USA",
+        "Destination": "Ottawa, CAD",
+        "LastUpdate": "08/02/2023",
+        "CustomStatus": "Customs Inspection"
+    },
+    {
+        "TrackingID": "#789012345678",
+        "CustomerName": "Michael Wilson",
+        "Origin": "New York, USA",
+        "Destination": "Calgary, CAD",
+        "LastUpdate": "07/19/2023",
+        "CustomStatus": "Cleared Customs"
+    },
+    {
+        "TrackingID": "#543210987654",
+        "CustomerName": "Eva Brown",
+        "Origin": "Arizona, USA",
+        "Destination": "Edmonton, CAD",
+        "LastUpdate": "06/12/2023",
+        "CustomStatus": "In Transit"
+    },
+    {
+        "TrackingID": "#999888777666",
+        "CustomerName": "Charlie White",
+        "Origin": "Illinois, USA",
+        "Destination": "Winnipeg, CAD",
+        "LastUpdate": "05/28/2023",
+        "CustomStatus": "Awaiting Customs Clearance"
+    },
+    {
+        "TrackingID": "#123456789012",
+        "CustomerName": "Grace Miller",
+        "Origin": "Georgia, USA",
+        "Destination": "Quebec City, CAD",
+        "LastUpdate": "04/14/2023",
+        "CustomStatus": "Customs Inspection"
+    },
+    {
+        "TrackingID": "#654321098765",
+        "CustomerName": "Daniel Wilson",
+        "Origin": "Michigan, USA",
+        "Destination": "Saskatoon, CAD",
+        "LastUpdate": "03/01/2023",
+        "CustomStatus": "Cleared Customs"
+    },
+    {
+        "TrackingID": "#111222333444",
+        "CustomerName": "Olivia Davis",
+        "Origin": "Ohio, USA",
+        "Destination": "Halifax, CAD",
+        "LastUpdate": "02/17/2023",
+        "CustomStatus": "In Customs Processing"
+    }
+]

@@ -27,7 +27,7 @@ export function CustomBrokerDropdownMenus() {
                     <MoreHorizontalIcon />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="text-xs">
+            <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="text-xs text-myBlue">
                         Download All Invoice
