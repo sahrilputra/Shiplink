@@ -1,0 +1,190 @@
+[
+    {
+        "LotsLabel": "Regular Shipment",
+        "LotsID": "#123456789",
+        "RegisterDate": "21 Apr, 2023",
+        "Destination": "Toronto, Canada",
+        "BinAssign": "Partial",
+        "CurrentStatus": "At City, ST",
+        "TotalPackage": 21,
+        "TripNumber": 21223121,
+        "History": [
+            {
+                "date": "11 Aug 2023 23:24:49",
+                "description": "Arrive At TR Warehouse"
+            },
+            {
+                "date": "12 Aug 2023 23:24:49",
+                "description": "Depart From TR Warehouse"
+            },
+            {
+                "date": "12 Aug 2023 23:24:49",
+                "description": "Accept By Carrier"
+            },
+            {
+                "date": "13 Aug 2023 23:24:49",
+                "description": "Arrive At City, ST"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "#987654321",
+        "RegisterDate": "18 May, 2023",
+        "Destination": "Vancouver, Canada",
+        "BinAssign": "Full",
+        "CurrentStatus": "En Route to Destination",
+        "TotalPackage": 30,
+        "TripNumber": 21223122,
+        "History": [
+            {
+                "date": "15 Sep 2023 10:45:22",
+                "description": "Package Loaded onto Truck"
+            },
+            {
+                "date": "16 Sep 2023 08:12:57",
+                "description": "Arrive At Distribution Center"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Priority Shipment",
+        "LotsID": "#456789123",
+        "RegisterDate": "02 Jul, 2023",
+        "Destination": "Montreal, Canada",
+        "BinAssign": "Partial",
+        "CurrentStatus": "At Distribution Center",
+        "TotalPackage": 15,
+        "TripNumber": 21223123,
+        "History": [
+            {
+                "date": "20 Aug 2023 15:20:40",
+                "description": "Customs Inspection Completed"
+            },
+            {
+                "date": "21 Aug 2023 09:55:11",
+                "description": "Package Cleared Customs"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Business Shipment",
+        "LotsID": "#789123456",
+        "RegisterDate": "14 Mar, 2023",
+        "Destination": "Calgary, Canada",
+        "BinAssign": "Full",
+        "CurrentStatus": "In Transit",
+        "TotalPackage": 25,
+        "TripNumber": 21223124,
+        "History": [
+            {
+                "date": "05 Jun 2023 18:30:28",
+                "description": "Package Departed Origin"
+            },
+            {
+                "date": "07 Jun 2023 11:45:36",
+                "description": "Arrive At Transfer Hub"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Accounting Shipment",
+        "LotsID": "#321654987",
+        "RegisterDate": "09 Aug, 2023",
+        "Destination": "Ottawa, Canada",
+        "BinAssign": "Partial",
+        "CurrentStatus": "At Transfer Hub",
+        "TotalPackage": 18,
+        "TripNumber": 21223125,
+        "History": [
+            {
+                "date": "28 Oct 2023 13:55:17",
+                "description": "Package Scanned for Shipping"
+            },
+            {
+                "date": "30 Oct 2023 09:20:44",
+                "description": "Depart from Transfer Hub"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Document Shipment",
+        "LotsID": "#654987321",
+        "RegisterDate": "25 Jan, 2023",
+        "Destination": "Quebec City, Canada",
+        "BinAssign": "Full",
+        "CurrentStatus": "Package Delivered",
+        "TotalPackage": 28,
+        "TripNumber": 21223126,
+        "History": [
+            {
+                "date": "15 Apr 2023 16:10:29",
+                "description": "Package Out for Delivery"
+            },
+            {
+                "date": "15 Apr 2023 18:45:12",
+                "description": "Package Delivered to Recipient"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Shipping Cargo",
+        "LotsID": "#234567890",
+        "RegisterDate": "30 Sep, 2023",
+        "Destination": "Edmonton, Canada",
+        "BinAssign": "Partial",
+        "CurrentStatus": "En Route to Destination",
+        "TotalPackage": 20,
+        "TripNumber": 21223127,
+        "History": [
+            {
+                "date": "18 Nov 2023 10:20:33",
+                "description": "Package In Transit"
+            },
+            {
+                "date": "19 Nov 2023 08:05:19",
+                "description": "Arrive At Destination Sorting Facility"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Railway Shipment",
+        "LotsID": "#345678901",
+        "RegisterDate": "07 Jun, 2023",
+        "Destination": "Winnipeg, Canada",
+        "BinAssign": "Full",
+        "CurrentStatus": "Package Out for Delivery",
+        "TotalPackage": 22,
+        "TripNumber": 21223128,
+        "History": [
+            {
+                "date": "25 Sep 2023 14:30:55",
+                "description": "Package Received at Sorting Facility"
+            },
+            {
+                "date": "26 Sep 2023 10:15:42",
+                "description": "Depart from Sorting Facility"
+            }
+        ]
+    },
+    {
+        "LotsLabel": "Air Shipment",
+        "LotsID": "#567890123",
+        "RegisterDate": "12 Feb, 2023",
+        "Destination": "Hamilton, Canada",
+        "BinAssign": "Partial",
+        "CurrentStatus": "Arrive At Transfer Hub",
+        "TotalPackage": 19,
+        "TripNumber": 21223129,
+        "History": [
+            {
+                "date": "02 May 2023 09:40:18",
+                "description": "Package In Transit"
+            },
+            {
+                "date": "03 May 2023 07:25:27",
+                "description": "Arrive At Destination Hub"
+            }
+        ]
+    }
+]

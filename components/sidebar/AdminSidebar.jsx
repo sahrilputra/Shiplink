@@ -80,7 +80,7 @@ export const AdminSidebar = () => {
                                     href="/admin/custom-brokers"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/admin/transport"}
+                                    isActive={router.startsWith("/admin/transport")}
                                     title="Transport Preparation"
                                     icon={<TransportIcon
                                         width={25}
@@ -99,7 +99,7 @@ export const AdminSidebar = () => {
                                     href="/admin/custom-clearance"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/destination"}
                                     title="Destination Scan"
                                     icon={
                                         <DestinationIcon
@@ -108,10 +108,10 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/assisted-purchase"
+                                    href="/admin/destination"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/bin-manager"}
                                     title="Bin Manager"
                                     icon={
                                         <BinManagerIcon
@@ -120,10 +120,10 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/assisted-purchase"
+                                    href="/admin/bin-manager"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/invoice-manager"}
                                     title="Invoice Manager"
                                     icon={
                                         <InvoiceManagerIcon
@@ -132,7 +132,7 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/assisted-purchase"
+                                    href="/admin/invoice-manager"
                                 />
                                 <SidebarItem
                                     isActive={router === "/assisted-purchase"}
@@ -147,7 +147,7 @@ export const AdminSidebar = () => {
                                     href="/assisted-purchase"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/assisted-purchase"}
                                     title="Support Tickets"
                                     icon={
                                         <SupportTickets
@@ -156,7 +156,7 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/assisted-purchase"
+                                    href="/admin/assisted-purchase"
                                 />
                             </div>
                         </SidebarMenu>
