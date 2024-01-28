@@ -16,12 +16,123 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getPaginationRowModel,
+    SortingState,
+    getSortedRowModel,
 
+} from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
-export function PARSTable({ data, isOpen, setOpen }) {
 
+export function PARSTable({ data, isOpen, setOpen, }) {
+
+
+    const columns = [
+        {
+            accessorKey: "select",
+            id: "select",
+            header: ({ table }) => {
+                return (
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() ||
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
+                )
+            },
+            cell: ({ row }) => {
+                return (
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                    />
+                )
+            },
+        },
+        {
+            accessorKey: "SequencesRange",
+            header: "PARS / PAPS Number",
+        },
+        {
+            accessorKey: "CreateDate",
+            header: "Create Date",
+        },
+        {
+            accessorKey: "AssignedTo",
+            header: "Assigned To",
+        },
+        {
+            accessorKey: "EditDate",
+            header: "Edit Date",
+
+
+        },
+        {
+            // accessorKey: "Action",
+            id: "Action",
+            header: "Action",
+            cell: ({ value }) => {
+                return (
+                    <div className="flex flex-row gap-2">
+                        <Button
+                            variant="tableBlue"
+                            size="tableIcon"
+                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                            onClick={() => toggleRow(index)}
+                        >
+                            <p className="text-[11px]">Update</p>
+                        </Button>
+                        <Button
+                            variant="tableBlue"
+                            size="icon"
+                            className={` rounded-sm  w-6 h-6`}
+                            onClick={() => toggleRow(index)}
+                        >
+                            <DeleteIcons className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  w-4 h-4`} />
+                        </Button>
+                        <Button
+                            variant="tableBlue"
+                            size="icon"
+                            className={` rounded-sm w-6 h-6`}
+                            onClick={() => toggleRow(index)}
+                        >
+                            <MoreHorizontalIcon />
+                        </Button>
+                    </div>
+                )
+            },
+        }
+    ]
+
+
+    const [rowSelection, setRowSelection] = React.useState({})
+    const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+
+    const table = useReactTable({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            sorting,
+            rowSelection,
+        },
+
+    })
+
 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -62,14 +173,59 @@ export function PARSTable({ data, isOpen, setOpen }) {
                 </TableHead>
             </TableHeader>
             <TableHeader className="text-sm">
-                <TableHead className="w-[60px]"></TableHead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <>
+                        {headerGroup.headers.map((header, index) => {
+                            const isLastHeader = index === headerGroup.headers.length - 1;
+                            return (
+                                <TableHead
+                                    key={header.id}
+                                    className={`${isLastHeader ? "w-[30px]" : ""}`}
+                                >
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext()
+                                          )}
+
+                                    {console.log(header.column.columnDef.header)}
+                                </TableHead>
+                            );
+                        })}
+                    </>
+                ))}
+                {/* <TableHead className="w-[60px]"></TableHead>
                 <TableHead>PARS / PAPS Number</TableHead>
                 <TableHead>Create Date</TableHead>
                 <TableHead>Assigned To</TableHead>
                 <TableHead className="">Edit Date</TableHead>
-                <TableHead className="">Action</TableHead>
+                <TableHead className="">Action</TableHead> */}
             </TableHeader>
-            <TableBody className="text-xs">
+            <TableBody>
+                {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                        <TableRow
+                            key={row.id}
+                            data-state={row.getIsSelected() && "selected"}
+                            className={row.isLast && "w-[30px]"}
+                        >
+                            {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id} className={cell.isLast && "w-[30px]"}>
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))
+                ) : (
+                    <TableRow>
+                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                            No results.
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+            {/* <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
@@ -113,7 +269,7 @@ export function PARSTable({ data, isOpen, setOpen }) {
                         </>
                     ))
                 }
-            </TableBody>
+            </TableBody> */}
 
         </Table>
     )

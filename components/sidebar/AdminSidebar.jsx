@@ -163,14 +163,14 @@ export const AdminSidebar = () => {
                         <SidebarMenu title="setting" className="flex-col justify-start items-center gap-2.5 flex">
                             <div className="flex-col justify-end items-start gap-2.5 flex">
                                 <SidebarItem
-                                    isActive={router === "/#"}
+                                    isActive={router === "/admin/warehouse-manager"}
                                     title="Warehouse Manager"
                                     icon={<WarehouseIcons
                                         width={25}
                                         height={25}
                                         className="relative"
                                     />}
-                                    href="#"
+                                    href="/admin/warehouse-manager"
                                 />
 
                                 <SidebarItem

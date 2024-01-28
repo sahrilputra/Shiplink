@@ -9,11 +9,13 @@ import { PARSForms } from './components/forms/PARSForms'
 import { Separator } from '@/components/ui/separator'
 import data from '../../../data/admin/PARSData.json'
 import { PARSTable } from './components/ListTable/PARSTabled'
+import { Checkbox } from '@/components/ui/checkbox'
 export default function PARSPage() {
     const [clicked, isClicked] = useState(false);
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
+
 
     return (
         <>
@@ -47,7 +49,7 @@ export default function PARSPage() {
                     <Separator className="h-[3px]" />
                 </div>
                 <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
-                    <PARSTable data={data} />
+                    <PARSTable data={data}  />
                 </div>
 
             </div>
