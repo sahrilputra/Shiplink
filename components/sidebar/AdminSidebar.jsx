@@ -111,7 +111,7 @@ export const AdminSidebar = () => {
                                     href="/admin/destination"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/admin/bin-manager"}
+                                    isActive={router === "/admin/bin-management"}
                                     title="Bin Manager"
                                     icon={
                                         <BinManagerIcon
@@ -120,7 +120,7 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/admin/bin-manager"
+                                    href="/admin/bin-management"
                                 />
                                 <SidebarItem
                                     isActive={router === "/admin/invoice-manager"}
