@@ -5,7 +5,7 @@
         "UnitID": "#12345678",
         "Customer": "John Doe",
         "OrderTotal": "$120.00",
-        "Status": "Request",
+        "Status": "Pending",
         "Product": [
             {
                 "No": "#1",
@@ -52,7 +52,7 @@
         "UnitID": "#98761234",
         "Customer": "Alice Brown",
         "OrderTotal": "$180.00",
-        "Status": "Shipped",
+        "Status": "Complete",
         "Product": [
             {
                 "No": "#1",

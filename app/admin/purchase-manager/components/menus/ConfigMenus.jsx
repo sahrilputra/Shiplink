@@ -11,18 +11,18 @@ export const AssitedMenus = ({ selectedTab, isSelected }) => {
     <Menus>
       <div className="">
         <button
-          className={`${isSelected === "Clearance Pending" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-          onClick={() => handleTabClick("Clearance Pending")}
+          className={`${isSelected === "Pending" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+          onClick={() => handleTabClick("Pending")}
         >
           <div className="">Pending</div>
         </button>
       </div>
       <div className="">
         <button
-          onClick={() => handleTabClick("Cleared Custom")}
-          className={`${isSelected === "Cleared Custom" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+          onClick={() => handleTabClick("Complete")}
+          className={`${isSelected === "Complete" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
         >
-          <div className="">Cleared</div>
+          <div className="">Completed</div>
         </button>
       </div>
     </Menus>

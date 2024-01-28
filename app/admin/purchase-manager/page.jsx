@@ -11,14 +11,14 @@ import { AssitedMenus } from './components/menus/ConfigMenus'
 import { PendingTable } from './components/table/assitedTable'
 export default function CustomBrokerPage() {
 
-    // const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-    // const [selectedTab, setSelectedTab] = useState("Clearance Pending");
-    // console.log("parent : ", selectedTab)
+    const [selectedTab, setSelectedTab] = useState("Pending");
+    console.log("parent : ", selectedTab)
 
-    // const filterData = selectedTab === 'Clearance Pending' ? data.filter(item => item.CustomsStatus === 'Clearance Pending') : data.filter(item => item.CustomsStatus === selectedTab);
-    // const clearancePendingCount = data.filter(item => item.CustomsStatus === 'Clearance Pending').length;
-    // const clearanceCustomsCount = data.filter(item => item.CustomsStatus === 'Cleared Custom').length;
+    const filterData = selectedTab === 'Pending' ? data.filter(item => item.Status === 'Pending') : data.filter(item => item.Status === selectedTab);
+    const clearancePendingCount = data.filter(item => item.CustomsStatus === 'Complete').length;
+    const clearanceCustomsCount = data.filter(item => item.CustomsStatus === 'Cleared Custom').length;
 
     return (
         <>
@@ -39,13 +39,13 @@ export default function CustomBrokerPage() {
                         </div>
                     </div>
                     <div className={`${styles.menus}`}>
-                        <AssitedMenus />
+                        <AssitedMenus selectedTab={setSelectedTab} isSelected={selectedTab} />
                     </div>
                 </div>
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <PendingTable data={data} />
+                            <PendingTable data={filterData} />
                         </div>
                     </div>
                 </div>
