@@ -135,7 +135,7 @@ export const AdminSidebar = () => {
                                     href="/admin/invoice-manager"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
+                                    isActive={router === "/admin/purchase-manager"}
                                     title="Assisted Purchase"
                                     icon={
                                         <AssistedPurchaseIcon
@@ -144,7 +144,7 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/assisted-purchase"
+                                    href="/admin/purchase-manager"
                                 />
                                 <SidebarItem
                                     isActive={router === "/admin/assisted-purchase"}

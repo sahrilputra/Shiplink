@@ -1,0 +1,96 @@
+[
+    {
+        "OrderID": "#12345678",
+        "Date": "12 Apr, 2023, 11:20",
+        "UnitID": "#12345678",
+        "Customer": "John Doe",
+        "OrderTotal": "$120.00",
+        "Status": "Request",
+        "Product": [
+            {
+                "No": "#1",
+                "ProductName": "TechNova Smartwatch",
+                "Qty": 2,
+                "UnitPrice": "$20.00",
+                "LineTotal": "$30.00",
+                "Fee": "$10.00",
+                "ProductLink": "https://www.tokopedia.com/orilink/samsung-galaxy-s23-ultra-12-256-12-512-gb-12gb-256-512-garansi-resmi-cream-promo-12-256-82e96?src=topads"
+            }
+        ]
+    },
+    {
+        "OrderID": "#22334455",
+        "Date": "15 June, 2023, 09:30",
+        "UnitID": "#87654567",
+        "Customer": "Charlie Smith",
+        "OrderTotal": "$120.00",
+        "Status": "Pending",
+        "Product": [
+            {
+                "No": "#1",
+                "ProductName": "Smartwatch",
+                "Qty": 1,
+                "UnitPrice": "$60.00",
+                "LineTotal": "$60.00",
+                "Fee": "$10.00",
+                "ProductLink": "https://www.tokopedia.com/products/smartwatch-xyz789"
+            },
+            {
+                "No": "#2",
+                "ProductName": "USB-C Cable",
+                "Qty": 3,
+                "UnitPrice": "$20.00",
+                "LineTotal": "$60.00",
+                "Fee": "$15.00",
+                "ProductLink": "https://www.tokopedia.com/products/usb-c-cable-123abc"
+            }
+        ]
+    },
+    {
+        "OrderID": "#11223344",
+        "Date": "10 June, 2023, 14:00",
+        "UnitID": "#98761234",
+        "Customer": "Alice Brown",
+        "OrderTotal": "$180.00",
+        "Status": "Shipped",
+        "Product": [
+            {
+                "No": "#1",
+                "ProductName": "Wireless Headphones",
+                "Qty": 1,
+                "UnitPrice": "$100.00",
+                "LineTotal": "$100.00",
+                "Fee": "$20.00",
+                "ProductLink": "https://www.tokopedia.com/products/wireless-headphones-xyz123"
+            },
+            {
+                "No": "#2",
+                "ProductName": "Bluetooth Speaker",
+                "Qty": 2,
+                "UnitPrice": "$40.00",
+                "LineTotal": "$80.00",
+                "Fee": "$10.00",
+                "ProductLink": "https://www.tokopedia.com/products/bluetooth-speaker-abc456"
+            }
+        ]
+    },
+    {
+        "OrderID": "#22334455",
+        "Date": "15 May, 2023, 14:45",
+        "UnitID": "#87654567",
+        "Customer": "Robert Johnson",
+        "OrderTotal": "$120.00",
+        "Status": "Complete",
+        "Product": [
+            {
+                "No": "#1",
+                "ProductName": "Gaming Mouse",
+                "Qty": 1,
+                "UnitPrice": "$50.00",
+                "LineTotal": "$50.00",
+                "Fee": "$10.00",
+                "ProductLink": "https://www.tokopedia.com/orilink/gaming-mouse-xyz789"
+            }
+        ]
+    }
+]

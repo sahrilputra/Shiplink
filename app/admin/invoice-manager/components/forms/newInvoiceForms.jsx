@@ -176,7 +176,7 @@ export const InvoiceForms = () => {
                             <div className="flex flex-row justify-between gap-3">
 
                                 {/* billedTo */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2  w-full">
                                     <h2 className='text-base font-bold'>Billed To</h2>
                                     <div className="flex flex-row justify-between gap-3">
                                         <FormField
@@ -185,7 +185,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Barcode / Tracking</FormLabel>
                                                         <FormControl>
                                                             <Input id="BilledToName" className="text-sm" placeholder="Name" {...field} />
@@ -201,7 +201,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
                                                         <FormControl>
                                                             <Input id="BilledToZip" className="text-sm" placeholder="Eg. SA4S21JK21" {...field} />
@@ -219,7 +219,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Address</FormLabel>
                                                         <FormControl>
                                                             <Input id="BilledToAddress" className="text-sm" placeholder="Adress" {...field} />
@@ -235,7 +235,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="w-[60%] text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Country</FormLabel>
                                                         <FormControl>
                                                             <Input id="BilledToCountry" className="text-sm" placeholder="Canada" {...field} />
@@ -250,16 +250,16 @@ export const InvoiceForms = () => {
 
 
                                 {/* shiipedTo */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 w-full">
                                     <h2 className='text-base font-bold'>Shipped To</h2>
                                     <div className="flex flex-row justify-between gap-3">
                                         <FormField
-                                            className="w-full"
+                                            className="w-full "
                                             name="ShippedToName"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Barcode / Tracking</FormLabel>
                                                         <FormControl>
                                                             <Input id="ShippedToName" className="text-sm" placeholder="Name" {...field} />
@@ -275,7 +275,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
                                                         <FormControl>
                                                             <Input id="ShippedToZip" className="text-sm" placeholder="Eg. SA4S21JK21" {...field} />
@@ -293,7 +293,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Address</FormLabel>
                                                         <FormControl>
                                                             <Input id="ShippedToAddress" className="text-sm" placeholder="Adress" {...field} />
@@ -309,7 +309,7 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="w-[60%] text-sm">
+                                                    <FormItem className=" text-sm w-full">
                                                         <FormLabel className="text-sm font-bold text-zinc-600">Country</FormLabel>
                                                         <FormControl>
                                                             <Input id="ShippedToCountry" className="text-sm" placeholder="Canada" {...field} />
