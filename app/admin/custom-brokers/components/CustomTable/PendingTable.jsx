@@ -89,20 +89,19 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                     <div className="flex flex-row gap-2">
                                         <Button
                                             variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm w-6 h-6`}
+                                            size="tableIcon"
+                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                            onClick={() => toggleOpenChange()}
                                         >
-                                            <MoreHorizontalIcon />
+                                            <MoreHorizontalIcon width={15} height={15} />
                                         </Button>
                                         <Button
                                             variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm  w-6 h-6`}
+                                            size="tableIcon"
+                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
                                             onClick={() => toggleRow(index)}
                                         >
-                                            <ArrowDownV2Icons
-                                                className={`w-5 h-5 text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`}
-                                            />
+                                            <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`} />
                                         </Button>
                                     </div>
                                 </TableCell>

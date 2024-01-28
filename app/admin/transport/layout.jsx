@@ -22,7 +22,7 @@ export default function TransportLayout({ children }) {
                                 />
                             </div>
                             <div className={`${styles.title} flex flex-col`}>
-                                <h1 className=" text-zinc-900 text-sm font-semibold ">Transport Preparation</h1>
+                                <h1 className=" text-zinc-900 text-sm font-bold ">Transport Preparation</h1>
                                 <p className=" text-blue-900 text-xs font-normal">Showing All Carriers</p>
                             </div>
                         </div>

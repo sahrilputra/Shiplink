@@ -57,18 +57,20 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                     <VerifiedStatus param={item.CustomsStatus} />
                                 </TableCell>
                                 <TableCell className="w-[30px]">
+                                 
                                     <Button
                                         variant="tableBlue"
-                                        size="icon"
-                                        className={`h-5 w-5 rounded-sm`}
+                                        size="tableIcon"
+                                        className={`rounded-sm w-max px-[5px] h-[25px]`}
                                         onClick={() => toggleRow(index)}
                                     >
                                         <ArrowDownV2Icons
-                                            width={10}
-                                            height={10}
-                                            className={`w-5 h-5 text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`}
+                                            width={15}
+                                            height={15}
+                                            className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`}
                                         />
                                     </Button>
+
                                 </TableCell>
                             </TableRow>
                             {expandedRows[index] && (
@@ -95,7 +97,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                     ))
                 }
             </TableBody>
-          
+
         </Table>
     )
 }

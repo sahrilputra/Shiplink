@@ -92,19 +92,20 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                         </Button>
                         <Button
                             variant="tableBlue"
-                            size="icon"
-                            className={` rounded-sm  w-6 h-6`}
+                            size="tableIcon"
+                            className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => toggleRow(index)}
                         >
-                            <DeleteIcons className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  w-4 h-4`} />
+                            <DeleteIcons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
                         </Button>
+
                         <Button
                             variant="tableBlue"
-                            size="icon"
-                            className={` rounded-sm w-6 h-6`}
+                            size="tableIcon"
+                            className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => toggleRow(index)}
                         >
-                            <MoreHorizontalIcon />
+                            <MoreHorizontalIcon width={15} height={15} />
                         </Button>
                     </div>
                 )
@@ -185,9 +186,9 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext()
-                                          )}
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
 
                                     {console.log(header.column.columnDef.header)}
                                 </TableHead>

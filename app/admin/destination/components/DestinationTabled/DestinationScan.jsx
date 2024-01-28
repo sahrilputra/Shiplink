@@ -109,7 +109,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
                                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                                             onClick={() => toggleOpenChange()}
                                         >
-                                            <MoreHorizontalIcon width={10} height={10} />
+                                            <MoreHorizontalIcon width={15} height={15} />
                                         </Button>
 
                                     </div>

@@ -20,12 +20,13 @@ export function CustomBrokerDropdownMenus() {
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="tableBlue"
-                    size="icon"
-                    className={` rounded-sm w-6 h-6`}
+                    size="tableIcon"
+                    className={`rounded-sm w-max px-[5px] h-[25px]`}
                     onClick={() => toggleOpenChange()}
                 >
-                    <MoreHorizontalIcon />
+                    <MoreHorizontalIcon width={15} height={15} />
                 </Button>
+              
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
