@@ -1,0 +1,72 @@
+[
+    {
+        "ID": "123",
+        "Row": "Row 1",
+        "Section": "Section 2",
+        "Level": 4,
+        "TotalItems": 120
+    },
+    {
+        "ID": "124",
+        "Row": "Row 2",
+        "Section": "Section 3",
+        "Level": 3,
+        "TotalItems": 90
+    },
+    {
+        "ID": "125",
+        "Row": "Row 3",
+        "Section": "Section 1",
+        "Level": 5,
+        "TotalItems": 150
+    },
+    {
+        "ID": "126",
+        "Row": "Row 4",
+        "Section": "Section 2",
+        "Level": 2,
+        "TotalItems": 80
+    },
+    {
+        "ID": "127",
+        "Row": "Row 5",
+        "Section": "Section 3",
+        "Level": 4,
+        "TotalItems": 110
+    },
+    {
+        "ID": "128",
+        "Row": "Row 6",
+        "Section": "Section 1",
+        "Level": 3,
+        "TotalItems": 95
+    },
+    {
+        "ID": "129",
+        "Row": "Row 7",
+        "Section": "Section 2",
+        "Level": 5,
+        "TotalItems": 130
+    },
+    {
+        "ID": "130",
+        "Row": "Row 8",
+        "Section": "Section 3",
+        "Level": 2,
+        "TotalItems": 75
+    },
+    {
+        "ID": "131",
+        "Row": "Row 9",
+        "Section": "Section 1",
+        "Level": 4,
+        "TotalItems": 105
+    },
+    {
+        "ID": "132",
+        "Row": "Row 10",
+        "Section": "Section 2",
+        "Level": 3,
+        "TotalItems": 85
+    }
+]
