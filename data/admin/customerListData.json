@@ -1,0 +1,73 @@
+[
+    {
+      "UnitId": "#872812138328",
+      "CustomerName": "John Doe",
+      "DateCreated": "13 Jun, 2023",
+      "LastLogin": "12 Apr, 2023",
+      "Membership": "Free"
+    },
+    {
+      "UnitId": "#987654321001",
+      "CustomerName": "Jane Smith",
+      "DateCreated": "20 Aug, 2023",
+      "LastLogin": "18 Jul, 2023",
+      "Membership": "Premium"
+    },
+    {
+      "UnitId": "#555111223344",
+      "CustomerName": "Robert Johnson",
+      "DateCreated": "05 Jan, 2023",
+      "LastLogin": "02 Dec, 2022",
+      "Membership": "Free"
+    },
+    {
+      "UnitId": "#123456789012",
+      "CustomerName": "Emily Williams",
+      "DateCreated": "10 Mar, 2023",
+      "LastLogin": "08 Feb, 2023",
+      "Membership": "Premium"
+    },
+    {
+      "UnitId": "#999000111222",
+      "CustomerName": "Michael Brown",
+      "DateCreated": "28 Apr, 2023",
+      "LastLogin": "25 Mar, 2023",
+      "Membership": "Free"
+    },
+    {
+      "UnitId": "#456789012345",
+      "CustomerName": "Olivia Taylor",
+      "DateCreated": "15 Jul, 2023",
+      "LastLogin": "12 Jun, 2023",
+      "Membership": "Premium"
+    },
+    {
+      "UnitId": "#789012345678",
+      "CustomerName": "David Wilson",
+      "DateCreated": "02 Feb, 2023",
+      "LastLogin": "30 Dec, 2022",
+      "Membership": "Free"
+    },
+    {
+      "UnitId": "#222333444555",
+      "CustomerName": "Sophia Miller",
+      "DateCreated": "19 May, 2023",
+      "LastLogin": "16 Apr, 2023",
+      "Membership": "Premium"
+    },
+    {
+      "UnitId": "#888999000111",
+      "CustomerName": "William Davis",
+      "DateCreated": "08 Sep, 2023",
+      "LastLogin": "05 Aug, 2023",
+      "Membership": "Free"
+    },
+    {
+      "UnitId": "#333444555666",
+      "CustomerName": "Ava Johnson",
+      "DateCreated": "25 Mar, 2023",
+      "LastLogin": "22 Feb, 2023",
+      "Membership": "Premium"
+    }
+  ]
+  

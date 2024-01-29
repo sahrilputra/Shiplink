@@ -47,9 +47,11 @@ export default function countries() {
                             <FilterIcons fill="#CC0019" />
                         </Button>
                     </div>
-                    <button className="w-[215px] h-10 px-8 bg-secondary rounded shadow justify-center items-center gap-2 inline-flex">
-                        <div className="text-white text-sm font-medium font-['Poppins']">Add New Countries</div>
-                    </button>
+                    <Button
+                        variant="secondary"
+                        className="">
+                        <div className="text-white text-sm font-medium ">Add New Countries</div>
+                    </Button>
                 </div>
 
                 <table className="w-full mt-4 ">

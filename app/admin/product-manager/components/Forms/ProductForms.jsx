@@ -189,10 +189,11 @@ export const NewProductForms = ({ close, data = null }) => {
                         </div>
                     </div>
 
-                    <div className=" flex justify-between items-end mt-[20px]">
+                    <div className=" flex justify-end items-end mt-[20px] w-full">
                         <Button
                             variant="destructive"
                             type="submit"
+                            className="px-10"
 
                         >
                             <p className=' font-normal '>Save</p>

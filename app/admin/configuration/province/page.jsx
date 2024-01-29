@@ -50,19 +50,21 @@ export default function province() {
             <div className="container w-full mx-auto">
                 <div className={`flex flex-row justify-between items-center w-[100%]`}>
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                    <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                        <SearchBar />
-                        <Button
-                            variant="filter"
-                            size="icon"
-                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                            <FilterIcons fill="#CC0019" />
-                        </Button>
+                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                            <SearchBar />
+                            <Button
+                                variant="filter"
+                                size="icon"
+                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                                <FilterIcons fill="#CC0019" />
+                            </Button>
+                        </div>
                     </div>
-                    </div>
-                    <button className="w-[215px] h-10 px-8 bg-secondary rounded shadow justify-center items-center gap-2 inline-flex">
-                        <div className="text-white text-sm font-medium font-['Poppins']">Add New Province</div>
-                    </button>
+                    <Button
+                        variant="secondary"
+                        className="">
+                        <div className="text-white text-sm font-medium ">Add New Province</div>
+                    </Button>
                 </div>
 
                 <table className="w-full mt-4 ">

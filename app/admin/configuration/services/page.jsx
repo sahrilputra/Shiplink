@@ -3,6 +3,7 @@ import { TextInput } from 'flowbite-react'
 import { SearchIcon, OptionIcons } from '@/components/icons/iconCollection'
 import { Status } from '@/components/status/Status'
 import { SearchBar } from '@/components/ui/searchBar'
+import { Button } from '@/components/ui/button'
 export default function services() {
 
     return (
@@ -11,20 +12,22 @@ export default function services() {
                 <div className="justify-between items-center inline-flex w-[100%]">
                     <div className={`flex flex-row justify-between items-center w-[100%]`}>
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                        <SearchBar />
-                        {/* <Button
+                            <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                                <SearchBar />
+                                {/* <Button
                             variant="filter"
                             size="icon"
                             className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
                             <FilterIcons fill="#CC0019" />
                         </Button> */}
-                    </div>
+                            </div>
                             {/* <div className="w-[39px] h-[35px] p-2 bg-white rounded border border-neutral-200 justify-center items-center gap-2.5 inline-flex" /> */}
                         </div>
-                        <button className="w-[215px] h-10 px-8 bg-secondary rounded shadow justify-center items-center gap-2 inline-flex">
-                            <div className="text-white text-sm font-medium font-['Poppins']">Services History</div>
-                        </button>
+                        <Button
+                            variant="secondary"
+                            className="">
+                            <div className="text-white text-sm font-medium ">Services History</div>
+                        </Button>
                     </div>
 
                 </div>

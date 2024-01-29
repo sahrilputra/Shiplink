@@ -185,12 +185,12 @@ export const AdminSidebar = () => {
                                 />
 
                                 <SidebarItem
-                                    isActive={router === "/#"}
+                                    isActive={router.startsWith("/admin/customers-manager")}
                                     title="Customer Manager"
                                     icon={
-                                        <CustomerManagerIcon className={"h-[25px] w-[25px]"} />
+                                        <CustomerManagerIcon className={"h- [25px] w-[25px]"} />
                                     }
-                                    href="#"
+                                    href="/admin/customers-manager"
                                 />
 
                                 <SidebarItem

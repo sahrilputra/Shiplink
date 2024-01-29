@@ -1,0 +1,83 @@
+[
+    {
+      "PackageId": "#123123131",
+      "ArrivalDate": "12 Jun, 2023",
+      "Destination": "Toronto, Canada",
+      "Dimension": "11 x 12 x 10",
+      "Weight": "11 Ibs",
+      "CurrentStatus": "arrived at MH"
+    },
+    {
+      "PackageId": "#456456456",
+      "ArrivalDate": "15 Jul, 2023",
+      "Destination": "New York, USA",
+      "Dimension": "10 x 14 x 8",
+      "Weight": "9 Ibs",
+      "CurrentStatus": "in transit"
+    },
+    {
+      "PackageId": "#789789789",
+      "ArrivalDate": "20 Aug, 2023",
+      "Destination": "London, UK",
+      "Dimension": "15 x 18 x 12",
+      "Weight": "15 Ibs",
+      "CurrentStatus": "customs clearance"
+    },
+    {
+      "PackageId": "#101010101",
+      "ArrivalDate": "25 Sep, 2023",
+      "Destination": "Sydney, Australia",
+      "Dimension": "12 x 15 x 11",
+      "Weight": "13 Ibs",
+      "CurrentStatus": "out for delivery"
+    },
+    {
+      "PackageId": "#121212121",
+      "ArrivalDate": "1 Oct, 2023",
+      "Destination": "Paris, France",
+      "Dimension": "9 x 10 x 7",
+      "Weight": "8 Ibs",
+      "CurrentStatus": "delivered"
+    },
+    {
+      "PackageId": "#141414141",
+      "ArrivalDate": "5 Nov, 2023",
+      "Destination": "Tokyo, Japan",
+      "Dimension": "14 x 16 x 13",
+      "Weight": "17 Ibs",
+      "CurrentStatus": "in transit"
+    },
+    {
+      "PackageId": "#161616161",
+      "ArrivalDate": "10 Dec, 2023",
+      "Destination": "Berlin, Germany",
+      "Dimension": "13 x 14 x 9",
+      "Weight": "10 Ibs",
+      "CurrentStatus": "arrived at destination"
+    },
+    {
+      "PackageId": "#181818181",
+      "ArrivalDate": "15 Jan, 2024",
+      "Destination": "Madrid, Spain",
+      "Dimension": "16 x 20 x 15",
+      "Weight": "20 Ibs",
+      "CurrentStatus": "in transit"
+    },
+    {
+      "PackageId": "#202020202",
+      "ArrivalDate": "20 Feb, 2024",
+      "Destination": "Seoul, South Korea",
+      "Dimension": "11 x 13 x 10",
+      "Weight": "12 Ibs",
+      "CurrentStatus": "customs clearance"
+    },
+    {
+      "PackageId": "#222222222",
+      "ArrivalDate": "25 Mar, 2024",
+      "Destination": "Beijing, China",
+      "Dimension": "18 x 22 x 17",
+      "Weight": "25 Ibs",
+      "CurrentStatus": "out for delivery"
+    }
+  ]
+  
