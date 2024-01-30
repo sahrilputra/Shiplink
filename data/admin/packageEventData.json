@@ -1,0 +1,37 @@
+[
+    {
+        "TrackingID": "#872812138328",
+        "Date": "12 Aug, 2023",
+        "Time": "09:00",
+        "EventDescription": "Package shipped from Nevada to Toronto",
+        "Location": "TR, Warehouse"
+    },
+    {
+        "TrackingID": "#872812138329",
+        "Date": "13 Aug, 2023",
+        "Time": "10:30",
+        "EventDescription": "Package arrived at Toronto sorting facility",
+        "Location": "Toronto Sorting Facility"
+    },
+    {
+        "TrackingID": "#872812138330",
+        "Date": "15 Aug, 2023",
+        "Time": "14:45",
+        "EventDescription": "Package departed from Toronto to final destination",
+        "Location": "En route to Final Destination"
+    },
+    {
+        "TrackingID": "#872812138331",
+        "Date": "18 Aug, 2023",
+        "Time": "08:15",
+        "EventDescription": "Package arrived at final destination",
+        "Location": "Recipient's Address"
+    },
+    {
+        "TrackingID": "#872812138332",
+        "Date": "20 Aug, 2023",
+        "Time": "11:20",
+        "EventDescription": "Package delivered and signed by recipient",
+        "Location": "Recipient's Address"
+    }
+]

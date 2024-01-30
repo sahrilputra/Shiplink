@@ -1,0 +1,101 @@
+.container {
+    display: inline-block;
+    width: 100%;
+    // max-width: max-content;
+    height: max-content;
+    min-height: 100%;
+    // max-height: max-content;
+    background-color: #ffff;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+.main {
+    flex: 5;
+    width: 100%;
+    height: max-content;
+    min-height: 100vh;
+    background-color: #ffff;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+
+.rightPanel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 5px;
+}
+
+.tabs {
+    margin: 20px 10px 0 5px;
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.item_container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.items {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.configHeader {
+    border: solid 1px #DEDEDE;
+    border-radius: 6px;
+    padding: 20px 0 30px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    gap: 30px;
+}
+
+.banner {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+.wrapper {
+    margin: 10px;
+}
+
+.menus {
+    position: absolute;
+    bottom: 0;
+}
+
+.childContent {
+    border: solid 1px #DEDEDE;
+    border-radius: 6px;
+    margin-top: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    gap: 30px;
+}

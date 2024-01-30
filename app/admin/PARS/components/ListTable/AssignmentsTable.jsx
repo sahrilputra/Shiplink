@@ -16,11 +16,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
+import { MenuDropdown } from "../../assignments/components/menu/MenuDropdown";
 import { MoreHorizontalIcon } from "lucide-react";
 
-export function AssignmetnsTabled({ data, isOpen, setOpen }) {
+export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, selectedMenus }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
+    const [openMenus, setOpenMenus] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
     const toggleEdit = () => {
@@ -29,11 +31,15 @@ export function AssignmetnsTabled({ data, isOpen, setOpen }) {
     const toggleCancel = () => {
         setIsEdit(false)
     }
+    const toggleMenus = () => {
+        setOpenMenus(!openMenus)
+    }
     const toggleRow = (index) => {
         const newExpandedRows = [...expandedRows];
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+
     return (
         <Table className="border border-zinc-300 rounded-sm">
             <TableHeader className="text-sm bg-white text-black">
@@ -48,15 +54,6 @@ export function AssignmetnsTabled({ data, isOpen, setOpen }) {
                                 <FilterIcons fill="#CC0019" />
                             </Button>
                             <DatePickerWithRange className={"text-black"} />
-                        </div>
-                        <div className="">
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                className="w-[100px]"
-                            >
-                                <p className=" text-xs">Print</p>
-                            </Button>
                         </div>
                     </div>
                 </TableHead>
@@ -88,14 +85,7 @@ export function AssignmetnsTabled({ data, isOpen, setOpen }) {
                                         >
                                             <p className="text-[11px]">View Package</p>
                                         </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm w-6 h-6`}
-                                            onClick={() => toggleRow(index)}
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </Button>
+                                        <MenuDropdown getSelectedItem={selectedMenusState} />
                                     </div>
                                 </TableCell>
                             </TableRow>

@@ -88,7 +88,7 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => toggleRow(index)}
                         >
-                            <p className="text-[11px]">Update</p>
+                            <p className="text-[11px]">Edit</p>
                         </Button>
                         <Button
                             variant="tableBlue"
@@ -99,14 +99,14 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                             <DeleteIcons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
                         </Button>
 
-                        <Button
+                      {/*   <Button
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => toggleRow(index)}
                         >
                             <MoreHorizontalIcon width={15} height={15} />
-                        </Button>
+                        </Button> */}
                     </div>
                 )
             },
@@ -151,7 +151,7 @@ export function PARSTable({ data, isOpen, setOpen, }) {
             <TableHeader className="text-sm bg-white text-black">
                 <TableHead colSpan={7} className="p-4 " >
                     <div className="flex flex-row justify-between">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center text-black">
                             <SearchBar />
                             <Button
                                 variant="filter"
