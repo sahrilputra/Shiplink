@@ -3,10 +3,7 @@ import React from 'react';
 import styles from './styles.module.scss'
 import Image from 'next/image';
 
-import { ConfigMenus } from './components/ConfigMenus';
-
-
-export default function ConfigurationMenus({ children }) {
+export default function PermissionLayout({ children }) {
 
     return (
         <>
@@ -16,20 +13,16 @@ export default function ConfigurationMenus({ children }) {
                         <div className={styles.banner}>
                             <div className={styles.icon}>
                                 <Image
-                                    src={"/backoffice/config-blue.png"}
+                                    src={"/backoffice/permission-blue.png"}
                                     width={40}
                                     height={40}
                                     alt='config icon'
                                 />
                             </div>
                             <div className={`${styles.title} flex flex-col`}>
-                                <h1 className=" text-zinc-900 text-sm font-bold ">Configuration</h1>
-                                <p className=" text-blue-900 text-xs font-normal">Showing All Carriers</p>
+                                <h1 className=" text-zinc-900 text-sm font-bold ">User & Permission</h1>
+                                <p className=" text-blue-900 text-xs font-normal">Manage User And Permission</p>
                             </div>
-                        </div>
-
-                        <div className={`${styles.menus}`}>
-                            <ConfigMenus />
                         </div>
                     </div>
 

@@ -16,7 +16,7 @@ export default function Tax() {
 
                 <div className={styles.left}>
                     <div className="w-[100%]  p-5 bg-white rounded-md border border-neutral-200 flex-col justify-start items-start gap-[15px] inline-flex">
-                        <div className="w-[201px] text-zinc-700 text-lg font-[400] leading-tight" >Tax Configuration</div>
+                        <div className=" text-zinc-700 text-base font-bold" >Tax Configuration</div>
                         <Select
                             className=" bg-stone-50 rounded-tl rounded-bl justify-start items-center gap-3 flex text-zinc-400 text-sm font-medium font-['Poppins'] leading-tight"
                             id="countries"
@@ -36,7 +36,7 @@ export default function Tax() {
 
                 <div className={styles.right}>
                     <div className="w-[100%] p-5 bg-white rounded-md border border-neutral-200 flex-col justify-start items-start gap-[15px] inline-flex">
-                        <div className="w-[201px] text-zinc-700 text-lg font-semi-bold leading-tight">Tax Assignment</div>
+                    <div className=" text-zinc-700 text-base font-bold" >Tax Assignment</div>
                         <div className="py-[5px] flex-col justify-start items-start gap-2.5 flex">
                             <Button
                                 variant="softBlue"

@@ -23,8 +23,10 @@ export default function configuration() {
                             <FilterIcons fill="#CC0019" />
                         </Button>
                     </div>
-                    <Button className="w-[215px] h-10 px-8" variant="destructive">
-                        <div className="text-white text-sm font-normal ">Connect New Carrier</div>
+                    <Button className="px-4"
+                        variant="destructive"
+                        size="sm">
+                        <div className="text-xs font-normal ">Connect New Carrier</div>
                     </Button>
                 </div>
 

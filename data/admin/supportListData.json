@@ -1,0 +1,72 @@
+[
+    {
+        "TicketsID": "98765432",
+        "OpenDate": "15/5/2023, 09:45",
+        "Subject": "Login Issues",
+        "Customer": {
+            "Name": "Jane Smith",
+            "Email": "jane.smith@example.com",
+            "Phone": "+1 (555) 123-4567"
+        },
+        "ReplyBy": "SupportTeam",
+        "Status": "Pending",
+        "Priority": "High",
+        "Description": "User unable to log in, getting an error message on the login screen."
+    },
+    {
+        "TicketsID": "87654321",
+        "OpenDate": "10/4/2023, 14:30",
+        "Subject": "Billing Inquiry",
+        "Customer": {
+            "Name": "Robert Johnson",
+            "Email": "robert.johnson@example.com",
+            "Phone": "+1 (555) 987-6543"
+        },
+        "ReplyBy": "FinanceDept",
+        "Status": "Resolved",
+        "Priority": "Medium",
+        "Description": "Customer has questions regarding a recent billing statement."
+    },
+    {
+        "TicketsID": "76543210",
+        "OpenDate": "5/6/2023, 18:15",
+        "Subject": "Product Feedback",
+        "Customer": {
+            "Name": "Emily Davis",
+            "Email": "emily.davis@example.com",
+            "Phone": "+1 (555) 876-5432"
+        },
+        "ReplyBy": "ProductTeam",
+        "Status": "Open",
+        "Priority": "Low",
+        "Description": "Customer would like to provide feedback on recent product updates."
+    },
+    {
+        "TicketsID": "65432109",
+        "OpenDate": "20/7/2023, 11:30",
+        "Subject": "Shipping Delay",
+        "Customer": {
+            "Name": "John Anderson",
+            "Email": "john.anderson@example.com",
+            "Phone": "+1 (555) 234-5678"
+        },
+        "ReplyBy": "LogisticsDept",
+        "Status": "Pending",
+        "Priority": "High",
+        "Description": "Customer's shipment is delayed, requesting an update on the delivery status."
+    },
+    {
+        "TicketsID": "54321098",
+        "OpenDate": "8/8/2023, 16:45",
+        "Subject": "Order Modification",
+        "Customer": {
+            "Name": "Sarah Wilson",
+            "Email": "sarah.wilson@example.com",
+            "Phone": "+1 (555) 345-6789"
+        },
+        "ReplyBy": "SalesDept",
+        "Status": "Open",
+        "Priority": "Medium",
+        "Description": "Customer wants to make changes to their existing order, including adding new items."
+    }
+]

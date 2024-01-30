@@ -1,0 +1,92 @@
+[
+    {
+        "id" : 1,
+        "UserName": "John Doe",
+        "Emails": "employee1@gmail.com",
+        "Password": "213131",
+        "Role": "Transport Manager",
+        "LastSeen": "1 day Ago",
+        "CreateDate": "12 Apr, 2023"
+    },
+    {
+        "id" : 2,
+        "UserName": "Jane Smith",
+        "Emails": "employee2@gmail.com",
+        "Password": "456789",
+        "Role": "Logistics Coordinator",
+        "LastSeen": "2 days Ago",
+        "CreateDate": "15 Apr, 2023"
+    },
+    {
+        "id" : 3,
+        "UserName": "Robert Johnson",
+        "Emails": "employee3@gmail.com",
+        "Password": "789012",
+        "Role": "Warehouse Supervisor",
+        "LastSeen": "3 days Ago",
+        "CreateDate": "20 Apr, 2023"
+    },
+    {
+        "id" : 4,
+        "UserName": "Emily Wilson",
+        "Emails": "employee4@gmail.com",
+        "Password": "345678",
+        "Role": "Shipping Clerk",
+        "LastSeen": "4 days Ago",
+        "CreateDate": "25 Apr, 2023"
+    },
+    {
+        "id" : 5,
+        "UserName": "Michael Davis",
+        "Emails": "employee5@gmail.com",
+        "Password": "123456",
+        "Role": "Fleet Manager",
+        "LastSeen": "5 days Ago",
+        "CreateDate": "1 May, 2023"
+    },
+    {
+        "id" : 6,
+        "UserName": "Amanda Taylor",
+        "Emails": "employee6@gmail.com",
+        "Password": "890123",
+        "Role": "Supply Chain Analyst",
+        "LastSeen": "6 days Ago",
+        "CreateDate": "5 May, 2023"
+    },
+    {
+        "id" : 7,
+        "UserName": "Christopher White",
+        "Emails": "employee7@gmail.com",
+        "Password": "234567",
+        "Role": "Delivery Driver",
+        "LastSeen": "7 days Ago",
+        "CreateDate": "10 May, 2023"
+    },
+    {
+        "id" : 8,
+        "UserName": "Olivia Brown",
+        "Emails": "employee8@gmail.com",
+        "Password": "567890",
+        "Role": "Inventory Specialist",
+        "LastSeen": "8 days Ago",
+        "CreateDate": "15 May, 2023"
+    },
+    {
+        "id" : 9,
+        "UserName": "Daniel Miller",
+        "Emails": "employee9@gmail.com",
+        "Password": "901234",
+        "Role": "Customer Service Representative",
+        "LastSeen": "9 days Ago",
+        "CreateDate": "20 May, 2023"
+    },
+    {
+        "id" : 10,
+        "UserName": "Sophia Garcia",
+        "Emails": "employee10@gmail.com",
+        "Password": "345678",
+        "Role": "Quality Control Inspector",
+        "LastSeen": "10 days Ago",
+        "CreateDate": "25 May, 2023"
+    }
+]

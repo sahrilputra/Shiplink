@@ -147,7 +147,7 @@ export const AdminSidebar = () => {
                                     href="/admin/purchase-manager"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/admin/assisted-purchase"}
+                                    isActive={router === "/admin/support-tickets"}
                                     title="Support Tickets"
                                     icon={
                                         <SupportTickets
@@ -156,7 +156,7 @@ export const AdminSidebar = () => {
                                             className="relative"
                                         />
                                     }
-                                    href="/admin/assisted-purchase"
+                                    href="/admin/support-tickets"
                                 />
                             </div>
                         </SidebarMenu>
@@ -194,7 +194,7 @@ export const AdminSidebar = () => {
                                 />
 
                                 <SidebarItem
-                                    isActive={router === "/#"}
+                                    isActive={router.startsWith("/admin/user-permission")}
                                     title="User and Permission"
                                     icon={
                                         <UserPemissionIcon
@@ -202,7 +202,7 @@ export const AdminSidebar = () => {
                                             height={25}
                                         />
                                     }
-                                    href="#"
+                                    href="/admin/user-permission"
                                 />
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/configuration")}
