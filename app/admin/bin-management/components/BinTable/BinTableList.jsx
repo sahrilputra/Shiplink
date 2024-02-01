@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-export function BinTableList({ data, isOpen, setOpen }) {
+export function BinTableList({ data, isOpen, setOpen, handleSelect }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -46,31 +46,22 @@ export function BinTableList({ data, isOpen, setOpen }) {
                 <TableHead>Level</TableHead>
             </TableHeader>
             <TableBody className="text-xs">
-                {/* {
+                {
                     data.map((item, index) => (
                         <>
-                            <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
-                                <TableCell className="font-medium">{item.LotsID}</TableCell>
-                                <TableCell>{item.LotsLabels}</TableCell>
-                                <TableCell>{item.ManifestNumber}</TableCell>
-                                <TableCell>{item.Destination}</TableCell>
-                                <TableCell className="">{item.CurrentStatus}</TableCell>
-                                <TableCell className="w-[30px]">
-                                    <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <p className="text-[11px]">Update</p>
-                                        </Button>
-                                    </div>
-                                </TableCell>
+                            <TableRow
+                                key={item.id}
+                                className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`}
+                                onClick={() => handleSelect(item.id)} >
+                                <TableCell className="font-medium"> <Checkbox /></TableCell>
+                                <TableCell className="">{item.id}</TableCell>
+                                <TableCell>{item.Row}</TableCell>
+                                <TableCell>{item.Section}</TableCell>
+                                <TableCell>{item.Level}</TableCell>
                             </TableRow>
                         </>
                     ))
-                } */}
+                }
             </TableBody>
 
         </Table>

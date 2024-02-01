@@ -2,7 +2,7 @@
     display: inline-block;
     width: 100%;
     // max-width: max-content;
-    height: 95vh;
+    height: 100%;
     // max-height: max-content;
     background-color: #ffff;
     border-radius: 8px;
@@ -61,12 +61,12 @@
 .configHeader {
     border: solid 1px #DEDEDE;
     border-radius: 6px;
-    padding: 20px 0 30px 20px;
+    padding: 20px 0 20px 20px;
     display: flex;
     flex-direction: column;
     width: 100%;
     position: relative;
-    gap: 30px;
+    gap: 20px;
 }
 
 .banner {

@@ -20,6 +20,7 @@ import { ExternalLink } from "lucide-react";
 import { MoreHorizontalIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SelectBins } from "./SelectBin";
 
 export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
 
@@ -61,9 +62,17 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
                                     <p className="text-xs">Scan Lots</p>
                                 </Button>
                             </div>
-
                         </div>
 
+                        <div className="h-[37px]  border-neutral-300 flex items-center  ">
+                            <SelectBins />
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                            >
+                                <p className="text-xs">Assign To Bin</p>
+                            </Button>
+                        </div>
                     </div>
                 </TableHead>
             </TableHeader>

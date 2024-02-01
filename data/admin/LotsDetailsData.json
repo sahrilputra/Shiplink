@@ -1,0 +1,83 @@
+[
+    {
+      "TrackingID": "#872812138328",
+      "CustomerName": "John Doe",
+      "Origin": "Nevada, USA",
+      "Destination": "Toronto, CAD",
+      "LastUpdate": "11/04/2023",
+      "BinLocation": "Row 1, Section 2, Lv. 4"
+    },
+    {
+      "TrackingID": "#123456789012",
+      "CustomerName": "Jane Smith",
+      "Origin": "California, USA",
+      "Destination": "Vancouver, CAD",
+      "LastUpdate": "12/05/2023",
+      "BinLocation": "Row 2, Section 1, Lv. 3"
+    },
+    {
+      "TrackingID": "#987654321098",
+      "CustomerName": "Bob Johnson",
+      "Origin": "Texas, USA",
+      "Destination": "Montreal, CAD",
+      "LastUpdate": "15/06/2023",
+      "BinLocation": "Row 3, Section 3, Lv. 2"
+    },
+    {
+      "TrackingID": "#456789012345",
+      "CustomerName": "Emily Davis",
+      "Origin": "Florida, USA",
+      "Destination": "Calgary, CAD",
+      "LastUpdate": "18/07/2023",
+      "BinLocation": "Row 4, Section 4, Lv. 1"
+    },
+    {
+      "TrackingID": "#789012345678",
+      "CustomerName": "Michael Brown",
+      "Origin": "New York, USA",
+      "Destination": "Ottawa, CAD",
+      "LastUpdate": "21/08/2023",
+      "BinLocation": "Row 5, Section 2, Lv. 5"
+    },
+    {
+      "TrackingID": "#234567890123",
+      "CustomerName": "Susan White",
+      "Origin": "Arizona, USA",
+      "Destination": "Edmonton, CAD",
+      "LastUpdate": "24/09/2023",
+      "BinLocation": "Row 6, Section 1, Lv. 4"
+    },
+    {
+      "TrackingID": "#890123456789",
+      "CustomerName": "David Wilson",
+      "Origin": "Georgia, USA",
+      "Destination": "Quebec City, CAD",
+      "LastUpdate": "27/10/2023",
+      "BinLocation": "Row 7, Section 3, Lv. 3"
+    },
+    {
+      "TrackingID": "#345678901234",
+      "CustomerName": "Karen Miller",
+      "Origin": "Illinois, USA",
+      "Destination": "Winnipeg, CAD",
+      "LastUpdate": "30/11/2023",
+      "BinLocation": "Row 8, Section 4, Lv. 2"
+    },
+    {
+      "TrackingID": "#567890123456",
+      "CustomerName": "Richard Jones",
+      "Origin": "Michigan, USA",
+      "Destination": "Halifax, CAD",
+      "LastUpdate": "03/12/2023",
+      "BinLocation": "Row 9, Section 2, Lv. 6"
+    },
+    {
+      "TrackingID": "#012345678901",
+      "CustomerName": "Lisa Taylor",
+      "Origin": "Ohio, USA",
+      "Destination": "Saskatoon, CAD",
+      "LastUpdate": "06/01/2024",
+      "BinLocation": "Row 10, Section 1, Lv. 5"
+    }
+  ]
+  
