@@ -19,21 +19,10 @@ import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MenuDropdown } from "../../assignments/components/menu/MenuDropdown";
 import { MoreHorizontalIcon } from "lucide-react";
 
-export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, selectedMenus }) {
+export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, selectedMenus, selectedIDHandler }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
-    const [openMenus, setOpenMenus] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
 
-    const toggleEdit = () => {
-        setIsEdit(!isEdit)
-    }
-    const toggleCancel = () => {
-        setIsEdit(false)
-    }
-    const toggleMenus = () => {
-        setOpenMenus(!openMenus)
-    }
     const toggleRow = (index) => {
         const newExpandedRows = [...expandedRows];
         newExpandedRows[index] = !newExpandedRows[index];
@@ -70,7 +59,6 @@ export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, s
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`h-[50px] `} >
-
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.id}</TableCell>
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Type}</TableCell>
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.SequencesRange}</TableCell>
@@ -85,7 +73,7 @@ export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, s
                                         >
                                             <p className="text-[11px]">View Package</p>
                                         </Button>
-                                        <MenuDropdown getSelectedItem={selectedMenusState} />
+                                        <MenuDropdown getSelectedItem={selectedMenusState} dataId={item.id} dataIDhandler={selectedIDHandler} key={item.id} />
                                     </div>
                                 </TableCell>
                             </TableRow>

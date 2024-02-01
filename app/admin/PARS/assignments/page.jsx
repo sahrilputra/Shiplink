@@ -2,39 +2,34 @@
 import React, { useState } from 'react'
 import data from '../../../../data/admin/PARSData.json'
 import { AssignmetnsTabled } from '../components/ListTable/AssignmentsTable'
-import { SequencesDetails } from './components/dialog/SequencesDetails'
 
-const RenderComponent = ({ select, open, setOpen }) => {
-    return (
-        <>
-            {select === "SequenceDetails" ? (
-                <>
-                    <p>Helo</p>
-                    <SequencesDetails open={open} onOpen={setOpen} />
-                </>
-            ) : select === "data" ? (
-                <></>
-            ) : (
-                <p></p>
-            )}
-        </>
-    )
-}
 export default function Assignments() {
     const [select, selectedMenus] = useState(null);
+    const [selectedID, setSelectedID] = useState(null);
     const [open, setOpen] = useState(false);
+    const [renderKey, setRenderKey] = useState(0);
+    const [openEdit, setOpenEdit] = useState(false)
 
-    const toggleDetails = () => {
-        setOpen(!open)
+    const selectedIDHandler = (id) => {
+        setSelectedID(id)
     }
-    console.log('select', select)
+    const menuItemClickHandler = (item) => {
+        selectedMenus(item);
+        setOpen(true); // Ensure the dialog is open when a menu item is clicked
+        setRenderKey((prevKey) => prevKey + 1);
+    };
+    console.log('setRenderKey', renderKey)
 
 
 
     return (
         <>
-            <AssignmetnsTabled data={data} selectedMenus={select} selectedMenusState={selectedMenus} />
-            <RenderComponent select={select} open={open} setOpen={setOpen} />
+            <AssignmetnsTabled
+                data={data}
+                selectedMenus={select}
+                selectedMenusState={menuItemClickHandler}
+                selectedIDHandler={selectedIDHandler}
+            />
         </>
     )
 }

@@ -28,7 +28,7 @@ import {
 } from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
 
-export function PARSTable({ data, isOpen, setOpen, }) {
+export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete }) {
 
 
     const columns = [
@@ -76,7 +76,6 @@ export function PARSTable({ data, isOpen, setOpen, }) {
 
         },
         {
-            // accessorKey: "Action",
             id: "Action",
             header: "Action",
             cell: ({ value }) => {
@@ -86,7 +85,7 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
-                            onClick={() => toggleRow(index)}
+                            onClick={() => handlerEdit()}
                         >
                             <p className="text-[11px]">Edit</p>
                         </Button>
@@ -94,19 +93,11 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
-                            onClick={() => toggleRow(index)}
+                            onClick={() => handlerDelete()}
                         >
                             <DeleteIcons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
                         </Button>
 
-                      {/*   <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                            onClick={() => toggleRow(index)}
-                        >
-                            <MoreHorizontalIcon width={15} height={15} />
-                        </Button> */}
                     </div>
                 )
             },
@@ -147,11 +138,11 @@ export function PARSTable({ data, isOpen, setOpen, }) {
         setExpandedRows(newExpandedRows);
     };
     return (
-        <Table className="border border-zinc-300 rounded-sm">
-            <TableHeader className="text-sm bg-white text-black">
-                <TableHead colSpan={7} className="p-4 " >
-                    <div className="flex flex-row justify-between">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center text-black">
+        <Table className=" rounded-md">
+            <TableHeader className="text-sm bg-white text-black rounded-md ">
+                <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
+                    <div className="flex flex-row justify-between rounded-md">
+                        <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
                             <SearchBar />
                             <Button
                                 variant="filter"
@@ -166,6 +157,7 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                                 variant="destructive"
                                 size="sm"
                                 className="w-[100px]"
+                                disabled={Object.keys(rowSelection).length === 0} // Check if any item is checked
                             >
                                 <p className=" text-xs">Print</p>
                             </Button>
@@ -196,12 +188,6 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                         })}
                     </>
                 ))}
-                {/* <TableHead className="w-[60px]"></TableHead>
-                <TableHead>PARS / PAPS Number</TableHead>
-                <TableHead>Create Date</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead className="">Edit Date</TableHead>
-                <TableHead className="">Action</TableHead> */}
             </TableHeader>
             <TableBody>
                 {table.getRowModel().rows?.length ? (
@@ -226,51 +212,6 @@ export function PARSTable({ data, isOpen, setOpen, }) {
                     </TableRow>
                 )}
             </TableBody>
-            {/* <TableBody className="text-xs">
-                {
-                    data.map((item, index) => (
-                        <>
-                            <TableRow key={item.id} className={`h-[50px] `} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px] w-[50px]">
-                                    <Checkbox className="w-4 h-4" />
-                                </TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.SequencesRange}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CreateDate}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.AssignedTo}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.EditDate}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
-                                    <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleRow(index)}
-                                        >
-                                            <p className="text-[11px]">Update</p>
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm  w-6 h-6`}
-                                            onClick={() => toggleRow(index)}
-                                        >
-                                            <DeleteIcons className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  w-4 h-4`} />
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm w-6 h-6`}
-                                            onClick={() => toggleRow(index)}
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        </>
-                    ))
-                }
-            </TableBody> */}
 
         </Table>
     )

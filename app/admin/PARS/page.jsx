@@ -10,12 +10,28 @@ import { Separator } from '@/components/ui/separator'
 import data from '../../../data/admin/PARSData.json'
 import { PARSTable } from './components/ListTable/PARSTabled'
 import { Checkbox } from '@/components/ui/checkbox'
+import { EditSequences } from './components/dialog/EditSequences'
+import { DeleteSequences } from './components/dialog/DeleteSequences'
 export default function PARSPage() {
 
+    const [deletOpen, setDeleteOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
+
+
     const [clicked, isClicked] = useState(false);
-    console.log('parent', clicked)
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
+    }
+
+    const handleDelete = () => {
+        setDeleteOpen(!deletOpen);
+    }
+    const handleEdit = () => {
+        setEditOpen(!editOpen);
+    }
+
+    const handleDeleteClose = () => {
+        setDeleteOpen(false);
     }
 
 
@@ -50,10 +66,11 @@ export default function PARSPage() {
                 <div className="w-full py-5 px-2">
                     <Separator className="h-[3px]" />
                 </div>
-                <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
-                    <PARSTable data={data} />
+                <div className={`${styles.listTable} flex flex-col gap-1`}>
+                    <PARSTable data={data} handlerEdit={handleEdit} handlerDelete={handleDelete} />
                 </div>
-
+                <EditSequences open={editOpen} setOpen={setEditOpen} />
+                <DeleteSequences open={deletOpen} setOpen={setDeleteOpen} onClose={handleDeleteClose} />
             </div>
         </>
     )
