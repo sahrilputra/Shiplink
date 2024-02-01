@@ -33,13 +33,13 @@ export const MenuDropdown = ({ getSelectedItem, dataIDhandler, dataId }) => {
 
     const render = () => {
         if (isSequenceDetailsOpen) {
-            return <SequencesDetails open={isSequenceDetailsOpen} onOpen={setSequenceDetailsOpen} />
+            return <SequencesDetails open={isSequenceDetailsOpen} onOpen={setSequenceDetailsOpen} data={dataId}/>
         }
         if (isEditSelectedNumberOpen) {
-            return <EditSelectedNumber open={isEditSelectedNumberOpen} setOpen={setEditSelectedNumberOpen} onClose={handleSelectedNumberClose} />
+            return <EditSelectedNumber open={isEditSelectedNumberOpen} setOpen={setEditSelectedNumberOpen} onClose={handleSelectedNumberClose} data={dataId} />
         }
         if (isDeleteOpen) {
-            return <DeleteDialog open={isDeleteOpen} setOpen={setDeleteOpen} onClose={handleCloseDeleteClose} />
+            return <DeleteDialog open={isDeleteOpen} setOpen={setDeleteOpen} onClose={handleCloseDeleteClose}  data={dataId}/>
         }
     }
     return (
@@ -73,7 +73,7 @@ export const MenuDropdown = ({ getSelectedItem, dataIDhandler, dataId }) => {
                             <p className="text-xs">Print Number</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-                            <p className="text-xs">Delete Number</p>
+                            <p className="text-xs text-red-800">Delete Number</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

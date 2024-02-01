@@ -12,7 +12,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { SequencesDetailsCard } from '../others/SequencesDetailsCard'
 
-export const SequencesDetails = ({ open, onOpen }) => {
+export const SequencesDetails = ({ open, onOpen, data }) => {
 
     return (
         <Dialog open={open} onOpenChange={onOpen}>

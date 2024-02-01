@@ -16,7 +16,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 
-export const DeleteDialog = ({ open, setOpen, onClose }) => {
+export const DeleteDialog = ({ open, setOpen, onClose, data }) => {
     const { toast } = useToast()
     return (
         <AlertDialog open={open} onOpenChange={setOpen} >
@@ -34,9 +34,9 @@ export const DeleteDialog = ({ open, setOpen, onClose }) => {
                 <AlertDialogDescription>
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-col text-neutral-900">
-                            <p>Sequences ID : #1232</p>
-                            <p>Type : PARS</p>
-                            <p>Number : #1231231</p>
+                            <p>Sequences ID : #{data?.SequencesNumber}</p>
+                            <p>Type : {data?.Type}</p>
+                            <p>Number : #{data?.SequencesStart}</p>
 
                         </div>
                         <div className="">

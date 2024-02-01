@@ -73,7 +73,7 @@ export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, s
                                         >
                                             <p className="text-[11px]">View Package</p>
                                         </Button>
-                                        <MenuDropdown getSelectedItem={selectedMenusState} dataId={item.id} dataIDhandler={selectedIDHandler} key={item.id} />
+                                        <MenuDropdown getSelectedItem={selectedMenusState} dataId={item} dataIDhandler={selectedIDHandler} key={item.id} />
                                     </div>
                                 </TableCell>
                             </TableRow>

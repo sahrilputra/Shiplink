@@ -14,7 +14,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { EditSelectedNumberForms } from '../forms/EditSelectedForms'
 
-export const EditSelectedNumber = ({ open, setOpen, onClose }) => {
+export const EditSelectedNumber = ({ open, setOpen, onClose, data }) => {
    
     return (
         <Dialog open={open} onOpenChange={setOpen} >
