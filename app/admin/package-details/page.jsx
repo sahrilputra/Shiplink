@@ -1,14 +1,17 @@
 'use client'
 import React, { useState } from 'react'
 import styles from './styles.module.scss'
-import { FilterIcons } from '@/components/icons/iconCollection'
 import { Button } from '@/components/ui/button'
-import { SearchBar } from '@/components/ui/searchBar'
-import { Input } from '@/components/ui/input'
-import { DatePickerWithRange } from '@/components/date/DateRangePicker'
 import data from '../../../data/admin/packageEventData.json'
 import Image from 'next/image'
 import { EventTabled } from './components/EventTable'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
 
 export default function VerificationPages() {
 
@@ -95,19 +98,57 @@ export default function VerificationPages() {
                                 </div>
                             </div>
                         </div>
-                        <div className="PackageInformation w-full border border-neutral-200 rounded-md p-4">
-                            <div className="head">
-                                <p className=' text-myBlue font-base font-bold'>Package Information</p>
+                        <div className="PackageInformation w-full border border-neutral-200 rounded-md p-4 flex flex-col gap-5">
+                            <div className="flex flex-row gap-3 justify-between items-center">
+                                <div className="head">
+                                    <p className=' text-myBlue font-base font-bold'>Package Information</p>
+                                </div>
+                                <div className="flex flex-row gap-2">
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                    >
+                                        <p className=' text-xs'>Edit Package</p>
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                    >
+                                        <p className=' text-xs'>Download Internal Code</p>
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                    >
+                                        <p className=' text-xs'>Download Package Information</p>
+                                    </Button>
+                                </div>
                             </div>
-                            <div className="flex flex-row gap-2">
-                                <p>Action</p>
-                            </div>
-                            <div className="flex flex-row gap-1 py-2">
-                                <div className="imageContainer flex flex-col">
-                                    <p>Image Here</p>
+                            <div className="flex flex-row gap-4 py-2">
+                                <div className="imageContainer flex flex-col w-[400px] items-center">
+                                    <Carousel className="w-full ">
+                                        <CarouselContent className=" ">
+                                            {Array.from({ length: 5 }).map((_, index) => (
+                                                <CarouselItem key={index} className=" w-full h-full grow-1">
+                                                    <div className="w-full">
+                                                        <Image
+                                                            src={'/assets/packageImage/packagePicture.png'}
+                                                            width={500}
+                                                            height={500}
+                                                            alt='package image'
+                                                            className='object-cover w-full rounded-md '
+                                                        />
+                                                    </div>
+                                                </CarouselItem>
+                                            ))}
+                                        </CarouselContent>
+                                        <CarouselPrevious className="left-[10px]" />
+                                        <CarouselNext className="right-[10px]" />
+                                    </Carousel>
+
                                 </div>
 
-                                <div className="flex flex-col">
+                                <div className="flex flex-col ">
                                     <p className="text-red-700 text-opacity-80 text-lg font-bold font-['Poppins']">#872812138328</p>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Package Weight</p>

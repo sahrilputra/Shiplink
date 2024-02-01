@@ -24,7 +24,6 @@ import {
     getPaginationRowModel,
     SortingState,
     getSortedRowModel,
-
 } from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
 

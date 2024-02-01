@@ -12,14 +12,14 @@ import {
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
-import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
-import { ExternalLink } from "lucide-react";
-import { MoreHorizontalIcon } from "lucide-react";
+import { EditLotsDialog } from "../AssignLotsDialog/EditLotsDialog";
+import { LotsMoreMenusDropDrown } from "../menus/LotsMoreMenus";
+import { ExpandedLotsData } from "./ExpandedLotsData";
 
 export function LotsItemsTable({ data, isOpen, setOpen }) {
+    const [isEditDialog, setEditDialog] = useState(false);
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -40,78 +40,82 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
         setOpen(true)
     }
     return (
-        <Table className="border border-zinc-300 rounded-sm">
-            <TableHeader className="text-sm bg-white text-black">
-                <TableHead colSpan={7} className="p-4 " >
-                    <div className="flex flex-row justify-between">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="icon"
-                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                                <FilterIcons fill="#CC0019" />
-                            </Button>
-                            <DatePickerWithRange className={"text-black"} />
-                        </div>
-                    
-                    </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-sm">
-                <TableHead className="w-[80px]">Lots ID</TableHead>
-                <TableHead >Lots Labels</TableHead>
-                <TableHead className="w-[130px]">Destination</TableHead>
-                <TableHead className="w-[130px]">Documents</TableHead>
-                <TableHead className="w-[180px]">Manifest</TableHead>
-                <TableHead className="w-[180px]">Status</TableHead>
-                <TableHead className=""></TableHead>
-            </TableHeader>
-            <TableBody className="text-xs">
-                {
-                    data.map((item, index) => (
-                        <>
-                            <TableRow key={item.id} className={`h-[50px] `} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsID}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsLabel}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Documents}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Manifest}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Status}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
-                                    <div className="flex flex-row gap-2">
-                                    <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <p className="text-[11px]">Edit Lots</p>
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                           <MoreHorizontalIcon width={10} height={10} />
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                           <ArrowDownV2Icons width={10} height={10} />
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        </>
-                    ))
-                }
-            </TableBody>
+        <>
+            <Table className="border border-zinc-300 rounded-sm">
+                <TableHeader className="text-sm bg-white text-black">
+                    <TableHead colSpan={7} className="p-4 " >
+                        <div className="flex flex-row justify-between">
+                            <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                                <SearchBar />
+                                <Button
+                                    variant="filter"
+                                    size="icon"
+                                    className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                                    <FilterIcons fill="#CC0019" />
+                                </Button>
+                                <DatePickerWithRange className={"text-black"} />
+                            </div>
 
-        </Table>
+                        </div>
+                    </TableHead>
+                </TableHeader>
+                <TableHeader className="text-sm">
+                    <TableHead className="w-[80px]">Lots ID</TableHead>
+                    <TableHead >Lots Labels</TableHead>
+                    <TableHead className="">Destination</TableHead>
+                    <TableHead className="w-[130px]">Documents</TableHead>
+                    <TableHead className="w-[180px]">Manifest</TableHead>
+                    <TableHead className="w-[180px]">Status</TableHead>
+                    <TableHead className="w-[140px]"></TableHead>
+                </TableHeader>
+                <TableBody className="text-xs">
+                    {
+                        data.map((item, index) => (
+                            <>
+                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-[50px]`} >
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsID}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsLabel}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Documents}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Manifest}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Status}</TableCell>
+                                    <TableCell className="p-1 px-[20px] py-[10px]">
+                                        <div className="flex w-[140px] flex-row gap-2">
+                                            <Button
+                                                variant="tableBlue"
+                                                size="tableIcon"
+                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                onClick={() => setEditDialog(true)}
+                                            >
+                                                <p className="text-[11px]">Edit Lots</p>
+                                            </Button>
+                                            <LotsMoreMenusDropDrown />
+                                            <Button
+                                                variant="tableBlue"
+                                                size="tableIcon"
+                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                onClick={() => toggleRow(index)}
+                                            >
+                                                 <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`} />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                                {expandedRows[index] && (
+                                    <>
+                                        <TableRow >
+                                            <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
+                                                <ExpandedLotsData />
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
+                                )}
+                            </>
+                        ))
+                    }
+                </TableBody>
+            </Table>
+            <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} />
+        </>
     )
 }

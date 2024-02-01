@@ -1,7 +1,7 @@
 [
     {
-        "LotsID": "#872812138328",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138328",
+        "LotsLabel": "Goes To California",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345678",
@@ -11,8 +11,8 @@
         "LotsContainer": 100
     },
     {
-        "LotsID": "#872812138329",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138329",
+        "LotsLabel": "Goes To U.S.A.",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345679",
@@ -22,8 +22,8 @@
         "LotsContainer": 101
     },
     {
-        "LotsID": "#872812138330",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138330",
+        "LotsLabel": "Goes To Washington",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345680",
@@ -33,8 +33,8 @@
         "LotsContainer": 102
     },
     {
-        "LotsID": "#872812138331",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138331",
+        "LotsLabel": "Goes To New York",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345681",
@@ -44,8 +44,8 @@
         "LotsContainer": 103
     },
     {
-        "LotsID": "#872812138332",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138332",
+        "LotsLabel": "Goes To Toronto",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345682",
@@ -55,8 +55,8 @@
         "LotsContainer": 104
     },
     {
-        "LotsID": "#872812138333",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138333",
+        "LotsLabel": "Goes To Paris",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345683",
@@ -66,8 +66,8 @@
         "LotsContainer": 105
     },
     {
-        "LotsID": "#872812138334",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138334",
+        "LotsLabel": "Goes To Buenos Aires",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345684",
@@ -77,8 +77,8 @@
         "LotsContainer": 106
     },
     {
-        "LotsID": "#872812138335",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138335",
+        "LotsLabel": "Goes To Dubai",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345685",
@@ -88,8 +88,8 @@
         "LotsContainer": 107
     },
     {
-        "LotsID": "#872812138336",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138336",
+        "LotsLabel": "Goes To Tokyo",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345686",
@@ -99,8 +99,8 @@
         "LotsContainer": 108
     },
     {
-        "LotsID": "#872812138337",
-        "LotsLabel": "Goes To Somewhere",
+        "LotsID": "872812138337",
+        "LotsLabel": "Goes To Moscow",
         "Destination": "Nevada, USA",
         "Documents": 2,
         "Manifest": "ABC12345687",

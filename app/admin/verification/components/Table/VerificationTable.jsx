@@ -16,11 +16,15 @@ import { TableAction } from "./TableAction";
 import { ArrowDownV2Icons } from "@/components/icons/iconCollection";
 import { EditMode } from "./EditMode";
 import { VerifiedStatus } from "../status/VerifiedStatus";
+import { EditForms } from "./EditForms";
+import { ImageTable } from "./ImageTable";
 export function VerificationTable({ data, isOpen, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
 
+    const [isEdit, setIsEdit] = useState(false);
+    const [editCount, setEditCount] = useState(1);
+    
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -57,7 +61,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                     <VerifiedStatus param={item.CustomsStatus} />
                                 </TableCell>
                                 <TableCell className="w-[30px]">
-                                 
+
                                     <Button
                                         variant="tableBlue"
                                         size="tableIcon"
@@ -77,14 +81,23 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                 <>
                                     <TableRow key={`expanded_${item.id}`} className="bg-blue-100 hover:bg-blue-100">
                                         <TableCell className="font-medium" colSpan={7}>
-                                            < ExpandedTable type={(isEdit ? "edit" : "")} />
+                                            <div className="w-[80%] flex justify-center items-center mx-auto">
+                                                <ImageTable />
+                                            </div>
+                                            {
+                                                isEdit ? (
+                                                    <EditForms counter={editCount} />
+                                                ) : (
+                                                    < ExpandedTable />
+                                                )
+                                            }
                                         </TableCell>
                                     </TableRow>
                                     <TableRow className="bg-blue-200 hover:bg-blue-200">
                                         <TableCell className="font-medium" colSpan={7}>
                                             {
                                                 isEdit ? (
-                                                    <EditMode cancel={toggleCancel} />
+                                                    <EditMode cancel={toggleCancel} increaseContent={setEditCount} />
                                                 ) : (
                                                     <TableAction edit={toggleEdit} />
                                                 )

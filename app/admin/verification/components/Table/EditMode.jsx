@@ -8,7 +8,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export const EditMode = ({ cancel }) => {
+export const EditMode = ({ cancel, increaseContent }) => {
     return (
         <>
             <div className="w-[100%] flex flex-row justify-between gap-2 items-center">
@@ -16,6 +16,7 @@ export const EditMode = ({ cancel }) => {
                     <Button
                         variant="tableBlue"
                         size="sm"
+                        onClick={() => increaseContent((prev) => prev + 1)}
                     >
                         <p className='text-xs font-light'>Add Other Content</p>
                     </Button>
