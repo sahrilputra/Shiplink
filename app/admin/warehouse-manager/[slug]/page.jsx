@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import styles from '../styles.module.scss'
 import data from '../../../../data/admin/warehouseDataDetails.json'
 import { WarehouseBinDataList } from '../components/table/warehouseDetails/BinListTable'
+import { DataChart } from '../components/charts/DataChart'
 export default function Warehouse({ params }) {
     console.log("params : ", params.slug)
 
@@ -41,11 +42,8 @@ export default function Warehouse({ params }) {
                                 />
                             </div>
                             <div className="chartContainer flex flex-col gap-2">
-                                <div className="w-20 h-20">
-                                    data1
-                                </div>
-                                <div className="w-20 h-20">
-                                    data2
+                                <div className="w-[300px]">
+                                    <DataChart />
                                 </div>
                             </div>
 

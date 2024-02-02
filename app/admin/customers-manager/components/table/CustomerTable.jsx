@@ -17,6 +17,7 @@ import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
+import NextLink from "next/link";
 
 export function CustomerTable({ data, open, setOpen }) {
 
@@ -88,14 +89,17 @@ export function CustomerTable({ data, open, setOpen }) {
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Membership}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <p className="text-[11px] text-myBlue">Details</p>
-                                        </Button>
+                                        <NextLink
+                                            href={"/admin/customers-manager/1"}>
+                                            <Button
+                                                variant="tableBlue"
+                                                size="tableIcon"
+                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                onClick={() => toggleOpenChange()}
+                                            >
+                                                <p className="text-[11px] text-myBlue">Details</p>
+                                            </Button>
+                                        </NextLink>
                                         <Button
                                             variant="tableBlue"
                                             size="tableIcon"

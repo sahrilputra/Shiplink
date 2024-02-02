@@ -16,6 +16,7 @@ import { ExternalLink, MoreHorizontalIcon, Plus, Delete } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
+import NextLink from 'next/link';
 export function InvoiceTable({ data, isOpen, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
@@ -52,14 +53,15 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
                             <DatePickerWithRange className={"text-black"} />
                         </div>
                         <div className="">
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                className="px-10"
-                                onClick={() => toggleOpenChange()}
-                            >
-                                <p className=" text-xs">New Invoice</p>
-                            </Button>
+                            <NextLink href={'/admin/invoice-manager/invoice'} >
+                                <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    className="px-10"
+                                >
+                                    <p className=" text-xs">New Invoice</p>
+                                </Button>
+                            </NextLink>
                         </div>
                     </div>
                 </TableHead>

@@ -17,6 +17,8 @@ import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
+import NextLink from "next/link";
+import { WarehouseMenus } from "../menus/WarehouseMenus";
 
 export function WarehouseDataList({ data, isOpen, setOpen }) {
 
@@ -78,20 +80,16 @@ export function WarehouseDataList({ data, isOpen, setOpen }) {
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Email}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="sm"
-                                            className="h-6 px-2"
-                                        >
-                                            <p className="text-xs">Details</p>
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm w-6 h-6`}
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </Button>
+                                        <NextLink href={"/admin/warehouse-manager/1"}>
+                                            <Button
+                                                variant="tableBlue"
+                                                size="sm"
+                                                className="h-6 px-2"
+                                            >
+                                                <p className="text-xs">Details</p>
+                                            </Button>
+                                        </NextLink>
+                                        <WarehouseMenus />
                                     </div>
                                 </TableCell>
                             </TableRow>

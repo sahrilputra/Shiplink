@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
+import { AssistedPurchaseMenus } from "../menus/AssistedPurchaseMenus";
 import { MoreHorizontalIcon } from "lucide-react";
 export function PendingTable({ data, isOpen, setOpen }) {
 
@@ -86,13 +87,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                         >
                                             <p className="text-xs">Complete</p>
                                         </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm w-6 h-6`}
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </Button>
+                                        <AssistedPurchaseMenus />
                                         <Button
                                             variant="tableBlue"
                                             size="icon"
@@ -119,9 +114,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                                         <TableHead className=" h-10 text-xs">Unit Price</TableHead>
                                                         <TableHead className="h-10 text-xs ">Line Total</TableHead>
                                                         <TableHead className="w-[50px] h-10 text-xs">Fee</TableHead>
-                                                        <TableHead className="w-[50px] h-10 text-xs">
-                                                            <Checkbox />
-                                                        </TableHead>
+
 
                                                     </TableHeader>
                                                     <TableBody className="text-xs bg-white p-0">
@@ -144,12 +137,10 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                                             <TableCell className="h-10 p-0 py-4 px-3">
                                                                 $2.30
                                                             </TableCell>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
-                                                                <Checkbox />
-                                                            </TableCell>
+
                                                         </TableRow>
                                                         <TableRow className="h-5 p-0">
-                                                            <TableCell colSpan={5} className="h-5 p-0 px-5">
+                                                            <TableCell colSpan={4} className="h-5 p-0 px-5">
                                                                 https://www.tokopedia.com/products/smartwatch-xyz789
                                                             </TableCell>
                                                             <TableCell className="h-5 p-0">
