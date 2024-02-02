@@ -13,35 +13,41 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import NextLink from "next/link"
 import { MoreHorizontalIcon } from "lucide-react"
+import NextLink from "next/link"
+import React from 'react'
 
-export function MoreUserMenus({ params }) {
+export function MoreTableAction({ setRoleDialogOpen }) {
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
                 <Button
-                    variant="redOutline"
-                    size="sm"
+                    variant="tableBlue"
+                    size="tableIcon"
+                    className={`rounded-sm w-max px-[5px] h-[25px]`}
                 >
-                    <p className='text-xs'>More Action</p>
+                    <MoreHorizontalIcon width={15} height={15} />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="text-xs" side="bottom" align="left">
+            <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="text-xs text-myBlue">
-                        <NextLink href={`${params}/permission`}>
-                            Manage This User Permission
+                        <NextLink href={"/admin/user-permission/permission"}>
+                            Manage User Permission
                         </NextLink>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs">
-                        Copy Login URL
+
+                    <DropdownMenuItem
+                        className="text-xs">
+                        User Details
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs">
-                        Reset User Password
+                    <DropdownMenuItem
+                        className="text-xs">
+                        Change Role
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs text-red-800">
-                        Remove This User
+                    <DropdownMenuItem
+                        className="text-xs text-red-700">
+                        Delete User
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
             </DropdownMenuContent>

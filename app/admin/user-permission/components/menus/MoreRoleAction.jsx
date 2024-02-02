@@ -13,35 +13,33 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import NextLink from "next/link"
 import { MoreHorizontalIcon } from "lucide-react"
+import NextLink from "next/link"
 
-export function MoreUserMenus({ params }) {
+export function MoreRoleAction({ setRoleDialogOpen }) {
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
                 <Button
-                    variant="redOutline"
+                    variant="destructive"
                     size="sm"
+                    className="w-[120px]"
                 >
-                    <p className='text-xs'>More Action</p>
+                    <p className=" text-xs">Manage Role</p>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-xs" side="bottom" align="left">
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="text-xs text-myBlue">
-                        <NextLink href={`${params}/permission`}>
-                            Manage This User Permission
+                        <NextLink href={"/admin/user-permission/permission"}>
+                            Manage Role
                         </NextLink>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs">
-                        Copy Login URL
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs">
-                        Reset User Password
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs text-red-800">
-                        Remove This User
+
+                    <DropdownMenuItem
+                        onClick={() => setRoleDialogOpen(true)}
+                        className="text-xs">
+                        Create New Role
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
             </DropdownMenuContent>

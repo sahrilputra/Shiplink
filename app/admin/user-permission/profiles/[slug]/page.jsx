@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
 import { MoreUserMenus } from '../../components/menus/MoreUserMenus'
 export default function Profiles({ params }) {
-
-
+    console.log(params.slug)
     return (
         <>
             <div className="w-full h-full">
@@ -43,7 +42,7 @@ export default function Profiles({ params }) {
                                 >
                                     <p className='text-xs'>Edit Profiles</p>
                                 </Button>
-                                <MoreUserMenus />
+                                <MoreUserMenus params={params.slug}/>
                             </div>
                         </div>
                     </div>

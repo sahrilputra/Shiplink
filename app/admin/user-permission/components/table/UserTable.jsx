@@ -19,6 +19,9 @@ import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
 import { NewRoleDialog } from "../dialog/NewRoleDialog";
 import { NewUserDialog } from "../dialog/CreateNewUsersDialog";
+import { MoreRoleAction } from "../menus/MoreRoleAction";
+import NextLink from "next/link"
+import { MoreTableAction } from "../menus/MoreTableAction";
 export function UserTable({ data, isOpen, setOpen }) {
 
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
@@ -54,14 +57,7 @@ export function UserTable({ data, isOpen, setOpen }) {
                                 >
                                     <p className=" text-xs">Create New User</p>
                                 </Button>
-                                <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    className="w-[120px]"
-                                    onClick={() => setRoleDialogOpen(true)}
-                                >
-                                    <p className=" text-xs">Manage Role</p>
-                                </Button>
+                                <MoreRoleAction setRoleDialogOpen={setRoleDialogOpen} />
                             </div>
                         </div>
                     </TableHead>
@@ -87,20 +83,16 @@ export function UserTable({ data, isOpen, setOpen }) {
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CreateDate}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="secondary"
-                                            size="sm"
-                                            className="h-6 px-2"
-                                        >
-                                            <p className="text-xs">Details</p>
-                                        </Button>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="icon"
-                                            className={` rounded-sm w-6 h-6`}
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </Button>
+                                        <NextLink href={`/admin/user-permission/profiles/${item.UserName}`}>
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                className="h-6 px-2"
+                                            >
+                                                <p className="text-xs">Details</p>
+                                            </Button>
+                                        </NextLink>
+                                        <MoreTableAction />
                                     </div>
                                 </TableCell>
                             </TableRow>
