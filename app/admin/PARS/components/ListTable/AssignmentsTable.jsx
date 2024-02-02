@@ -17,6 +17,7 @@ import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MenuDropdown } from "../../assignments/components/menu/MenuDropdown";
+import NextLink from "next/link"
 import { MoreHorizontalIcon } from "lucide-react";
 
 export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, selectedMenus, selectedIDHandler }) {
@@ -65,14 +66,16 @@ export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, s
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.AssignedTo}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleRow(index)}
-                                        >
-                                            <p className="text-[11px]">View Package</p>
-                                        </Button>
+                                        <NextLink href={"/admin/package-details/2"} >
+                                            <Button
+                                                variant="tableBlue"
+                                                size="tableIcon"
+                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                onClick={() => toggleRow(index)}
+                                            >
+                                                <p className="text-[11px]">View Package</p>
+                                            </Button>
+                                        </NextLink>
                                         <MenuDropdown getSelectedItem={selectedMenusState} dataId={item} dataIDhandler={selectedIDHandler} key={item.id} />
                                     </div>
                                 </TableCell>

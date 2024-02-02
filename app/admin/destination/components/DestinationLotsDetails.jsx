@@ -3,6 +3,7 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import styles from '../styles.module.scss'
 import { map } from 'zod'
+import NextLink from 'next/link'
 export const DestinationLotsDetails = ({ data }) => {
     return (
         <>
@@ -20,13 +21,15 @@ export const DestinationLotsDetails = ({ data }) => {
                     </div>
 
                     <div className="buttonGroup py-3">
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            className="h-[30px] w-full"
-                        >
-                            <p className='text-xs'>Load Packages</p>
-                        </Button>
+                        <NextLink href={"/admin/destination/lots/undefined"}>
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                className="h-[30px] w-full"
+                            >
+                                <p className='text-xs'>Load Lots</p>
+                            </Button>
+                        </NextLink>
 
                     </div>
 

@@ -17,7 +17,9 @@ import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { EditLotsDialog } from "../AssignLotsDialog/EditLotsDialog";
 import { LotsMoreMenusDropDrown } from "../menus/LotsMoreMenus";
 import { ExpandedLotsData } from "./ExpandedLotsData";
-export function LotsItemsTable({ data, isOpen, setOpen }) {
+import NextLink from "next/link"
+
+export function LotsDetailsTable({ data, isOpen, setOpen }) {
     const [isEditDialog, setEditDialog] = useState(false);
 
     const [expandedRows, setExpandedRows] = useState([]);
@@ -59,56 +61,39 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className="w-[80px]">Lots ID</TableHead>
-                    <TableHead >Lots Labels</TableHead>
-                    <TableHead className="">Destination</TableHead>
-                    <TableHead className="w-[130px]">Documents</TableHead>
-                    <TableHead className="w-[180px]">Manifest</TableHead>
-                    <TableHead className="w-[180px]">Status</TableHead>
+                    <TableHead className="w-[80px]">Tracking ID</TableHead>
+                    <TableHead >Customer Name</TableHead>
+                    <TableHead className="">Origin</TableHead>
+                    <TableHead className="w-[130px]">Destination</TableHead>
+                    <TableHead className="w-[180px]">Last Update</TableHead>
+                    <TableHead className="w-[180px]">Bin Location</TableHead>
                     <TableHead className="w-[140px]"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
                         data.map((item, index) => (
                             <>
-                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-[50px]`} >
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsID}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsLabel}</TableCell>
+                                <TableRow key={item.TrackingID} className={` h-[50px]`} >
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.TrackingID}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomerName}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Origin}</TableCell>
                                     <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Documents}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Manifest}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Status}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LastUpdate}</TableCell>
+                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.BinLocation}</TableCell>
                                     <TableCell className="p-1 px-[20px] py-[10px]">
                                         <div className="flex w-[140px] flex-row gap-2">
-                                            <Button
-                                                variant="tableBlue"
-                                                size="tableIcon"
-                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                                onClick={() => setEditDialog(true)}
-                                            >
-                                                <p className="text-[11px]">Edit Lots</p>
-                                            </Button>
-                                            <LotsMoreMenusDropDrown dataID={item.LotsID} />
-                                            <Button
-                                                variant="tableBlue"
-                                                size="tableIcon"
-                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                                onClick={() => toggleRow(index)}
-                                            >
-                                                <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`} />
-                                            </Button>
+                                            <NextLink href={`/admin/package-details/${item.CustomerName}`}>
+                                                <Button
+                                                    variant="tableBlue"
+                                                    size="tableIcon"
+                                                    className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                >
+                                                    <p className="text-[11px]">Details</p>
+                                                </Button>
+                                            </NextLink>
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                                {expandedRows[index] && (
-                                    <>
-                                        <TableRow >
-                                            <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                <ExpandedLotsData />
-                                            </TableCell>
-                                        </TableRow>
-                                    </>
-                                )}
                             </>
                         ))
                     }

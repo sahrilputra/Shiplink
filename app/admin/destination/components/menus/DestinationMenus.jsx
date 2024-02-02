@@ -10,21 +10,21 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontalIcon } from "lucide-react"
-import { EditLotsDialog } from '../AssignLotsDialog/EditLotsDialog'
 import { Dialog } from '@/components/ui/dialog'
-
+import { AssignLotsToBin } from '../Dialog/AssignLotsToBin'
+import { UpdateStatusDialog } from '../Dialog/UpdateStatusDialog'
 import NextLink from "next/link"
-export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, dataID }) => {
-    const handleItemClick = (item) => {
-        getSelectedItem(item)
-        dataIDhandler(data)
-    };
+export const DestinationMenus = ({ getSelectedItem, dataIDhandler, data, dataID }) => {
 
-    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [assignOpen, setAssignOpen] = useState(false)
+    const [statusOpen, setStatusOpen] = useState(false)
 
     const render = () => {
-        if (editModalOpen) {
-            return <EditLotsDialog open={editModalOpen} setOpen={setEditModalOpen} data={data} />
+        if (assignOpen) {
+            return <AssignLotsToBin open={assignOpen} setOpen={setAssignOpen} />
+        }
+        if (statusOpen) {
+            return <UpdateStatusDialog open={statusOpen} setOpen={setStatusOpen} />
         }
     }
     return (
@@ -43,26 +43,27 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
 
 
                     <DropdownMenuContent side={"left"} sideOffset={2}>
-                        <DropdownMenuItem >
-                            <p className="text-xs text-myBlue">Download Package List</p>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <NextLink href={`/admin/transport/lots/${dataID}`}>
-                                <p className="text-xs">View Lots Details</p>
-                            </NextLink>
+                        <DropdownMenuItem
+                            onClick={() => setAssignOpen(true)}
+                        >
+                            <p className="text-xs text-myBlue">Assign This Lots</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                            triggerChildren="Delete"
-                            onClick={() => setEditModalOpen(true)}
+                            onClick={() => setStatusOpen(true)}
                         >
-                            <p className="text-xs">Edit Lots</p>
+                            <p className="text-xs">Update Lots Status</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <p className="text-xs">Download Documents</p>
+                            <NextLink href={`/admin/destination/lots//${dataID}`}>
+                                <p className="text-xs">Load Lots Details</p>
+                            </NextLink>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {render()}
+
+                {
+                    render()
+                }
             </Dialog>
         </>
     );

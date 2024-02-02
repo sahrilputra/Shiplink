@@ -18,11 +18,12 @@ import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
 import NextLink from "next/link";
-
+import { CustomerManagerDropDown } from "../menus/CustomerManagerMenus";
 export function CustomerTable({ data, open, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+
 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -100,14 +101,7 @@ export function CustomerTable({ data, open, setOpen }) {
                                                 <p className="text-[11px] text-myBlue">Details</p>
                                             </Button>
                                         </NextLink>
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <MoreHorizontalIcon width={15} height={15} />
-                                        </Button>
+                                        <CustomerManagerDropDown />
                                     </div>
                                 </TableCell>
                             </TableRow>

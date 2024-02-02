@@ -15,9 +15,9 @@ import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
 import { ExternalLink } from "lucide-react";
-import { MoreHorizontalIcon } from "lucide-react";
+import NextLink from "next/link"
+
 export function SingleItemsTable({ data, isOpen, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
@@ -89,12 +89,14 @@ export function SingleItemsTable({ data, isOpen, setOpen }) {
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomStatus}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="ghost"
-                                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                            <p>Details</p>
-                                            <ExternalLink width={10} height={10} />
-                                        </Button>
+                                        <NextLink href={"/admin/package-details/2"}>
+                                            <Button
+                                                variant="ghost"
+                                                className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
+                                                <p>Details</p>
+                                                <ExternalLink width={10} height={10} />
+                                            </Button>
+                                        </NextLink>
                                         <Button
                                             variant="tableBlue"
                                             size="tableIcon"

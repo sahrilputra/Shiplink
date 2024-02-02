@@ -14,6 +14,7 @@ import { DeleteDialog } from "../../../components/dialog/DeleteNumberDialog"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { SequencesDetails } from '../../../components/dialog/SequencesDetails'
 import { EditSelectedNumber } from '../../../components/dialog/EditSelectedNumber'
+import NextLink from "next/link"
 export const MenuDropdown = ({ getSelectedItem, dataIDhandler, dataId }) => {
     const handleItemClick = (item) => {
         getSelectedItem(item)
@@ -33,13 +34,13 @@ export const MenuDropdown = ({ getSelectedItem, dataIDhandler, dataId }) => {
 
     const render = () => {
         if (isSequenceDetailsOpen) {
-            return <SequencesDetails open={isSequenceDetailsOpen} onOpen={setSequenceDetailsOpen} data={dataId}/>
+            return <SequencesDetails open={isSequenceDetailsOpen} onOpen={setSequenceDetailsOpen} data={dataId} />
         }
         if (isEditSelectedNumberOpen) {
             return <EditSelectedNumber open={isEditSelectedNumberOpen} setOpen={setEditSelectedNumberOpen} onClose={handleSelectedNumberClose} data={dataId} />
         }
         if (isDeleteOpen) {
-            return <DeleteDialog open={isDeleteOpen} setOpen={setDeleteOpen} onClose={handleCloseDeleteClose}  data={dataId}/>
+            return <DeleteDialog open={isDeleteOpen} setOpen={setDeleteOpen} onClose={handleCloseDeleteClose} data={dataId} />
         }
     }
     return (
@@ -64,10 +65,10 @@ export const MenuDropdown = ({ getSelectedItem, dataIDhandler, dataId }) => {
                         <DropdownMenuItem onClick={() => setEditSelectedNumberOpen(true)}>
                             <p className="text-xs">Edit Selected Number</p>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                            triggerChildren="Delete"
-                            onClick={() => handleItemClick("ItemDetails")}>
-                            <p className="text-xs">Show Item Details</p>
+                        <DropdownMenuItem>
+                            <NextLink href={'/admin/package-details/2'}>
+                                <p className="text-xs">Show Item Details</p>
+                            </NextLink>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <p className="text-xs">Print Number</p>

@@ -10,23 +10,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontalIcon } from "lucide-react"
-import { EditLotsDialog } from '../AssignLotsDialog/EditLotsDialog'
-import { Dialog } from '@/components/ui/dialog'
+import { Dialog, DialogContent, } from "@/components/ui/dialog"
 
-import NextLink from "next/link"
-export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, dataID }) => {
-    const handleItemClick = (item) => {
-        getSelectedItem(item)
-        dataIDhandler(data)
-    };
+export const CustomerManagerDropDown = ({ getSelectedItem, dataIDhandler, dataId }) => {
 
-    const [editModalOpen, setEditModalOpen] = useState(false);
-
-    const render = () => {
-        if (editModalOpen) {
-            return <EditLotsDialog open={editModalOpen} setOpen={setEditModalOpen} data={data} />
-        }
-    }
     return (
         <>
             <Dialog>
@@ -40,29 +27,21 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                             <MoreHorizontalIcon width={15} height={15} />
                         </Button>
                     </DropdownMenuTrigger>
-
-
                     <DropdownMenuContent side={"left"} sideOffset={2}>
                         <DropdownMenuItem >
-                            <p className="text-xs text-myBlue">Download Package List</p>
+                            <p className="text-xs text-myBlue">Copy Customer ID</p>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <NextLink href={`/admin/transport/lots/${dataID}`}>
-                                <p className="text-xs">View Lots Details</p>
-                            </NextLink>
+                        <DropdownMenuItem >
+                            <p className="text-xs">Copy Login URL</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             triggerChildren="Delete"
-                            onClick={() => setEditModalOpen(true)}
                         >
-                            <p className="text-xs">Edit Lots</p>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <p className="text-xs">Download Documents</p>
+                            <p className="text-xs">Customer Details</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {render()}
+
             </Dialog>
         </>
     );

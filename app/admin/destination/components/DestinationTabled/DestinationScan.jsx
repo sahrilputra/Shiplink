@@ -20,6 +20,7 @@ import { ExternalLink } from "lucide-react";
 import { MoreHorizontalIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { DestinationMenus } from "../menus/DestinationMenus";
 import { SelectBins } from "./SelectBin";
 
 export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
@@ -112,15 +113,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
                                 <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CurrentStatus}</TableCell>
                                 <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
                                     <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <MoreHorizontalIcon width={15} height={15} />
-                                        </Button>
-
+                                        <DestinationMenus dataID={item.index} />
                                     </div>
                                 </TableCell>
                             </TableRow >

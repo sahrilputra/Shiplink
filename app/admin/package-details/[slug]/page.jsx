@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import styles from './styles.module.scss'
 import { Button } from '@/components/ui/button'
-import data from '../../../data/admin/packageEventData.json'
+import data from '../../../../data/admin/packageEventData.json'
 import Image from 'next/image'
 import { EventTabled } from './components/EventTable'
 import {
@@ -13,7 +13,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 
-export default function VerificationPages() {
+export default function VerificationPages({ props }) {
 
     const [open, setOpen] = useState(false);
 

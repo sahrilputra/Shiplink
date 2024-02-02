@@ -13,6 +13,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import NextLink from "next/link"
 import { MoreHorizontalIcon } from "lucide-react"
 export function CustomBrokerDropdownMenus() {
     return (
@@ -26,7 +27,7 @@ export function CustomBrokerDropdownMenus() {
                 >
                     <MoreHorizontalIcon width={15} height={15} />
                 </Button>
-              
+
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
@@ -34,7 +35,9 @@ export function CustomBrokerDropdownMenus() {
                         Download All Invoice
                     </DropdownMenuItem>
                     <DropdownMenuItem className="text-xs">
-                        Package Details
+                        <NextLink href={"/admin/transport/lots/lots1231"}>
+                            Lots Details
+                        </NextLink>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="text-xs">
                         Status : Pending Border Clearance

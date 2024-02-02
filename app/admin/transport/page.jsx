@@ -10,9 +10,10 @@ import { Input } from '@/components/ui/input'
 import data from '../../../data/admin/TransportSingleItemData.json'
 import { SingleItemsTable } from './components/TransportTabled/SingleItemTable'
 import { AssingLotsDialog } from './components/AssignLotsDialog/AssignToLotsDialog'
-export default function TransportPage() {
+export default function TransportPage({props}) {
     const [open, setOpen] = useState(false);
-
+    console.log("props", props)
+    // props.setContent("Showing All Lots")
     return (
         <>
             <div className={styles.carrier}>
