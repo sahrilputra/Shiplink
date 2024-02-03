@@ -47,8 +47,8 @@ export const Sidebar = () => {
                                 width={120}
                                 height={120}
                                 alt="shiplink Logo"
-                                objectFit="contain"
                                 className="mx-auto"
+                                style={{ width: '120px', height: '30px' }}
                             />
                             <div className="w-[200px] flex items-center justify-center mx-auto">
                                 <Separator className='h-[2px]' />

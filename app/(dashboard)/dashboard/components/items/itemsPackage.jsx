@@ -54,7 +54,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
         if (isExpand === false) {
             setSelectedButton(null)
             setButtonEnabled(true);
-         
+
         }
     };
 
@@ -129,6 +129,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             height={70}
                                             className='left-[-10.19px] top-[-23.55px]'
                                             alt='USA icon'
+                                            style={{ width: '25px', height: '15px', objectFit: 'cover'}}
                                         />
                                     </>
                                 ) : from === "Canada" ? (
@@ -139,6 +140,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             height={70}
                                             className='left-[-10.19px] top-[-23.55px]'
                                             alt='USA icon'
+                                            style={{ width: '25px', height: '15px', objectFit: 'cover'}}
                                         />
                                     </>
                                 ) : (
@@ -149,6 +151,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             height={70}
                                             className='left-[-10.19px] top-[-23.55px]'
                                             alt='USA icon'
+                                            style={{ width: '25px', height: '15px', objectFit: 'cover'}}
                                         />
                                     </>
                                 )

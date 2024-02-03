@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { HSCodeForms, QtyForm, DescriptionForms, HSDescriptionForms, MadeInForms, ValueForms } from './inputForms'
 import { Input } from '@/components/ui/input'
@@ -12,57 +12,37 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { DeclareContentInput } from './DeclareContentInput'
+
 export const DeclareContet = ({ setOpen }) => {
+    const [inputCount, setInputCount] = useState(1);
+
+    const removeContent = (index) => {
+        setInputCount(inputCount - 1)
+    }
+
+    const addContent = () => {
+        setInputCount(inputCount + 1)
+
+    }
     return (
         <>
             <Table>
                 <TableHeader className="bg-sky-50 border ">
-                    <TableHead className="p-0 h-8 px-5 py-4  w-[100px] text-myBlue font-bold text-sm">Qty</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-4  w-[100px] text-myBlue font-bold text-sm">Value</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-4  text-myBlue font-bold text-sm">Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-4  text-myBlue font-bold text-sm ">HS Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-4  w-[200px] text-myBlue font-bold text-sm ">HS Code</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-4  w-[100px] text-myBlue font-bold text-sm ">Made in</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-4  text-myBlue font-bold text-sm text-right"></TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-sm">Qty</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-sm">Value</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm">Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm ">HS Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[200px] text-myBlue font-bold text-sm ">HS Code</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-sm ">Made in</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm text-right"></TableHead>
                 </TableHeader>
                 <TableBody>
-                    <TableRow className="text-xs">
-                        <TableCell className="p-0 h-8 px-5 py-2 font-medium">
-                            <Input id="value" className="text-xs" placeholder="0" type="number" />
-                        </TableCell>
-                        <TableCell className="p-0 h-8 px-5 py-2 ">
-                            <Input id="value" className="text-xs" placeholder="0" type="number" />
-                        </TableCell>
-                        <TableCell className="p-0 h-8 px-5 py-2 ">
-                            <Input id="value" className="text-xs" placeholder="Description" />
-                        </TableCell >
-                        <TableCell className="p-0 h-8 px-5 py-2 ">
-                            <Input id="value" className="text-xs" placeholder="Search" />
-                        </TableCell >
-                        <TableCell className="p-0 h-8 px-5 py-2 ">
-                            <Input id="value" className="text-xs" placeholder="0" type="number" />
-                        </TableCell>
-                        <TableCell className="p-0 h-8 px-5 py-2 ">
-                            <Input id="value" className="text-xs" placeholder="CAD" />
-                        </TableCell>
-                        <TableCell className="text-right p-0 h-8 px-5 py-2 ">
-                            <div className="flex flex-row gap-2">
-                                <Button
-                                    variant="softBlue"
-                                    size="tableIcon"
-                                    className=""
-                                >
-                                    <CheckIcon className="w-4 h-4" />
-                                </Button>
-                                <Button
-                                    variant="softBlue"
-                                    size="tableIcon"
-                                >
-                                    <XIcon className="w-4 h-4" />
-                                </Button>
-                            </div>
-                        </TableCell>
-                    </TableRow>
+                    {
+                        Array.from({ length: inputCount }).map((_, index) => (
+                            <DeclareContentInput key={index} index={index} remove={removeContent} />
+                        ))
+                    }
                 </TableBody>
             </Table>
             <Table>
@@ -72,6 +52,8 @@ export const DeclareContet = ({ setOpen }) => {
                             <Button
                                 variant="softBlue"
                                 size="sm"
+                                className="px-4 h-7 py-3"
+                                onClick={() => addContent()}
                             >
                                 <p className='text-xs'>Add Other Conten</p>
                             </Button>

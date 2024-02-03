@@ -1,21 +1,7 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuGroup,
-    DropdownMenuPortal,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-} from '../ui/dropdown-menu'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -27,12 +13,21 @@ import {
     NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { ShippingLabelIcon, ShippingCalculatorIcon } from '../icons/navbarIcons'
-import { Button } from '../ui/button'
-import { GridIcons } from '../icons/iconCollection'
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
-// import { useSidebar } from '@/app/(dashboard)/SidebarContext'
+import { Skeleton } from '../ui/skeleton'
 export const Navbar = () => {
+
+    const [loading, setLoading] = useState(true);
+
+    // Contoh penggunaan useEffect untuk mensimulasikan proses loading
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000); 
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <>
             {/*  */}
@@ -184,14 +179,27 @@ export const Navbar = () => {
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>
                                     <div className="justify-start items-center gap-3 flex p-2">
-                                        <img
-                                            src="https://source.boringavatars.com/beam"
-                                            className='rounded-full w-[35px] h-[35px]'
-                                            alt="user image"
-                                        />
+                                        {loading ? (
+                                            <Skeleton className="w-[35px] h-[35px] rounded-full" />
+                                        ) : (
+                                            <img
+                                                src="https://source.boringavatars.com/beam"
+                                                className='rounded-full w-[35px] h-[35px]'
+                                                alt="user image"
+                                            />
+                                        )}
                                         <div className="flex flex-col justify-start text-left">
-                                            <div className=" text-black text-sm font-semiBold">User, </div>
-                                            <div className=" text-black text-sm font-normal ">Premium</div>
+                                            {loading ? (
+                                                <>
+                                                    <Skeleton className="h-4 w-[100px]" />
+                                                    <Skeleton className="h-3 w-[50px]" />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className=" text-black text-sm font-semiBold">User, </div>
+                                                    <div className=" text-black text-sm font-normal ">Premium</div>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </NavigationMenuTrigger>

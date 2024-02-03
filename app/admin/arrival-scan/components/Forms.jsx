@@ -117,7 +117,7 @@ export const ArrivalForms = () => {
                                                                     variant="outline"
                                                                     role="combobox"
                                                                     className={cn(
-                                                                        "w-[200px] justify-between shadow-none text-xs h-9 py-0",
+                                                                        "w-full justify-between shadow-none text-xs h-9 py-0",
                                                                         !field.value && "text-muted-foreground"
                                                                     )}
                                                                 >
@@ -125,7 +125,7 @@ export const ArrivalForms = () => {
                                                                 </Button>
                                                             </FormControl>
                                                         </PopoverTrigger>
-                                                        <PopoverContent className="w-[200px] p-0">
+                                                        <PopoverContent className=" p-0">
                                                             <Command>
                                                                 <CommandInput
                                                                     placeholder="Find User..."
