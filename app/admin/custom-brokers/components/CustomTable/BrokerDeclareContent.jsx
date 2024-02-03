@@ -17,31 +17,31 @@ export const BrokerDeclareContent = ({ setOpen }) => {
         <>
             <Table>
                 <TableHeader className="bg-sky-50 ">
-                    <TableHead className="w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
-                    <TableHead className="w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
-                    <TableHead className="text-myBlue font-bold text-xs">Description</TableHead>
-                    <TableHead className="text-myBlue font-bold text-xs ">HS Description</TableHead>
-                    <TableHead className="w-[200px] text-myBlue font-bold text-xs ">HS Code</TableHead>
-                    <TableHead className="w-[100px] text-myBlue font-bold text-xs ">Made in</TableHead>
+                    <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Qty</TableHead>
+                    <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Value</TableHead>
+                    <TableHead className="text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Description</TableHead>
+                    <TableHead className="text-myBlue font-bold text-xs p-0 h-8 px-5 py-2  ">HS Description</TableHead>
+                    <TableHead className="w-[200px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2  ">HS Code</TableHead>
+                    <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2  ">Made in</TableHead>
                 </TableHeader>
                 <TableBody>
                     <TableRow className="text-xs bg-white">
-                        <TableCell className="font-medium text-xs p-0 py-[10px] px-[12px]">
+                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
                             <p>1</p>
                         </TableCell>
-                        <TableCell className="font-medium text-xs p-0 py-[10px] px-[12px]">
+                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
                             <p>$120.00</p>
                         </TableCell>
-                        <TableCell className="font-medium text-xs p-0 py-[10px] px-[12px]">
+                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
                             <p>Description</p>
                         </TableCell>
-                        <TableCell className="font-medium text-xs p-0 py-[10px] px-[12px]">
+                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
                             <p>HS Description</p>
                         </TableCell>
-                        <TableCell className="font-medium text-xs p-0 py-[10px] px-[12px]">
+                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
                             <p>HS Code</p>
                         </TableCell>
-                        <TableCell className="font-medium text-xs p-0 py-[10px] px-[12px]">
+                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
                             <p>CAD</p>
                         </TableCell>
 

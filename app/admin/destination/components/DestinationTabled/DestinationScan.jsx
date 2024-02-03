@@ -100,18 +100,18 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
                                 className={`h-[50px] `}
                                 onClick={() => HandlerGetItemID(item.LotsID)}
                             >
-                                <TableCell className="w-[50px]">
+                                <TableCell className="p-0 h-7 px-5 py-2 w-[50px]">
                                     <Checkbox
                                         className="text-xs"
                                         onChange={() => { }}
                                     />
                                 </TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsID}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.RegisterDate}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.BinAssign}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CurrentStatus}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.LotsID}</TableCell>
+                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.RegisterDate}</TableCell>
+                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.Destination}</TableCell>
+                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.BinAssign}</TableCell>
+                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.CurrentStatus}</TableCell>
+                                <TableCell className="p-0 h-7 px-5 py-2 w-[30px]  ">
                                     <div className="flex flex-row gap-2">
                                         <DestinationMenus dataID={item.index} />
                                     </div>

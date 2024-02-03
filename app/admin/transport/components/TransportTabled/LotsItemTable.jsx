@@ -59,26 +59,26 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className="w-[80px]">Lots ID</TableHead>
-                    <TableHead >Lots Labels</TableHead>
-                    <TableHead className="">Destination</TableHead>
-                    <TableHead className="w-[130px]">Documents</TableHead>
-                    <TableHead className="w-[180px]">Manifest</TableHead>
-                    <TableHead className="w-[180px]">Status</TableHead>
-                    <TableHead className="w-[140px]"></TableHead>
+                    <TableHead className=" w-[80px]">Lots ID</TableHead>
+                    <TableHead className=" ">Lots Labels</TableHead>
+                    <TableHead className=" ">Destination</TableHead>
+                    <TableHead className=" w-[130px]">Documents</TableHead>
+                    <TableHead className=" w-[180px]">Manifest</TableHead>
+                    <TableHead className=" w-[180px]">Status</TableHead>
+                    <TableHead className=" w-[140px]"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
                         data.map((item, index) => (
                             <>
                                 <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-[50px]`} >
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsID}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LotsLabel}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Documents}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Manifest}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Status}</TableCell>
-                                    <TableCell className="p-1 px-[20px] py-[10px]">
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.LotsID}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.LotsLabel}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Documents}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Manifest}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Status}</TableCell>
+                                    <TableCell className="p-0 h-7 px-5 py-2">
                                         <div className="flex w-[140px] flex-row gap-2">
                                             <Button
                                                 variant="tableBlue"

@@ -69,13 +69,13 @@ export function ItemTable({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className="w-[40px]">
+                    <TableHead className="p-0 h-7 px-3 py-3 w-[40px]">
                         <Checkbox />
                     </TableHead>
-                    <TableHead className="">ID</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="w-[100px]"></TableHead>
+                    <TableHead className="p-0 h-7 px-3 py-3 ">ID</TableHead>
+                    <TableHead className="p-0 h-7 px-3 py-3 ">Customer</TableHead>
+                    <TableHead className="p-0 h-7 px-3 py-3 ">Date</TableHead>
+                    <TableHead className="p-0 h-7 px-3 py-3 w-[100px]"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
@@ -83,11 +83,11 @@ export function ItemTable({ data, isOpen, setOpen }) {
                             <>
                                 <TableRow
                                     key={item.PackageID} >
-                                    <TableCell className="font-medium"> <Checkbox /></TableCell>
-                                    <TableCell className="">{item.PackageID}</TableCell>
-                                    <TableCell>{item.Customer}</TableCell>
-                                    <TableCell>{item.Date}</TableCell>
-                                    <TableCell className="w-[100px]">
+                                    <TableCell className="p-0 h-7 px-3 py-3 font-medium"> <Checkbox /></TableCell>
+                                    <TableCell className="p-0 h-7 px-3 py-3 ">{item.PackageID}</TableCell>
+                                    <TableCell className="p-0 h-7 px-3 py-3 ">{item.Customer}</TableCell>
+                                    <TableCell className="p-0 h-7 px-3 py-3 ">{item.Date}</TableCell>
+                                    <TableCell className="p-0 h-7 px-3 py-3 w-[100px]">
                                         <div className="flex flex-row gap-2">
                                             <NextLink
                                                 href={"/admin/package-details"}

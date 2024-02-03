@@ -84,11 +84,11 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                             className=" cursor-pointer text-sm"
                                             key={ticket.TicketsID}
                                             onClick={() => onRowClick(ticket)}>
-                                            <TableCell className="font-medium text-xs"><Checkbox /></TableCell>
-                                            <TableCell className="font-medium text-xs">{ticket.OpenDate}</TableCell>
-                                            <TableCell className="text-xs">{ticket.Description}</TableCell>
-                                            <TableCell className="text-center text-xs">{ticket.Status}</TableCell>
-                                            <TableCell className="text-center text-xs">Action</TableCell>
+                                            <TableCell className="font-medium text-xs h-8 px-5 py-2"><Checkbox /></TableCell>
+                                            <TableCell className="font-medium text-xs h-8 px-5 py-2">{ticket.OpenDate}</TableCell>
+                                            <TableCell className="text-xs h-8 px-5 py-2">{ticket.Description}</TableCell>
+                                            <TableCell className="text-center text-xs h-8 px-5 py-2">{ticket.Status}</TableCell>
+                                            <TableCell className="text-center text-xs h-8 px-5 py-2">Action</TableCell>
                                         </TableRow>
                                     </>
 
@@ -98,14 +98,14 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                             className=" cursor-pointer text-sm"
                                             key={ticket.TicketsID}
                                             onClick={() => onRowClick(ticket)}>
-                                            <TableCell className="font-medium text-xs"><Checkbox /></TableCell>
-                                            <TableCell className="font-medium text-xs">#{ticket.TicketsID}</TableCell>
-                                            <TableCell className="font-medium text-xs">{ticket.OpenDate}</TableCell>
-                                            <TableCell className="text-xs">{ticket.Description}</TableCell>
-                                            <TableCell className="text-xs">{ticket.Customer.Name}</TableCell>
-                                            <TableCell className="text-center text-xs">{ticket.ReplyBy}</TableCell>
-                                            <TableCell className="text-center text-xs">{ticket.Status}</TableCell>
-                                            <TableCell className="text-center text-xs">Action</TableCell>
+                                            <TableCell className="font-medium text-xs h-8 px-5 py-2"><Checkbox /></TableCell>
+                                            <TableCell className="font-medium text-xs h-8 px-5 py-2">#{ticket.TicketsID}</TableCell>
+                                            <TableCell className="font-medium text-xs h-8 px-5 py-2">{ticket.OpenDate}</TableCell>
+                                            <TableCell className="text-xs h-8 px-5 py-2">{ticket.Description}</TableCell>
+                                            <TableCell className="text-xs h-8 px-5 py-2">{ticket.Customer.Name}</TableCell>
+                                            <TableCell className="text-center text-xs h-8 px-5 py-2">{ticket.ReplyBy}</TableCell>
+                                            <TableCell className="text-center text-xs h-8 px-5 py-2">{ticket.Status}</TableCell>
+                                            <TableCell className="text-center text-xs h-8 px-5 py-2">Action</TableCell>
                                         </TableRow>
                                     </>
                                 )}

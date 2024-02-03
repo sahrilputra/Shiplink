@@ -172,7 +172,7 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                             return (
                                 <TableHead
                                     key={header.id}
-                                    className={`${isLastHeader ? "w-[30px]" : ""}`}
+                                    className={`${isLastHeader ? "w-[30px] " : ""} p-0 h-8 px-5 py-2`}
                                 >
                                     {header.isPlaceholder
                                         ? null
@@ -197,7 +197,7 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                             className={row.isLast && "w-[30px]"}
                         >
                             {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className={cell.isLast && "w-[30px]"}>
+                                <TableCell key={cell.id} className={`${cell.isLast && "w-[30px]"} p-0 h-8 px-5 py-2 `}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
                             ))}

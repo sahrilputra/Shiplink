@@ -24,7 +24,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
 
     const [isEdit, setIsEdit] = useState(false);
     const [editCount, setEditCount] = useState(1);
-    
+
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -39,28 +39,28 @@ export function VerificationTable({ data, isOpen, setOpen }) {
     return (
         <Table>
             <TableHeader className="text-sm">
-                <TableHead className="w-[100px]">Tracking ID</TableHead>
-                <TableHead>Customer Name</TableHead>
-                <TableHead>Origin</TableHead>
-                <TableHead>Destination</TableHead>
-                <TableHead className="text-right">Last Update</TableHead>
-                <TableHead className="">Customs Status</TableHead>
-                <TableHead className="w-[30px]"></TableHead>
+                <TableHead className="p-0 h-10 px-5 py-2 w-[100px]">Tracking ID</TableHead>
+                <TableHead className="p-0 h-10 px-5  py-2 ">Customer Name</TableHead>
+                <TableHead className="p-0 h-10 px-5  py-2 ">Origin</TableHead>
+                <TableHead className="p-0 h-10 px-5  py-2 ">Destination</TableHead>
+                <TableHead className="p-0 h-10 px-5  py-2 text-center">Last Update</TableHead>
+                <TableHead className="p-0 h-10 px-5  py-2 ">Customs Status</TableHead>
+                <TableHead className="p-0 h-10 px-5  py-2 w-[30px]"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
-                                <TableCell className="font-medium">{item.TrackingID}</TableCell>
-                                <TableCell>{item.CustomerName}</TableCell>
-                                <TableCell>{item.Origin}</TableCell>
-                                <TableCell>{item.Destination}</TableCell>
-                                <TableCell className="text-right">{item.UpdateDate}</TableCell>
-                                <TableCell>
+                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.TrackingID}</TableCell>
+                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomerName}</TableCell>
+                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Origin}</TableCell>
+                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
+                                <TableCell className="text-right p-0 h-7 px-5 py-2">{item.UpdateDate}</TableCell>
+                                <TableCell className="text-right p-0 h-7 px-5 py-2" >
                                     <VerifiedStatus param={item.CustomsStatus} />
                                 </TableCell>
-                                <TableCell className="w-[30px]">
+                                <TableCell className="w-[30px] text-right p-0 h-7 px-5 py-2">
 
                                     <Button
                                         variant="tableBlue"
@@ -93,8 +93,8 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                             }
                                         </TableCell>
                                     </TableRow>
-                                    <TableRow className="bg-blue-200 hover:bg-blue-200">
-                                        <TableCell className="font-medium" colSpan={7}>
+                                    <TableRow className="bg-blue-200 hover:bg-blue-200 ">
+                                        <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
                                             {
                                                 isEdit ? (
                                                     <EditMode cancel={toggleCancel} increaseContent={setEditCount} />

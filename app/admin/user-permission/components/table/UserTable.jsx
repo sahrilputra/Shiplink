@@ -63,25 +63,25 @@ export function UserTable({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className=" text-center">User Name</TableHead>
-                    <TableHead className=" ">User Email</TableHead>
-                    <TableHead className=" ">Password</TableHead>
-                    <TableHead className=" ">Role</TableHead>
-                    <TableHead className=" ">Last Seen</TableHead>
-                    <TableHead className=" ">Create Date</TableHead>
-                    <TableHead className="w-[100px]"></TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-center">User Name</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  ">User Email</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  ">Password</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  ">Role</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  ">Last Seen</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  ">Create Date</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px]"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
                         data.map((item, index) => (
                             <TableRow key={item.id} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.UserName}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Emails}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Password}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Role}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LastSeen}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CreateDate}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.UserName}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Emails}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Password}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Role}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.LastSeen}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.CreateDate}</TableCell>
+                                <TableCell className="w-[30px]  p-0 h-8 px-5 py-2">
                                     <div className="flex flex-row gap-2">
                                         <NextLink href={`/admin/user-permission/profiles/${item.UserName}`}>
                                             <Button

@@ -37,13 +37,13 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect }) {
     return (
         <Table>
             <TableHeader className="text-sm">
-                <TableHead className="w-[40px]">
+                <TableHead className="w-[40px] p-0 h-7 px-3 py-3">
                     <Checkbox />
                 </TableHead>
-                <TableHead className="">ID</TableHead>
-                <TableHead>Row</TableHead>
-                <TableHead>Section</TableHead>
-                <TableHead>Level</TableHead>
+                <TableHead className="p-0 h-7 px-3 py-3">ID</TableHead>
+                <TableHead className="p-0 h-7 px-3 py-3">Row</TableHead>
+                <TableHead className="p-0 h-7 px-3 py-3">Section</TableHead>
+                <TableHead className="p-0 h-7 px-3 py-3">Level</TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
@@ -53,11 +53,11 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect }) {
                                 key={item.id}
                                 className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`}
                                 onClick={() => handleSelect(item.id)} >
-                                <TableCell className="font-medium"> <Checkbox /></TableCell>
-                                <TableCell className="">{item.id}</TableCell>
-                                <TableCell>{item.Row}</TableCell>
-                                <TableCell>{item.Section}</TableCell>
-                                <TableCell>{item.Level}</TableCell>
+                                <TableCell className="p-0 h-7 px-3 py-3 "> <Checkbox /></TableCell>
+                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.id}</TableCell>
+                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.Row}</TableCell>
+                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.Section}</TableCell>
+                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.Level}</TableCell>
                             </TableRow>
                         </>
                     ))

@@ -70,15 +70,15 @@ export function WarehouseDataList({ data, isOpen, setOpen }) {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item?.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px] w-[50px]">
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2 w-[50px]">
                                     <Checkbox className="w-4 h-4" />
                                 </TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.id}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Name}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Address}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Phone}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Email}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item?.id}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item?.Name}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item?.Address}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item?.Phone}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item?.Email}</TableCell>
+                                <TableCell className="w-[30px]  p-0 h-8 px-5 py-2">
                                     <div className="flex flex-row gap-2">
                                         <NextLink href={"/admin/warehouse-manager/1"}>
                                             <Button

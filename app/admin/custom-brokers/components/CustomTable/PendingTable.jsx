@@ -76,31 +76,31 @@ export function PendingTable({ data, isOpen, setOpen }) {
             </div>
             <Table className="border border-zinc-300 rounded-sm">
 
-                <TableHeader className="text-sm">
-                    <TableHead className="p-1 px-[20px] py-[10px] w-[60px]">
+                <TableHeader className="text-sm h-[40px] py-[5px]">
+                    <TableHead className="p-1 px-[20px]  h-0 w-[60px]">
                         <Checkbox className="w-4 h-4" />
                     </TableHead>
-                    <TableHead className="w-[200px] text-center">Tracking ID</TableHead>
-                    <TableHead className="w-[200px] ">Customer Name</TableHead>
-                    <TableHead className="w-[200px] ">Destination</TableHead>
-                    <TableHead className="w-[200px] ">Update Date</TableHead>
-                    <TableHead className="w-[200px] ">Customs Status</TableHead>
-                    <TableHead className="w-[100px]"></TableHead>
+                    <TableHead className="w-[200px] h-0 text-left">Tracking ID</TableHead>
+                    <TableHead className="w-[200px] h-0 ">Customer Name</TableHead>
+                    <TableHead className="w-[200px] h-0 ">Destination</TableHead>
+                    <TableHead className="w-[200px] h-0 ">Update Date</TableHead>
+                    <TableHead className="w-[200px] h-0 ">Customs Status</TableHead>
+                    <TableHead className="w-[100px] h-0"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
                         data.map((item, index) => (
                             <>
                                 <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px] w-[60px]">
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2 w-[60px]">
                                         <Checkbox className="w-4 h-4" />
                                     </TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.TrackingID}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomerName}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.UpdateDate}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomsStatus}</TableCell>
-                                    <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.TrackingID}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomerName}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.UpdateDate}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomsStatus}</TableCell>
+                                    <TableCell className="w-[30px]  p-0 h-7 px-5 py-2">
                                         <div className="flex flex-row gap-2">
                                             <DropdownPendingList />
                                             <Button

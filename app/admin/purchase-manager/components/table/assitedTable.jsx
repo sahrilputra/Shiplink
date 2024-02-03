@@ -53,32 +53,32 @@ export function PendingTable({ data, isOpen, setOpen }) {
                 </TableHead>
             </TableHeader>
             <TableHeader className="text-sm">
-                <TableHead className="w-[60px] text-center">
+                <TableHead className="w-[60px] p-0 h-8 px-5 py-3">
                     <Checkbox className="w-4 h-4" />
                 </TableHead>
-                <TableHead className="w-[200px] text-center">Order ID</TableHead>
-                <TableHead className="w-[200px] ">Date</TableHead>
-                <TableHead className="w-[200px] ">Unit ID</TableHead>
-                <TableHead className="w-[200px] ">Customer</TableHead>
-                <TableHead className="w-[200px] ">Order Total</TableHead>
-                <TableHead className="w-[200px] ">Status</TableHead>
-                <TableHead className="w-[100px]"></TableHead>
+                <TableHead className="w-[200px] p-0 h-8 px-5 py-3 text-center">Order ID</TableHead>
+                <TableHead className="w-[200px] p-0 h-8 px-5 py-3 ">Date</TableHead>
+                <TableHead className="w-[200px] p-0 h-8 px-5 py-3 ">Unit ID</TableHead>
+                <TableHead className="w-[200px] p-0 h-8 px-5 py-3 ">Customer</TableHead>
+                <TableHead className="w-[200px] p-0 h-8 px-5 py-3 ">Order Total</TableHead>
+                <TableHead className="w-[200px] p-0 h-8 px-5 py-3 ">Status</TableHead>
+                <TableHead className="w-[100px] p-0 h-8 px-5 py-3"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px] w-[50px]">
+                                <TableCell className="font-medium h-8 px-5 py-2">
                                     <Checkbox className="w-4 h-4" />
                                 </TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.OrderID}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Date}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.UnitID}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Customer}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.OrderTotal}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Status}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.OrderID}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Date}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.UnitID}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Customer}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.OrderTotal}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Status}</TableCell>
+                                <TableCell className="w-[30px]  p-0 h-8 px-5 py-2">
                                     <div className="flex flex-row gap-2">
                                         <Button
                                             variant="secondary"
@@ -119,22 +119,22 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                                     </TableHeader>
                                                     <TableBody className="text-xs bg-white p-0">
                                                         <TableRow>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
+                                                            <TableCell className="h-8 px-5 py-2">
                                                                 #1
                                                             </TableCell>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
+                                                            <TableCell className="h-8 px-5 py-2">
                                                                 TechNova Smartwatch
                                                             </TableCell>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
+                                                            <TableCell className="h-8 px-5 py-2">
                                                                 1
                                                             </TableCell>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
+                                                            <TableCell className="h-8 px-5 py-2">
                                                                 $120.00
                                                             </TableCell>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
+                                                            <TableCell className="h-8 px-5 py-2">
                                                                 $120.00
                                                             </TableCell>
-                                                            <TableCell className="h-10 p-0 py-4 px-3">
+                                                            <TableCell className="h-8 px-5 py-2">
                                                                 $2.30
                                                             </TableCell>
 

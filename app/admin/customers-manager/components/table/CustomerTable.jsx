@@ -70,12 +70,12 @@ export function CustomerTable({ data, open, setOpen }) {
                 </TableHead>
             </TableHeader>
             <TableHeader className="text-sm">
-                <TableHead className=" text-center">Unit ID</TableHead>
-                <TableHead className=" ">Customer Name</TableHead>
-                <TableHead className=" ">Date Created</TableHead>
-                <TableHead className=" ">Last Login</TableHead>
-                <TableHead className=" ">Membership</TableHead>
-                <TableHead className=""></TableHead>
+                <TableHead className="p-0 h-8 px-5 py-3 text-center">Unit ID</TableHead>
+                <TableHead className="p-0 h-8 px-5 py-3 ">Customer Name</TableHead>
+                <TableHead className="p-0 h-8 px-5 py-3 ">Date Created</TableHead>
+                <TableHead className="p-0 h-8 px-5 py-3 ">Last Login</TableHead>
+                <TableHead className="p-0 h-8 px-5 py-3 ">Membership</TableHead>
+                <TableHead className="p-0 h-8 px-5 py-3"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
@@ -83,12 +83,12 @@ export function CustomerTable({ data, open, setOpen }) {
                         <>
                             <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
 
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.UnitId}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomerName}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.DateCreated}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LastLogin}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Membership}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.UnitId}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.CustomerName}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.DateCreated}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.LastLogin}</TableCell>
+                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Membership}</TableCell>
+                                <TableCell className="w-[30px]  p-0 h-8 px-5 py-2">
                                     <div className="flex flex-row gap-2">
                                         <NextLink
                                             href={"/admin/customers-manager/1"}>

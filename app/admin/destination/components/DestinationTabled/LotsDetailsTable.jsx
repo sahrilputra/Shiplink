@@ -74,27 +74,27 @@ export function LotsDetailsTable({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className="w-[80px]">Tracking ID</TableHead>
-                    <TableHead >Customer Name</TableHead>
-                    <TableHead className="w-[130px]">Origin</TableHead>
-                    <TableHead className="w-[130px]">Destination</TableHead>
-                    <TableHead className="w-[180px]">Last Update</TableHead>
-                    <TableHead className="w-[180px]">Bin Location</TableHead>
-                    <TableHead className=""></TableHead>
-                    <TableHead className=""> <Checkbox className="w-4 h-4" /></TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 w-[80px]">Tracking ID</TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3">Customer Name</TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 w-[130px]">Origin</TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 w-[130px]">Destination</TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 w-[180px]">Last Update</TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 w-[180px]">Bin Location</TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 "></TableHead>
+                    <TableHead className="p-0 h-7 px-5 py-3 "> <Checkbox className="w-4 h-4" /></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
                         data.map((item, index) => (
                             <>
                                 <TableRow key={item.id} className={`h-[50px] `} >
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.TrackingID}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomerName}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Origin}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.Destination}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.LastUpdate}</TableCell>
-                                    <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item.CustomStatus}</TableCell>
-                                    <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.TrackingID}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomerName}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Origin}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.LastUpdate}</TableCell>
+                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomStatus}</TableCell>
+                                    <TableCell className="w-[30px]  p-0 h-7 px-5 py-2">
                                         <div className="flex flex-row gap-2">
                                             <NextLink
                                                 href={'/admin/package-details/1'}
@@ -116,7 +116,7 @@ export function LotsDetailsTable({ data, isOpen, setOpen }) {
                                             </Button>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="">
+                                    <TableCell className="p-0 h-7 px-5 py-2">
                                         <Checkbox className="w-4 h-4 fill-white" />
                                     </TableCell>
                                 </TableRow>

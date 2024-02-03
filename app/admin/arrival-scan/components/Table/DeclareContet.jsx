@@ -16,36 +16,36 @@ export const DeclareContet = ({ setOpen }) => {
     return (
         <>
             <Table>
-                <TableHeader className="bg-sky-50 ">
-                    <TableHead className="w-[100px] text-myBlue font-bold text-sm">Qty</TableHead>
-                    <TableHead className="w-[100px] text-myBlue font-bold text-sm">Value</TableHead>
-                    <TableHead className="text-myBlue font-bold text-sm">Description</TableHead>
-                    <TableHead className="text-myBlue font-bold text-sm ">HS Description</TableHead>
-                    <TableHead className="w-[200px] text-myBlue font-bold text-sm ">HS Code</TableHead>
-                    <TableHead className="w-[100px] text-myBlue font-bold text-sm ">Made in</TableHead>
-                    <TableHead className="text-myBlue font-bold text-sm text-right"></TableHead>
+                <TableHeader className="bg-sky-50 border ">
+                    <TableHead className="p-0 h-8 px-5 py-4  w-[100px] text-myBlue font-bold text-sm">Qty</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-4  w-[100px] text-myBlue font-bold text-sm">Value</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-4  text-myBlue font-bold text-sm">Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-4  text-myBlue font-bold text-sm ">HS Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-4  w-[200px] text-myBlue font-bold text-sm ">HS Code</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-4  w-[100px] text-myBlue font-bold text-sm ">Made in</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-4  text-myBlue font-bold text-sm text-right"></TableHead>
                 </TableHeader>
                 <TableBody>
                     <TableRow className="text-xs">
-                        <TableCell className="font-medium">
+                        <TableCell className="p-0 h-8 px-5 py-2 font-medium">
                             <Input id="value" className="text-xs" placeholder="0" type="number" />
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="p-0 h-8 px-5 py-2 ">
                             <Input id="value" className="text-xs" placeholder="0" type="number" />
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="p-0 h-8 px-5 py-2 ">
                             <Input id="value" className="text-xs" placeholder="Description" />
-                        </TableCell>
-                        <TableCell>
+                        </TableCell >
+                        <TableCell className="p-0 h-8 px-5 py-2 ">
                             <Input id="value" className="text-xs" placeholder="Search" />
-                        </TableCell>
-                        <TableCell>
+                        </TableCell >
+                        <TableCell className="p-0 h-8 px-5 py-2 ">
                             <Input id="value" className="text-xs" placeholder="0" type="number" />
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="p-0 h-8 px-5 py-2 ">
                             <Input id="value" className="text-xs" placeholder="CAD" />
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-right p-0 h-8 px-5 py-2 ">
                             <div className="flex flex-row gap-2">
                                 <Button
                                     variant="softBlue"
@@ -68,7 +68,7 @@ export const DeclareContet = ({ setOpen }) => {
             <Table>
                 <TableBody>
                     <TableRow className="text-xs h-4 w-full">
-                        <TableCell className="font-medium h-8">
+                        <TableCell className="p-0 px-5 py-2  font-medium h-8">
                             <Button
                                 variant="softBlue"
                                 size="sm"
@@ -78,7 +78,7 @@ export const DeclareContet = ({ setOpen }) => {
                         </TableCell>
                     </TableRow>
                     <TableRow className="text-xs">
-                        <TableCell className="font-medium flex flex-row justify-between w-full items-center ">
+                        <TableCell className="font-medium flex flex-row justify-between w-full items-center p-0 px-5 py-2  ">
                             <div className="flex flex-row gap-4">
                                 <p className=' text-base font-bold text-myBlue'>Totals : </p>
                                 <p className=' text-base font-semibold'>$123.00 </p>
