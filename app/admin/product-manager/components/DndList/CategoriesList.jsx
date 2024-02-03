@@ -1,11 +1,30 @@
 'use client'
 import React, { useState } from 'react'
-import { DndContext } from '@dnd-kit/core';
-import { Draggable } from './Draggable';
+import {
+    DndContext,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from "@dnd-kit/core";
 import { Droppable } from './Droppable';
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { arrayMove, insertAtIndex, removeAtIndex } from './Array';
+
 
 export const CategoriesList = () => {
+    const [items, setItems] = useState({
+        group1: ["1", "2", "3"],
+        group2: ["4", "5", "6"],
+        group3: ["7", "8", "9"]
+    });
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates
+        })
+    );
     const data = {
         "Product": [
             {
@@ -69,51 +88,104 @@ export const CategoriesList = () => {
         ]
     };
 
-    const [isDropped, setIsDropped] = useState(false);
-    const draggableMarkup = (
-        <Draggable>Drag me</Draggable>
-    );
+    const handleDragOver = ({ over, active }) => {
+        const overId = over?.id;
+
+        if (!overId) {
+            return;
+        }
+
+        const activeContainer = active.data.current.sortable.containerId;
+        const overContainer = over.data.current?.sortable.containerId;
+
+        if (!overContainer) {
+            return;
+        }
+
+        if (activeContainer !== overContainer) {
+            setItems((items) => {
+                const activeIndex = active.data.current.sortable.index;
+                const overIndex = over.data.current?.sortable.index || 0;
+
+                return moveBetweenContainers(
+                    items,
+                    activeContainer,
+                    activeIndex,
+                    overContainer,
+                    overIndex,
+                    active.id
+                );
+            });
+        }
+    };
+
+    const handleDragEnd = ({ active, over }) => {
+        if (!over) {
+            return;
+        }
+
+        if (active.id !== over.id) {
+            const activeContainer = active.data.current.sortable.containerId;
+            const overContainer = over.data.current?.sortable.containerId || over.id;
+            const activeIndex = active.data.current.sortable.index;
+            const overIndex = over.data.current?.sortable.index || 0;
+
+            setItems((items) => {
+                let newItems;
+                if (activeContainer === overContainer) {
+                    newItems = {
+                        ...items,
+                        [overContainer]: arrayMove(
+                            items[overContainer],
+                            activeIndex,
+                            overIndex
+                        )
+                    };
+                } else {
+                    newItems = moveBetweenContainers(
+                        items,
+                        activeContainer,
+                        activeIndex,
+                        overContainer,
+                        overIndex,
+                        active.id
+                    );
+                }
+
+                return newItems;
+            });
+        }
+    };
+
+    const moveBetweenContainers = (
+        items,
+        activeContainer,
+        activeIndex,
+        overContainer,
+        overIndex,
+        item
+    ) => {
+        return {
+            ...items,
+            [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
+            [overContainer]: insertAtIndex(items[overContainer], overIndex, item)
+        };
+    };
+
+
+    const containerStyle = { display: "flex " };
 
     return (
-        <>
-            <div>CategoriesList</div>
-            <DndContext onDragEnd={handleDragEnd}>
-                {!isDropped ? draggableMarkup : null}
-                {Object.entries(data).map(([category, items]) => (
-                    <Droppable key={category} id={category}>
-                        <p>{category}</p>
-                        {items.map((item) => (
-                            <div className="flex flex-col gap-2" key={item.id}>
-                                <Draggable id={`draggable-${item.id}`}>{item.name}</Draggable>
-                                {item.subCategories && (
-                                    <Droppable key={`sub-${item.id}`} id={`sub-${item.id}`}>
-                                        {item.subCategories.map((subCategory) => (
-                                            <Draggable key={`sub-draggable-${subCategory.id}`} id={`draggable-${subCategory.id}`}>
-                                                {subCategory.name}
-                                            </Draggable>
-                                        ))}
-                                    </Droppable>
-                                )}
-                            </div>
-                        ))}
-                    </Droppable>
+        <DndContext
+            sensors={sensors}
+            onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
+        >
+            <div style={containerStyle} className='flex-col gap-[20px] px-5'>
+                {Object.keys(items).map((group) => (
+                    <Droppable id={group} items={items[group]} key={group} />
                 ))}
-            </DndContext>
-        </>
-    )
-    function handleDragEnd(event) {
-        const { over } = event;
-
-        if (over) {
-            // Adjust logic based on the category being dragged over
-            const targetCategory = over.id;
-
-            if (targetCategory.startsWith('draggable')) {
-                setIsDropped(true);
-            } else if (targetCategory.startsWith('sub-')) {
-                // Handle dropping into subcategories
-                setIsDropped(true);
-            }
-        }
-    }
-};
+            </div>
+        </DndContext>
+    );
+}
