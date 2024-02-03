@@ -3,8 +3,15 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { CheckIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
 import {
     Form,
     FormControl,
@@ -17,6 +24,9 @@ import {
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import data from '../../../../data/admin/UserData.json'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { cn } from "@/lib/utils"
 
 const formSchema = yup.object().shape({
     customerID: yup.string(),
@@ -34,15 +44,16 @@ const formSchema = yup.object().shape({
 
 })
 
-
-
 export const ArrivalForms = () => {
+
+    const [customerID, setCustomerID] = useState('')
+    const [newData, setNewData] = useState(null)
 
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             customerID: "",
-            fullName: "",
+            fullName: newData?.full_name || "",
             trackingBarcode: "",
             phoneNumber: "",
             email: "",
@@ -56,25 +67,99 @@ export const ArrivalForms = () => {
         },
         mode: "onChange",
     })
+
+    const handleDataChange = (e) => {
+        setCustomerID(e.target.value)
+        const selectedData = data.find((item) => item.id === e.target.value)
+        setNewData(data.find((item) => item.id === e.target.value))
+        form.setValue("fullName", selectedData?.full_name || "");
+        form.setValue("phoneNumber", selectedData?.phone || "");
+        form.setValue("email", selectedData?.email || "");
+    }
+
+    const handleResetCustomerData = () => {
+        form.reset({
+            customerID: "",
+            fullName: "",
+            trackingBarcode: "",
+            phoneNumber: "",
+            email: "",
+        });
+
+        // Clear any additional state variables
+        setCustomerID("");
+        setNewData(null);
+    }
     return (
         <>
             <Form {...form}>
+
                 <form
-                    className='flex gap-3 flex-col text-zinc-600'
+                    className='flex gap-2 flex-col text-zinc-600'
                     action="">
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-3">
                         <div className="flex flex-col justify-start gap-2 w-full">
-                            <div className="nameWrapper flex flex-row gap-4 w-full text-sm">
+                            <div className="nameWrapper flex flex-row gap-3 w-full text-sm">
                                 <FormField
                                     className="w-full text-sm"
                                     name="customerID"
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-[50%] text-sm">
+                                            {console.log(field)}
+                                            <FormItem className="w-[50%] text-xs ">
                                                 <FormLabel className="text-sm font-bold">Customer Unit ID</FormLabel>
                                                 <FormControl>
-                                                    <Input id="customerID" className="text-sm" placeholder="Ex. C12345678" {...field} />
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <FormControl>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    role="combobox"
+                                                                    className={cn(
+                                                                        "w-[200px] justify-between shadow-none text-xs h-9 py-0",
+                                                                        !field.value && "text-muted-foreground"
+                                                                    )}
+                                                                >
+                                                                    {field.value ? data.find((item) => item.id === field.value)?.id : "Select User"}
+                                                                </Button>
+                                                            </FormControl>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-[200px] p-0">
+                                                            <Command>
+                                                                <CommandInput
+                                                                    placeholder="Find User..."
+                                                                    className="h-9 shadow-none"
+                                                                />
+                                                                <CommandEmpty>No Customer Found.</CommandEmpty>
+                                                                <CommandGroup>
+                                                                    {data.map((item) => (
+                                                                        <CommandItem
+                                                                            value={item.id}
+                                                                            key={item.id}
+                                                                            onSelect={() => {
+                                                                                form.setValue("customerID", item.id)
+                                                                                handleDataChange({ target: { value: item.id } })
+                                                                            }}
+                                                                        >
+                                                                            <div className='text-xs w-full justify-between flex flex-row'>
+                                                                                <p>{item.id} | </p>
+                                                                                <p>{item.full_name}</p>
+                                                                            </div>
+                                                                            <CheckIcon
+                                                                                className={cn(
+                                                                                    "ml-auto h-4 w-4",
+                                                                                    item.id === field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                        </CommandItem>
+                                                                    ))}
+                                                                </CommandGroup>
+                                                            </Command>
+                                                        </PopoverContent>
+                                                    </Popover>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -87,10 +172,16 @@ export const ArrivalForms = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-full text-sm">
+                                            <FormItem className="w-full text-xs">
                                                 <FormLabel className="text-sm font-bold">Customer Full Name</FormLabel>
                                                 <FormControl>
-                                                    <Input id="fullName" className="text-sm" placeholder="John Doe" {...field} />
+                                                    <Input
+                                                        id="fullName"
+                                                        className={`text-xs h-9 py-0 ${field.value && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                        placeholder="John Doe"
+                                                        {...field}
+                                                        disabled={!!field.value}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -98,17 +189,23 @@ export const ArrivalForms = () => {
                                     )}
                                 />
                             </div>
-                            <div className="nameWrapper flex flex-row gap-4 w-[100%] text-sm ">
+                            <div className="nameWrapper flex flex-row gap-3 w-[100%] text-sm ">
                                 <FormField
                                     className="w-[40%] text-sm"
                                     name="phoneNumber"
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-[50%] text-sm">
+                                            <FormItem className="w-[50%] text-xs">
                                                 <FormLabel className="text-sm font-bold">Phone Number</FormLabel>
                                                 <FormControl>
-                                                    <Input id="phoneNumber" type="number" className="text-sm" placeholder="+1 21xxxx" {...field} />
+                                                    <Input
+                                                        id="phoneNumber"
+                                                        className={`text-xs h-9 py-0 ${field.value && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                        placeholder="+1 21xxxx"
+                                                        {...field}
+                                                        disabled={!!field.value}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -124,13 +221,31 @@ export const ArrivalForms = () => {
                                             <FormItem className="w-full text-sm">
                                                 <FormLabel className="text-sm font-bold">Email</FormLabel>
                                                 <FormControl>
-                                                    <Input id="email" type="email" className="text-sm" placeholder="customer@shiplink.ca" {...field} />
+                                                    <Input
+
+                                                        id="email"
+                                                        type="email"
+                                                        className={`text-xs h-9 py-0 ${field.value && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                        placeholder="customer@shiplink.ca"
+                                                        {...field}
+                                                        disabled={!!field.value}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         </>
                                     )}
                                 />
+                            </div>
+
+                            <div className={`flex w-full justify-end ${newData !== null ? 'block' : 'hidden'}`}>
+                                <Button
+                                    onClick={handleResetCustomerData}
+                                    variant="ghost"
+                                    type="button"
+                                    className='text-xs text-red-700 h-5'>
+                                    Reset Forms
+                                </Button>
                             </div>
                         </div>
                         <div className="flex flex-col justify-start gap-2 w-full">
@@ -144,7 +259,7 @@ export const ArrivalForms = () => {
                                             <FormItem className="w-[60%] text-sm">
                                                 <FormLabel className="text-sm font-bold text-zinc-600">Barcode / Tracking</FormLabel>
                                                 <FormControl>
-                                                    <Input id="firstName" className="text-sm" placeholder="Eg. SA4S21JK21" {...field} />
+                                                    <Input id="firstName" className="text-xs h-9 py-0" placeholder="Eg. SA4S21JK21" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -162,17 +277,18 @@ export const ArrivalForms = () => {
                                                 <Select
                                                     onValueChange={field.onChange}
                                                     control={form.control}
+                                                    className="text-xs h-9 py-0"
                                                     defaultValue={field.value}>
                                                     <FormControl>
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Purolator" />
+                                                        <SelectTrigger  className='text-xs h-9 py-0'>
+                                                            <SelectValue className='text-xs h-9 py-0' placeholder="Purolator" />
                                                         </SelectTrigger>
                                                     </FormControl>
-                                                    <SelectContent>
-                                                        <SelectItem value="Purolator">Purolator</SelectItem>
-                                                        <SelectItem value="Feedex">Feedex</SelectItem>
-                                                        <SelectItem value="Amazon">Amazon</SelectItem>
-                                                        <SelectItem value="DHL">DHL</SelectItem>
+                                                    <SelectContent className="text-xs">
+                                                        <SelectItem className="text-xs"  value="Purolator">Purolator</SelectItem>
+                                                        <SelectItem className="text-xs" value="Feedex">Feedex</SelectItem>
+                                                        <SelectItem className="text-xs" value="Amazon">Amazon</SelectItem>
+                                                        <SelectItem className="text-xs" value="DHL">DHL</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                                 <FormMessage />
@@ -181,7 +297,7 @@ export const ArrivalForms = () => {
                                     )}
                                 />
                             </div>
-                            <div className="nameWrapper flex flex-row gap-4 w-[100%] text-sm text-zinc-600">
+                            <div className="nameWrapper flex flex-row gap-3 w-[100%] text-sm text-zinc-600">
                                 <div className="flex flex-col gap-2">
                                     <FormLabel className="text-sm font-bold text-zinc-600">Package Dimension</FormLabel>
                                     <div className="flex flex-row gap-2 w-full">
@@ -193,7 +309,7 @@ export const ArrivalForms = () => {
                                                 <>
                                                     <FormItem className="w-full text-sm">
                                                         <FormControl>
-                                                            <Input id="length" className="text-sm" type="number" placeholder="length" {...field} />
+                                                            <Input id="length" className="text-xs h-9 py-0" type="number" placeholder="length" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -208,7 +324,7 @@ export const ArrivalForms = () => {
                                                 <>
                                                     <FormItem className="w-full text-sm">
                                                         <FormControl>
-                                                            <Input id="width" className="text-sm" type="number" placeholder="width" {...field} />
+                                                            <Input id="width" className="text-xs h-9 py-0" type="number" placeholder="width" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -223,7 +339,7 @@ export const ArrivalForms = () => {
                                                 <>
                                                     <FormItem className="w-full text-sm">
                                                         <FormControl>
-                                                            <Input id="height" type="number" className="text-sm" placeholder="height" {...field} />
+                                                            <Input id="height" type="number" className="text-xs h-9 py-0" placeholder="height" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -243,13 +359,13 @@ export const ArrivalForms = () => {
                                                             control={form.control}
                                                             defaultValue={field.value}>
                                                             <FormControl>
-                                                                <SelectTrigger>
+                                                                <SelectTrigger className="text-xs h-9 py-0">
                                                                     <SelectValue placeholder="in" />
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
-                                                                <SelectItem value="mm">mm</SelectItem>
-                                                                <SelectItem value="cm">cm</SelectItem>
+                                                                <SelectItem className="text-xs" value="mm">mm</SelectItem>
+                                                                <SelectItem className="text-xs" value="cm">cm</SelectItem>
                                                             </SelectContent>
                                                         </Select>
                                                         <FormMessage />
@@ -265,7 +381,7 @@ export const ArrivalForms = () => {
                                                 <>
                                                     <FormItem className="w-full text-sm">
                                                         <FormControl>
-                                                            <Input id="weight" className="text-sm" placeholder="weight" type="number" {...field} />
+                                                            <Input id="weight" className="text-xs h-9 py-0 " placeholder="weight" type="number" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -284,13 +400,13 @@ export const ArrivalForms = () => {
                                                             control={form.control}
                                                             defaultValue={field.value}>
                                                             <FormControl>
-                                                                <SelectTrigger>
+                                                                <SelectTrigger className="text-xs h-9 py-0">
                                                                     <SelectValue placeholder="ibs" />
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
-                                                                <SelectItem value="ibs">ibs</SelectItem>
-                                                                <SelectItem value="kg">kg</SelectItem>
+                                                                <SelectItem className="text-xs" value="ibs">ibs</SelectItem>
+                                                                <SelectItem className="text-xs" value="kg">kg</SelectItem>
                                                             </SelectContent>
                                                         </Select>
                                                         <FormMessage />
@@ -305,7 +421,9 @@ export const ArrivalForms = () => {
 
 
                     </div>
-                    <div className="flex flex-row justify-center items-center gap-4">
+
+
+                    <div className="flex flex-row justify-center items-center gap-3">
                         <FormField
                             className="w-full flex flex-row justify-center items-end"
                             name="firstName"
@@ -315,7 +433,14 @@ export const ArrivalForms = () => {
                                     <FormItem className="w-full text-sm">
                                         <FormLabel className="text-sm font-bold">Whole Box Image</FormLabel>
                                         <FormControl>
-                                            <Input id="picture" type="file" />
+                                            <div className='rounded-md border border-slate-200 p-0'>
+                                                <Input
+                                                    id="wholeBox"
+                                                    type="file"
+                                                    className="p-0 border-none h-9 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                    placeholder="Upload Image"
+                                                />
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -331,14 +456,14 @@ export const ArrivalForms = () => {
                                     <FormItem className="w-full text-sm">
                                         <FormLabel className="text-sm font-bold">Label Close Up</FormLabel>
                                         <FormControl>
-                                            <Input id="picture" type="file"
-                                                onChange={(e) => {
-                                                    // const file = e.target.files[0];
-                                                    // const imageUrl = URL.createObjectURL(file);
-                                                    // // Do something with the imageUrl, such as displaying it in an <img> tag
-                                                    // console.log(imageUrl);
-                                                }}
-                                            />
+                                            <div className='rounded-md border border-slate-200 p-0'>
+                                                <Input
+                                                    id="wholeBox"
+                                                    type="file"
+                                                    className="p-0 border-none h-9 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                    placeholder="Upload Image"
+                                                />
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -354,7 +479,14 @@ export const ArrivalForms = () => {
                                     <FormItem className="w-full text-sm">
                                         <FormLabel className="text-sm font-bold">Content Images</FormLabel>
                                         <FormControl>
-                                            <Input id="picture" type="file" />
+                                            <div className='rounded-md border border-slate-200 p-0'>
+                                                <Input
+                                                    id="wholeBox"
+                                                    type="file"
+                                                    className="p-0 border-none h-9 py-0 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                    placeholder="Upload Image"
+                                                />
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
