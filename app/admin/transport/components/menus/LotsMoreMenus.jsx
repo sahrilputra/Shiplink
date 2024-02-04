@@ -20,6 +20,7 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
         dataIDhandler(data)
     };
 
+
     const [editModalOpen, setEditModalOpen] = useState(false);
 
     const render = () => {
@@ -58,7 +59,10 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                             <p className="text-xs">Edit Lots</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <p className="text-xs">Download Documents</p>
+                            <p
+                                className="text-xs"
+                                onClick={() => setIsDownload(true)}
+                            >Download Documents</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

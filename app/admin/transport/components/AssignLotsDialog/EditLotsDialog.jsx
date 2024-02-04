@@ -42,11 +42,16 @@ export const EditLotsDialog = ({ open, setOpen, data }) => {
                             </div>
                         </div>
                         <DialogFooter>
-                            <div className="flex flex-row justify-between w-full">
+                            <div className="flex flex-row justify-between w-full gap-3">
                                 <DialogClose asChild>
-                                    <Button variant="redOutline">Cancel</Button>
+                                    <Button
+                                        className="w-full"
+                                        variant="redOutline"
+                                    >Cancel
+                                    </Button>
                                 </DialogClose>
                                 <Button
+                                    className="w-full"
                                     variant="destructive"
                                 >Save changes
                                 </Button>
@@ -55,6 +60,6 @@ export const EditLotsDialog = ({ open, setOpen, data }) => {
                     </form>
                 </Form>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }

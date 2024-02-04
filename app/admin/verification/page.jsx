@@ -36,7 +36,7 @@ export default function VerificationPages() {
                         </div>
                         <div className={`${styles.title} flex flex-col`}>
                             <h1 className=" text-zinc-900 text-sm font-bold ">Verification</h1>
-                            <p className=" text-blue-900 text-xs font-normal">Showing All Carriers</p>
+                            <p className=" text-blue-900 text-xs font-normal">Showing Verification Items</p>
                         </div>
                     </div>
                     <div className={`${styles.menus}`}>

@@ -58,7 +58,7 @@ export default function BinManagementPage() {
                             <BinMenus />
                         </div>
                     </div>
-                    <div className="px-2 py-2 border-b border-[#dedede]">
+                    {/* <div className="px-2 py-2 border-b border-[#dedede]">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                             <SearchBar />
                             <Button
@@ -75,9 +75,9 @@ export default function BinManagementPage() {
                                 <Plus fill="#CC0019" />
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="px-2 py-2">
-                        <BinTableList handleSelect={handleBinSelection} data={data} />
+                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} data={data} />
                     </div>
                 </div>
                 <div className={styles.childContent}>
@@ -96,7 +96,6 @@ export default function BinManagementPage() {
                                     >
                                         <HistoryIcon width={15} height={15} />
                                         <p className='text-xs'>History</p>
-
                                     </Button>
                                 </div>
                             </div>

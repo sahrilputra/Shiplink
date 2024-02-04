@@ -54,7 +54,6 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                                 </Button>
                                 <DatePickerWithRange className={"text-black"} />
                             </div>
-
                         </div>
                     </TableHead>
                 </TableHeader>
@@ -88,7 +87,7 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                                             >
                                                 <p className="text-[11px]">Edit Lots</p>
                                             </Button>
-                                            <LotsMoreMenusDropDrown dataID={item.LotsID} />
+                                            <LotsMoreMenusDropDrown data={data} dataID={item.LotsID} />
                                             <Button
                                                 variant="tableBlue"
                                                 size="tableIcon"

@@ -14,11 +14,12 @@ export const EditMode = ({ cancel, increaseContent }) => {
             <div className="w-[100%] flex flex-row justify-between gap-2 items-center">
                 <div className="flex flex-col justify-center items-start">
                     <Button
-                        variant="tableBlue"
+                        variant="softBlue"
                         size="sm"
-                        onClick={() => increaseContent((prev) => prev + 1)}
+                        type="button"
+                        className="px-4 h-7 py-4"
                     >
-                        <p className='text-xs font-light'>Add Other Content</p>
+                        <p className='text-xs'>Add Other Conten</p>
                     </Button>
                 </div>
 

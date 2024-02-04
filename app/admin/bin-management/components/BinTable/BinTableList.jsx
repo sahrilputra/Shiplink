@@ -11,10 +11,12 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
-import { ArrowDownV2Icons } from "@/components/icons/iconCollection";
-import { MoreHorizontalIcon } from "lucide-react";
+import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
+import { MoreHorizontalIcon, Plus } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-export function BinTableList({ data, isOpen, setOpen, handleSelect }) {
+import { SearchBar } from "@/components/ui/searchBar";
+import { DatePickerWithRange } from "@/components/date/DateRangePicker";
+export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNewDialog }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -36,6 +38,26 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect }) {
     }
     return (
         <Table>
+            <TableHeader className="text-sm bg-white text-black">
+                <TableHead colSpan={5} className="p-2 " >
+                    <div className="flex flex-row justify-between">
+                        <SearchBar />
+                        <Button
+                            variant="filter"
+                            size="icon"
+                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                            <FilterIcons fill="#CC0019" />
+                        </Button>
+                        <Button
+                            onClick={() => setCreateNewDialog(true)}
+                            variant="filter"
+                            size="icon"
+                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                            <Plus fill="#CC0019" />
+                        </Button>
+                    </div>
+                </TableHead>
+            </TableHeader>
             <TableHeader className="text-sm">
                 <TableHead className="w-[40px] p-0 h-7 px-3 py-3">
                     <Checkbox />
