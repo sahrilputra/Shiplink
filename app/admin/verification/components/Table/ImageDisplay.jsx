@@ -23,7 +23,7 @@ export const ImageDisplay = ({ open, setOpen }) => {
             <DialogContent>
                 <DialogDescription>
                     <div className="flex flex-row gap-4 items-center">
-                        <div className="imageContainer flex flex-col w-[800px] items-center">
+                        <div className="imageContainer flex flex-col w-[600px] items-center">
                             <Carousel className="w-full ">
                                 <CarouselContent className=" ">
                                     {Array.from({ length: 5 }).map((_, index) => (

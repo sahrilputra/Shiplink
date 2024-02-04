@@ -14,17 +14,8 @@ import {
 } from "@/components/ui/select"
 import { DeclareContentInput } from './DeclareContentInput'
 
-export const DeclareContet = ({ setOpen }) => {
-    const [inputCount, setInputCount] = useState(1);
-
-    const removeContent = (index) => {
-        setInputCount(inputCount - 1)
-    }
-
-    const addContent = () => {
-        setInputCount(inputCount + 1)
-
-    }
+export const DeclareContet = ({ setOpen, forms, removeContent, addContent, inputCount }) => {
+    console.log('declereContentID', forms.getValues('DeclareContet'))
     return (
         <>
             <Table>
@@ -38,11 +29,15 @@ export const DeclareContet = ({ setOpen }) => {
                     <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm text-right"></TableHead>
                 </TableHeader>
                 <TableBody>
-                    {
-                        Array.from({ length: inputCount }).map((_, index) => (
-                            <DeclareContentInput key={index} index={index} remove={removeContent} />
-                        ))
-                    }
+                    {Array.from({ length: inputCount }).map((_, index) => (
+                        <DeclareContentInput
+                            forms={forms}
+                            key={index}
+                            index={index}
+                            remove={removeContent(index)}
+                        />
+                    ))}
+
                 </TableBody>
             </Table>
             <Table>
@@ -52,8 +47,12 @@ export const DeclareContet = ({ setOpen }) => {
                             <Button
                                 variant="softBlue"
                                 size="sm"
+                                type="button"
                                 className="px-4 h-7 py-3"
-                                onClick={() => addContent()}
+                                onClick={(e) => {
+                                    addContent()
+                                    e.preventDefault()
+                                }}
                             >
                                 <p className='text-xs'>Add Other Conten</p>
                             </Button>
@@ -80,8 +79,12 @@ export const DeclareContet = ({ setOpen }) => {
 
                                 <Button
                                     variant="destructive"
+                                    type="button"
                                     size="sm"
-                                    onClick={() => setOpen(true)}
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        e.preventDefault()
+                                    }}
                                 >
                                     <p className='text-xs'>Register Package</p>
                                 </Button>
