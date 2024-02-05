@@ -19,16 +19,16 @@ export default function configuration() {
             <div className="flex flex-row gap-2 w-full">
                 <div className={`${styles.carrier} w-[70%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-base font-bold'>Product Details</h1>
-                        <div className="px-[5px] py-[10px]">
+                        <h1 className=' text-sm font-bold'>Product Details</h1>
+                        <div className="px-[5px] py-[5px]">
                             <NewProductForms />
                         </div>
                     </div>
                 </div>
                 <div className={`${styles.carrier} w-[30%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-base font-bold'>Product Review</h1>
-                        <div className="px-[5px] py-[10px]">
+                        <h1 className=' text-sm font-bold'>Product Review</h1>
+                        <div className="px-[5px] py-[5px]">
                             <ReviewCard />
                         </div>
                     </div>

@@ -6,25 +6,27 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
+import { CreateNewTicketsForms } from "./NewTicketsForms"
 import React from 'react'
 
 export default function CreateNewTickets({ open, setOpen }) {
-    console.log("child : ", open)
+    const onClose = () => {
+        setOpen(false)
+    }
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            {/* <DialogTrigger>Open</DialogTrigger> */}
-            <DialogContent >
+        <Dialog open={open} onOpenChange={setOpen}
+            className="px-3"
+        >
+            <DialogContent className="">
                 <DialogHeader>
-                    <DialogTitle>Create New Customer</DialogTitle>
-                    <DialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
-                    </DialogDescription>
+                    <DialogTitle className="font-bold">
+                        <p>Create New Tickets</p>
+                    </DialogTitle>
                 </DialogHeader>
+                <DialogDescription className=" w-[400px] flex justify-center items-center mx-auto">
+                    <CreateNewTicketsForms close={onClose} />
+                </DialogDescription>
             </DialogContent>
         </Dialog>
     )
 }
-
-

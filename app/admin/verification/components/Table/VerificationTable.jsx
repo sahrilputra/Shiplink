@@ -77,28 +77,28 @@ export function VerificationTable({ data, isOpen, setOpen }) {
     return (
         <Table>
             <TableHeader className="text-sm">
-                <TableHead className="p-0 h-10 px-5 py-2 w-[100px]">Tracking ID</TableHead>
-                <TableHead className="p-0 h-10 px-5  py-2 ">Customer Name</TableHead>
-                <TableHead className="p-0 h-10 px-5  py-2 ">Origin</TableHead>
-                <TableHead className="p-0 h-10 px-5  py-2 ">Destination</TableHead>
-                <TableHead className="p-0 h-10 px-5  py-2 text-center">Last Update</TableHead>
-                <TableHead className="p-0 h-10 px-5  py-2 ">Customs Status</TableHead>
-                <TableHead className="p-0 h-10 px-5  py-2 w-[30px]"></TableHead>
+                <TableHead className=" text-xs w-[100px]">Tracking ID</TableHead>
+                <TableHead className="  text-xs ">Customer Name</TableHead>
+                <TableHead className="  text-xs ">Origin</TableHead>
+                <TableHead className="  text-xs ">Destination</TableHead>
+                <TableHead className="  text-xs text-center">Last Update</TableHead>
+                <TableHead className="  text-xs ">Customs Status</TableHead>
+                <TableHead className="  text-xs w-[30px]"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`${expandedRow === index && "bg-blue-200 hover:bg-blue-200"}`} >
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.TrackingID}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomerName}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Origin}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
-                                <TableCell className="text-right p-0 h-7 px-5 py-2">{item.UpdateDate}</TableCell>
-                                <TableCell className="text-right p-0 h-7 px-5 py-2" >
+                                <TableCell className="font-medium text-xs">{item.TrackingID}</TableCell>
+                                <TableCell className="font-medium text-xs">{item.CustomerName}</TableCell>
+                                <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
+                                <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
+                                <TableCell className="text-right text-xs">{item.UpdateDate}</TableCell>
+                                <TableCell className="text-right text-xs" >
                                     <VerifiedStatus param={item.CustomsStatus} />
                                 </TableCell>
-                                <TableCell className="w-[30px] text-right p-0 h-7 px-5 py-2">
+                                <TableCell className="w-[30px] text-right text-xs">
 
                                     <Button
                                         variant="tableBlue"

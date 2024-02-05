@@ -51,7 +51,7 @@ export default function VerificationPages() {
                                 <Button
                                     variant="filter"
                                     size="icon"
-                                    className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                                    className='w-[37px] h-[30px]  border border-neutral-200 flex items-center'>
                                     <FilterIcons fill="#CC0019" />
                                 </Button>
                                 <DatePickerWithRange />

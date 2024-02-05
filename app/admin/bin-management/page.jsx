@@ -77,7 +77,7 @@ export default function BinManagementPage() {
                         </div>
                     </div> */}
                     <div className="px-2 py-2">
-                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} data={data} />
+                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} data={data} isSelected={selectedBinID} />
                     </div>
                 </div>
                 <div className={styles.childContent}>

@@ -37,24 +37,24 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
     return (
         <Table>
             <TableHeader className="text-sm">
-                <TableHead className="p-0 h-9 px-5 py-3 w-[100px]">Lots ID</TableHead>
-                <TableHead className="p-0 h-9 px-5 py-3 ">Lots Labels</TableHead>
-                <TableHead className="p-0 h-9 px-5 py-3 ">Manifest Number</TableHead>
-                <TableHead className="p-0 h-9 px-5 py-3 ">Destination</TableHead>
-                <TableHead className="p-0 h-9 px-5 py-3 ">Current Status</TableHead>
-                <TableHead className="p-0 h-9 px-5 py-3 w-[30px]"></TableHead>
+                <TableHead className="text-xs w-[100px]">Lots ID</TableHead>
+                <TableHead className="text-xs ">Lots Labels</TableHead>
+                <TableHead className="text-xs ">Manifest Number</TableHead>
+                <TableHead className="text-xs ">Destination</TableHead>
+                <TableHead className="text-xs ">Current Status</TableHead>
+                <TableHead className="text-xs w-[30px]"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
-                                <TableCell className="p-0 h-7 px-5 py-2 font-medium">{item.LotsID}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 ">{item.LotsLabels}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 ">{item.ManifestNumber}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 ">{item.Destination}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 ">{item.CurrentStatus}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 w-[30px]">
+                                <TableCell className=" font-medium">{item.LotsID}</TableCell>
+                                <TableCell className=" ">{item.LotsLabels}</TableCell>
+                                <TableCell className=" ">{item.ManifestNumber}</TableCell>
+                                <TableCell className=" ">{item.Destination}</TableCell>
+                                <TableCell className=" ">{item.CurrentStatus}</TableCell>
+                                <TableCell className=" w-[30px]">
                                     <div className="flex flex-row gap-2">
                                         <Button
                                             variant="tableBlue"

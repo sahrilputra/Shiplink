@@ -4,6 +4,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { CheckIcon, XIcon } from 'lucide-react'
+import { PackageDialogDetails } from '../dialog/PackageDialogDetails'
 import {
     Select,
     SelectContent,
@@ -12,9 +13,12 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export const BrokerDeclareContent = ({ setOpen }) => {
+export const BrokerDeclareContent = ({ }) => {
+    const [open, setOpen] = React.useState(false);
+
     return (
         <>
+            <PackageDialogDetails open={open} setOpen={setOpen} />
             <Table>
                 <TableHeader className="bg-sky-50 ">
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Qty</TableHead>
@@ -69,18 +73,16 @@ export const BrokerDeclareContent = ({ setOpen }) => {
                         <TableCell className="font-medium flex flex-row justify-between w-full items-center bg-sky-50 p-0 py-2 px-5">
                             <Button
                                 variant="secondary"
-                                size="sm"
+                                size="xs"
                                 onClick={() => setOpen(true)}
                             >
                                 <p className='text-xs'>Package Details</p>
                             </Button>
                             <div className="">
                                 <Select>
-                                    <SelectTrigger className="text-xs p-0 px-0 py-0 focus:ring-0 border border-zinc-200 ">
-                                        <div className="flex flex-row gap-[-3px] items-center  w-[200px] justify-between">
-                                            <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white items-center p-3 my-auto '>Invoice</p>
-                                            <SelectValue placeholder="Download Invoice " className='text-xs border-none outline-none items-start justify-start flex' />
-                                        </div>
+                                    <SelectTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2">
+                                        <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Invoice</p>
+                                        <SelectValue placeholder="Download Invoice " className='text-xs h-full border-none pl-3 w-[250px] rounded-tr-none rounded-br-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" ' />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="light">Invoice A</SelectItem>
@@ -89,15 +91,15 @@ export const BrokerDeclareContent = ({ setOpen }) => {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex flex-row gap-[-3px] w-max border border-zinc-200">
-                                <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white items-center p-3 my-auto '>Entry Number</p>
-                                <Input type="text" className="border-none pl-3 w-[150px] focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" />
+                            <div className="flex flex-row gap-[-3px] w-max border border-zinc-300 rounded-md h-8 items-center ">
+                                <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Entry Number</p>
+                                <Input type="text" className="h-full border-none pl-3 w-[150px] rounded-tl-none rounded-bl-none rounded-tr-md rounded-br-md focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" />
                             </div>
                             <div className="flex flex-row justify-center gap-4  ">
                                 <Button
                                     variant="secondary"
-                                    size="sm"
-                                    onClick={() => setOpen(true)}
+                                    className="px-3"
+                                    size="xs"
                                 >
                                     <p className='text-xs'>Save</p>
                                 </Button>

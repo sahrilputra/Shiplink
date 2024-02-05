@@ -23,7 +23,7 @@ import { Label } from "@/components/ui/label";
 import { DestinationMenus } from "../menus/DestinationMenus";
 import { SelectBins } from "./SelectBin";
 
-export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
+export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelected }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -84,12 +84,12 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
                         onChange={() => { }}
                     />
                 </TableHead>
-                <TableHead className="">Lots ID</TableHead>
-                <TableHead >Register Date</TableHead>
-                <TableHead className="">Destination</TableHead>
-                <TableHead className="w-[130px]">Bin Assign</TableHead>
-                <TableHead className="w-[180px]">Current Status</TableHead>
-                <TableHead className=""></TableHead>
+                <TableHead className="text-xs ">Lots ID</TableHead>
+                <TableHead className="text-xs " >Register Date</TableHead>
+                <TableHead className="text-xs ">Destination</TableHead>
+                <TableHead className="text-xs w-[130px]">Bin Assign</TableHead>
+                <TableHead className="text-xs w-[180px]">Current Status</TableHead>
+                <TableHead className="text-xs "></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
@@ -97,21 +97,21 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData }) {
                         <>
                             <TableRow
                                 key={item.LotsID}
-                                className={`h-[50px] `}
+                                className={`${isSelected === item.LotsID ? "bg-blue-200 " : ""}`}
                                 onClick={() => HandlerGetItemID(item.LotsID)}
                             >
-                                <TableCell className="p-0 h-7 px-5 py-2 w-[50px]">
+                                <TableCell className=" w-[50px]">
                                     <Checkbox
                                         className="text-xs"
                                         onChange={() => { }}
                                     />
                                 </TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.LotsID}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.RegisterDate}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.Destination}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.BinAssign}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 font-medium ">{item.CurrentStatus}</TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2 w-[30px]  ">
+                                <TableCell className=" font-medium ">{item.LotsID}</TableCell>
+                                <TableCell className=" font-medium ">{item.RegisterDate}</TableCell>
+                                <TableCell className=" font-medium ">{item.Destination}</TableCell>
+                                <TableCell className=" font-medium ">{item.BinAssign}</TableCell>
+                                <TableCell className=" font-medium ">{item.CurrentStatus}</TableCell>
+                                <TableCell className=" w-[30px]  ">
                                     <div className="flex flex-row gap-2">
                                         <DestinationMenus dataID={item.index} />
                                     </div>

@@ -19,7 +19,7 @@ export default function ServicesPage() {
             <div className="flex flex-row gap-2 w-full">
                 <div className={`${styles.carrier} w-[70%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-base font-bold'>Services Details</h1>
+                        <h1 className=' text-sm font-bold'>Services Details</h1>
                         <div className="px-[5px] py-[10px]">
                             <NewServicesForms />
                         </div>
@@ -27,8 +27,8 @@ export default function ServicesPage() {
                 </div>
                 <div className={`${styles.carrier} w-[30%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-base font-bold'>Services Review</h1>
-                        <div className="px-[5px] py-[10px]">
+                        <h1 className=' text-sm font-bold'>Services Review</h1>
+                        <div className="px-[5px] py-[5px]">
                             <ServicesCards />
                         </div>
                     </div>

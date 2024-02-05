@@ -19,7 +19,7 @@ export default function CustomerPage() {
 
             <div className={styles.carrier}>
                 <CreateNewCustomer open={open} setOpen={setOpen} />
-                <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
+                <div className={`${styles.listTable} mt-[10px] flex flex-col gap-1`}>
                     <CustomerTable open={open} setOpen={setOpen} data={data} />
                 </div>
             </div>

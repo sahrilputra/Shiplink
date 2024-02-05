@@ -42,76 +42,78 @@ export function CustomerTable({ data, open, setOpen }) {
     };
 
     return (
-        <Table className="border border-zinc-300 rounded-sm">
-            <TableHeader className="text-sm bg-white text-black">
-                <TableHead colSpan={7} className="p-4 " >
-                    <div className="flex flex-row justify-between">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="icon"
-                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                                <FilterIcons fill="#CC0019" />
-                            </Button>
-                            <DatePickerWithRange className={"text-black"} />
-                        </div>
-                        <div className="">
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                className="w-[250px]"
-                                onClick={() => toggleOpenDialog()}
-                            >
-                                <p className=" text-xs">Create New Customer</p>
-                            </Button>
-                        </div>
+        <>
+            <div className="text-sm bg-white text-black pb-[10px]">
+                <div className="flex flex-row justify-between">
+                    <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                        <SearchBar />
+                        <Button
+                            variant="filter"
+                            size="icon"
+                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                            <FilterIcons fill="#CC0019" />
+                        </Button>
+                        <DatePickerWithRange className={"text-black"} />
                     </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-sm">
-                <TableHead className="p-0 h-8 px-5 py-3 text-center">Unit ID</TableHead>
-                <TableHead className="p-0 h-8 px-5 py-3 ">Customer Name</TableHead>
-                <TableHead className="p-0 h-8 px-5 py-3 ">Date Created</TableHead>
-                <TableHead className="p-0 h-8 px-5 py-3 ">Last Login</TableHead>
-                <TableHead className="p-0 h-8 px-5 py-3 ">Membership</TableHead>
-                <TableHead className="p-0 h-8 px-5 py-3"></TableHead>
-            </TableHeader>
-            <TableBody className="text-xs">
-                {
-                    data.map((item, index) => (
-                        <>
-                            <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
+                    <div className="">
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            className="px-5"
+                            onClick={() => toggleOpenDialog()}
+                        >
+                            <p className=" text-xs">Create New Customer</p>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            <Table className="border border-zinc-300 rounded-sm">
 
-                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.UnitId}</TableCell>
-                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.CustomerName}</TableCell>
-                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.DateCreated}</TableCell>
-                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.LastLogin}</TableCell>
-                                <TableCell className="font-medium p-0 h-8 px-5 py-2">{item.Membership}</TableCell>
-                                <TableCell className="w-[30px]  p-0 h-8 px-5 py-2">
-                                    <div className="flex flex-row gap-2">
-                                        <NextLink
-                                            href={"/admin/customers-manager/1"}>
-                                            <Button
-                                                variant="tableBlue"
-                                                size="tableIcon"
-                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                                onClick={() => toggleOpenChange()}
-                                            >
-                                                <p className="text-[11px] text-myBlue">Details</p>
-                                            </Button>
-                                        </NextLink>
-                                        <CustomerManagerDropDown />
-                                    </div>
-                                </TableCell>
-                            </TableRow>
+                <TableHeader className="text-sm">
+                    <TableHead className="text-xs ">Unit ID</TableHead>
+                    <TableHead className="text-xs ">Customer Name</TableHead>
+                    <TableHead className="text-xs ">Date Created</TableHead>
+                    <TableHead className="text-xs ">Last Login</TableHead>
+                    <TableHead className="text-xs ">Membership</TableHead>
+                    <TableHead className="text-xs w-[100px]"></TableHead>
+                </TableHeader>
+                <TableBody className="text-xs">
+                    {
+                        data.map((item, index) => (
+                            <>
+                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
+
+                                    <TableCell className="font-medium ">{item.UnitId}</TableCell>
+                                    <TableCell className="font-medium ">{item.CustomerName}</TableCell>
+                                    <TableCell className="font-medium ">{item.DateCreated}</TableCell>
+                                    <TableCell className="font-medium ">{item.LastLogin}</TableCell>
+                                    <TableCell className="font-medium ">{item.Membership}</TableCell>
+                                    <TableCell className=" w-[100px] ">
+                                        <div className="flex flex-row gap-2">
+                                            <NextLink
+                                                className="focus:outline-none focus:ring-0 focus:border-transparent"
+                                                href={"/admin/customers-manager/1"}>
+                                                <Button
+                                                    variant="tableBlue"
+                                                    size="tableIcon"
+                                                    className={`rounded-sm w-max px-[10px] h-[20px]`}
+                                                    onClick={() => toggleOpenChange()}
+                                                >
+                                                    <p className="text-[11px] text-myBlue">Details</p>
+                                                </Button>
+                                            </NextLink>
+                                            <CustomerManagerDropDown />
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
 
 
-                        </>
-                    ))
-                }
-            </TableBody>
+                            </>
+                        ))
+                    }
+                </TableBody>
 
-        </Table>
+            </Table>
+        </>
     )
 }

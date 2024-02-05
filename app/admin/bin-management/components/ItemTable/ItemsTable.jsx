@@ -44,14 +44,14 @@ export function ItemTable({ data, isOpen, setOpen }) {
             <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} />
             <Table>
                 <TableHeader className="text-sm bg-transparent py-2">
-                    <TableHead colSpan={5} className="p-4 " >
+                    <TableHead colSpan={5} className="px-2 py-3 " >
                         <div className="flex flex-row justify-between">
                             <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                                 <SearchBar />
                                 <Button
                                     variant="filter"
                                     size="icon"
-                                    className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
+                                    className='w-[34px] h-[34px]  border border-neutral-200 flex items-center'>
                                     <FilterIcons fill="#CC0019" />
                                 </Button>
                             </div>
@@ -59,7 +59,7 @@ export function ItemTable({ data, isOpen, setOpen }) {
                                 <Button
                                     variant="destructive"
                                     size="sm"
-                                    className="px-10"
+                                    className="px-[20px]"
                                     onClick={() => setOpenMoveDialog(true)}
                                 >
                                     <p className=" text-xs">Move Package</p>
@@ -69,13 +69,13 @@ export function ItemTable({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className="p-0 h-7 px-3 py-3 w-[40px]">
+                    <TableHead className=" text-xs w-[50px]">
                         <Checkbox />
                     </TableHead>
-                    <TableHead className="p-0 h-7 px-3 py-3 ">ID</TableHead>
-                    <TableHead className="p-0 h-7 px-3 py-3 ">Customer</TableHead>
-                    <TableHead className="p-0 h-7 px-3 py-3 ">Date</TableHead>
-                    <TableHead className="p-0 h-7 px-3 py-3 w-[100px]"></TableHead>
+                    <TableHead className=" text-xs ">ID</TableHead>
+                    <TableHead className=" text-xs ">Customer</TableHead>
+                    <TableHead className=" text-xs ">Date</TableHead>
+                    <TableHead className=" text-xs w-[100px]"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
@@ -83,11 +83,11 @@ export function ItemTable({ data, isOpen, setOpen }) {
                             <>
                                 <TableRow
                                     key={item.PackageID} >
-                                    <TableCell className="p-0 h-7 px-3 py-3 font-medium"> <Checkbox /></TableCell>
-                                    <TableCell className="p-0 h-7 px-3 py-3 ">{item.PackageID}</TableCell>
-                                    <TableCell className="p-0 h-7 px-3 py-3 ">{item.Customer}</TableCell>
-                                    <TableCell className="p-0 h-7 px-3 py-3 ">{item.Date}</TableCell>
-                                    <TableCell className="p-0 h-7 px-3 py-3 w-[100px]">
+                                    <TableCell className="py-2 text-xs w-[50px]"> <Checkbox /></TableCell>
+                                    <TableCell className="py-2 text-xs ">{item.PackageID}</TableCell>
+                                    <TableCell className="py-2 text-xs ">{item.Customer}</TableCell>
+                                    <TableCell className="py-2 text-xs ">{item.Date}</TableCell>
+                                    <TableCell className="py-2 text-xs w-[100px]">
                                         <div className="flex flex-row gap-2">
                                             <NextLink
                                                 href={"/admin/package-details"}
@@ -102,7 +102,7 @@ export function ItemTable({ data, isOpen, setOpen }) {
                                             <Button
                                                 variant="tableBlue"
                                                 size="tableIcon"
-                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                className={`rounded-sm w-max px-[10px] h-[25px]`}
                                                 onClick={() => setOpenMoveDialog(true)}
                                             >
                                                 <p className="text-[11px]">Move</p>

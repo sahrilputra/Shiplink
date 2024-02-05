@@ -66,28 +66,28 @@ export function SingleItemsTable({ data, isOpen, setOpen }) {
                     </div>
                 </TableHead>
             </TableHeader>
-            <TableHeader className="text-sm">
-                <TableHead className="w-[80px]">Tracking ID</TableHead>
-                <TableHead >Customer Name</TableHead>
-                <TableHead className="w-[130px]">Origin</TableHead>
-                <TableHead className="w-[130px]">Destination</TableHead>
-                <TableHead className="w-[180px]">Last Update</TableHead>
-                <TableHead className="w-[180px]">Customs Status</TableHead>
-                <TableHead className=""></TableHead>
-                <TableHead className=""> <Checkbox className="w-4 h-4" /></TableHead>
+            <TableHeader className="text-xs">
+                <TableHead className=" text-xs w-[80px]">Tracking ID</TableHead>
+                <TableHead className=" text-xs">Customer Name</TableHead>
+                <TableHead className=" text-xs">Origin</TableHead>
+                <TableHead className=" text-xs ">Destination</TableHead>
+                <TableHead className=" text-xs w-[150px]">Last Update</TableHead>
+                <TableHead className=" text-xs w-[180px]">Customs Status</TableHead>
+                <TableHead className=" text-xs "></TableHead>
+                <TableHead className=" text-xs w-[50px]"> <Checkbox className="w-4 h-4" /></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
-                            <TableRow key={item.id} className={`h-[50px] `} >
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.TrackingID}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomerName}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Origin}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.LastUpdate}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.CustomStatus}</TableCell>
-                                <TableCell className="w-[30px]  p-0 h-7 px-5 py-2">
+                            <TableRow key={item.id} >
+                                <TableCell className="font-medium ">{item.TrackingID}</TableCell>
+                                <TableCell className="font-medium ">{item.CustomerName}</TableCell>
+                                <TableCell className="font-medium ">{item.Origin}</TableCell>
+                                <TableCell className="font-medium ">{item.Destination}</TableCell>
+                                <TableCell className="font-medium ">{item.LastUpdate}</TableCell>
+                                <TableCell className="font-medium ">{item.CustomStatus}</TableCell>
+                                <TableCell className="w-[30px]  ">
                                     <div className="flex flex-row gap-2">
                                         <NextLink href={"/admin/package-details/2"}>
                                             <Button
@@ -107,7 +107,7 @@ export function SingleItemsTable({ data, isOpen, setOpen }) {
                                         </Button>
                                     </div>
                                 </TableCell>
-                                <TableCell className="p-0 h-7 px-5 py-2">
+                                <TableCell className="w-[50px]">
                                     <Checkbox className="w-4 h-4 fill-white" />
                                 </TableCell>
                             </TableRow>

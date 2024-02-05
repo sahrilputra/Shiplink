@@ -16,7 +16,7 @@ import { MoreHorizontalIcon, Plus } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNewDialog }) {
+export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNewDialog, isSelected }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
@@ -39,33 +39,37 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
     return (
         <Table>
             <TableHeader className="text-sm bg-white text-black">
-                <TableHead colSpan={5} className="p-2 " >
-                    <div className="flex flex-row justify-between">
-                        <SearchBar />
-                        <Button
-                            variant="filter"
-                            size="icon"
-                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                            <FilterIcons fill="#CC0019" />
-                        </Button>
-                        <Button
-                            onClick={() => setCreateNewDialog(true)}
-                            variant="filter"
-                            size="icon"
-                            className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                            <Plus fill="#CC0019" />
-                        </Button>
+                <TableHead colSpan={5} className="p-2" >
+                    <div className="flex w-full flex-row justify-between gap-1 items-center">
+                        <div className=" w-full flex flex-row gap-2 items-center">
+                            <SearchBar />
+                            <Button
+                                variant="filter"
+                                size="icon"
+                                className='w-[34px] h-[34px]  border border-neutral-200 flex items-center'>
+                                <FilterIcons className="" fill="#CC0019" />
+                            </Button>
+                        </div>
+                        <div className="w-[40%] flex justify-end  ">
+                            <Button
+                                onClick={() => setCreateNewDialog(true)}
+                                variant="filter"
+                                size="icon"
+                                className='w-[34px] h-[34px]  border border-neutral-200 flex items-center'>
+                                <Plus fill="#CC0019" />
+                            </Button>
+                        </div>
                     </div>
                 </TableHead>
             </TableHeader>
             <TableHeader className="text-sm">
-                <TableHead className="w-[40px] p-0 h-7 px-3 py-3">
+                <TableHead className="w-[50px]">
                     <Checkbox />
                 </TableHead>
-                <TableHead className="p-0 h-7 px-3 py-3">ID</TableHead>
-                <TableHead className="p-0 h-7 px-3 py-3">Row</TableHead>
-                <TableHead className="p-0 h-7 px-3 py-3">Section</TableHead>
-                <TableHead className="p-0 h-7 px-3 py-3">Level</TableHead>
+                <TableHead className=" text-xs">ID</TableHead>
+                <TableHead className=" text-xs">Row</TableHead>
+                <TableHead className=" text-xs">Section</TableHead>
+                <TableHead className=" text-xs">Level</TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
@@ -73,13 +77,13 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         <>
                             <TableRow
                                 key={item.id}
-                                className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`}
+                                className={`${isSelected === item.id ? "bg-blue-200" : ""}`}
                                 onClick={() => handleSelect(item.id)} >
-                                <TableCell className="p-0 h-7 px-3 py-3 "> <Checkbox /></TableCell>
-                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.id}</TableCell>
-                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.Row}</TableCell>
-                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.Section}</TableCell>
-                                <TableCell className="p-0 h-7 px-3 py-3 ">{item.Level}</TableCell>
+                                <TableCell className=" w-[50px]"> <Checkbox /></TableCell>
+                                <TableCell className=" ">{item.id}</TableCell>
+                                <TableCell className=" ">{item.Row}</TableCell>
+                                <TableCell className=" ">{item.Section}</TableCell>
+                                <TableCell className=" ">{item.Level}</TableCell>
                             </TableRow>
                         </>
                     ))

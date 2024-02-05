@@ -59,6 +59,7 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
         {
             accessorKey: "SequencesRange",
             header: "PARS / PAPS Number",
+            className: "text-xs",
         },
         {
             accessorKey: "CreateDate",
@@ -83,7 +84,7 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
-                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                            className={`rounded-sm w-max px-[6px] h-[25px]`}
                             onClick={() => handlerEdit()}
                         >
                             <p className="text-[11px]">Edit</p>
@@ -169,10 +170,11 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                     <>
                         {headerGroup.headers.map((header, index) => {
                             const isLastHeader = index === headerGroup.headers.length - 1;
+                            const isFirstHeader = index === 0;
                             return (
                                 <TableHead
                                     key={header.id}
-                                    className={`${isLastHeader ? "w-[30px] " : ""} p-0 h-8 px-5 py-2`}
+                                    className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
                                 >
                                     {header.isPlaceholder
                                         ? null
@@ -194,10 +196,10 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                         <TableRow
                             key={row.id}
                             data-state={row.getIsSelected() && "selected"}
-                            className={row.isLast && "w-[30px]"}
+                            className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
                         >
                             {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className={`${cell.isLast && "w-[30px]"} p-0 h-8 px-5 py-2 `}>
+                                <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
                             ))}

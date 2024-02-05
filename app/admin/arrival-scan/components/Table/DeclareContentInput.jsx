@@ -8,8 +8,8 @@ import React from 'react'
 export const DeclareContentInput = ({ index, remove, forms, items }) => {
     return (
         <>
-            <TableRow className="text-xs">
-                <TableCell className="p-0 h-8 px-5 py-2 font-medium">
+            <TableRow className="text-xs px-2">
+                <TableCell className="p-0 h-8 px-2 py-2 font-medium">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].qty`}
@@ -18,7 +18,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input id="width" className="text-xs h-9 py-0" type="number" placeholder="0" {...field} />
+                                        <Input
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            id="width" type="number" placeholder="0" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -26,7 +28,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell>
-                <TableCell className="p-0 h-8 px-5 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].value`}
@@ -35,7 +37,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input id="value" className="text-xs h-9 py-0" type="number" placeholder="0" {...field} />
+                                        <Input
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            id="value" type="number" placeholder="0" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -43,7 +47,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell>
-                <TableCell className="p-0 h-8 px-5 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].description`}
@@ -52,7 +56,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input id="description" className="text-xs h-9 py-0" placeholder="Description" {...field} />
+                                        <Input
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            id="description" placeholder="Description" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -60,7 +66,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell >
-                <TableCell className="p-0 h-8 px-5 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].hsDescription`}
@@ -69,7 +75,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input id="hsDescription" className="text-xs h-9 py-0" placeholder="HS Description" {...field} />
+                                        <Input
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            id="hsDescription" placeholder="HS Description" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -77,7 +85,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell >
-                <TableCell className="p-0 h-8 px-5 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].hsCode`}
@@ -86,7 +94,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input id="hsCode" className="text-xs h-9 py-0" type="number" placeholder="0" {...field} />
+                                        <Input
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            id="hsCode" type="number" placeholder="0" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -94,7 +104,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell>
-                <TableCell className="p-0 h-8 px-5 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].madeIn`}
@@ -103,7 +113,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input id="madeIn" className="text-xs h-9 py-0" placeholder="CAD" {...field} />
+                                        <Input
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            id="madeIn" placeholder="CAD" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -111,7 +123,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell>
-                <TableCell className="text-right w-[70px] p-0 h-8 px-5 py-2 ">
+                <TableCell className="text-right w-[70px] p-0 h-8 px-2 py-2 ">
                     {
                         index > 0 ? (
                             <div className="flex flex-row justify-between gap-2 w-full">

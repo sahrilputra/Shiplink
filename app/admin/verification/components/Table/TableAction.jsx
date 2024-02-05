@@ -20,7 +20,7 @@ export const TableAction = ({ edit }) => {
                 </div>
                 <div className="">
                     <Select>
-                        <SelectTrigger className="w-[180px] text-xs">
+                        <SelectTrigger className="w-[180px] text-xs p-0 px-3 py-1 h-[35px]" >
                             <SelectValue placeholder="Invoice" />
                         </SelectTrigger>
                         <SelectContent className="text-xs">
@@ -35,12 +35,14 @@ export const TableAction = ({ edit }) => {
                         variant="secondary"
                         size="sm"
                         onClick={edit}
+                        className="p-0 px-3 py-2 h-[35px] text-xs font-light"
                     >
                         <p className='text-xs font-light'>Edit</p>
                     </Button>
                     <Button
                         variant="secondary"
                         size="sm"
+                        className="p-0 px-3 py-2 h-[35px] text-xs font-light"
                     >
                         <p className='text-xs font-light'>Mark As Verified</p>
                     </Button>

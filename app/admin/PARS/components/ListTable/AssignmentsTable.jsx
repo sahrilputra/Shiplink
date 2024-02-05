@@ -48,23 +48,23 @@ export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, s
                     </div>
                 </TableHead>
             </TableHeader>
-            <TableHeader className="text-sm">
-                <TableHead className="p-0 h-7 px-5 py-2">ID</TableHead>
-                <TableHead className="p-0 h-7 px-5 py-2">Number Type</TableHead>
-                <TableHead className="p-0 h-7 px-5 py-2">Number</TableHead>
-                <TableHead className="p-0 h-7 px-5 py-2">Assigned</TableHead>
-                <TableHead className="p-0 h-7 px-5 py-2">Action</TableHead>
+            <TableHeader className="text-xs">
+                <TableHead className="">ID</TableHead>
+                <TableHead className="">Number Type</TableHead>
+                <TableHead className="">Number</TableHead>
+                <TableHead className="">Assigned</TableHead>
+                <TableHead className="">Action</TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={` `} >
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.id}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Type}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.SequencesRange}</TableCell>
-                                <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.AssignedTo}</TableCell>
-                                <TableCell className="w-[30px]  p-0 h-7 px-5 py-2">
+                                <TableCell className="font-medium ">{item.id}</TableCell>
+                                <TableCell className="font-medium ">{item.Type}</TableCell>
+                                <TableCell className="font-medium ">{item.SequencesRange}</TableCell>
+                                <TableCell className="font-medium ">{item.AssignedTo}</TableCell>
+                                <TableCell className="w-[30px]  ">
                                     <div className="flex flex-row gap-2">
                                         <NextLink href={"/admin/package-details/2"} >
                                             <Button

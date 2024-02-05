@@ -232,7 +232,7 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className={`${isLastHeader ? "w-[30px] " : ""} p-0 h-10 px-5 py-4`}
+                                            className={`${isLastHeader ? "w-[30px] " : ""} text-xs`}
                                         >
                                             {header.isPlaceholder
                                                 ? null
@@ -257,7 +257,7 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
                                     className={row.isLast && "w-[30px]"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className={`${cell.isLast && "w-[30px]"} p-0 h-8 px-5 py-2 text-xs `}>
+                                        <TableCell key={cell.id} className={`${cell.isLast && "w-[30px]"} text-xs `}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}

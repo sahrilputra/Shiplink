@@ -57,28 +57,28 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                         </div>
                     </TableHead>
                 </TableHeader>
-                <TableHeader className="text-sm">
-                    <TableHead className=" w-[80px]">Lots ID</TableHead>
-                    <TableHead className=" ">Lots Labels</TableHead>
-                    <TableHead className=" ">Destination</TableHead>
-                    <TableHead className=" w-[130px]">Documents</TableHead>
-                    <TableHead className=" w-[180px]">Manifest</TableHead>
-                    <TableHead className=" w-[180px]">Status</TableHead>
-                    <TableHead className=" w-[140px]"></TableHead>
+                <TableHeader className="text-xs">
+                    <TableHead className="text-xs w-[80px]">Lots ID</TableHead>
+                    <TableHead className="text-xs ">Lots Labels</TableHead>
+                    <TableHead className="text-xs ">Destination</TableHead>
+                    <TableHead className="text-xs w-[130px]">Documents</TableHead>
+                    <TableHead className="text-xs w-[180px]">Manifest</TableHead>
+                    <TableHead className="text-xs w-[180px]">Status</TableHead>
+                    <TableHead className="text-xs w-[130px]"></TableHead>
                 </TableHeader>
                 <TableBody className="text-xs">
                     {
                         data.map((item, index) => (
                             <>
-                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-[50px]`} >
-                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.LotsID}</TableCell>
-                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.LotsLabel}</TableCell>
-                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Destination}</TableCell>
-                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Documents}</TableCell>
-                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Manifest}</TableCell>
-                                    <TableCell className="font-medium p-0 h-7 px-5 py-2">{item.Status}</TableCell>
-                                    <TableCell className="p-0 h-7 px-5 py-2">
-                                        <div className="flex w-[140px] flex-row gap-2">
+                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} `} >
+                                    <TableCell className="font-medium text-xs">{item.LotsID}</TableCell>
+                                    <TableCell className="font-medium text-xs">{item.LotsLabel}</TableCell>
+                                    <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
+                                    <TableCell className="font-medium text-xs">{item.Documents}</TableCell>
+                                    <TableCell className="font-medium text-xs">{item.Manifest}</TableCell>
+                                    <TableCell className="font-medium text-xs">{item.Status}</TableCell>
+                                    <TableCell className="w-[130px]">
+                                        <div className="flex w-[130px] flex-row gap-2">
                                             <Button
                                                 variant="tableBlue"
                                                 size="tableIcon"

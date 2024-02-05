@@ -20,15 +20,15 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
         <>
             <Table>
                 <TableHeader className="bg-sky-50 border ">
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-sm">Qty</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-sm">Value</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm">Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm ">HS Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[200px] text-myBlue font-bold text-sm ">HS Code</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-sm ">Made in</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-sm text-right"></TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs">Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs ">HS Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[200px] text-myBlue font-bold text-xs ">HS Code</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs ">Made in</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs text-right"></TableHead>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="px-2">
                     {Array.from({ length: inputCount }).map((_, index) => (
                         <DeclareContentInput
                             forms={forms}

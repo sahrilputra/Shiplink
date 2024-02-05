@@ -43,20 +43,20 @@ export const NewServicesForms = ({ close, data = null }) => {
         <>
             <Form {...form}>
                 <form
-                    className='flex gap-4 flex-col'
+                    className='flex gap-2 flex-col'
                     action="">
 
                     <div className="profile flex flex-row gap-4 w-full">
                         <FormField
-                            className="w-full"
+                            className="w-full text-xs"
                             name="servicesID"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
+                                    <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Product ID</FormLabel>
                                         <FormControl>
-                                            <Input id="servicesID" placeholder="#1231" {...field} />
+                                            <Input className="text-xs" id="servicesID" placeholder="#1231" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -65,14 +65,14 @@ export const NewServicesForms = ({ close, data = null }) => {
                         />
                         <FormField
                             name="item"
-                            className="w-full"
+                            className="w-full text-xs"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
+                                    <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Item #</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="item" placeholder="#2321"  {...field} />
+                                            <Input className="text-xs" type="text" id="item" placeholder="#2321"  {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -83,14 +83,14 @@ export const NewServicesForms = ({ close, data = null }) => {
                     <div className="wrap flex flex-row items-center gap-4">
                         <FormField
                             name="price"
-                            className="w-full"
+                            className="w-full text-xs"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
+                                    <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Price *</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="price" placeholder="Select Brand" {...field} />
+                                            <Input className="text-xs" type="text" id="price" placeholder="Select Brand" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -99,14 +99,14 @@ export const NewServicesForms = ({ close, data = null }) => {
                         />
                         <FormField
                             name="category"
-                            className="w-full"
+                            className="w-full text-xs"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
+                                    <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Category *</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="category" placeholder="Model" {...field} />
+                                            <Input className="text-xs" type="text" id="category" placeholder="Model" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -117,31 +117,30 @@ export const NewServicesForms = ({ close, data = null }) => {
                     </div>
                     <FormField
                         name="description"
-                        className="w-full"
+                        className="w-full text-xs"
                         control={form.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full">
+                                <FormItem className="w-full text-xs">
                                     <FormLabel className="font-bold">Description</FormLabel>
                                     <FormControl >
-                                        <Input type="text" id="description" placeholder="Model" {...field} />
+                                        <Input className="text-xs" type="text" id="description" placeholder="Model" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             </>
                         )}
                     />
-                    <div className=" flex justify-end items-end mt-[20px] w-full">
+                    <div className=" flex justify-end items-end  w-full">
                         <Button
                             variant="destructive"
                             type="submit"
                             className="px-10"
-
+                            size="xs"
                         >
-                            <p className=' font-normal '>Save</p>
+                            <p className=' font-normal text-xs'>Save</p>
                         </Button>
                     </div>
-
                 </form>
             </Form >
         </>

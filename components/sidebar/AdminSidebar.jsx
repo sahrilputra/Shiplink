@@ -32,7 +32,7 @@ export const AdminSidebar = () => {
              `}
             >
                 <ScrollArea className="h-[100vh]">
-                    <div className={` flex gap-3 flex-col pb-[100px] `}>
+                    <div className={` flex gap-3 flex-col pb-[30px] `}>
                         <div className="h-[50px]">
                             <div className={`${styles.logo} fixed bg-white mb-[10px] text-center h-[50px] w-[240px] flex flex-col gap-2 justify-items-center z-[25]`}>
                                 <div className=" w-max h-max mx-auto bg-white ">
@@ -53,13 +53,14 @@ export const AdminSidebar = () => {
                         </div>
 
                         <SidebarMenu title="" className="flex-col justify-start items-center flex ">
-                            <div className="flex-col justify-end items-start gap-2.5 flex">
+                            <div className="flex-col justify-end items-start  flex">
                                 <SidebarItem
+                                    isFirst="true"
                                     isActive={router === "/admin/arrival-scan"}
                                     title="Arrival Scan"
                                     icon={
                                         <ArrivalIcon
-                                            className="w-[25px] h-[25px] relative"
+                                            width={23} height={23}
                                         />}
                                     href="/admin/arrival-scan"
                                 />
@@ -67,7 +68,7 @@ export const AdminSidebar = () => {
                                     isActive={router === "/admin/verification"}
                                     title="Verification"
                                     icon={
-                                        <VerificationIcon width={25} height={25} />
+                                        <VerificationIcon width={23} height={23} />
                                     }
                                     href="/admin/verification"
                                 />
@@ -166,10 +167,6 @@ export const AdminSidebar = () => {
                                     }
                                     href="/admin/support-tickets"
                                 />
-                            </div>
-                        </SidebarMenu>
-                        <SidebarMenu title="setting" className="flex-col justify-start items-center gap-2.5 flex">
-                            <div className="flex-col justify-end items-start gap-2.5 flex">
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/warehouse-manager")}
                                     title="Warehouse Manager"
@@ -200,7 +197,10 @@ export const AdminSidebar = () => {
                                     }
                                     href="/admin/customers-manager"
                                 />
-
+                            </div>
+                        </SidebarMenu>
+                        <SidebarMenu title="setting" className="flex-col justify-start items-center  flex">
+                            <div className="flex-col justify-end items-start flex">
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/user-permission")}
                                     title="User and Permission"

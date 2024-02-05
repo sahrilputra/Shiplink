@@ -15,20 +15,28 @@ import {
 } from "@/components/ui/form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { NewNumberDialog } from '../dialog/NewNumberDialog'
 
 const formSchema = yup.object().shape({
+    Type: yup.string(),
     SCAC: yup.string().required(),
     CodeStart: yup.string().required(),
-    CodeRange: yup.number().required(),
+    CodeRange: yup.number(),
 })
 
 
 
 export const PARSForms = ({ close, data = null }) => {
 
+    const [openDialog, setOpenDialog] = useState(false)
+    const [clicked, isClicked] = useState(false);
+    const toggleClicked = (clickedButtons) => {
+        isClicked(clickedButtons);
+    }
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
+            Type: "",
             SCAC: "",
             CodeStart: "",
             CodeRange: "",
@@ -42,8 +50,28 @@ export const PARSForms = ({ close, data = null }) => {
                 <form
                     className='flex gap-4 flex-col'
                     action="">
+                    <div className="">
+                        <div className="p-1 rounded-md border w-max border-neutral-200 justify-start items-start gap-2.5 inline-flex ">
+                            <button
+                                id='savedAddress'
+                                className={`font-normal px-2.5 py-[8px]   w-[100px]  justify-center items-center gap-2.5 flex rounded hover:bg-red-100
+                            ${clicked ? 'bg-none' : 'bg-red-700 text-white font-semiBold hover:bg-red-800'}`}
+                                onClick={() => toggleClicked(false)}
+                            >
+                                <p className=" text-xs font-['Poppins'] leading-tight">PARS</p>
+                            </button>
+                            <button
+                                id='newAddress'
+                                className={`font-normal px-2.5 py-[8px]  w-[100px]  justify-center items-center gap-2.5 flex rounded hover:bg-red-100
+                            ${clicked ? 'bg-red-700 text-white font-semiBold hover:bg-red-800' : 'bg-none'}`}
+                                onClick={() => toggleClicked(true)}
+                            >
+                                <p className=" text-xs font-['Poppins'] leading-tight">PAPS</p>
+                            </button>
+                        </div>
+                    </div>
 
-                    <div className="profile flex flex-row gap-4 w-full items-end text-xs">
+                    <div className="profile flex flex-row gap-4 w-full items-end text-xs justify-end">
                         <FormField
                             className="w-full"
                             name="SCAC"
@@ -51,11 +79,11 @@ export const PARSForms = ({ close, data = null }) => {
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full">
-                                        <FormLabel className="text-sm">SCAC Carrier Code</FormLabel>
+                                        <FormLabel className="font-bold">SCAC Carrier Code</FormLabel>
                                         <FormControl>
-                                            <Input id="SCAC" placeholder="AC 12312" className="text-sm" {...field} />
+                                            <Input id="SCAC" placeholder="AC 12312" className="text-xs" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -67,11 +95,11 @@ export const PARSForms = ({ close, data = null }) => {
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-[40%]">
-                                        <FormLabel  className="text-sm"  >Code Start #</FormLabel>
+                                        <FormLabel className="font-bold "  >Code Start #</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="CodeStart" placeholder="0000001"  className="text-sm"  {...field} />
+                                            <Input type="text" id="CodeStart" placeholder="0000001" className="text-xs"  {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -83,11 +111,11 @@ export const PARSForms = ({ close, data = null }) => {
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-[30%]">
-                                        <FormLabel  className="text-sm" >Code Range</FormLabel>
+                                        <FormLabel className="font-bold" >Code Range</FormLabel>
                                         <FormControl >
-                                            <Input type="number" id="CodeStart" placeholder="100"  className="text-sm"   {...field} />
+                                            <Input type="number" id="CodeStart" placeholder="100" className="text-xs"   {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -95,17 +123,17 @@ export const PARSForms = ({ close, data = null }) => {
 
                         <Button
                             variant="destructive"
-                            type="submit"
+                            type="button"
                             size="sm"
+                            onClick={() => setOpenDialog(true)}
                             className="w-[200px]"
                         >
                             <p className=' font-normal text-xs'>Register</p>
                         </Button>
-
                     </div>
-
                 </form>
             </Form >
+            <NewNumberDialog open={openDialog} setOpen={setOpenDialog} />
         </>
     )
 }

@@ -40,7 +40,7 @@ export default function PARSPage() {
         <>
             <div className={styles.carrier}>
                 <div className={styles.leftTabled}>
-                    <DestinationTabled data={data} handleData={handleDataID} />
+                    <DestinationTabled data={data} handleData={handleDataID} isSelected={clickedID} />
                 </div>
 
                 <div className={styles.details}>

@@ -52,25 +52,25 @@ export function ProductListData({ data, isOpen, setOpen }) {
                     </div>
                 </TableHead>
             </TableHeader>
-            <TableHeader className="text-sm">
-                <TableHead className="w-[200px] text-center">ID</TableHead>
-                <TableHead className="w-[200px] ">Item #</TableHead>
-                <TableHead className="w-[200px] ">Description</TableHead>
-                <TableHead className="w-[200px] ">Price</TableHead>
-                <TableHead className="w-[200px] ">Category</TableHead>
-                <TableHead className="w-[100px]"></TableHead>
+            <TableHeader className="text-xs">
+                <TableHead className="text-xs w-[200px]">ID</TableHead>
+                <TableHead className="text-xs w-[200px] ">Item #</TableHead>
+                <TableHead className="text-xs w-[400px]">Description</TableHead>
+                <TableHead className="text-xs w-[200px]">Price</TableHead>
+                <TableHead className="text-xs w-[100px]">Category</TableHead>
+                <TableHead className="text-xs w-[50px]"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
                 {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item?.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.id}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Item}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Description}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Price}</TableCell>
-                                <TableCell className="font-medium p-1 px-[20px] py-[10px]">{item?.Category}</TableCell>
-                                <TableCell className="w-[30px]  p-1 px-[20px] py-[10px]">
+                                <TableCell className="font-medium">{item?.id}</TableCell>
+                                <TableCell className="font-medium">{item?.Item}</TableCell>
+                                <TableCell className="font-medium">{item?.Description}</TableCell>
+                                <TableCell className="font-medium">{item?.Price}</TableCell>
+                                <TableCell className="font-medium">{item?.Category}</TableCell>
+                                <TableCell className="w-[50px] ">
                                     <div className="flex flex-row gap-2">
                                         <Button
                                             variant="tableBlue"

@@ -68,7 +68,7 @@ export const ArrivalForms = ({ forms }) => {
                                     <>
                                         {console.log(field)}
                                         <FormItem className="w-[50%] text-xs ">
-                                            <FormLabel className="text-sm font-bold">Customer Unit ID</FormLabel>
+                                            <FormLabel className="font-bold">Customer Unit ID</FormLabel>
                                             <FormControl>
                                                 <Popover>
                                                     <PopoverTrigger asChild>
@@ -128,12 +128,12 @@ export const ArrivalForms = ({ forms }) => {
                             />
                             <FormField
                                 name="fullName"
-                                className="w-[60%] text-sm"
+                                className="w-[60%] text-xs"
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
                                         <FormItem className="w-full text-xs">
-                                            <FormLabel className="text-sm font-bold">Customer Full Name</FormLabel>
+                                            <FormLabel className=" font-bold">Customer Full Name</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="fullName"
@@ -149,15 +149,15 @@ export const ArrivalForms = ({ forms }) => {
                                 )}
                             />
                         </div>
-                        <div className="nameWrapper flex flex-row gap-3 w-[100%] text-sm ">
+                        <div className="nameWrapper flex flex-row gap-3 w-[100%]  ">
                             <FormField
-                                className="w-[40%] text-sm"
+                                className="w-[40%] "
                                 name="phoneNumber"
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
                                         <FormItem className="w-[50%] text-xs">
-                                            <FormLabel className="text-sm font-bold">Phone Number</FormLabel>
+                                            <FormLabel className=" font-bold">Phone Number</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="phoneNumber"
@@ -174,12 +174,12 @@ export const ArrivalForms = ({ forms }) => {
                             />
                             <FormField
                                 name="email"
-                                className="w-full text-sm"
+                                className="w-full "
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full text-sm">
-                                            <FormLabel className="text-sm font-bold">Email</FormLabel>
+                                        <FormItem className="w-full text-xs">
+                                            <FormLabel className="font-bold">Email</FormLabel>
                                             <FormControl>
                                                 <Input
 
@@ -209,15 +209,15 @@ export const ArrivalForms = ({ forms }) => {
                         </div>
                     </div>
                     <div className="flex flex-col justify-start gap-2 w-full">
-                        <div className="nameWrapper flex flex-row gap-2 w-[100%] text-sm text-zinc-600">
+                        <div className="nameWrapper flex flex-row gap-2 w-[100%]  text-zinc-600">
                             <FormField
                                 className="w-full"
                                 name="trackingBarcode"
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-[60%] text-sm">
-                                            <FormLabel className="text-sm font-bold text-zinc-600">Barcode / Tracking</FormLabel>
+                                        <FormItem className="w-[60%] text-xs">
+                                            <FormLabel className=" font-bold text-zinc-600">Barcode / Tracking</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="trackingBarcode"
@@ -233,12 +233,12 @@ export const ArrivalForms = ({ forms }) => {
                             />
                             <FormField
                                 name="carrier"
-                                className="w-full text-sm"
+                                className="w-full "
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-[40%] text-sm" >
-                                            <FormLabel className="text-sm font-bold text-zinc-600">Select Carrier</FormLabel>
+                                        <FormItem className="w-[40%] text-xs" >
+                                            <FormLabel className=" font-bold text-zinc-600">Select Carrier</FormLabel>
                                             <Select
                                                 onValueChange={field.onChange}
                                                 control={forms.control}
@@ -262,9 +262,9 @@ export const ArrivalForms = ({ forms }) => {
                                 )}
                             />
                         </div>
-                        <div className="nameWrapper flex flex-row gap-3 w-[100%] text-sm text-zinc-600">
+                        <div className="nameWrapper flex flex-row gap-3 w-[100%]  text-zinc-600">
                             <div className="flex flex-col gap-2">
-                                <FormLabel className="text-sm font-bold text-zinc-600">Package Dimension</FormLabel>
+                                <FormLabel className=" font-bold text-zinc-600">Package Dimension</FormLabel>
                                 <div className="flex flex-row gap-2 w-full">
                                     <FormField
                                         className="w-full flex flex-row justify-center items-end"
@@ -272,7 +272,7 @@ export const ArrivalForms = ({ forms }) => {
                                         control={forms.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-full text-sm">
+                                                <FormItem className="w-full text-xs">
                                                     <FormControl>
                                                         <Input id="length" className="text-xs h-9 py-0" type="number" placeholder="length" {...field} />
                                                     </FormControl>
@@ -287,7 +287,7 @@ export const ArrivalForms = ({ forms }) => {
                                         control={forms.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-full text-sm">
+                                                <FormItem className="w-full text-xs">
                                                     <FormControl>
                                                         <Input id="width" className="text-xs h-9 py-0" type="number" placeholder="width" {...field} />
                                                     </FormControl>
@@ -302,7 +302,7 @@ export const ArrivalForms = ({ forms }) => {
                                         control={forms.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-full text-sm">
+                                                <FormItem className="w-full text-xs">
                                                     <FormControl>
                                                         <Input id="height" type="number" className="text-xs h-9 py-0" placeholder="height" {...field} />
                                                     </FormControl>
@@ -314,11 +314,11 @@ export const ArrivalForms = ({ forms }) => {
 
                                     <FormField
                                         name="heightType"
-                                        className="w-full text-sm"
+                                        className="w-full "
                                         control={forms.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-[40%] text-sm" >
+                                                <FormItem className="w-[40%] text-xs" >
                                                     <Select
                                                         onValueChange={field.onChange}
                                                         control={forms.control}
@@ -344,7 +344,7 @@ export const ArrivalForms = ({ forms }) => {
                                         control={forms.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-full text-sm">
+                                                <FormItem className="w-full text-xs">
                                                     <FormControl>
                                                         <Input id="weight" className="text-xs h-9 py-0 " placeholder="weight" type="number" {...field} />
                                                     </FormControl>
@@ -355,11 +355,11 @@ export const ArrivalForms = ({ forms }) => {
                                     />
                                     <FormField
                                         name="weightType"
-                                        className="w-full text-sm"
+                                        className="w-full "
                                         control={forms.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-[40%] text-sm" >
+                                                <FormItem className="w-[40%] text-xs" >
                                                     <Select
                                                         onValueChange={field.onChange}
                                                         control={forms.control}
@@ -395,8 +395,8 @@ export const ArrivalForms = ({ forms }) => {
                         control={forms.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full text-sm">
-                                    <FormLabel className="text-sm font-bold">Whole Box Image</FormLabel>
+                                <FormItem className="w-full ">
+                                    <FormLabel className=" font-bold">Whole Box Image</FormLabel>
                                     <FormControl>
                                         <div className='rounded-md border border-slate-200 p-0'>
                                             <Input
@@ -418,8 +418,8 @@ export const ArrivalForms = ({ forms }) => {
                         control={forms.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full text-sm">
-                                    <FormLabel className="text-sm font-bold">Label Close Up</FormLabel>
+                                <FormItem className="w-full ">
+                                    <FormLabel className=" font-bold">Label Close Up</FormLabel>
                                     <FormControl>
                                         <div className='rounded-md border border-slate-200 p-0'>
                                             <Input
@@ -441,8 +441,8 @@ export const ArrivalForms = ({ forms }) => {
                         control={forms.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full text-sm">
-                                    <FormLabel className="text-sm font-bold">Content Images</FormLabel>
+                                <FormItem className="w-full ">
+                                    <FormLabel className=" font-bold">Content Images</FormLabel>
                                     <FormControl>
                                         <div className='rounded-md border border-slate-200 p-0'>
                                             <Input
