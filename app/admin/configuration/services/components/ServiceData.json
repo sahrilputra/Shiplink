@@ -1,0 +1,62 @@
+[
+    {
+        "Description": "New Image Fees",
+        "Status": "Active",
+        "Fee": "$ 30.00",
+        "Last Change": "2023-11-30 03:45 PM"
+    },
+    {
+        "Description": "New Service Charges",
+        "Status": "Active",
+        "Fee": "$ 25.00",
+        "Last Change": "2023-10-15 09:30 AM"
+    },
+    {
+        "Description": "Subscription Renewal",
+        "Status": "Inactive",
+        "Fee": "$ 50.00",
+        "Last Change": "2023-09-20 12:15 PM"
+    },
+    {
+        "Description": "Transaction Fees",
+        "Status": "Active",
+        "Fee": "$ 10.00",
+        "Last Change": "2023-08-05 04:20 PM"
+    },
+    {
+        "Description": "Annual Membership Fee",
+        "Status": "Active",
+        "Fee": "$ 100.00",
+        "Last Change": "2023-07-10 11:00 AM"
+    },
+    {
+        "Description": "Late Payment Charges",
+        "Status": "Active",
+        "Fee": "$ 15.00",
+        "Last Change": "2023-06-25 01:45 PM"
+    },
+    {
+        "Description": "Overdraft Fees",
+        "Status": "Inactive",
+        "Fee": "$ 20.00",
+        "Last Change": "2023-05-30 10:10 AM"
+    },
+    {
+        "Description": "Account Maintenance Fee",
+        "Status": "Active",
+        "Fee": "$ 5.00",
+        "Last Change": "2023-04-15 02:30 PM"
+    },
+    {
+        "Description": "Credit Card Replacement Fee",
+        "Status": "Active",
+        "Fee": "$ 10.00",
+        "Last Change": "2023-03-20 08:45 AM"
+    },
+    {
+        "Description": "ATM Withdrawal Charges",
+        "Status": "Active",
+        "Fee": "$ 1.00",
+        "Last Change": "2023-02-05 06:20 PM"
+    }
+]
