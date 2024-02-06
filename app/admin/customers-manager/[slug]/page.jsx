@@ -19,19 +19,18 @@ export default function UserPage({ params }) {
         <>
             <div className="w-full">
 
-                <div className="wrapper w-full flex flex-row justify-between gap-2">
-                    <div className="left w-[30%] h-full">
-                        <div className="content py-3 bg-blue-50 border border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
-                            <div className="rounded-full m-3 mb-2">
-
+                <div className="wrapper w-full flex flex-row justify-between gap-2 h-ful ">
+                    <div className="left w-[30%] ">
+                        <div className="content border bg-blue-50 border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
+                            <div className="rounded-full m-3 mb-2 text-sm">
                                 <img src="https://source.boringavatars.com/beam"
                                     alt="avatar"
                                     className='w-[50px] h-[50px] rounded-full object-cover'
                                 />
                             </div>
 
-                            <p className='font-bold'>Jemth Smith</p>
-                            <p className=' text-zinc-600'>#1234567</p>
+                            <p className='font-bold text-sm'>Jemth Smith</p>
+                            <p className=' text-zinc-600 text-sm'>#1234567</p>
                             <div className="text-xs text-zinc-600 text-center">
                                 <p>Jhonsmith@gmail.com</p>
                                 <p>(+1) 781-491-0874</p>
@@ -42,22 +41,23 @@ export default function UserPage({ params }) {
                             </div>
 
                             <div className="ButtonGroup flex flex-col gap-2 py-3">
-                              
+
                                 <Button
                                     variant="destructive"
-                                    size="sm"
+                                    size="xs"
+                                    className=""
                                 >
                                     <p className='text-xs'>Edit Profiles</p>
                                 </Button>
                                 <MoreAction />
                             </div>
                         </div>
-
                     </div>
                     <div className="center w-[100%]">
                         <UserProfileForms />
                     </div>
-                    <div className="right w-[40%]">
+
+                    <div className="right  h-full w-[40%]">
                         <div className="flex flex-col gap-1">
                             <div className="payments flex flex-col">
                                 <PaymentCards />
@@ -72,7 +72,14 @@ export default function UserPage({ params }) {
                             </div>
 
                             <div className="Invoice">
-                                <InvoiceList />
+                                {/* <InvoiceList /> */}
+                                <Button
+                                    variant="tableBlue"
+                                    size="sm"
+                                    className="w-full"
+                                >
+                                    <p className='text-xs'>Show All User Invoice History</p>
+                                </Button>
                             </div>
                         </div>
                     </div>

@@ -84,7 +84,7 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
-                            className={`rounded-sm w-max px-[6px] h-[25px]`}
+                            className={`rounded-[3px] w-max px-[6px] h-[25px]`}
                             onClick={() => handlerEdit()}
                         >
                             <p className="text-[11px]">Edit</p>
@@ -92,7 +92,7 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
-                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                            className={`rounded-[3px] w-max px-[5px] h-[25px]`}
                             onClick={() => handlerDelete()}
                         >
                             <DeleteIcons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
@@ -146,9 +146,11 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                             <SearchBar />
                             <Button
                                 variant="filter"
-                                size="icon"
-                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                                <FilterIcons fill="#CC0019" />
+                                size="filter"
+                                className='border border-zinc-300 flex items-center rounded'>
+                                <FilterIcons
+                                    className=""
+                                    fill="#CC0019" />
                             </Button>
                             <DatePickerWithRange className={"text-black"} />
                         </div>

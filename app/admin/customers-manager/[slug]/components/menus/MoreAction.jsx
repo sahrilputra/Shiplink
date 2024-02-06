@@ -16,7 +16,7 @@ export const MoreAction = () => {
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="redOutline"
-                    size="sm"
+                    size="xs"
                 >
                     <p className='text-xs'>More Action</p>
                 </Button>

@@ -59,17 +59,17 @@ export const UserProfileForms = () => {
                 <form
                     className='flex gap-2 flex-col'
                     action="">
-                    <div className="bg-white rounded-lg border border-neutral-200 border-opacity-90 w-full px-4 py-3">
+                    <div className="bg-white rounded-lg border border-neutral-200 border-opacity-90 w-full px-4 py-3 gap-1 flex flex-col">
                         <FormField
                             className="w-full"
                             name="name"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full text-xs">
+                                    <FormItem className="w-full text-xs space-y-1 ">
                                         <FormLabel className=" text-xs font-bold">Full Name</FormLabel>
                                         <FormControl>
-                                            <Input id="name" placeholder="john" {...field} />
+                                            <Input className="px-1.5" size="xs" id="name" placeholder="john" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -81,14 +81,14 @@ export const UserProfileForms = () => {
 
                         <FormField
                             name="address"
-                            className="w-full"
+                            className="w-full space-y-1"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full">
-                                        <FormLabel className=" text-xs font-bold">Street Address</FormLabel>
+                                    <FormItem className="w-full space-y-1 ">
+                                        <FormLabel className=" text-xs font-bold ">Street Address</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="address" placeholder="Street Address"  {...field} />
+                                            <Input className="px-1.5" size="xs" type="text" id="address" placeholder="Street Address"  {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -98,14 +98,14 @@ export const UserProfileForms = () => {
                         <div className="profile flex flex-row gap-2 w-full">
                             <FormField
                                 name="email"
-                                className="w-full"
+                                className="w-full space-y-1 "
                                 control={form.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full">
+                                        <FormItem className="w-full space-y-1">
                                             <FormLabel className=" text-xs font-bold">Email</FormLabel>
                                             <FormControl >
-                                                <Input type="email" id="email" placeholder="Emails" {...field} />
+                                                <Input className="px-1.5" size="xs" type="email" id="email" placeholder="Emails" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -114,14 +114,14 @@ export const UserProfileForms = () => {
                             />
                             <FormField
                                 name="phone"
-                                className="w-full"
+                                className="w-full space-y-1 "
                                 control={form.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full">
+                                        <FormItem className="w-full space-y-1">
                                             <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
                                             <FormControl>
-                                                <Input type="number" id="phone" placeholder="Phone Number" {...field} />
+                                                <Input className="px-1.5" size="xs" type="number" id="phone" placeholder="Phone Number" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -133,14 +133,14 @@ export const UserProfileForms = () => {
                             <div className="wrap flex flex-row items-center gap-2">
                                 <FormField
                                     name="city"
-                                    className="w-full"
+                                    className="w-full space-y-1 "
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-full">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">City</FormLabel>
                                                 <FormControl >
-                                                    <Input type="text" id="city" placeholder="City" {...field} />
+                                                    <Input className="px-1.5" size="xs" type="text" id="city" placeholder="City" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -149,14 +149,14 @@ export const UserProfileForms = () => {
                                 />
                                 <FormField
                                     name="state"
-                                    className="w-full"
+                                    className="w-full space-y-1"
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-full">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">State / Province</FormLabel>
                                                 <FormControl >
-                                                    <Input type="text" id="state" placeholder="State / Province"  {...field} />
+                                                    <Input className="px-1.5" size="xs" type="text" id="state" placeholder="State / Province"  {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -171,10 +171,10 @@ export const UserProfileForms = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-full">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Zip / Postal Code</FormLabel>
                                                 <FormControl >
-                                                    <Input type="text" id="state" placeholder="Zip"  {...field} />
+                                                    <Input className="px-1.5" size="xs" type="text" id="state" placeholder="Zip"  {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -183,14 +183,14 @@ export const UserProfileForms = () => {
                                 />
                                 <FormField
                                     name="country"
-                                    className="w-full"
+                                    className="w-full space-y-1"
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="w-full">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Country</FormLabel>
                                                 <FormControl >
-                                                    <Input type="text" id="country" placeholder="Country" {...field} />
+                                                    <Input className="px-1.5" size="xs" type="text" id="country" placeholder="Country" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

@@ -21,7 +21,7 @@ export function CustomerPackageList({ data, isOpen, setOpen }) {
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
 
-    
+
 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -40,7 +40,6 @@ export function CustomerPackageList({ data, isOpen, setOpen }) {
     }
     return (
         <>
-        
             <Table>
                 <TableHeader className="text-sm bg-white text-black">
                     <TableHead colSpan={7} className="p-4 " >
@@ -59,7 +58,7 @@ export function CustomerPackageList({ data, isOpen, setOpen }) {
                     </TableHead>
                 </TableHeader>
                 <TableHeader className="text-sm">
-                    <TableHead className="w-[100px]">Package ID</TableHead>
+                    <TableHead className="w-[170px]">Package ID</TableHead>
                     <TableHead>Arrival Date</TableHead>
                     <TableHead>Destination</TableHead>
                     <TableHead>Dimension</TableHead>
@@ -71,20 +70,20 @@ export function CustomerPackageList({ data, isOpen, setOpen }) {
                         data.map((item, index) => (
                             <>
                                 <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
-                                    <TableCell className="font-medium">{item.PackageId}</TableCell>
-                                    <TableCell>{item.ArrivalDate}</TableCell>
-                                    <TableCell>{item.Destination}</TableCell>
-                                    <TableCell>{item.Dimension}, {item.Weight}</TableCell>
-                                    <TableCell className="">{item.CurrentStatus}</TableCell>
-                                    <TableCell className="w-[30px]">
+                                    <TableCell className="font-medium p-0 h-[35px] px-3">{item.PackageId}</TableCell>
+                                    <TableCell className=" p-0 h-[35px] px-3">{item.ArrivalDate}</TableCell>
+                                    <TableCell className=" p-0 h-[35px] px-3">{item.Destination}</TableCell>
+                                    <TableCell className=" p-0 h-[35px] px-3">{item.Dimension}, {item.Weight}</TableCell>
+                                    <TableCell className=" p-0 h-[35px] px-3">{item.CurrentStatus}</TableCell>
+                                    <TableCell className="w-[35px] p-0 h-[35px] px-3">
                                         <div className="flex flex-row gap-2">
                                             <Button
                                                 variant="tableBlue"
                                                 size="tableIcon"
-                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                className={`rounded-sm w-max px-[10px] h-[20px]`}
                                                 onClick={() => toggleOpenChange()}
                                             >
-                                                <p className="text-[11px]">Update</p>
+                                                <p className="text-[11px] text-myBlue">Update</p>
                                             </Button>
 
                                         </div>

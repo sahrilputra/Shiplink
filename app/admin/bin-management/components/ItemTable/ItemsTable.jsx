@@ -50,9 +50,11 @@ export function ItemTable({ data, isOpen, setOpen }) {
                                 <SearchBar />
                                 <Button
                                     variant="filter"
-                                    size="icon"
-                                    className='w-[34px] h-[34px]  border border-neutral-200 flex items-center'>
-                                    <FilterIcons fill="#CC0019" />
+                                    size="filter"
+                                    className='border border-zinc-300 flex items-center rounded'>
+                                    <FilterIcons
+                                        className=""
+                                        fill="#CC0019" />
                                 </Button>
                             </div>
                             <div className="">

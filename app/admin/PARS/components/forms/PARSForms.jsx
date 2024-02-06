@@ -81,7 +81,8 @@ export const PARSForms = ({ close, data = null }) => {
                                     <FormItem className="w-full">
                                         <FormLabel className="font-bold">SCAC Carrier Code</FormLabel>
                                         <FormControl>
-                                            <Input id="SCAC" placeholder="AC 12312" className="text-xs" {...field} />
+                                            <Input size="sm"
+                                             id="SCAC" placeholder="AC 12312" className="px-1.5" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -97,7 +98,8 @@ export const PARSForms = ({ close, data = null }) => {
                                     <FormItem className="w-[40%]">
                                         <FormLabel className="font-bold "  >Code Start #</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="CodeStart" placeholder="0000001" className="text-xs"  {...field} />
+                                            <Input size="sm"
+                                             type="text" id="CodeStart" placeholder="0000001" className="px-1.5"  {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -113,7 +115,8 @@ export const PARSForms = ({ close, data = null }) => {
                                     <FormItem className="w-[30%]">
                                         <FormLabel className="font-bold" >Code Range</FormLabel>
                                         <FormControl >
-                                            <Input type="number" id="CodeStart" placeholder="100" className="text-xs"   {...field} />
+                                            <Input size="sm"
+                                             type="number" id="CodeStart" placeholder="100" className="px-1.5"   {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -125,6 +128,7 @@ export const PARSForms = ({ close, data = null }) => {
                             variant="destructive"
                             type="button"
                             size="sm"
+                            
                             onClick={() => setOpenDialog(true)}
                             className="w-[200px]"
                         >

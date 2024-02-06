@@ -47,9 +47,11 @@ export function SingleItemsTable({ data, isOpen, setOpen }) {
                             <SearchBar />
                             <Button
                                 variant="filter"
-                                size="icon"
-                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                                <FilterIcons fill="#CC0019" />
+                                size="filter"
+                                className='border border-zinc-300 flex items-center rounded'>
+                                <FilterIcons
+                                    className=""
+                                    fill="#CC0019" />
                             </Button>
                             <DatePickerWithRange className={"text-black"} />
                         </div>

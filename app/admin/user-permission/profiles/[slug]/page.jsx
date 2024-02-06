@@ -14,16 +14,15 @@ export default function Profiles({ params }) {
             <div className="w-full h-full">
 
                 <div className="wrapper w-full flex flex-row justify-between gap-2 h-full">
-                    <div className="left w-[30%] h-full ">
-                        <div className="content py-3  bg-blue-50 border border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center" >
+                    <div className="left w-[30%]  ">
+                        <div className="content py-3  bg-blue-50 border border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
                             <div className="rounded-full m-3 mb-2">
                                 <img src="https://source.boringavatars.com/beam"
                                     alt="avatar"
                                     className='w-[50px] h-[50px] rounded-full object-cover'
                                 />
                             </div>
-
-                            <p className='font-bold'>Jemth Smith</p>
+                            <p className='font-bold text-sm'>Jemth Smith</p>
                             <p className=' text-zinc-600'>#1234567</p>
                             <div className="text-xs text-zinc-600 text-center">
                                 <p>Jhonsmith@gmail.com</p>

@@ -61,9 +61,9 @@ export const UserPermissionForms = () => {
                                     <FormItem className="w-full text-xs">
                                         <FormLabel className=" text-xs font-bold">Full Name</FormLabel>
                                         <FormControl>
-                                            <Input id="fullName" placeholder="john" {...field} />
+                                            <Input size="xs" className="px-1.5" id="fullName" placeholder="john" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -78,9 +78,9 @@ export const UserPermissionForms = () => {
                                     <FormItem className="w-full">
                                         <FormLabel className=" text-xs font-bold">Email</FormLabel>
                                         <FormControl >
-                                            <Input type="email" id="address" placeholder="Email"  {...field} />
+                                            <Input size="xs" className="px-1.5" type="email" id="address" placeholder="Email"  {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -94,9 +94,9 @@ export const UserPermissionForms = () => {
                                     <FormItem className="w-full">
                                         <FormLabel className=" text-xs font-bold">Password</FormLabel>
                                         <FormControl >
-                                            <Input type="password" id="address" placeholder="password"  {...field} />
+                                            <Input size="xs" className="px-1.5" type="password" id="address" placeholder="password"  {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -111,9 +111,9 @@ export const UserPermissionForms = () => {
                                         <FormItem className="w-full">
                                             <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
                                             <FormControl >
-                                                <Input type="number" id="phoneNumber" placeholder="Phone Number" {...field} />
+                                                <Input size="xs" className="px-1.5" type="number" id="phoneNumber" placeholder="Phone Number" {...field} />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -127,9 +127,9 @@ export const UserPermissionForms = () => {
                                         <FormItem className="w-full">
                                             <FormLabel className=" text-xs font-bold">Role</FormLabel>
                                             <FormControl>
-                                                <Input type="text" id="role" placeholder="Role" {...field} />
+                                                <Input size="xs" className="px-1.5" type="text" id="role" placeholder="Role" {...field} />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -144,9 +144,9 @@ export const UserPermissionForms = () => {
                                     <FormItem className="w-full">
                                         <FormLabel className=" text-xs font-bold">Warehouse</FormLabel>
                                         <FormControl>
-                                            <Input type="text" id="warehouse" placeholder="Warehouse" {...field} />
+                                            <Input size="xs" className="px-1.5" type="text" id="warehouse" placeholder="Warehouse" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}

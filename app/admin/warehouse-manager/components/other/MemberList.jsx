@@ -26,7 +26,7 @@ export const MemberList = () => {
 
                     <Button
                         variant="softBlue"
-                        size="sm"
+                        size="xs"
                         className="w-full text-xs"
                     >
                         <p>Show All Employee</p>

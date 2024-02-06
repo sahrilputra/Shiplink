@@ -25,32 +25,34 @@ export function DatePickerWithRange({
         <div className={cn("grid gap-2 ", className)}>
             <Popover>
                 <PopoverTrigger asChild>
-                    <Button
-                        id="date"
-                        variant={"outline"}
-                        size="sm"
-                        className={cn(
-                            "w-[250px] justify-between text-left text-xs font-normal px-0 pl-4 bg-muted/50 ",
-                            !date && "text-muted-foreground relative"
-                        )}
-                    >
+                    <div className="flex flex-row justify-between bg-muted/50 border border-zinc-300 rounded bg-slate-100">
+                        <Button
+                            id="date"
+                            variant={"outline"}
+                            size="sm"
+                            className={cn(
+                                "shadow-none w-[180px] text-left text-xs h-0 py-4 font-normal px-3 rounded-r-none border-none pl-2 bg-none   ",
+                                !date && "text-muted-foreground relative"
+                            )}
+                        >
 
-                        {date?.from ? (
-                            date.to ? (
-                                <>
-                                    {format(date.from, "LLL dd, y")} -{" "}
-                                    {format(date.to, "LLL dd, y")}
-                                </>
+                            {date?.from ? (
+                                date.to ? (
+                                    <>
+                                        {format(date.from, "LLL dd, y")} -{" "}
+                                        {format(date.to, "LLL dd, y")}
+                                    </>
+                                ) : (
+                                    format(date.from, "LLL dd, y")
+                                )
                             ) : (
-                                format(date.from, "LLL dd, y")
-                            )
-                        ) : (
-                            <span>Pick a date</span>
-                        )}
-                        <div className="relative right-0 bg-zinc-200 h-[35px] w-10 flex items-center justify-center rounded-sm">
+                                <span>Pick a date</span>
+                            )}
+                        </Button>
+                        <div className="relative right-0 bg-zinc-200 h-[full] w-10 flex items-center justify-center rounded-sm">
                             <CalendarIcon className="h-full w-4 text-myBlue" />
                         </div>
-                    </Button>
+                    </div>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
@@ -63,6 +65,6 @@ export function DatePickerWithRange({
                     />
                 </PopoverContent>
             </Popover>
-        </div>
+        </div >
     );
 }
