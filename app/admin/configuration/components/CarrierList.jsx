@@ -23,7 +23,7 @@ export const CarrierList = () => {
                     <div className="justify-start items-center gap-[54px] flex">
                         <div className="justify-center items-center gap-[41px] flex">
                             <div className="h-[21px] justify-start items-end gap-[120px] flex">
-                                <div className="text-zinc-600 text-xs font-medium font-poppins">FedEx</div>
+                                <div className="text-zinc-600 text-xs font-medium font-poppins text-bold">FedEx</div>
                             </div>
                         </div>
                         <div className="justify-center items-center gap-[41px] flex">

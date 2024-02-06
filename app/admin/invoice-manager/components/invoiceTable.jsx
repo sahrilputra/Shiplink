@@ -297,6 +297,7 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
                                 <div className="flex flex-row">
                                     {table.getPageOptions().map((page) => (
                                         <PaginationLink
+                                            className={"gap-1 px-2 py-1 h-[30px] text-xs"}
                                             key={page}
                                             href="#"
                                             onClick={() => table.gotoPage(page)}

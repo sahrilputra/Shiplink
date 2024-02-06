@@ -27,7 +27,7 @@ export const AdminSidebar = () => {
     return (
         <>
             <aside
-                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex  z-[20]
+                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex z-[20]
              ${styles.sideBarRespon} 
              `}
             >
@@ -44,7 +44,6 @@ export const AdminSidebar = () => {
                                         className="mx-auto"
                                         style={{ width: '120px', height: '30px' }}
                                     />
-
                                     <div className="w-[200px] mt-2 flex items-center justify-center mx-auto">
                                         <Separator className='h-[2px]' />
                                     </div>
@@ -53,9 +52,8 @@ export const AdminSidebar = () => {
                         </div>
 
                         <SidebarMenu title="" className="flex-col justify-start items-center flex ">
-                            <div className="flex-col justify-end items-start  flex">
+                            <div className="flex-col justify-end items-start flex">
                                 <SidebarItem
-                                    isFirst="true"
                                     isActive={router === "/admin/arrival-scan"}
                                     title="Arrival Scan"
                                     icon={
@@ -192,6 +190,7 @@ export const AdminSidebar = () => {
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/customers-manager")}
                                     title="Customer Manager"
+                                    isLast="true"
                                     icon={
                                         <CustomerManagerIcon className={"h- [25px] w-[25px]"} />
                                     }
@@ -215,6 +214,7 @@ export const AdminSidebar = () => {
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/configuration")}
                                     title="Configuration"
+                                    isLast="true"
                                     icon={
                                         <ConfigIcon
                                             width={25}
@@ -227,6 +227,7 @@ export const AdminSidebar = () => {
                         </SidebarMenu>
                     </div>
                 </ScrollArea>
+
             </aside>
         </>
     );
