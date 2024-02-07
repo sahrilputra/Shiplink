@@ -59,7 +59,7 @@ export const AdminSidebar = () => {
                         </div>
 
                         <SidebarMenu title="" className="flex-col justify-start items-center flex ">
-                            <div className="flex-col justify-end items-start gap-[2px] flex">
+                            <div className="flex-col justify-end items-start gap-[5px] flex">
                                 <SidebarItem
                                     onClick={toggleClicked}
                                     isClicked={isClicked}
@@ -71,6 +71,7 @@ export const AdminSidebar = () => {
                                         />}
                                     href="/admin/arrival-scan"
                                 />
+
                                 <SidebarItem
                                     onClick={toggleClicked}
                                     isClicked={isClicked}
@@ -90,6 +91,7 @@ export const AdminSidebar = () => {
                                     icon={<ParsIcon className={"h-[25px] w-[25px]"} />}
                                     href="/admin/PARS"
                                 />
+
                                 <SidebarItem
                                     onClick={toggleClicked}
                                     isClicked={isClicked}
@@ -101,6 +103,7 @@ export const AdminSidebar = () => {
                                     />}
                                     href="/admin/custom-brokers"
                                 />
+
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/transport")}
                                     title="Transport Prep"
@@ -110,6 +113,7 @@ export const AdminSidebar = () => {
                                     />}
                                     href="/admin/transport"
                                 />
+
                                 <SidebarItem
                                     isActive={router === "/admin/custom-clearance"}
                                     title="Custom Clearance"
@@ -120,6 +124,7 @@ export const AdminSidebar = () => {
                                     />}
                                     href="/admin/custom-clearance"
                                 />
+
                                 <SidebarItem
                                     isActive={router === "/admin/destination"}
                                     title="Destination Scan"
@@ -214,7 +219,7 @@ export const AdminSidebar = () => {
                             </div>
                         </SidebarMenu>
                         <SidebarMenu title="setting" className="flex-col justify-start items-center  flex">
-                            <div className="flex-col justify-end items-start flex">
+                            <div className="flex-col justify-end items-start gap-[5px] flex">
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/user-permission")}
                                     title="User and Permission"

@@ -13,32 +13,30 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                 className=" px-[10px] justify-start items-center flex flex-col"
                 href={href}
             >
-                <div className="w-[80%] mx-auto">
-                    <Separator className="h-[1px] " />
-                </div>
                 <div
                     className={`${styles.content}
                     ${isActive ? "bg-red-700 text-white opacity-100" : isClicked ? "bg-blue-700" : "opacity-50 hover:bg-red-700/30 transition-colors duration-200"}
-                    text-black px-[15px] py-2 rounded-md justify-start items-center gap-3 flex w-[220px]`}
+                    rounded-[5px] `}
                 >
-                    <div className={`${styles.icons} h-[25px] relative`}>
-                        <div className={`${isActive && 'text-white top-[-16.67px] fill-white stroke-white'}w-[30px] h-[50px]`}>{icon}</div>
+                    <div className={` "w-[80%] mx-auto`}>
+                        <Separator className={`${isActive ? "hidden" : "block"} h-[1px]`} />
                     </div>
-                    <div className={`${styles.title} justify-start items-start gap-[18px] flex`}>
-                        <div className="  text-[14px] font-semibold font-['Poppins']">{title}</div>
-                    </div>
-                </div>
 
-                {
-                    isLast === 'true' ? (
-                        <div className="w-full mx-auto">
-                            <div className="w-[80%] mx-auto">
-                                <Separator className="h-[1px] " />
-                            </div>
+                    <div className={`${isActive ? "text-white " : "text-black"} flex flex-row gap-3 items-center  px-[15px] py-2  justify-start w-[220px]`}>
+                        <div className={`${styles.icons} h-[25px] relative`}>
+                            <div className={`${isActive && 'text-white top-[-16.67px] fill-white stroke-white'}w-[30px] h-[50px]`}>{icon}</div>
                         </div>
-                    ) : null
-                }
-            </NextLink>
+                        <div className={`${styles.title} justify-start items-start gap-[18px] flex`}>
+                            <div className="  text-[14px] font-semibold font-['Poppins']">{title}</div>
+                        </div>
+                    </div>
+
+                    <div className={` "w-[80%] mx-auto`}>
+                        <Separator className={`${isLast && !(isActive) ? "block" : isLast && isActive ? "hidden" : "hidden"} h-[1px]`} />
+                    </div>
+
+                </div>
+            </NextLink >
         </>
     )
 }
