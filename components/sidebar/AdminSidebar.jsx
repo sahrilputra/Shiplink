@@ -87,7 +87,7 @@ export const AdminSidebar = () => {
                                     onClick={toggleClicked}
                                     isClicked={isClicked}
                                     isActive={router.startsWith("/admin/PARS")}
-                                    title="PARS Management"
+                                    title="PARS & PAPS"
                                     icon={<ParsIcon className={"h-[25px] w-[25px]"} />}
                                     href="/admin/PARS"
                                 />
@@ -96,7 +96,7 @@ export const AdminSidebar = () => {
                                     onClick={toggleClicked}
                                     isClicked={isClicked}
                                     isActive={router === "/admin/custom-brokers"}
-                                    title="Custom Broker"
+                                    title="Customs Broker"
                                     icon={<CustomBrokerIcon
                                         width={25}
                                         height={25}
@@ -106,7 +106,7 @@ export const AdminSidebar = () => {
 
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/transport")}
-                                    title="Transport Prep"
+                                    title="Transport"
                                     icon={<TransportIcon
                                         width={25}
                                         height={25}
@@ -150,18 +150,6 @@ export const AdminSidebar = () => {
                                     href="/admin/bin-management"
                                 />
                                 <SidebarItem
-                                    isActive={router === "/admin/invoice-manager"}
-                                    title="Invoice Manager"
-                                    icon={
-                                        <InvoiceManagerIcon
-                                            width={25}
-                                            height={25}
-                                            className="relative"
-                                        />
-                                    }
-                                    href="/admin/invoice-manager"
-                                />
-                                <SidebarItem
                                     isActive={router === "/admin/purchase-manager"}
                                     title="Assisted Purchase"
                                     icon={
@@ -187,7 +175,7 @@ export const AdminSidebar = () => {
                                 />
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/warehouse-manager")}
-                                    title="Warehouse Manager"
+                                    title="Warehouses"
                                     icon={<WarehouseIcons
                                         width={25}
                                         height={25}
@@ -198,7 +186,7 @@ export const AdminSidebar = () => {
 
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/product-manager")}
-                                    title="Product Manager"
+                                    title="Products & Services"
                                     icon={<ProductManagerIcon
                                         width={25}
                                         height={25}
@@ -209,12 +197,24 @@ export const AdminSidebar = () => {
 
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/customers-manager")}
-                                    title="Customer Manager"
-                                    isLast="true"
+                                    title="Customers"
                                     icon={
                                         <CustomerManagerIcon className={"h- [25px] w-[25px]"} />
                                     }
                                     href="/admin/customers-manager"
+                                />
+                                <SidebarItem
+                                    isActive={router === "/admin/invoice-manager"}
+                                    title="Invoices"
+                                    isLast="true"
+                                    icon={
+                                        <InvoiceManagerIcon
+                                            width={25}
+                                            height={25}
+                                            className="relative"
+                                        />
+                                    }
+                                    href="/admin/invoice-manager"
                                 />
                             </div>
                         </SidebarMenu>
@@ -222,7 +222,7 @@ export const AdminSidebar = () => {
                             <div className="flex-col justify-end items-start gap-[5px] flex">
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/user-permission")}
-                                    title="User and Permission"
+                                    title="Users & Permissions"
                                     icon={
                                         <UserPemissionIcon
                                             width={25}

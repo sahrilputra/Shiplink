@@ -19,7 +19,7 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                     rounded-[5px] `}
                 >
                     <div className={` "w-[80%] mx-auto`}>
-                        <Separator className={`${isActive ? "hidden" : "block"} h-[1px]`} />
+                        <Separator className={`${isActive ? "hidden" : "block"} h-[1px] bg-zinc-300`} />
                     </div>
 
                     <div className={`${isActive ? "text-white " : "text-black"} flex flex-row gap-3 items-center  px-[15px] py-2  justify-start w-[220px]`}>
@@ -32,7 +32,7 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                     </div>
 
                     <div className={` "w-[80%] mx-auto`}>
-                        <Separator className={`${isLast && !(isActive) ? "block" : isLast && isActive ? "hidden" : "hidden"} h-[1px]`} />
+                        <Separator className={`${isLast && !(isActive) ? "block" : isLast && isActive ? "hidden" : "hidden"} h-[1px] bg-zinc-300`} />
                     </div>
 
                 </div>
