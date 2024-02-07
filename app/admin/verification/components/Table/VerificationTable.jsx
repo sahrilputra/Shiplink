@@ -89,7 +89,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                 {
                     data.map((item, index) => (
                         <>
-                            <TableRow key={item.id} className={`${expandedRow === index && "bg-blue-200 hover:bg-blue-200"}`} >
+                            <TableRow key={item.id} className={`${expandedRow === index && "bg-blue-100 hover:bg-blue-100"}`} >
                                 <TableCell className="font-medium text-xs">{item.TrackingID}</TableCell>
                                 <TableCell className="font-medium text-xs">{item.CustomerName}</TableCell>
                                 <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
@@ -121,7 +121,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                         <form
                                             className='flex gap-2 flex-col text-zinc-600'
                                             action=""></form>
-                                        <TableRow key={`expanded_${item.id}`} className="bg-blue-100 hover:bg-blue-100">
+                                        <TableRow key={`expanded_${item.id}`} className="bg-blue-50 hover:bg-blue-50">
                                             <TableCell className="font-medium" colSpan={7}>
                                                 <div className="w-[80%] flex justify-center items-center mx-auto">
                                                     <ImageTable />
@@ -135,7 +135,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                                 }
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow className="bg-blue-200 hover:bg-blue-200 ">
+                                        <TableRow className="bg-blue-100 hover:bg-blue-100 ">
                                             <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
                                                 {
                                                     isEdit ? (

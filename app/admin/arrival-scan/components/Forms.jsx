@@ -77,7 +77,7 @@ export const ArrivalForms = ({ forms }) => {
                                                                 variant="outline"
                                                                 role="combobox"
                                                                 className={cn(
-                                                                    "w-full justify-between shadow-none text-xs h-[30px] rounded-sm px-1 py-0",
+                                                                    "w-full justify-between shadow-none text-xs h-[30px] rounded-sm px-2 py-0",
                                                                     !field.value && "text-muted-foreground"
                                                                 )}
                                                             >
@@ -121,7 +121,7 @@ export const ArrivalForms = ({ forms }) => {
                                                     </PopoverContent>
                                                 </Popover>
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -137,13 +137,13 @@ export const ArrivalForms = ({ forms }) => {
                                             <FormControl>
                                                 <Input
                                                     id="fullName"
-                                                    className={`text-xs h-[30px] rounded-sm px-1 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
                                                     placeholder="John Doe"
                                                     {...field}
                                                     disabled={disabled}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -161,13 +161,13 @@ export const ArrivalForms = ({ forms }) => {
                                             <FormControl>
                                                 <Input
                                                     id="phoneNumber"
-                                                    className={`text-xs h-[30px] rounded-sm px-1 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
                                                     placeholder="+1 21xxxx"
                                                     {...field}
                                                     disabled={disabled}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -185,13 +185,13 @@ export const ArrivalForms = ({ forms }) => {
 
                                                     id="email"
                                                     type="email"
-                                                    className={`text-xs h-[30px] rounded-sm px-1 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
                                                     placeholder="customer@shiplink.ca"
                                                     {...field}
                                                     disabled={disabled}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -221,12 +221,12 @@ export const ArrivalForms = ({ forms }) => {
                                             <FormControl>
                                                 <Input
                                                     id="trackingBarcode"
-                                                    className="text-xs h-[30px] rounded-sm px-1 py-0"
+                                                    className="text-xs h-[30px] rounded-sm px-2 py-0"
                                                     placeholder={`${field.value}`}
                                                     {...field}
                                                     disabled />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -242,11 +242,11 @@ export const ArrivalForms = ({ forms }) => {
                                             <Select
                                                 onValueChange={field.onChange}
                                                 control={forms.control}
-                                                className="text-xs h-[30px] rounded-sm px-1 py-0"
+                                                className="text-xs h-[30px] rounded-sm px-2 py-0"
                                                 defaultValue={field.value}>
                                                 <FormControl>
-                                                    <SelectTrigger className='text-xs h-[30px] rounded-sm px-1 py-0'>
-                                                        <SelectValue className='text-xs h-[30px] rounded-sm px-1 py-0' placeholder="Purolator" />
+                                                    <SelectTrigger className='text-xs h-[30px] rounded-sm px-2 py-0'>
+                                                        <SelectValue className='text-xs h-[30px] rounded-sm px-2 py-0' placeholder="Purolator" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent className="text-xs">
@@ -256,7 +256,7 @@ export const ArrivalForms = ({ forms }) => {
                                                     <SelectItem className="text-xs" value="DHL">DHL</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <FormMessage />
+                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -274,9 +274,9 @@ export const ArrivalForms = ({ forms }) => {
                                             <>
                                                 <FormItem className="w-full text-xs">
                                                     <FormControl>
-                                                        <Input id="length" className="text-xs h-[30px] rounded-sm px-1 py-0" type="number" placeholder="length" {...field} />
+                                                        <Input id="length" className="text-xs h-[30px] rounded-sm px-2 py-0" type="number" placeholder="length" {...field} />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage ClassName="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -289,9 +289,9 @@ export const ArrivalForms = ({ forms }) => {
                                             <>
                                                 <FormItem className="w-full text-xs">
                                                     <FormControl>
-                                                        <Input id="width" className="text-xs h-[30px] rounded-sm px-1 py-0" type="number" placeholder="width" {...field} />
+                                                        <Input id="width" className="text-xs h-[30px] rounded-sm px-2 py-0" type="number" placeholder="width" {...field} />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage ClassName="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -304,9 +304,9 @@ export const ArrivalForms = ({ forms }) => {
                                             <>
                                                 <FormItem className="w-full text-xs">
                                                     <FormControl>
-                                                        <Input id="height" type="number" className="text-xs h-[30px] rounded-sm px-1 py-0" placeholder="height" {...field} />
+                                                        <Input id="height" type="number" className="text-xs h-[30px] rounded-sm px-2 py-0" placeholder="height" {...field} />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage ClassName="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -324,7 +324,7 @@ export const ArrivalForms = ({ forms }) => {
                                                         control={forms.control}
                                                         defaultValue={field.value}>
                                                         <FormControl>
-                                                            <SelectTrigger className="text-xs h-[30px] rounded-sm px-1 py-0">
+                                                            <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
                                                                 <SelectValue placeholder="in" />
                                                             </SelectTrigger>
                                                         </FormControl>
@@ -333,7 +333,7 @@ export const ArrivalForms = ({ forms }) => {
                                                             <SelectItem className="text-xs" value="cm">cm</SelectItem>
                                                         </SelectContent>
                                                     </Select>
-                                                    <FormMessage />
+                                                    <FormMessage ClassName="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -346,9 +346,9 @@ export const ArrivalForms = ({ forms }) => {
                                             <>
                                                 <FormItem className="w-full text-xs">
                                                     <FormControl>
-                                                        <Input id="weight" className="text-xs h-[30px] rounded-sm px-1 py-0 " placeholder="weight" type="number" {...field} />
+                                                        <Input id="weight" className="text-xs h-[30px] rounded-sm px-2 py-0 " placeholder="weight" type="number" {...field} />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage ClassName="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -365,7 +365,7 @@ export const ArrivalForms = ({ forms }) => {
                                                         control={forms.control}
                                                         defaultValue={field.value}>
                                                         <FormControl>
-                                                            <SelectTrigger className="text-xs h-[30px] rounded-sm px-1 py-0">
+                                                            <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
                                                                 <SelectValue placeholder="ibs" />
                                                             </SelectTrigger>
                                                         </FormControl>
@@ -374,7 +374,7 @@ export const ArrivalForms = ({ forms }) => {
                                                             <SelectItem className="text-xs" value="kg">kg</SelectItem>
                                                         </SelectContent>
                                                     </Select>
-                                                    <FormMessage />
+                                                    <FormMessage ClassName="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -408,7 +408,7 @@ export const ArrivalForms = ({ forms }) => {
                                             />
                                         </div>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage ClassName="text-xs" />
                                 </FormItem>
                             </>
                         )}
@@ -432,7 +432,7 @@ export const ArrivalForms = ({ forms }) => {
                                             />
                                         </div>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage ClassName="text-xs" />
                                 </FormItem>
                             </>
                         )}
@@ -456,7 +456,7 @@ export const ArrivalForms = ({ forms }) => {
                                             />
                                         </div>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage ClassName="text-xs" />
                                 </FormItem>
                             </>
                         )}

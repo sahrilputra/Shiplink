@@ -26,7 +26,7 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                     <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs ">HS Description</TableHead>
                     <TableHead className="p-0 h-8 px-5 py-3  w-[200px] text-myBlue font-bold text-xs ">HS Code</TableHead>
                     <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs ">Made in</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs text-right"></TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                 </TableHeader>
                 <TableBody className="px-2">
                     {Array.from({ length: inputCount }).map((_, index) => (
@@ -43,7 +43,7 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
             <Table>
                 <TableBody>
                     <TableRow className="text-xs h-4 w-full">
-                        <TableCell className="p-0 px-5 py-2  font-medium h-8">
+                        <TableCell className="p-0 px-5 py-2 w-[40px] font-medium h-8">
                             <Button
                                 variant="softBlue"
                                 size="sm"
@@ -54,7 +54,7 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                                     e.preventDefault()
                                 }}
                             >
-                                <p className='text-xs'>Add Other Conten</p>
+                                <p className='text-xs'>Add Other Content</p>
                             </Button>
                         </TableCell>
                     </TableRow>

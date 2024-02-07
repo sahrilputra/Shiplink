@@ -123,7 +123,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell>
-                <TableCell className="text-right w-[70px] p-0 h-8 px-2 py-2 ">
+                <TableCell className="text-center  p-0 h-8 px-2 py-2 w-[40px] ">
                     {
                         index > 0 ? (
                             <div className="flex flex-row justify-between gap-2 w-full">

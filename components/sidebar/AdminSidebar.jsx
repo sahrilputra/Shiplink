@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { SidebarMenu } from "./sidebarMenu";
 import { SidebarItem } from "./sidebarItem";
 import Image from "next/image";
@@ -16,13 +16,20 @@ import {
 import { Separator } from "../ui/separator";
 import { useMediaQuery } from "react-responsive";
 export const AdminSidebar = () => {
+
+    const [isClicked, setIsClicked] = useState(false);
     const router = usePathname();
     // w-[280px] min-h-max px-[5px]
     // min-h-max bg-white flex-col justify-start items-center gap-5 inline-flex
 
+    const toggleClicked = () => {
+        setIsClicked(true);
+    }
+
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
     const isTable = useMediaQuery({ query: '(min-width: 1025px)' })
     const isDesktop = useMediaQuery({ query: '(min-width: 1440px)' })
+
 
     return (
         <>
@@ -52,8 +59,10 @@ export const AdminSidebar = () => {
                         </div>
 
                         <SidebarMenu title="" className="flex-col justify-start items-center flex ">
-                            <div className="flex-col justify-end items-start flex">
+                            <div className="flex-col justify-end items-start gap-[2px] flex">
                                 <SidebarItem
+                                    onClick={toggleClicked}
+                                    isClicked={isClicked}
                                     isActive={router === "/admin/arrival-scan"}
                                     title="Arrival Scan"
                                     icon={
@@ -63,6 +72,8 @@ export const AdminSidebar = () => {
                                     href="/admin/arrival-scan"
                                 />
                                 <SidebarItem
+                                    onClick={toggleClicked}
+                                    isClicked={isClicked}
                                     isActive={router === "/admin/verification"}
                                     title="Verification"
                                     icon={
@@ -72,12 +83,16 @@ export const AdminSidebar = () => {
                                 />
 
                                 <SidebarItem
+                                    onClick={toggleClicked}
+                                    isClicked={isClicked}
                                     isActive={router.startsWith("/admin/PARS")}
                                     title="PARS Management"
                                     icon={<ParsIcon className={"h-[25px] w-[25px]"} />}
                                     href="/admin/PARS"
                                 />
                                 <SidebarItem
+                                    onClick={toggleClicked}
+                                    isClicked={isClicked}
                                     isActive={router === "/admin/custom-brokers"}
                                     title="Custom Broker"
                                     icon={<CustomBrokerIcon
