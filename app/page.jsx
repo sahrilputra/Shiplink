@@ -8,6 +8,7 @@ import { WhyCardsComponents } from "@/components/home/WhyCardsComponents";
 import { CarrierList } from "@/components/home/CarrierList";
 import { SubsCardsComponents } from "@/components/home/SubsCardsComponents";
 import { HomeNavbar } from "@/components/home/navigation/HomeNavbar";
+import { HomeFooter } from "@/components/home/navigation/HomeFooter";
 export default function Home() {
   return (
     <>
@@ -209,6 +210,7 @@ export default function Home() {
           </div>
         </div>
       </div >
+      <HomeFooter />
     </>
   );
 }
