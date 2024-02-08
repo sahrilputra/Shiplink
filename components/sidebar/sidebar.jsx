@@ -36,22 +36,27 @@ export const Sidebar = () => {
     return (
         <>
             <aside
-                className={`pt-2 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex z-[20]
+                className={`pt-5 w-[280px] h-full bg-white flex-col justify-start items-center gap-5 flex z-[20]
              ${styles.sideBarRespon} 
-             `}>
-                <ScrollArea className="h-[100vh] w-max">
+             `}
+            >
+                <ScrollArea className="h-[100vh]">
                     <div className={`flex gap-3 flex-col `}>
-                        <div className={`${styles.logo} mt-[10px] mb-[10px] text-center h-[50px] w-[full] flex flex-col gap-2 justify-items-center`}>
-                            <Image
-                                src={"/logo.png"}
-                                width={120}
-                                height={120}
-                                alt="shiplink Logo"
-                                className="mx-auto"
-                                style={{ width: '120px', height: '30px' }}
-                            />
-                            <div className="w-[200px] flex items-center justify-center mx-auto">
-                                <Separator className='h-[2px]' />
+                        <div className="h-[50px]">
+                            <div className={`${styles.logo} fixed bg-white mb-[10px] text-center h-[50px] w-[230px] flex flex-col gap-2 justify-items-center z-[25]`}>
+                                <div className=" w-max h-max mx-auto bg-white ">
+                                    <Image
+                                        src={"/logo.png"}
+                                        width={120}
+                                        height={120}
+                                        alt="shiplink Logo"
+                                        className="mx-auto"
+                                        style={{ width: '120px', height: '30px' }}
+                                    />
+                                    <div className="w-[200px] mt-2 flex items-center justify-center mx-auto">
+                                        <Separator className='h-[2px]' />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -59,36 +64,36 @@ export const Sidebar = () => {
                             title=""
                             className="flex-col justify-start items-center flex"
                         >
-                            <div className="flex-col justify-center items-start gap-2.5 flex">
+                            <div className="flex-col justify-end items-start gap-[5px] flex">
                                 <SidebarItem
                                     isActive={router === "/dashboard"}
                                     title="Dashboard"
-                                    icon={<DashboardIcon width={25} height={25} fill="#ffff" />}
+                                    icon={<DashboardIcon width={20} height={20} fill="#00000" />}
                                     href="/dashboard"
                                 />
                                 <SidebarItem
                                     isActive={router === "/mailbox"}
                                     title="Shipping Mailbox"
-                                    icon={<MailboxIcon width={25} height={25} />}
+                                    icon={<MailboxIcon width={20} height={20} />}
                                     href="/mailbox"
                                 />
 
                                 <SidebarItem
                                     isActive={router === "/shipping-lebels"}
                                     title="Shipping Labels"
-                                    icon={<ShippingLabelIcon width={25} height={25} />}
+                                    icon={<ShippingLabelIcon width={20} height={20} />}
                                     href="/shipping-lebels"
                                 />
                                 <SidebarItem
                                     isActive={router === "/saved-quotes"}
                                     title="Saved Quotes"
-                                    icon={<SavedQuoteIcon width={25} height={25} />}
+                                    icon={<SavedQuoteIcon width={20} height={20} />}
                                     href="/saved-quotes"
                                 />
                                 <SidebarItem
                                     isActive={router === "/assisted-purchase"}
                                     title="Assisted Purchase"
-                                    icon={<AssistedPurchaseIcon width={25} height={25} />}
+                                    icon={<AssistedPurchaseIcon width={20} height={20} />}
                                     href="/assisted-purchase"
                                 />
                             </div>
@@ -101,7 +106,7 @@ export const Sidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/address-book"}
                                     title="Address Book"
-                                    icon={<AddressBookIcon width={25} height={25} />}
+                                    icon={<AddressBookIcon width={20} height={20} />}
                                     href="/address-book"
                                 />
 
@@ -110,8 +115,8 @@ export const Sidebar = () => {
                                     title="Saved Box Sizes"
                                     icon={
                                         <SavedBoxIcon
-                                            width={25}
-                                            height={25}
+                                            width={20}
+                                            height={20}
                                         />
                                     }
                                     href="/saved-box"
@@ -122,8 +127,8 @@ export const Sidebar = () => {
                                     title="Membership Plan"
                                     icon={
                                         <MembershipIcon
-                                            width={25}
-                                            height={25}
+                                            width={20}
+                                            height={20}
 
                                         />
                                     }
@@ -135,8 +140,8 @@ export const Sidebar = () => {
                                     title="Account Details"
                                     icon={
                                         <AccountDetailsIcon
-                                            width={25}
-                                            height={25}
+                                            width={20}
+                                            height={20}
                                         />
                                     }
                                     href="/account"
@@ -147,8 +152,8 @@ export const Sidebar = () => {
                                     title="Billing History"
                                     icon={
                                         <BillingHistoryIcon
-                                            width={25}
-                                            height={25}
+                                            width={20}
+                                            height={20}
                                         />
                                     }
                                     href="/billing-history"
@@ -159,8 +164,8 @@ export const Sidebar = () => {
                                     title="Refer Friends"
                                     icon={
                                         <ReferFriendsIcon
-                                            width={25}
-                                            height={25}
+                                            width={20}
+                                            height={20}
                                         />
                                     }
                                     href="/reference"
@@ -171,8 +176,8 @@ export const Sidebar = () => {
                                     title="Support"
                                     icon={
                                         <SupportIcons
-                                            width={25}
-                                            height={25}
+                                            width={20}
+                                            height={20}
                                         />
                                     }
                                     href="/support"
