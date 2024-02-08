@@ -95,6 +95,7 @@ export const Sidebar = () => {
                                     title="Assisted Purchase"
                                     icon={<AssistedPurchaseIcon width={20} height={20} />}
                                     href="/assisted-purchase"
+                                    isLast={true}
                                 />
                             </div>
                         </SidebarMenu>
@@ -174,6 +175,7 @@ export const Sidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/support"}
                                     title="Support"
+                                    isLast={true}
                                     icon={
                                         <SupportIcons
                                             width={20}
