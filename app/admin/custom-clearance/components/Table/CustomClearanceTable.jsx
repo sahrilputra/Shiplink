@@ -57,9 +57,9 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
                                 <TableCell className=" w-[30px]">
                                     <div className="flex flex-row gap-2">
                                         <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                            variant="secondary"
+                                            size="sm"
+                                            className="h-6 px-2"
                                             onClick={() => toggleOpenChange()}
                                         >
                                             <p className="text-[11px]">Update</p>

@@ -41,7 +41,7 @@ export const AdminSidebar = () => {
                 <ScrollArea className="h-[100vh]">
                     <div className={` flex gap-3 flex-col pb-[30px] `}>
                         <div className="h-[50px]">
-                            <div className={`${styles.logo} fixed bg-white mb-[10px] text-center h-[50px] w-[240px] flex flex-col gap-2 justify-items-center z-[25]`}>
+                            <div className={`${styles.logo} fixed bg-white mb-[10px] text-center h-[50px] w-[230px] flex flex-col gap-2 justify-items-center z-[25]`}>
                                 <div className=" w-max h-max mx-auto bg-white ">
                                     <Image
                                         src={"/logo.png"}
@@ -61,8 +61,6 @@ export const AdminSidebar = () => {
                         <SidebarMenu title="" className="flex-col justify-start items-center flex ">
                             <div className="flex-col justify-end items-start gap-[5px] flex">
                                 <SidebarItem
-                                    onClick={toggleClicked}
-                                    isClicked={isClicked}
                                     isActive={router === "/admin/arrival-scan"}
                                     title="Arrival Scan"
                                     icon={
@@ -73,8 +71,6 @@ export const AdminSidebar = () => {
                                 />
 
                                 <SidebarItem
-                                    onClick={toggleClicked}
-                                    isClicked={isClicked}
                                     isActive={router === "/admin/verification"}
                                     title="Verification"
                                     icon={
@@ -84,8 +80,6 @@ export const AdminSidebar = () => {
                                 />
 
                                 <SidebarItem
-                                    onClick={toggleClicked}
-                                    isClicked={isClicked}
                                     isActive={router === "/admin/custom-brokers"}
                                     title="Customs Broker"
                                     icon={<CustomBrokerIcon
@@ -97,9 +91,9 @@ export const AdminSidebar = () => {
                                 <SidebarItem
                                     isActive={router.startsWith("/admin/transport")}
                                     title="Transport"
-                                    icon={<TransportIcon
-                                        width={23} height={23}
-                                    />}
+                                    icon={
+                                        <TransportIcon width={23} height={23} />
+                                    }
                                     href="/admin/transport"
                                 />
 
@@ -112,9 +106,6 @@ export const AdminSidebar = () => {
                                     />}
                                     href="/admin/custom-clearance"
                                 />
-
-
-
                                 <SidebarItem
                                     isActive={router === "/admin/destination"}
                                     title="Destination Scan"

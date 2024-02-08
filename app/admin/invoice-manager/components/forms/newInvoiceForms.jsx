@@ -97,19 +97,21 @@ export const InvoiceForms = () => {
 
                     <div className="flex w-full gap-3 flex-row">
                         {/* Left Form */}
-                        <div className="w-[70%] left flex flex-col gap-4">
+                        <div className="w-[70%] left flex flex-col gap-2">
                             <div className="flex flex-col justify-start gap-2 w-full">
-                                <div className="nameWrapper flex flex-row gap-4 w-full text-sm">
+                                <div className="nameWrapper flex flex-row gap-2 w-full text-xs">
                                     <FormField
-                                        className="w-full text-sm"
+                                        className="w-full text-xs"
                                         name="InvoiceNo"
                                         control={form.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-[50%] text-sm">
-                                                    <FormLabel className="text-sm font-bold">Invoice No *</FormLabel>
+                                                <FormItem className="space-y-1 w-[50%]">
+                                                    <FormLabel className="text-xs font-bold">Invoice No *</FormLabel>
                                                     <FormControl>
-                                                        <Input id="InvoiceNo" className="text-sm" placeholder="Ex. C12345678" {...field} />
+                                                        <Input
+                                                            size="new"
+                                                            id="InvoiceNo" className="text-xs" placeholder="Ex. C12345678" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -118,14 +120,16 @@ export const InvoiceForms = () => {
                                     />
                                     <FormField
                                         name="InvoiceDate"
-                                        className="w-[60%] text-sm"
+                                        className="w-[60%] text-xs"
                                         control={form.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-full text-sm">
-                                                    <FormLabel className="text-sm font-bold">Invoice Date</FormLabel>
+                                                <FormItem className="space-y-1 w-full text-xs">
+                                                    <FormLabel className="text-xs font-bold">Invoice Date</FormLabel>
                                                     <FormControl>
-                                                        <Input id="InvoiceDate" className="text-sm" placeholder="Select Date" {...field} />
+                                                        <Input
+                                                            size="new"
+                                                            id="InvoiceDate" className="text-xs" placeholder="Select Date" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -133,17 +137,19 @@ export const InvoiceForms = () => {
                                         )}
                                     />
                                 </div>
-                                <div className="nameWrapper flex flex-row gap-4 w-[100%] text-sm ">
+                                <div className="nameWrapper flex flex-row gap-2 w-[100%] text-xs ">
                                     <FormField
-                                        className="w-[40%] text-sm"
+                                        className="w-[40%] text-xs"
                                         name="InvoiceCurrency"
                                         control={form.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-[50%] text-sm">
-                                                    <FormLabel className="text-sm font-bold">Phone Number</FormLabel>
+                                                <FormItem className="w-[50%] space-y-1 text-xs">
+                                                    <FormLabel className="text-xs font-bold">Phone Number</FormLabel>
                                                     <FormControl>
-                                                        <Input id="InvoiceCurrency" type="number" className="text-sm" placeholder="Currency" {...field} />
+                                                        <Input
+                                                            size="new"
+                                                            id="InvoiceCurrency" type="number" className="text-xs" placeholder="Currency" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -152,14 +158,16 @@ export const InvoiceForms = () => {
                                     />
                                     <FormField
                                         name="InvoiceTerms"
-                                        className="w-full text-sm"
+                                        className="w-full text-xs"
                                         control={form.control}
                                         render={({ field }) => (
                                             <>
-                                                <FormItem className="w-full text-sm">
-                                                    <FormLabel className="text-sm font-bold">Email</FormLabel>
+                                                <FormItem className="w-full space-y-1 text-xs">
+                                                    <FormLabel className="text-xs font-bold">Email</FormLabel>
                                                     <FormControl>
-                                                        <Input id="InvoiceTerms" type="text" className="text-sm" placeholder="Select Currency" {...field} />
+                                                        <Input
+                                                            size="new"
+                                                            id="InvoiceTerms" type="text" className="text-xs" placeholder="Select Currency" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -174,21 +182,22 @@ export const InvoiceForms = () => {
                             </div>
 
                             <div className="flex flex-row justify-between gap-3">
-
                                 {/* billedTo */}
-                                <div className="flex flex-col gap-2  w-full">
-                                    <h2 className='text-base font-bold'>Billed To</h2>
-                                    <div className="flex flex-row justify-between gap-3">
+                                <div className="flex flex-col gap-1  w-full">
+                                    <h2 className='text-sm font-bold'>Billed To</h2>
+                                    <div className="flex flex-row justify-between gap-2">
                                         <FormField
                                             className="w-full"
                                             name="BilledToName"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Barcode / Tracking</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Barcode / Tracking</FormLabel>
                                                         <FormControl>
-                                                            <Input id="BilledToName" className="text-sm" placeholder="Name" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="BilledToName" className="text-xs" placeholder="Name" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -201,10 +210,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
                                                         <FormControl>
-                                                            <Input id="BilledToZip" className="text-sm" placeholder="Eg. SA4S21JK21" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="BilledToZip" className="text-xs" placeholder="Eg. SA4S21JK21" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -219,10 +230,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Address</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Address</FormLabel>
                                                         <FormControl>
-                                                            <Input id="BilledToAddress" className="text-sm" placeholder="Adress" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="BilledToAddress" className="text-xs" placeholder="Adress" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -235,10 +248,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Country</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Country</FormLabel>
                                                         <FormControl>
-                                                            <Input id="BilledToCountry" className="text-sm" placeholder="Canada" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="BilledToCountry" className="text-xs" placeholder="Canada" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -250,8 +265,8 @@ export const InvoiceForms = () => {
 
 
                                 {/* shiipedTo */}
-                                <div className="flex flex-col gap-2 w-full">
-                                    <h2 className='text-base font-bold'>Shipped To</h2>
+                                <div className="flex flex-col gap-1 w-full">
+                                    <h2 className='text-sm font-bold'>Shipped To</h2>
                                     <div className="flex flex-row justify-between gap-3">
                                         <FormField
                                             className="w-full "
@@ -259,10 +274,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Barcode / Tracking</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Barcode / Tracking</FormLabel>
                                                         <FormControl>
-                                                            <Input id="ShippedToName" className="text-sm" placeholder="Name" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToName" className="text-xs" placeholder="Name" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -275,10 +292,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
                                                         <FormControl>
-                                                            <Input id="ShippedToZip" className="text-sm" placeholder="Eg. SA4S21JK21" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToZip" className="text-xs" placeholder="Eg. SA4S21JK21" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -293,10 +312,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Address</FormLabel>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Address</FormLabel>
                                                         <FormControl>
-                                                            <Input id="ShippedToAddress" className="text-sm" placeholder="Adress" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToAddress" className="text-xs" placeholder="Adress" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -309,10 +330,12 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className=" text-sm w-full">
-                                                        <FormLabel className="text-sm font-bold text-zinc-600">Country</FormLabel>
+                                                    <FormItem className=" text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Country</FormLabel>
                                                         <FormControl>
-                                                            <Input id="ShippedToCountry" className="text-sm" placeholder="Canada" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToCountry" className="text-xs" placeholder="Canada" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -334,10 +357,12 @@ export const InvoiceForms = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="text-sm">
-                                                <FormLabel className="text-sm font-bold text-zinc-600">Note</FormLabel>
+                                            <FormItem className="text-xs space-y-1">
+                                                <FormLabel className="text-xs font-bold  text-zinc-600">Note</FormLabel>
                                                 <FormControl>
-                                                    <Input id="note" className="text-sm" placeholder="Note" {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        id="note" className="text-xs" placeholder="Note" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -361,10 +386,12 @@ export const InvoiceForms = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className="text-sm">
-                                                <FormLabel className="text-sm font-bold text-zinc-600">User Name</FormLabel>
+                                            <FormItem className="text-xs space-y-1">
+                                                <FormLabel className="text-xs font-bold text-zinc-600">User Name</FormLabel>
                                                 <FormControl>
-                                                    <Input id="userName" className="text-sm" placeholder="UserName" {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        id="userName" className="text-xs" placeholder="UserName" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -377,10 +404,12 @@ export const InvoiceForms = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <>
-                                            <FormItem className=" text-sm">
-                                                <FormLabel className="text-sm font-bold text-zinc-600">Emails</FormLabel>
+                                            <FormItem className=" text-xs space-y-1">
+                                                <FormLabel className="text-xs font-bold text-zinc-600">Emails</FormLabel>
                                                 <FormControl>
-                                                    <Input id="userEmails" type="emails" className="text-sm" placeholder="Emails" {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        id="userEmails" type="emails" className="text-xs" placeholder="Emails" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -388,25 +417,30 @@ export const InvoiceForms = () => {
                                     )}
                                 />
 
-                                <div className="button-group flex flex-col gap-2 py-3 w-full mx-auto">
+                                <div className="button-group flex flex-col gap-2 py-2 w-full mx-auto">
                                     <div className="flex flex-row justify-between gap-3">
                                         <Button
                                             variant="redOutline"
+                                            type="button"
+                                            className=" h-[30px] w-full rounded-sm px-4 py-0"
                                             size="sm"
-                                            className="w-full"
+                                       
                                         >
                                             <p className='text-xs'>Preview</p>
                                         </Button>
                                         <Button
                                             variant="redOutline"
+                                            type="button"
+                                            className=" h-[30px] w-full rounded-sm px-4 py-0"
                                             size="sm"
-                                            className="w-full"
                                         >
                                             <p className='text-xs'>Download</p>
                                         </Button>
                                     </div>
                                     <Button
                                         variant="destructive"
+                                        type="button"
+                                        className=" h-[30px] rounded-sm px-4 py-0"
                                         size="sm"
                                     >
                                         <p className='text-xs'>Send</p>
@@ -424,9 +458,9 @@ export const InvoiceForms = () => {
                             <TableHeader>
                                 <TableHead className="w-[100px]">#</TableHead>
                                 <TableHead>Item Name</TableHead>
-                                <TableHead>Qty</TableHead>
-                                <TableHead className="text-center">Price</TableHead>
-                                <TableHead className="text-center">Total</TableHead>
+                                <TableHead className="w-[100px]">Qty</TableHead>
+                                <TableHead className="text-center w-[10%]">Price</TableHead>
+                                <TableHead className="text-center w-[10%]">Total</TableHead>
                                 <TableHead className="text-center"></TableHead>
                             </TableHeader>
                             <TableBody>
@@ -438,9 +472,11 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-xs">
                                                         <FormControl>
-                                                            <Input id="itemID" className="text-sm" placeholder="1" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="itemID" className="text-xs" placeholder="1" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -455,9 +491,11 @@ export const InvoiceForms = () => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-xs">
                                                         <FormControl>
-                                                            <Input id="itemDescription" className="text-sm" placeholder="Description" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="itemDescription" className="text-xs" placeholder="Description" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -467,14 +505,16 @@ export const InvoiceForms = () => {
                                     </TableCell>
                                     <TableCell>
                                         <FormField
-                                            className="w-full"
+                                            className="w-[100px]"
                                             name="itemQty"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-xs">
                                                         <FormControl>
-                                                            <Input id="itemQty" type="number" className="text-sm" placeholder="1" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="itemQty" type="number" className="text-xs" placeholder="1" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -484,14 +524,16 @@ export const InvoiceForms = () => {
                                     </TableCell>
                                     <TableCell>
                                         <FormField
-                                            className="w-full"
+                                            className="w-[10%]"
                                             name="itemPrice"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-xs">
                                                         <FormControl>
-                                                            <Input id="itemPrice" type="number" className="text-sm" placeholder="$ 00.00" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="itemPrice" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -501,14 +543,16 @@ export const InvoiceForms = () => {
                                     </TableCell>
                                     <TableCell>
                                         <FormField
-                                            className="w-full"
+                                            className="w-[10%]"
                                             name="itemAmount"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="text-sm">
+                                                    <FormItem className="text-xs">
                                                         <FormControl>
-                                                            <Input id="itemAmount" type="number" className="text-sm" placeholder="$ 00.00" {...field} />
+                                                            <Input
+                                                                size="new"
+                                                                id="itemAmount" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -516,9 +560,11 @@ export const InvoiceForms = () => {
                                             )}
                                         />
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="w-[50px]">
                                         <Button
                                             variant="tableBlue"
+                                            size="xs"
+                                            type='button'
                                             className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
                                             <Delete width={15} height={15} />
                                         </Button>
@@ -527,9 +573,12 @@ export const InvoiceForms = () => {
                                 <TableRow colSpan={8}>
                                     <TableCell colSpan={8}>
                                         <Button
-                                            variant="tableBlue"
-                                            className=" px-[5px] h-[35px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                            <p>Add Other Content</p>
+                                            variant="softBlue"
+                                            size="sm"
+                                            type="button"
+                                            className="px-4 h-7 py-3"
+                                        >
+                                            <p className='text-xs'>Add Other Content</p>
                                         </Button>
                                     </TableCell>
                                 </TableRow>

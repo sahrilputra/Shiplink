@@ -14,6 +14,7 @@ const InputVariant = cva(
         xs: "h-[30px] rounded px-2 text-xs",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10 rounded-md",
+        new: "text-xs h-[30px] rounded-sm px-2 py-0",
         tableIcon: "h-8 w-8 rounded-sm",
       },
     },
@@ -23,7 +24,7 @@ const InputVariant = cva(
   }
 )
 
-const Input =React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) =>{
+const Input = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
   return (
     (<input
       className={cn(InputVariant({ size, className }))}

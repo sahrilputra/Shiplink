@@ -69,7 +69,9 @@ export const UserProfileForms = () => {
                                     <FormItem className="w-full text-xs space-y-1 ">
                                         <FormLabel className=" text-xs font-bold">Full Name</FormLabel>
                                         <FormControl>
-                                            <Input className="px-1.5" size="xs" id="name" placeholder="john" {...field} />
+                                            <Input
+                                                size="new"
+                                                className="px-1.5" id="name" placeholder="john" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -88,7 +90,9 @@ export const UserProfileForms = () => {
                                     <FormItem className="w-full space-y-1 ">
                                         <FormLabel className=" text-xs font-bold ">Street Address</FormLabel>
                                         <FormControl >
-                                            <Input className="px-1.5" size="xs" type="text" id="address" placeholder="Street Address"  {...field} />
+                                            <Input
+                                                size="new"
+                                                className="px-1.5" type="text" id="address" placeholder="Street Address"  {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -105,7 +109,9 @@ export const UserProfileForms = () => {
                                         <FormItem className="w-full space-y-1">
                                             <FormLabel className=" text-xs font-bold">Email</FormLabel>
                                             <FormControl >
-                                                <Input className="px-1.5" size="xs" type="email" id="email" placeholder="Emails" {...field} />
+                                                <Input
+                                                    size="new"
+                                                    className="px-1.5" type="email" id="email" placeholder="Emails" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -121,7 +127,9 @@ export const UserProfileForms = () => {
                                         <FormItem className="w-full space-y-1">
                                             <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
                                             <FormControl>
-                                                <Input className="px-1.5" size="xs" type="number" id="phone" placeholder="Phone Number" {...field} />
+                                                <Input
+                                                    size="new"
+                                                    className="px-1.5" type="number" id="phone" placeholder="Phone Number" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -140,7 +148,9 @@ export const UserProfileForms = () => {
                                             <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">City</FormLabel>
                                                 <FormControl >
-                                                    <Input className="px-1.5" size="xs" type="text" id="city" placeholder="City" {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        className="px-1.5" type="text" id="city" placeholder="City" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -156,7 +166,9 @@ export const UserProfileForms = () => {
                                             <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">State / Province</FormLabel>
                                                 <FormControl >
-                                                    <Input className="px-1.5" size="xs" type="text" id="state" placeholder="State / Province"  {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        className="px-1.5" type="text" id="state" placeholder="State / Province"  {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -174,7 +186,9 @@ export const UserProfileForms = () => {
                                             <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Zip / Postal Code</FormLabel>
                                                 <FormControl >
-                                                    <Input className="px-1.5" size="xs" type="text" id="state" placeholder="Zip"  {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        className="px-1.5" type="text" id="state" placeholder="Zip"  {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -190,7 +204,9 @@ export const UserProfileForms = () => {
                                             <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Country</FormLabel>
                                                 <FormControl >
-                                                    <Input className="px-1.5" size="xs" type="text" id="country" placeholder="Country" {...field} />
+                                                    <Input
+                                                        size="new"
+                                                        className="px-1.5" type="text" id="country" placeholder="Country" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

@@ -10,10 +10,25 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
     return (
         <>
             <NextLink
-                className=" px-[10px] justify-start items-center flex flex-col"
+                className=" px-[10px] "
                 href={href}
             >
-                <div
+
+                <div className={`grid place-items-center items-center h-[40px] rounded-[3px] 
+                 ${isActive ? "bg-red-700 text-white opacity-100" : isClicked ? "bg-blue-700" : "opacity-50 hover:bg-red-700/30 transition-colors duration-200"}
+                `}>
+                    <div className={`${isActive ? "text-white border-none " : "text-black"} ${isLast ? " border-b" : ""} flex flex-row items-center h-full justify-center gap-3 w-[210px] px-[15px] border-t border-zinc-300`}>
+                        <div className={`${styles.icons} ${isActive && 'text-white fill-white stroke-white'}`}>
+                            {icon}
+                        </div>
+                        <div className={`${styles.title} justify-start items-start flex`}>
+                            <div className=" text-[14px] font-semibold font-['Poppins']">{title}</div>
+                        </div>
+                    </div>
+                </div>
+                {/* ${isActive ? "hidden" : "block"}  */}
+
+                {/* <div
                     className={`${styles.content}
                     ${isActive ? "bg-red-700 text-white opacity-100" : isClicked ? "bg-blue-700" : "opacity-50 hover:bg-red-700/30 transition-colors duration-200"}
                     rounded-[5px] `}
@@ -35,7 +50,7 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                         <Separator className={`${isLast && !(isActive) ? "block" : isLast && isActive ? "hidden" : "hidden"} h-[1px] bg-zinc-300`} />
                     </div>
 
-                </div>
+                </div> */}
             </NextLink >
         </>
     )

@@ -82,17 +82,18 @@ export function PARSTable({ data, isOpen, setOpen, handlerEdit, handlerDelete })
                 return (
                     <div className="flex flex-row gap-2">
                         <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-[3px] w-max px-[6px] h-[25px]`}
+                            variant="secondary"
+                            size="sm"
+                            className="h-6 px-2"
                             onClick={() => handlerEdit()}
                         >
-                            <p className="text-[11px]">Edit</p>
+                            <p className="text-xs">Edit</p>
                         </Button>
+                 
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
-                            className={`rounded-[3px] w-max px-[5px] h-[25px]`}
+                            className={`rounded-[3px] w-max px-[5px] h-6`}
                             onClick={() => handlerDelete()}
                         >
                             <DeleteIcons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />

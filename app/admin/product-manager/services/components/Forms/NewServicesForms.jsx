@@ -56,7 +56,9 @@ export const NewServicesForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Product ID</FormLabel>
                                         <FormControl>
-                                            <Input className="text-xs" id="servicesID" placeholder="#1231" {...field} />
+                                            <Input
+                                                size="new"
+                                                className="text-xs" id="servicesID" placeholder="#1231" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -72,7 +74,9 @@ export const NewServicesForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Item #</FormLabel>
                                         <FormControl >
-                                            <Input className="text-xs" type="text" id="item" placeholder="#2321"  {...field} />
+                                            <Input
+                                                size="new"
+                                                className="text-xs" type="text" id="item" placeholder="#2321"  {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -90,7 +94,9 @@ export const NewServicesForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Price *</FormLabel>
                                         <FormControl >
-                                            <Input className="text-xs" type="text" id="price" placeholder="Select Brand" {...field} />
+                                            <Input
+                                                size="new"
+                                                className="text-xs" type="text" id="price" placeholder="Select Brand" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -106,7 +112,9 @@ export const NewServicesForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Category *</FormLabel>
                                         <FormControl >
-                                            <Input className="text-xs" type="text" id="category" placeholder="Model" {...field} />
+                                            <Input
+                                                size="new"
+                                                className="text-xs" type="text" id="category" placeholder="Model" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -124,7 +132,9 @@ export const NewServicesForms = ({ close, data = null }) => {
                                 <FormItem className="w-full text-xs">
                                     <FormLabel className="font-bold">Description</FormLabel>
                                     <FormControl >
-                                        <Input className="text-xs" type="text" id="description" placeholder="Model" {...field} />
+                                        <Input
+                                            size="new"
+                                            className="text-xs" type="text" id="description" placeholder="Model" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

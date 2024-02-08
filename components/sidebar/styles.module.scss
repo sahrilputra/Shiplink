@@ -13,16 +13,19 @@
     width: 25px;
 }
 
+
 .title {
     width: 191px;
 }
 
-.clicked{
+.clicked {
     background: red;
 }
-.active{
-background-color: green;
+
+.active {
+    background-color: green;
 }
+
 // @media screen and (max-width: 1380px) {
 
 //     .sideBarRespon {
@@ -63,7 +66,8 @@ background-color: green;
     .sideBarRespon {
         width: max-content;
     }
-    .deskView{
+
+    .deskView {
         display: none;
     }
 }

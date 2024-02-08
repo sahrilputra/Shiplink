@@ -51,7 +51,7 @@ export const NewProductForms = ({ close, data = null }) => {
                 <form
                     className='flex gap-2 flex-col'
                     action="">
-                    <div className="profile flex flex-row gap-4 w-full">
+                    <div className="profile flex flex-row gap-2 w-full">
                         <FormField
                             className="w-full text-xs"
                             name="productID"
@@ -61,7 +61,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-xs">
                                         <FormLabel className="font-bold">Product ID</FormLabel>
                                         <FormControl>
-                                            <Input id="productID" className="text-xs" placeholder="#1231" {...field} />
+                                            <Input
+                                                size="new"
+                                                id="productID" className="text-xs" placeholder="#1231" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -77,7 +79,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Item #</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="item" className="text-xs" placeholder="#2321"  {...field} />
+                                            <Input
+                                                size="new"
+                                                type="text" id="item" className="text-xs" placeholder="#2321"  {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -85,7 +89,7 @@ export const NewProductForms = ({ close, data = null }) => {
                             )}
                         />
                     </div>
-                    <div className="wrap flex flex-row items-center gap-4">
+                    <div className="wrap flex flex-row items-center gap-2">
                         <FormField
                             name="brand"
                             className="w-full"
@@ -95,7 +99,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Brand *</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="brand" className="text-xs" placeholder="Select Brand" {...field} />
+                                            <Input
+                                                size="new"
+                                                type="text" id="brand" className="text-xs" placeholder="Select Brand" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -111,7 +117,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Model *</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="brand" className="text-xs" placeholder="Model" {...field} />
+                                            <Input
+                                                size="new"
+                                                type="text" id="brand" className="text-xs" placeholder="Model" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -127,7 +135,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Category *</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="category" className="text-xs" placeholder="Model" {...field} />
+                                            <Input
+                                                size="new"
+                                                type="text" id="category" className="text-xs" placeholder="Model" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -145,7 +155,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Description *</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="country" className="text-xs" placeholder="Set a description for better visibility." {...field} />
+                                            <Input
+                                                size="new"
+                                                type="text" id="country" className="text-xs" placeholder="Set a description for better visibility." {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -162,7 +174,9 @@ export const NewProductForms = ({ close, data = null }) => {
                                         <FormItem className="text-xs w-full">
                                             <FormLabel className="font-bold">Price *</FormLabel>
                                             <FormControl >
-                                                <Input type="text" id="price" className="text-xs" placeholder="$ 12.99"  {...field} />
+                                                <Input
+                                                    size="new"
+                                                    type="text" id="price" className="text-xs" placeholder="$ 12.99"  {...field} />
                                             </FormControl>
                                             <FormMessage className="text-xs" />
                                         </FormItem>
@@ -176,14 +190,14 @@ export const NewProductForms = ({ close, data = null }) => {
                                 render={({ field }) => (
                                     <>
                                         <FormItem className="w-full text-neutral-900 text-xs">
-                                        <FormLabel className="font-bold">Image *</FormLabel>
+                                            <FormLabel className="font-bold">Image *</FormLabel>
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-200 p-0'>
                                                     <Input
                                                         id="wholeBox"
                                                         type="file"
-                                                        className="text-xs p-0 border-none h-9 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
-                                                        placeholder="Attach File"
+                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                        placeholder="Upload Image"
                                                         {...field}
                                                     />
                                                 </div>

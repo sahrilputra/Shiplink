@@ -96,11 +96,11 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                             <TableCell className="text-center text-xs ">
                                                 <Button
                                                     variant="secondary"
-                                                    size="xs"
-                                                    className="px-2 py-1"
+                                                    size="sm"
+                                                    className="h-6 px-2"
                                                     onClick={() => setOpenUpdate(true)}
                                                 >
-                                                    <p className='text-[10px] text-white '>Update</p>
+                                                    <p className="text-xs text-[10px]">Update</p>
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
@@ -122,12 +122,20 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                             <TableCell className="text-center text-xs ">
                                                 <Button
                                                     variant="secondary"
+                                                    size="sm"
+                                                    className="h-6 px-2"
+                                                    onClick={() => setOpenUpdate(true)}
+                                                >
+                                                    <p className="text-xs text-[10px]">Update</p>
+                                                </Button>
+                                                {/* <Button
+                                                    variant="secondary"
                                                     size="xs"
                                                     className="px-2 py-1"
                                                     onClick={() => setOpenUpdate(true)}
                                                 >
                                                     <p className='text-[10px] text-white '>Update</p>
-                                                </Button>
+                                                </Button> */}
                                             </TableCell>
                                         </TableRow>
                                     </>

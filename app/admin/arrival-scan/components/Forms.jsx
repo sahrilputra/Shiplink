@@ -197,16 +197,6 @@ export const ArrivalForms = ({ forms }) => {
                                 )}
                             />
                         </div>
-
-                        <div className={`flex w-full justify-end ${newData !== null ? 'block' : 'hidden'}`}>
-                            <Button
-                                onClick={handleResetCustomerData}
-                                variant="ghost"
-                                type="button"
-                                className='text-xs text-red-700 h-5'>
-                                Reset Forms
-                            </Button>
-                        </div>
                     </div>
                     <div className="flex flex-col justify-start gap-2 w-full">
                         <div className="nameWrapper flex flex-row gap-2 w-[100%]  text-zinc-600">
@@ -382,6 +372,15 @@ export const ArrivalForms = ({ forms }) => {
                                 </div>
                             </div>
                         </div>
+                        <div className={`flex w-full justify-end ${newData !== null ? 'block' : 'hidden'}`}>
+                            <Button
+                                onClick={handleResetCustomerData}
+                                variant="ghost"
+                                type="button"
+                                className='text-xs text-red-700 h-5'>
+                                Reset Forms
+                            </Button>
+                        </div>
                     </div>
 
 
@@ -461,6 +460,8 @@ export const ArrivalForms = ({ forms }) => {
                             </>
                         )}
                     />
+
+
                 </div>
             </div>
         </>

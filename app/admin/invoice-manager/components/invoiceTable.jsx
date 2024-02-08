@@ -204,13 +204,15 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
 
                                     {
                                         Object.keys(rowSelection).length === 0 ? (
-                                            <Button
-                                                variant="destructive"
-                                                size="sm"
-                                                className="w-[100px]"
-                                            >
-                                                <p className=" text-xs">New Invoice</p>
-                                            </Button>
+                                            <NextLink href={"/admin/invoice-manager/invoice"} >
+                                                <Button
+                                                    variant="destructive"
+                                                    size="sm"
+                                                    className="w-[100px]"
+                                                >
+                                                    <p className=" text-xs">New Invoice</p>
+                                                </Button>
+                                            </NextLink>
                                         ) : (
                                             <Button
                                                 variant="destructive"
