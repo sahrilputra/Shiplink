@@ -61,25 +61,26 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                     <TableRow className="text-xs">
                         <TableCell className="font-medium flex flex-row justify-between w-full items-center p-0 px-5 py-2  ">
                             <div className="flex flex-row gap-4">
-                                <p className=' text-base font-bold text-myBlue'>Totals : </p>
-                                <p className=' text-base font-semibold'>$123.00 </p>
+                                <p className=' text-sm font-bold text-myBlue'>Totals : </p>
+                                <p className=' text-sm font-semibold'>$123.00 </p>
 
                             </div>
                             <div className="flex flex-row justify-center gap-4">
                                 <Select>
-                                    <SelectTrigger className="text-xs w-[150px]">
+                                    <SelectTrigger className="text-xs w-[150px] h-[30px] rounded-sm px-2 py-0'">
                                         <SelectValue placeholder="Select Bin Location " className='text-xs' />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="light">Bin A</SelectItem>
-                                        <SelectItem value="dark">Bin B</SelectItem>
-                                        <SelectItem value="system">Bin C</SelectItem>
+                                        <SelectItem className="text-xs" value="light">Bin A</SelectItem>
+                                        <SelectItem className="text-xs" value="dark">Bin B</SelectItem>
+                                        <SelectItem className="text-xs" value="system">Bin C</SelectItem>
                                     </SelectContent>
                                 </Select>
 
                                 <Button
                                     variant="destructive"
                                     type="button"
+                                    className=" h-[30px] rounded-sm px-4 py-0"
                                     size="sm"
                                     onClick={(e) => {
                                         setOpen(true)

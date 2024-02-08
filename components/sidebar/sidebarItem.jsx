@@ -18,13 +18,13 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                     ${isActive ? "bg-red-700 text-white opacity-100" : isClicked ? "bg-blue-700" : "opacity-50 hover:bg-red-700/30 transition-colors duration-200"}
                     rounded-[5px] `}
                 >
-                    <div className={` "w-[80%] mx-auto`}>
-                        <Separator className={`${isActive ? "hidden" : "block"} h-[1px] bg-zinc-300`} />
+                    <div className={`w-[80%] mx-auto h-[1.5px]`}>
+                        <Separator className={`${isActive ? "hidden" : "block"} h-[1px] font-bold bg-zinc-300`} />
                     </div>
 
                     <div className={`${isActive ? "text-white " : "text-black"} flex flex-row gap-3 items-center  px-[15px] py-2  justify-start w-[220px]`}>
                         <div className={`${styles.icons} h-[25px] relative`}>
-                            <div className={`${isActive && 'text-white top-[-16.67px] fill-white stroke-white'}w-[30px] h-[50px]`}>{icon}</div>
+                            <div className={`${isActive && 'text-white fill-white stroke-white'} w-[30px] h-[30px]`}>{icon}</div>
                         </div>
                         <div className={`${styles.title} justify-start items-start gap-[18px] flex`}>
                             <div className="  text-[14px] font-semibold font-['Poppins']">{title}</div>

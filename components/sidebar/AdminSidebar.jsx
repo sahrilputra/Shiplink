@@ -67,7 +67,7 @@ export const AdminSidebar = () => {
                                     title="Arrival Scan"
                                     icon={
                                         <ArrivalIcon
-                                            width={23} height={23}
+                                            width={20} height={20}
                                         />}
                                     href="/admin/arrival-scan"
                                 />
@@ -78,7 +78,7 @@ export const AdminSidebar = () => {
                                     isActive={router === "/admin/verification"}
                                     title="Verification"
                                     icon={
-                                        <VerificationIcon width={23} height={23} />
+                                        <VerificationIcon width={20} height={20} />
                                     }
                                     href="/admin/verification"
                                 />
@@ -89,8 +89,7 @@ export const AdminSidebar = () => {
                                     isActive={router === "/admin/custom-brokers"}
                                     title="Customs Broker"
                                     icon={<CustomBrokerIcon
-                                        width={25}
-                                        height={25}
+                                        width={23} height={23}
                                     />}
                                     href="/admin/custom-brokers"
                                 />
@@ -99,8 +98,7 @@ export const AdminSidebar = () => {
                                     isActive={router.startsWith("/admin/transport")}
                                     title="Transport"
                                     icon={<TransportIcon
-                                        width={25}
-                                        height={25}
+                                        width={23} height={23}
                                     />}
                                     href="/admin/transport"
                                 />
@@ -109,8 +107,7 @@ export const AdminSidebar = () => {
                                     isActive={router === "/admin/custom-clearance"}
                                     title="Custom Clearance"
                                     icon={<CustomClearanceIcon
-                                        width={25}
-                                        height={25}
+                                        width={23} height={23}
                                         className="relative"
                                     />}
                                     href="/admin/custom-clearance"
@@ -123,8 +120,7 @@ export const AdminSidebar = () => {
                                     title="Destination Scan"
                                     icon={
                                         <DestinationIcon
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                             className="relative"
                                         />
                                     }
@@ -135,8 +131,7 @@ export const AdminSidebar = () => {
                                     title="Assisted Purchase"
                                     icon={
                                         <AssistedPurchaseIcon
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                             className="relative"
                                         />
                                     }
@@ -146,7 +141,9 @@ export const AdminSidebar = () => {
                                     isActive={router.startsWith("/admin/customers-manager")}
                                     title="Customers"
                                     icon={
-                                        <CustomerManagerIcon className={"h- [25px] w-[25px]"} />
+                                        <CustomerManagerIcon
+                                            width={23} height={23}
+                                        />
                                     }
                                     href="/admin/customers-manager"
                                 />
@@ -156,8 +153,7 @@ export const AdminSidebar = () => {
                                     title="Invoices"
                                     icon={
                                         <InvoiceManagerIcon
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                             className="relative"
                                         />
                                     }
@@ -168,8 +164,7 @@ export const AdminSidebar = () => {
                                     isActive={router.startsWith("/admin/product-manager")}
                                     title="Products & Services"
                                     icon={<ProductManagerIcon
-                                        width={25}
-                                        height={25}
+                                        width={23} height={23}
                                         className="relative"
                                     />}
                                     href="/admin/product-manager"
@@ -181,8 +176,7 @@ export const AdminSidebar = () => {
                                     title="Bin Manager"
                                     icon={
                                         <BinManagerIcon
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                             className="relative"
                                         />
                                     }
@@ -193,8 +187,7 @@ export const AdminSidebar = () => {
                                     isActive={router.startsWith("/admin/warehouse-manager")}
                                     title="Warehouses"
                                     icon={<WarehouseIcons
-                                        width={25}
-                                        height={25}
+                                        width={23} height={23}
                                         className="relative"
                                     />}
                                     href="/admin/warehouse-manager"
@@ -206,8 +199,7 @@ export const AdminSidebar = () => {
                                     isLast="true"
                                     icon={
                                         <SupportTickets
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                             className="relative"
                                         />
                                     }
@@ -232,8 +224,7 @@ export const AdminSidebar = () => {
                                     title="Users & Permissions"
                                     icon={
                                         <UserPemissionIcon
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                         />
                                     }
                                     href="/admin/user-permission"
@@ -244,8 +235,7 @@ export const AdminSidebar = () => {
                                     isLast="true"
                                     icon={
                                         <ConfigIcon
-                                            width={25}
-                                            height={25}
+                                            width={23} height={23}
                                         />
                                     }
                                     href="/admin/configuration"
