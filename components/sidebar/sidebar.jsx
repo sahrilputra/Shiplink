@@ -68,7 +68,7 @@ export const Sidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/dashboard"}
                                     title="Dashboard"
-                                    icon={<DashboardIcon width={20} height={20} fill="#00000" />}
+                                    icon={<DashboardIcon width={20} height={20} fill="#00000" stroke="#00000" />}
                                     href="/dashboard"
                                 />
                                 <SidebarItem
@@ -101,9 +101,9 @@ export const Sidebar = () => {
                         </SidebarMenu>
                         <SidebarMenu
                             title="setting"
-                            className="flex-col justify-start items-center gap-2.5 flex"
+                            className="flex-col justify-start items-center flex"
                         >
-                            <div className="flex-col justify-end items-start gap-2.5 flex">
+                            <div className="flex-col justify-end items-start gap-[5px] flex">
                                 <SidebarItem
                                     isActive={router === "/address-book"}
                                     title="Address Book"

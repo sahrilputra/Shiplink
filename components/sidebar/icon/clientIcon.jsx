@@ -9,6 +9,7 @@ export const DashboardIcon = (props) => {
                 xmlSpace="preserve"
                 viewBox="0 0 512 512"
                 fill="none"
+                stroke='black'
                 strokeMiterlimit={10}
                 strokeWidth={15}
             >
@@ -128,8 +129,8 @@ export const AddressBookIcon = (props) => {
             {...props}
             xmlns="http://www.w3.org/2000/svg"
             xmlSpace="preserve"
-            width={25}
-            height={25}
+            width={20}
+            height={20}
             viewBox="0 0 368.16 368.16"
         >
             <path
@@ -150,8 +151,8 @@ export const SavedBoxIcon = (props) => {
             {...props}
             xmlns="http://www.w3.org/2000/svg"
             xmlSpace="preserve"
-            width={25}
-            height={25}
+            width={20}
+            height={20}
             viewBox="0 0 64 64"
         >
             <path
@@ -241,8 +242,8 @@ export const ReferFriendsIcon = (props) => {
             {...props}
             xmlns="http://www.w3.org/2000/svg"
             xmlSpace="preserve"
-            width={25}
-            height={25}
+            width={20}
+            height={20}
             viewBox="0 0 32 32"
         >
             <path

@@ -18,7 +18,7 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                  ${isActive ? "bg-red-700 text-white opacity-100" : isClicked ? "bg-blue-700" : "opacity-50 hover:bg-red-700/30 transition-colors duration-200"}
                 `}>
                     <div className={`${isActive ? "text-white border-none " : "text-black"} ${isLast ? " border-b" : ""} flex flex-row items-center h-full justify-center gap-3 w-[210px] px-[15px] border-t border-zinc-300`}>
-                        <div className={`${styles.icons} ${isActive && 'text-white fill-white stroke-white'}`}>
+                        <div className={` text-black ${styles.icons} ${isActive && 'text-white fill-white stroke-white'}`}>
                             {icon}
                         </div>
                         <div className={`${styles.title} justify-start items-start flex`}>
