@@ -17,28 +17,30 @@ export const EditMode = ({ cancel, increaseContent }) => {
                         variant="softBlue"
                         size="sm"
                         type="button"
-                        className="px-4 h-7 py-3"
+                        className=" h-[30px] rounded-sm px-4 py-0"
                     >
                         <p className='text-xs'>Add Other Content</p>
                     </Button>
                 </div>
-
                 <div className=" flex flex-row justify-center gap-2 items-center">
                     <Button
                         variant="softBlue"
+                        type="button"
+                        className=" h-[30px] rounded-sm px-4 py-0"
                         size="sm"
                         onClick={cancel}
-                        className="p-0 px-3 py-2 h-[35px] text-xs font-light"
                     >
                         <p className='text-xs font-light'>Cancel</p>
                     </Button>
                     <Button
                         variant="secondary"
+                        type="button"
+                        className=" h-[30px] rounded-sm px-4 py-0"
                         size="sm"
-                        className="p-0 px-3 py-2 h-[35px] text-xs font-light"
                     >
                         <p className='text-xs font-light'>Save</p>
                     </Button>
+
                 </div>
             </div>
 

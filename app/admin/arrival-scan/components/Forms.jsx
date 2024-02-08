@@ -54,6 +54,16 @@ export const ArrivalForms = ({ forms }) => {
         setNewData(null);
         setDisabled(false);
     }
+
+    const [showOtherInput, setShowOtherInput] = useState(false);
+    const handleSelectChange = (event) => {
+        const selectedValue = event.target.value;
+        if (selectedValue === "Other") {
+            setShowOtherInput(true);
+        } else {
+            setShowOtherInput(false);
+        }
+    };
     return (
         <>
             <div className="flex gap-2 flex-col text-zinc-600">
@@ -69,8 +79,8 @@ export const ArrivalForms = ({ forms }) => {
                                         {console.log(field)}
                                         <FormItem className="w-[50%] text-xs ">
                                             <FormLabel className="font-bold">Customer Unit ID</FormLabel>
-                                            <FormControl>
-                                                <Popover>
+                                            <FormControl className="w-full">
+                                                <Popover className="w-full">
                                                     <PopoverTrigger asChild>
                                                         <FormControl>
                                                             <Button
@@ -85,21 +95,21 @@ export const ArrivalForms = ({ forms }) => {
                                                             </Button>
                                                         </FormControl>
                                                     </PopoverTrigger>
-                                                    <PopoverContent className=" p-0 h-[200px] w-full">
-                                                        <ScrollArea className="h-[200px]">
-
-                                                            <Command>
+                                                    <PopoverContent className=" p-0 h-[200px] w-[100%]">
+                                                        <ScrollArea className="h-[200px] w-[100%]">
+                                                            <Command className="w-full">
                                                                 <CommandInput
                                                                     placeholder="Find User..."
                                                                     className="h-9 shadow-none text-xs"
                                                                 />
                                                                 <CommandEmpty className="text-xs text-center py-2">No Customer Found.</CommandEmpty>
                                                                 <PopoverClose>
-                                                                    <CommandGroup>
+                                                                    <CommandGroup className="w-full">
                                                                         {data.map((item) => (
                                                                             <CommandItem
                                                                                 value={item.id}
                                                                                 key={item.id}
+                                                                                className="w-full"
                                                                                 onSelect={() => {
                                                                                     forms.setValue("customerID", item.id)
                                                                                     handleDataChange({ target: { value: item.id } })
@@ -247,10 +257,13 @@ export const ArrivalForms = ({ forms }) => {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent className="text-xs">
-                                                    <SelectItem className="text-xs" value="Purolator">Purolator</SelectItem>
-                                                    <SelectItem className="text-xs" value="Feedex">Feedex</SelectItem>
-                                                    <SelectItem className="text-xs" value="Amazon">Amazon</SelectItem>
+                                                    <SelectItem className="text-xs" value="UPS">UPS</SelectItem>
                                                     <SelectItem className="text-xs" value="DHL">DHL</SelectItem>
+                                                    <SelectItem className="text-xs" value="FedEx">FedEx</SelectItem>
+                                                    <SelectItem className="text-xs" value="USPS">USPS</SelectItem>
+                                                    <SelectItem className="text-xs" value="Purolator">Purolator</SelectItem>
+                                                    <SelectItem className="text-xs" value="Canada Post">Canada Post</SelectItem>
+                                                    <SelectItem className="text-xs" value="Other">Other</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage ClassName="text-xs" />
@@ -367,8 +380,8 @@ export const ArrivalForms = ({ forms }) => {
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
-                                                            <SelectItem className="text-xs" value="ibs">ibs</SelectItem>
-                                                            <SelectItem className="text-xs" value="kg">kg</SelectItem>
+                                                            <SelectItem className="text-xs" value="Ibs">Ibs</SelectItem>
+                                                            <SelectItem className="text-xs" value="Kg">Kg</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                     <FormMessage ClassName="text-xs" />
@@ -408,7 +421,7 @@ export const ArrivalForms = ({ forms }) => {
                                             <Input
                                                 id="wholeBox"
                                                 type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                 placeholder="Upload Image"
                                                 {...field}
                                             />
@@ -432,7 +445,7 @@ export const ArrivalForms = ({ forms }) => {
                                             <Input
                                                 id="wholeBox"
                                                 type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                 placeholder="Upload Image"
                                                 {...field}
                                             />
@@ -456,7 +469,7 @@ export const ArrivalForms = ({ forms }) => {
                                             <Input
                                                 id="wholeBox"
                                                 type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                 placeholder="Upload Image"
                                                 {...field}
                                             />

@@ -19,6 +19,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { Tester } from './components/Tester'
 
 const formSchema = yup.object().shape({
     customerID: yup.string(),
@@ -123,6 +124,9 @@ export default function ArrivalScanPage() {
                         className='flex gap-2 flex-col text-zinc-600'
                         action="">
                         <ArrivalForms forms={form} />
+
+
+                        <Tester forms={form} />
                         <div className="w-full py-4">
                             <Separator className="h-[2px]" />
                         </div>
