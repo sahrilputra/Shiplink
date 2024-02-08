@@ -24,8 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import data from '../../../../data/admin/UserData.json'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from "@/lib/utils"
-
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 export const ArrivalForms = ({ forms }) => {
 
     const [customerID, setCustomerID] = useState('')
@@ -85,39 +84,41 @@ export const ArrivalForms = ({ forms }) => {
                                                             </Button>
                                                         </FormControl>
                                                     </PopoverTrigger>
-                                                    <PopoverContent className=" p-0">
-                                                        <Command>
-                                                            <CommandInput
-                                                                placeholder="Find User..."
-                                                                className="h-9 shadow-none"
-                                                            />
-                                                            <CommandEmpty>No Customer Found.</CommandEmpty>
-                                                            <CommandGroup>
-                                                                {data.map((item) => (
-                                                                    <CommandItem
-                                                                        value={item.id}
-                                                                        key={item.id}
-                                                                        onSelect={() => {
-                                                                            forms.setValue("customerID", item.id)
-                                                                            handleDataChange({ target: { value: item.id } })
-                                                                        }}
-                                                                    >
-                                                                        <div className='text-xs w-full justify-between flex flex-row'>
-                                                                            <p>{item.id} | </p>
-                                                                            <p>{item.full_name}</p>
-                                                                        </div>
-                                                                        <CheckIcon
-                                                                            className={cn(
-                                                                                "ml-auto h-4 w-4",
-                                                                                item.id === field.value
-                                                                                    ? "opacity-100"
-                                                                                    : "opacity-0"
-                                                                            )}
-                                                                        />
-                                                                    </CommandItem>
-                                                                ))}
-                                                            </CommandGroup>
-                                                        </Command>
+                                                    <PopoverContent className=" p-0 h-[200px] w-full">
+                                                        <ScrollArea className="h-[200px]">
+                                                            <Command>
+                                                                <CommandInput
+                                                                    placeholder="Find User..."
+                                                                    className="h-9 shadow-none text-xs"
+                                                                />
+                                                                <CommandEmpty className="text-xs text-center py-2">No Customer Found.</CommandEmpty>
+                                                                <CommandGroup>
+                                                                    {data.map((item) => (
+                                                                        <CommandItem
+                                                                            value={item.id}
+                                                                            key={item.id}
+                                                                            onSelect={() => {
+                                                                                forms.setValue("customerID", item.id)
+                                                                                handleDataChange({ target: { value: item.id } })
+                                                                            }}
+                                                                        >
+                                                                            <div className='text-xs w-full justify-between flex flex-row'>
+                                                                                <p>{item.id} | </p>
+                                                                                <p>{item.full_name}</p>
+                                                                            </div>
+                                                                            <CheckIcon
+                                                                                className={cn(
+                                                                                    "ml-auto h-4 w-4",
+                                                                                    item.id === field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                        </CommandItem>
+                                                                    ))}
+                                                                </CommandGroup>
+                                                            </Command>
+                                                        </ScrollArea>
                                                     </PopoverContent>
                                                 </Popover>
                                             </FormControl>
@@ -126,6 +127,8 @@ export const ArrivalForms = ({ forms }) => {
                                     </>
                                 )}
                             />
+
+
                             <FormField
                                 name="fullName"
                                 className="w-[60%] text-xs"
@@ -375,9 +378,9 @@ export const ArrivalForms = ({ forms }) => {
                         <div className={`flex w-full justify-end ${newData !== null ? 'block' : 'hidden'}`}>
                             <Button
                                 onClick={handleResetCustomerData}
-                                variant="ghost"
+                                variant="destructive"
                                 type="button"
-                                className='text-xs text-red-700 h-5'>
+                                className='text-xs text-white h-7'>
                                 Reset Forms
                             </Button>
                         </div>
@@ -397,11 +400,11 @@ export const ArrivalForms = ({ forms }) => {
                                 <FormItem className="w-full ">
                                     <FormLabel className=" font-bold">Whole Box Image</FormLabel>
                                     <FormControl>
-                                        <div className='rounded-md border border-slate-300 p-0'>
+                                        <div className='rounded-md border border-slate-300 p-0 cursor-pointer'>
                                             <Input
                                                 id="wholeBox"
                                                 type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                 placeholder="Upload Image"
                                                 {...field}
                                             />
@@ -425,7 +428,7 @@ export const ArrivalForms = ({ forms }) => {
                                             <Input
                                                 id="wholeBox"
                                                 type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                 placeholder="Upload Image"
                                                 {...field}
                                             />
@@ -449,7 +452,7 @@ export const ArrivalForms = ({ forms }) => {
                                             <Input
                                                 id="wholeBox"
                                                 type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
+                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                 placeholder="Upload Image"
                                                 {...field}
                                             />
