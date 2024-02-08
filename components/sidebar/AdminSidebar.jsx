@@ -154,7 +154,6 @@ export const AdminSidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/admin/invoice-manager"}
                                     title="Invoices"
-                                    isLast="true"
                                     icon={
                                         <InvoiceManagerIcon
                                             width={25}
@@ -204,6 +203,7 @@ export const AdminSidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/admin/support-tickets"}
                                     title="Support Tickets"
+                                    isLast="true"
                                     icon={
                                         <SupportTickets
                                             width={25}
