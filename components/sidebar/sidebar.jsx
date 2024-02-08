@@ -29,9 +29,9 @@ export const Sidebar = () => {
     // w-[280px] min-h-max px-[5px]
     // min-h-max bg-white flex-col justify-start items-center gap-5 inline-flex
 
-    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
-    const isTable = useMediaQuery({ query: '(min-width: 1025px)' })
-    const isDesktop = useMediaQuery({ query: '(min-width: 1440px)' })
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+    const isTable = useMediaQuery({ query: "(min-width: 1025px)" });
+    const isDesktop = useMediaQuery({ query: "(min-width: 1440px)" });
 
     return (
         <>
@@ -43,7 +43,9 @@ export const Sidebar = () => {
                 <ScrollArea className="h-[100vh]">
                     <div className={`flex gap-3 flex-col `}>
                         <div className="h-[50px]">
-                            <div className={`${styles.logo} fixed bg-white mb-[10px] text-center h-[50px] w-[230px] flex flex-col gap-2 justify-items-center z-[25]`}>
+                            <div
+                                className={`${styles.logo} fixed bg-white mb-[10px] text-center h-[50px] w-[230px] flex flex-col gap-2 justify-items-center z-[25]`}
+                            >
                                 <div className=" w-max h-max mx-auto bg-white ">
                                     <Image
                                         src={"/logo.png"}
@@ -51,10 +53,10 @@ export const Sidebar = () => {
                                         height={120}
                                         alt="shiplink Logo"
                                         className="mx-auto"
-                                        style={{ width: '120px', height: '30px' }}
+                                        style={{ width: "120px", height: "30px" }}
                                     />
                                     <div className="w-[200px] mt-2 flex items-center justify-center mx-auto">
-                                        <Separator className='h-[2px]' />
+                                        <Separator className="h-[2px]" />
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +70,14 @@ export const Sidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/dashboard"}
                                     title="Dashboard"
-                                    icon={<DashboardIcon width={20} height={20} fill="#00000" stroke="#00000" />}
+                                    icon={
+                                        <DashboardIcon
+                                            width={20}
+                                            height={20}
+                                            fill="#00000"
+                                            stroke="#00000"
+                                        />
+                                    }
                                     href="/dashboard"
                                 />
                                 <SidebarItem
@@ -90,20 +99,7 @@ export const Sidebar = () => {
                                     icon={<SavedQuoteIcon width={20} height={20} />}
                                     href="/saved-quotes"
                                 />
-                                <SidebarItem
-                                    isActive={router === "/assisted-purchase"}
-                                    title="Assisted Purchase"
-                                    icon={<AssistedPurchaseIcon width={20} height={20} />}
-                                    href="/assisted-purchase"
-                                    isLast={true}
-                                />
-                            </div>
-                        </SidebarMenu>
-                        <SidebarMenu
-                            title="setting"
-                            className="flex-col justify-start items-center flex"
-                        >
-                            <div className="flex-col justify-end items-start gap-[5px] flex">
+
                                 <SidebarItem
                                     isActive={router === "/address-book"}
                                     title="Address Book"
@@ -114,74 +110,56 @@ export const Sidebar = () => {
                                 <SidebarItem
                                     isActive={router === "/saved-box"}
                                     title="Saved Box Sizes"
-                                    icon={
-                                        <SavedBoxIcon
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
+                                    icon={<SavedBoxIcon width={20} height={20} />}
                                     href="/saved-box"
                                 />
-
                                 <SidebarItem
-                                    isActive={router === "/membership"}
-                                    title="Membership Plan"
-                                    icon={
-                                        <MembershipIcon
-                                            width={20}
-                                            height={20}
-
-                                        />
-                                    }
-                                    href="/membership"
-                                />
-
-                                <SidebarItem
-                                    isActive={router.startsWith("/account")}
-                                    title="Account Details"
-                                    icon={
-                                        <AccountDetailsIcon
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
-                                    href="/account"
+                                    isActive={router === "/assisted-purchase"}
+                                    title="Assisted Purchase"
+                                    icon={<AssistedPurchaseIcon width={20} height={20} />}
+                                    href="/assisted-purchase"
                                 />
 
                                 <SidebarItem
                                     isActive={router === "/billing-history"}
                                     title="Billing History"
-                                    icon={
-                                        <BillingHistoryIcon
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
+                                    icon={<BillingHistoryIcon width={20} height={20} />}
                                     href="/billing-history"
                                 />
 
                                 <SidebarItem
                                     isActive={router === "/reference"}
                                     title="Refer Friends"
-                                    icon={
-                                        <ReferFriendsIcon
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
+                                    icon={<ReferFriendsIcon width={20} height={20} />}
                                     href="/reference"
+                                    isLast={true}
+                                />
+                            </div>
+                        </SidebarMenu>
+                        <SidebarMenu
+                            title="setting"
+                            className="flex-col justify-start items-center flex"
+                        >
+                            <div className="flex-col justify-end items-start gap-[5px] flex">
+                                <SidebarItem
+                                    isActive={router === "/membership"}
+                                    title="Membership Plan"
+                                    icon={<MembershipIcon width={20} height={20} />}
+                                    href="/membership"
+                                />
+
+                                <SidebarItem
+                                    isActive={router.startsWith("/account")}
+                                    title="Account Details"
+                                    icon={<AccountDetailsIcon width={20} height={20} />}
+                                    href="/account"
                                 />
 
                                 <SidebarItem
                                     isActive={router === "/support"}
                                     title="Support"
                                     isLast={true}
-                                    icon={
-                                        <SupportIcons
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
+                                    icon={<SupportIcons width={20} height={20} />}
                                     href="/support"
                                 />
                             </div>
@@ -194,8 +172,7 @@ export const Sidebar = () => {
                                     <LocationCard />
                                 </SidebarMenu>
                             ) : (
-                                <>
-                                </>
+                                <></>
                             )}
                         </SidebarMenu>
                     </div>
