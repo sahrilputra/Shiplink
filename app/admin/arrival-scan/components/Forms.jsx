@@ -25,6 +25,7 @@ import data from '../../../../data/admin/UserData.json'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { PopoverClose } from '@radix-ui/react-popover'
 export const ArrivalForms = ({ forms }) => {
 
     const [customerID, setCustomerID] = useState('')
@@ -86,37 +87,40 @@ export const ArrivalForms = ({ forms }) => {
                                                     </PopoverTrigger>
                                                     <PopoverContent className=" p-0 h-[200px] w-full">
                                                         <ScrollArea className="h-[200px]">
+
                                                             <Command>
                                                                 <CommandInput
                                                                     placeholder="Find User..."
                                                                     className="h-9 shadow-none text-xs"
                                                                 />
                                                                 <CommandEmpty className="text-xs text-center py-2">No Customer Found.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {data.map((item) => (
-                                                                        <CommandItem
-                                                                            value={item.id}
-                                                                            key={item.id}
-                                                                            onSelect={() => {
-                                                                                forms.setValue("customerID", item.id)
-                                                                                handleDataChange({ target: { value: item.id } })
-                                                                            }}
-                                                                        >
-                                                                            <div className='text-xs w-full justify-between flex flex-row'>
-                                                                                <p>{item.id} | </p>
-                                                                                <p>{item.full_name}</p>
-                                                                            </div>
-                                                                            <CheckIcon
-                                                                                className={cn(
-                                                                                    "ml-auto h-4 w-4",
-                                                                                    item.id === field.value
-                                                                                        ? "opacity-100"
-                                                                                        : "opacity-0"
-                                                                                )}
-                                                                            />
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
+                                                                <PopoverClose>
+                                                                    <CommandGroup>
+                                                                        {data.map((item) => (
+                                                                            <CommandItem
+                                                                                value={item.id}
+                                                                                key={item.id}
+                                                                                onSelect={() => {
+                                                                                    forms.setValue("customerID", item.id)
+                                                                                    handleDataChange({ target: { value: item.id } })
+                                                                                }}
+                                                                            >
+                                                                                <div className='text-xs w-full justify-between flex flex-row'>
+                                                                                    <p>{item.id} | </p>
+                                                                                    <p>{item.full_name}</p>
+                                                                                </div>
+                                                                                <CheckIcon
+                                                                                    className={cn(
+                                                                                        "ml-auto h-4 w-4",
+                                                                                        item.id === field.value
+                                                                                            ? "opacity-100"
+                                                                                            : "opacity-0"
+                                                                                    )}
+                                                                                />
+                                                                            </CommandItem>
+                                                                        ))}
+                                                                    </CommandGroup>
+                                                                </PopoverClose>
                                                             </Command>
                                                         </ScrollArea>
                                                     </PopoverContent>
