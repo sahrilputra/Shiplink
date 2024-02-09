@@ -50,6 +50,7 @@
     -ms-border-radius: 10px;
     -o-border-radius: 10px;
 }
+
 .contentFrame2 {
     width: 90%;
     height: max-content;
@@ -63,4 +64,15 @@
     -moz-border-radius: 10px;
     -ms-border-radius: 10px;
     -o-border-radius: 10px;
+}
+
+.aboutContentFrame {
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    height: 368px;
+    background-repeat: no-repeat;
+    border: solid 1px #E7E8EC;
+    background-image: url('./../public/assets/home/about/aboutFrame.png');
+
 }

@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import React, { useEffect, useState } from 'react'
 import NextLink from 'next/link'
+
 export const HomeNavbar = () => {
     const [isSolidBackground, setIsSolidBackground] = useState(false);
 
@@ -25,10 +26,14 @@ export const HomeNavbar = () => {
             </div>
 
             <div className="flex text-white flex-row gap-[30px] justify-end items-center">
-                <p className='text-base font-extralight'>Cross-Border Mailbox</p>
+                <NextLink href={'/cross-border'} className='cursor-pointer hover:opacity-70'>
+                    <p className='text-base font-extralight'>Cross-Border Mailbox</p>
+                </NextLink>
                 <p className='text-base font-extralight'>Shipping Labels</p>
                 <p className='text-base font-extralight'>Shipping Supplies</p>
-                <p className='text-base font-extralight'>About Us</p>
+                <NextLink href={"/aboutUs"} className='cursor-pointer hover:opacity-70'>
+                    <p className='text-base font-extralight'>About Us</p>
+                </NextLink>
                 <p className='text-base font-bold'>EN</p>
                 <div className="flex flex-row gap-[24px]">
                     <NextLink href={'/login/customer/signup'} >
