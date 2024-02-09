@@ -24,8 +24,8 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                     <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
                     <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs">Description</TableHead>
                     <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs ">HS Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[200px] text-myBlue font-bold text-xs ">HS Code</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs ">Made in</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3   text-myBlue font-bold text-xs w-[140px]">HS Code</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3   text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
                     <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                 </TableHeader>
                 <TableBody className="px-2">

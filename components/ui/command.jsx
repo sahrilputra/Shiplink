@@ -32,9 +32,13 @@ const CommandDialog = ({
   );
 }
 
-const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
+const CommandInput = React.forwardRef(({ className, disableSearchIcon, ...props }, ref) => (
   <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+    {
+      !disableSearchIcon && (
+        <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+      )
+    }
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
@@ -46,6 +50,25 @@ const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
 ))
 
 CommandInput.displayName = CommandPrimitive.Input.displayName
+
+const CommandArrival = React.forwardRef(({ className, disableSearchIcon, ...props }, ref) => (
+  <div className="flex items-center" cmdk-input-wrapper="">
+    {
+      !disableSearchIcon && (
+        <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+      )
+    }
+    <CommandPrimitive.Input
+      ref={ref}
+      className={cn(
+        "flex w-full h-[30px] rounded border border-slate-300 bg-white px-3 py-1 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300",
+        className
+      )}
+      {...props} />
+  </div>
+))
+
+CommandArrival.displayName = CommandPrimitive.Input.displayName
 
 const CommandList = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive.List
@@ -113,4 +136,5 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
+  CommandArrival,
 }

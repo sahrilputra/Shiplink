@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Tester } from './components/Tester'
 
+
 const formSchema = yup.object().shape({
     customerID: yup.string(),
     fullName: yup.string(),
@@ -116,6 +117,7 @@ export default function ArrivalScanPage() {
     })
 
 
+
     return (
         <>
             <div className={styles.forms}>
@@ -123,10 +125,12 @@ export default function ArrivalScanPage() {
                     <form
                         className='flex gap-2 flex-col text-zinc-600'
                         action="">
-                        <ArrivalForms forms={form} />
+                        <ArrivalForms
+                            emptyMessage="No resulsts."
+                            placeholder="Find something"
+                            forms={form}
+                        />
 
-
-                        <Tester forms={form} />
                         <div className="w-full py-4">
                             <Separator className="h-[2px]" />
                         </div>

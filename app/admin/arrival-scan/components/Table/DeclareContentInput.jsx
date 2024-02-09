@@ -85,7 +85,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell >
-                <TableCell className="p-0 h-8 px-2 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2  w-[140px]">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].hsCode`}
@@ -96,7 +96,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                     <FormControl>
                                         <Input
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="hsCode" type="number" placeholder="0" {...field} />
+                                            id="hsCode" type="number" placeholder="0000.00.0000" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -104,7 +104,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         )}
                     />
                 </TableCell>
-                <TableCell className="p-0 h-8 px-2 py-2 ">
+                <TableCell className="p-0 h-8 px-2 py-2 w-[100px] ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`DeclareContet[${index}].madeIn`}
@@ -114,8 +114,8 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
-                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="madeIn" placeholder="CAD" {...field} />
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-center"
+                                            id="madeIn" placeholder="CAN" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
