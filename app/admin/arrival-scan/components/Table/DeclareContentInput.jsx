@@ -22,7 +22,6 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="width" type="number" placeholder="0" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -41,7 +40,6 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="value" type="number" placeholder="0" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -60,7 +58,6 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="description" placeholder="Description" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -79,7 +76,6 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="hsDescription" placeholder="HS Description" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -98,7 +94,6 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="hsCode" type="number" placeholder="0000.00.0000" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -114,10 +109,9 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
-                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-center"
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left"
                                             id="madeIn" placeholder="CAN" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}

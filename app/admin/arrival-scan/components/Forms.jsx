@@ -45,8 +45,8 @@ const carrierList = [
     },
     {
         "id": 3,
-        "carrierName": "FeedEx",
-        "value": "FeedEx"
+        "carrierName": "FedEx",
+        "value": "FedEx"
     },
     {
         "id": 4,
@@ -299,15 +299,15 @@ export const ArrivalForms = ({
                                                             setValue={isLoading ? undefined : setInputValue}
                                                             onBlur={handleBlur}
                                                             onFocus={() => setOpen(true)}
-                                                            placeholder={`${field.value ? data.find((item) => item.id === field.value)?.id : "Select User"}`}
+                                                            placeholder={`${field.value ? data.find((item) => item.id === field.value)?.id : "Select Customer"}`}
                                                             className="text-xs border border-neutral-300 px-2"
                                                             disableSearchIcon={true}
                                                         />
                                                     </div>
                                                     <div className="mt-1 relative">
                                                         {isOpen ? (
-                                                            <div className="absolute top-0 z-10 w-full rounded-xl bg-stone-50 outline-none animate-in fade-in-0 zoom-in-95">
-                                                                <CommandList className="ring-1 ring-slate-200 rounded-lg">
+                                                            <div className="absolute top-0 z-10 w-full rounded-xl bg-blue-100 shadow-md outline-none animate-in fade-in-0 zoom-in-95">
+                                                                <CommandList className="ring-1 ring-slate-200  bg-blue-100 rounded-lg">
                                                                     <ScrollArea>
                                                                         <CommandGroup>
                                                                             {data.map((item) => {
@@ -399,7 +399,7 @@ export const ArrivalForms = ({
                                                 <Input
                                                     id="phoneNumber"
                                                     className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
-                                                    placeholder="+1 21xxxx"
+                                                    placeholder="+1.000.000.0000"
                                                     {...field}
                                                     disabled={disabled}
                                                 />
@@ -413,22 +413,20 @@ export const ArrivalForms = ({
                                 name="email"
                                 className="w-full "
                                 control={forms.control}
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <>
                                         <FormItem className="w-full text-xs">
                                             <FormLabel className="font-bold">Email</FormLabel>
                                             <FormControl>
                                                 <Input
-
                                                     id="email"
                                                     type="email"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.email && "border-red-500 focus:ring-red-700"}`}
                                                     placeholder="customer@shiplink.ca"
                                                     {...field}
                                                     disabled={disabled}
                                                 />
                                             </FormControl>
-                                            <FormMessage ClassName="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -444,7 +442,7 @@ export const ArrivalForms = ({
                                 render={({ field }) => (
                                     <>
                                         <FormItem className="w-[60%] text-xs">
-                                            <FormLabel className=" font-bold text-zinc-600">Barcode / Tracking</FormLabel>
+                                            <FormLabel className=" font-bold text-zinc-600">Tracking / Barcode</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="trackingBarcode"
@@ -646,6 +644,7 @@ export const ArrivalForms = ({
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
+                                                            <SelectItem className="text-xs" value="in">in</SelectItem>
                                                             <SelectItem className="text-xs" value="mm">mm</SelectItem>
                                                             <SelectItem className="text-xs" value="cm">cm</SelectItem>
                                                         </SelectContent>
@@ -683,7 +682,7 @@ export const ArrivalForms = ({
                                                         defaultValue={field.value}>
                                                         <FormControl>
                                                             <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
-                                                                <SelectValue placeholder="ibs" />
+                                                                <SelectValue placeholder="Ibs" />
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>

@@ -25,7 +25,7 @@ export function RegisterDialog({ open, setOpen, trackingNumber, unitID, name }) 
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="w-max">
                 <DialogHeader>
                     <DialogTitle className="text-lg font-bold">Pacakge Registered</DialogTitle>
                 </DialogHeader>

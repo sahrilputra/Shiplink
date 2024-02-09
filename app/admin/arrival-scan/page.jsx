@@ -38,8 +38,8 @@ const formSchema = yup.object().shape({
     DeclareContet: yup.array().of(
         yup.object().shape({
             itemID: yup.string(),
-            qty: yup.number(),
-            value: yup.number(),
+            qty: yup.number().typeError('This Error'),
+            value: yup.number().typeError('This Error'),
             description: yup.string(),
             hsDescription: yup.string(),
             hsCode: yup.string(),
@@ -143,7 +143,7 @@ export default function ArrivalScanPage() {
                                 removeContent={removeContent}
                                 inputCount={inputCount}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={trackingNumber} unitID={form.watch("customerID")} name={form.watch("fullName")} />
+                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("trackingBarcode")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
                         </div>
                     </form>
                 </Form>
