@@ -27,7 +27,7 @@ export function RegisterDialog({ open, setOpen, trackingNumber, unitID, name }) 
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="w-max">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold">Pacakge Registered</DialogTitle>
+                    <DialogTitle className="text-lg font-bold">Package Registered</DialogTitle>
                 </DialogHeader>
 
                 <div className="w-max" ref={componentRef}>

@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/select"
 import { DeclareContentInput } from './DeclareContentInput'
 
-export const DeclareContet = ({ setOpen, forms, removeContent, addContent, inputCount }) => {
-    console.log('declereContentID', forms.getValues('DeclareContet'))
+export const DeclareContet = ({ setOpen, forms, removeContent, addContent, inputCount, totalInput }) => {
     return (
         <>
             <Table>
@@ -62,7 +61,7 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                         <TableCell className="font-medium flex flex-row justify-between w-full items-center p-0 px-5 py-2  ">
                             <div className="flex flex-row gap-4">
                                 <p className=' text-sm font-bold text-myBlue'>Totals : </p>
-                                <p className=' text-sm font-semibold'>$123.00 </p>
+                                <p className=' text-sm font-semibold'>${totalInput} </p>
 
                             </div>
                             <div className="flex flex-row justify-center gap-4">

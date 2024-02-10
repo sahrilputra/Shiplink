@@ -26,14 +26,15 @@ const formSchema = yup.object().shape({
     customerID: yup.string(),
     fullName: yup.string(),
     trackingBarcode: yup.string(),
-    phoneNumber: yup.string(),
+    phoneNumber: yup.number(),
     email: yup.string().email(),
     carrier: yup.string(),
+    packageID: yup.string(),
     length: yup.number(),
     width: yup.number(),
     height: yup.number(),
     heightType: yup.string(),
-    weight: yup.string(),
+    weight: yup.number(),
     weightType: yup.string(),
     DeclareContet: yup.array().of(
         yup.object().shape({
@@ -117,7 +118,10 @@ export default function ArrivalScanPage() {
     })
 
 
-
+    const declareContent = form.watch("DeclareContet");
+    const totalValue = Array.isArray(declareContent)
+        ? declareContent.reduce((acc, item) => acc + parseFloat(item.value || 0), 0)
+        : 0;
     return (
         <>
             <div className={styles.forms}>
@@ -142,6 +146,7 @@ export default function ArrivalScanPage() {
                                 addContent={addContent}
                                 removeContent={removeContent}
                                 inputCount={inputCount}
+                                totalInput={totalValue}
                             />
                             <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("trackingBarcode")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
                         </div>

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/tableDashboard'
 import { CheckIcon, XIcon } from 'lucide-react'
 import React from 'react'
+import InputMask from 'react-input-mask';
 
 export const DeclareContentInput = ({ index, remove, forms, items }) => {
     return (
@@ -88,11 +89,25 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                         control={forms.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full text-sm">
+                                <FormItem className="w-full text-xs">
                                     <FormControl>
-                                        <Input
-                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="hsCode" type="number" placeholder="0000.00.0000" {...field} />
+                                        <InputMask
+                                            mask="9999.99.9999" // Format yang diinginkan
+                                            maskPlaceholder="0000.00.0000"
+                                            className='text-xs h-[30px] pl-2'
+                                            {...field}
+                                        >
+                                            {(inputProps) => (
+                                                <Input
+                                                    className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                                    id="hsCode"
+                                                    type="text" // Ubah tipe input menjadi teks
+                                                    placeholder="0000.00.0000" // Placeholder yang sesuai dengan format
+                                                    {...inputProps}
+                                                />
+                                            )}
+                                        </InputMask>
+
                                     </FormControl>
                                 </FormItem>
                             </>
