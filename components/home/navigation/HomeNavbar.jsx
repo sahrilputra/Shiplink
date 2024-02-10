@@ -29,7 +29,9 @@ export const HomeNavbar = () => {
                 <NextLink href={'/cross-border'} className='cursor-pointer hover:opacity-70'>
                     <p className='text-base font-extralight'>Cross-Border Mailbox</p>
                 </NextLink>
-                <p className='text-base font-extralight'>Shipping Labels</p>
+                <NextLink href={"/shippingLabels"} className='cursor-pointer hover:opacity-70'>
+                    <p className='text-base font-extralight'>Shipping Labels</p>
+                </NextLink>
                 <p className='text-base font-extralight'>Shipping Supplies</p>
                 <NextLink href={"/aboutUs"} className='cursor-pointer hover:opacity-70'>
                     <p className='text-base font-extralight'>About Us</p>
