@@ -1,12 +1,13 @@
 import React from 'react'
-
+import { Badge } from '@/components/ui/badge'
 export const VerifiedStatus = ({ param }) => {
     return (
         <>
-            <div className="flex flex-row gap-3 items-center">
-                <div className={`${param === "Verified" ? "bg-green-400" : "bg-orange-300" } w-3 h-3 rounded-full `} />
+            {/* <div className="flex flex-row gap-3 items-center">
+                <div className={`${param === "Verified" ? "bg-green-400" : "bg-orange-300"} w-3 h-3 rounded-full `} />
                 <p>{param}</p>
-            </div>
+            </div> */}
+            <Badge variant={param === "Verified" ? "verified" : "unverified"}>{param}</Badge>
         </>
     )
 }

@@ -17,7 +17,6 @@ export default function BinManagementPage() {
 
     const [creteNewDialog, setCreateNewDialog] = useState(false)
     const [selectedBinID, setSelectedBinID] = useState(null)
-    console.log('selected', selectedBinID)
 
     const handleBinSelection = (id) => {
         setSelectedBinID(id)

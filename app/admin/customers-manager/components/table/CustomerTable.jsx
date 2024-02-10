@@ -98,8 +98,7 @@ export function CustomerTable({ data, open, setOpen }) {
                                                 <Button
                                                     variant="tableBlue"
                                                     size="tableIcon"
-                                                    className={`rounded-sm w-max px-[10px] h-[20px]`}
-                                                    onClick={() => toggleOpenChange()}
+                                                    className={`w-max px-[10px] h-[20px]`}
                                                 >
                                                     <p className="text-[11px] text-myBlue">Details</p>
                                                 </Button>

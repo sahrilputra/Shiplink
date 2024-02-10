@@ -30,8 +30,8 @@ export function PendingTable({ data, isOpen, setOpen }) {
         setIsEdit(false)
     }
     const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
-        newExpandedRows[index] = !newExpandedRows[index];
+        const newExpandedRows = Array(data.length).fill(false);
+        newExpandedRows[index] = true;
         setExpandedRows(newExpandedRows);
     };
     return (
@@ -70,7 +70,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                 {
                     data.map((item, index) => (
                         <>
-                            <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
+                            <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-100 hover:bg-blue-100"}`} >
                                 <TableCell className="font-medium ">
                                     <Checkbox className="w-4 h-4" />
                                 </TableCell>
@@ -93,7 +93,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                         <Button
                                             variant="tableBlue"
                                             size="icon"
-                                            className={` rounded-sm  w-6 h-6`}
+                                            className={`rounded-[3px] w-6 h-6`}
                                             onClick={() => toggleRow(index)}
                                         >
                                             <ArrowDownV2Icons
@@ -106,10 +106,10 @@ export function PendingTable({ data, isOpen, setOpen }) {
                             {expandedRows[index] && (
                                 <>
                                     <TableRow >
-                                        <TableCell colSpan={8} className="w-full p-1 py-[10px] bg-blue-100">
+                                        <TableCell colSpan={8} className="w-full p-1 py-[10px] bg-blue-50">
                                             <div className="w-full  px-[20px]">
                                                 <Table>
-                                                    <TableHeader className="text-sm bg-blue-200 text-myBlue">
+                                                    <TableHeader className="text-sm bg-blue-100 text-myBlue">
                                                         <TableHead className="text-myBlue w-[200px] text-center  text-xs">No</TableHead>
                                                         <TableHead className="text-myBlue  text-xs ">Product</TableHead>
                                                         <TableHead className="text-myBlue  text-xs ">Qty</TableHead>

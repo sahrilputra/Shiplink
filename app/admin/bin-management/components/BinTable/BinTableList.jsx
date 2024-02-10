@@ -79,7 +79,7 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         <>
                             <TableRow
                                 key={item.id}
-                                className={`${isSelected === item.id ? "bg-blue-200" : ""}`}
+                                className={`${isSelected === item.id ? " bg-blue-200" : ""} cursor-pointer`}
                                 onClick={() => handleSelect(item.id)} >
                                 <TableCell className=" w-[50px]"> <Checkbox /></TableCell>
                                 <TableCell className=" ">{item.id}</TableCell>

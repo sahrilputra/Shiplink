@@ -21,7 +21,7 @@ export default function UserPage({ params }) {
 
                 <div className="wrapper w-full flex flex-row justify-between gap-2 h-ful ">
                     <div className="left w-[30%] ">
-                        <div className="content border bg-blue-50 border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
+                        <div className="content border bg-blue-200 border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
                             <div className="rounded-full m-3 mb-2 text-sm">
                                 <img src="https://source.boringavatars.com/beam"
                                     alt="avatar"

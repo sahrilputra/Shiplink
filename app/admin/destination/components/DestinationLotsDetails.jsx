@@ -30,9 +30,7 @@ export const DestinationLotsDetails = ({ data }) => {
                                 <p className='text-xs'>Load Lots</p>
                             </Button>
                         </NextLink>
-
                     </div>
-
 
                     <div className="Footer w-full bg-white border-[2px] border-zinc-200 rounded-sm">
                         <div className="header text-xs text-myBlue font-bold flex flex-row gap-3 justify-between w-full bg-blue-50 border rounded-sm border-zinc-100 p-2">

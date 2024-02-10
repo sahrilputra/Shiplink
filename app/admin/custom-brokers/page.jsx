@@ -34,7 +34,7 @@ export default function CustomBrokerPage() {
                             />
                         </div>
                         <div className={`${styles.title} flex flex-col`}>
-                            <h1 className=" text-zinc-900 text-sm font-bold ">Custom Broker</h1>
+                            <h1 className=" text-zinc-900 text-sm font-bold ">Customs Broker</h1>
                             <p className=" text-blue-900 text-xs font-normal">Pending : {clearancePendingCount} | Clearance : {clearanceCustomsCount}</p>
                         </div>
                     </div>

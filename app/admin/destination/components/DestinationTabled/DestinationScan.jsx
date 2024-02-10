@@ -97,7 +97,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
                         <>
                             <TableRow
                                 key={item.LotsID}
-                                className={`${isSelected === item.LotsID ? "bg-blue-200 " : ""}`}
+                                className={`cursor-pointer ${isSelected === item.LotsID ? "bg-blue-200 " : ""}`}
                                 onClick={() => HandlerGetItemID(item.LotsID)}
                             >
                                 <TableCell className=" w-[50px]">

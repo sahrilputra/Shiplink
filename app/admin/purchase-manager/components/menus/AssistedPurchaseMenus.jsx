@@ -21,7 +21,7 @@ export const AssistedPurchaseMenus = ({ getSelectedItem, dataIDhandler, dataId }
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
-                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                            className={`w-max px-[5px] h-[25px]`}
                         >
                             <MoreHorizontalIcon width={15} height={15} />
                         </Button>

@@ -95,7 +95,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                 <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
                                 <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
                                 <TableCell className="text-right text-xs">{item.UpdateDate}</TableCell>
-                                <TableCell className="text-right text-xs" >
+                                <TableCell className="text-left text-xs" >
                                     <VerifiedStatus param={item.CustomsStatus} />
                                 </TableCell>
                                 <TableCell className="w-[30px] text-right text-xs">
@@ -103,7 +103,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                     <Button
                                         variant="tableBlue"
                                         size="tableIcon"
-                                        className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                        className={` w-max px-[5px] h-[25px]`}
                                         onClick={() => toggleRow(index)}
                                     >
                                         <ArrowDownV2Icons

@@ -20,7 +20,7 @@ export const BrokerDeclareContent = ({ }) => {
         <>
             <PackageDialogDetails open={open} setOpen={setOpen} />
             <Table>
-                <TableHeader className="bg-sky-50 ">
+                <TableHeader className="bg-blue-100 ">
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Qty</TableHead>
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Value</TableHead>
                     <TableHead className="text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Description</TableHead>

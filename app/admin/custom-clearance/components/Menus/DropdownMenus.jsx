@@ -22,7 +22,7 @@ export function CustomBrokerDropdownMenus() {
                 <Button
                     variant="tableBlue"
                     size="tableIcon"
-                    className={`rounded-sm w-max px-[5px] h-[25px]`}
+                    className={`w-max px-[5px] h-[25px]`}
                     onClick={() => toggleOpenChange()}
                 >
                     <MoreHorizontalIcon width={15} height={15} />

@@ -32,10 +32,11 @@ export function PendingTable({ data, isOpen, setOpen }) {
         setIsEdit(false)
     }
     const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
-        newExpandedRows[index] = !newExpandedRows[index];
+        const newExpandedRows = Array(data.length).fill(false);
+        newExpandedRows[index] = true;
         setExpandedRows(newExpandedRows);
     };
+
 
     const toggleHeaderCheckbox = () => {
         setIsHeaderChecked(!isHeaderChecked);
@@ -93,7 +94,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                     {
                         data.map((item, index) => (
                             <>
-                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
+                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-100 hover:bg-blue-100"} h-50px`} >
                                     <TableCell className="font-medium w-[50px]">
                                         <Checkbox className="w-4 h-4" />
                                     </TableCell>
@@ -108,7 +109,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                             <Button
                                                 variant="tableBlue"
                                                 size="tableIcon"
-                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                                className={` w-max px-[5px] h-[25px]`}
                                                 onClick={() => toggleRow(index)}
                                             >
                                                 <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`} />
@@ -119,7 +120,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                 {expandedRows[index] && (
                                     <>
                                         <TableRow >
-                                            <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-100">
+                                            <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
                                                 <BrokerDeclareContent />
                                             </TableCell>
                                         </TableRow>

@@ -51,6 +51,7 @@ export const OpenedTickets = ({ close }) => {
                     <div className="flex flex-col gap-4">
                         <div className="px-[10px] py-[5px] h-max rounded-md border-[3px] border-neutral-200 flex-col flex">
                             <div className="top py-1 px-4">
+                                <div className=" text-xs font-light font-['Poppins']">Customer Name</div>
                                 <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
                             </div>
                             <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
@@ -60,10 +61,14 @@ export const OpenedTickets = ({ close }) => {
 
                             <div className="chat px-4 py-2 text-sm font-normal">
                                 <p className='text-xs'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sapiente vel qui quo fugiat officiis vitae voluptatibus repellat quos perferendis explicabo!</p>
+                            </div>
+                            <div className="top py-1 px-4">
+                                <div className=" text-[11px] font-light font-['Poppins'] text-right">10/4/2023, 14:30</div>
                             </div>
                         </div>
                         <div className="px-[10px] py-[5px] h-max rounded-md border-[3px] border-neutral-200 flex-col flex">
                             <div className="top py-1 px-4">
+                                <div className=" text-xs font-light font-['Poppins']">Customer Name</div>
                                 <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
                             </div>
                             <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
@@ -74,20 +79,12 @@ export const OpenedTickets = ({ close }) => {
                             <div className="chat px-4 py-2 text-sm font-normal">
                                 <p className='text-xs'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sapiente vel qui quo fugiat officiis vitae voluptatibus repellat quos perferendis explicabo!</p>
                             </div>
-                        </div>
-                        <div className="px-[10px] py-[5px] h-max rounded-md border-[3px] border-neutral-200 flex-col flex">
+
                             <div className="top py-1 px-4">
-                                <div className="text-sky-700 text-xs font-light font-['Poppins']">adminShipLink@gmail.com</div>
-                            </div>
-                            <div className="break w-[90%] flex flex-row gap-3 justify-between items-center mx-auto py-[5px]">
-                                <Separator className="h-[2px] w-[90%]" />
-                                <ArrowIcon width={15} height={15} className="w-[10px] h-[10px]" />
-                            </div>
-
-                            <div className="chat px-4 py-2 text-sm font-normal">
-                                <p className='text-xs'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sapiente vel qui quo fugiat officiis vitae voluptatibus repellat quos perferendis explicabo!</p>
+                                <div className=" text-[11px] font-light font-['Poppins'] text-right">10/4/2023, 14:30</div>
                             </div>
                         </div>
+
                     </div>
 
 

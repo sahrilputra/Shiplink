@@ -7,7 +7,7 @@ export const ExpandedTable = ({ type }) => {
     return (
         <>
             <div className="">
-                <div className=" flex flex-row gap-3 justify-start border-b-2 border-zinc-600/20 p-2">
+                <div className=" flex flex-row gap-3 justify-start border-y-2 border-zinc-600/20 p-2">
                     <div className="flex flex-col relative w-[80px] h-10 justify-center items-center">
                         <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>Qty</p>
                         <div className="h-10 w-full flex justify-start items-end">

@@ -150,7 +150,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Staus" />
+                                            <SelectValue placeholder="Status" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -181,8 +181,6 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                             className=" file:w-[100px] file:h-full file:p-0 text-center last:text-center last:w-full file:bg-myBlue  bg-zinc-400/50 px-0 py-2 p-0 file:text-white"
                                             type="file" id="" placeholder="" accept="application/pdf" {...field}
                                             capture="environment"
-
-
                                         />
                                     </FormControl>
                                     <FormMessage />

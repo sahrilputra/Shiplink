@@ -11,9 +11,15 @@ import { UpdateStatusDialog } from '../dialog/UpdateStatus'
 export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
 
     const [openUpdate, setOpenUpdate] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
 
     const toggleOpenDialog = () => {
         setOpen(!open)
+    }
+
+    const handleRowClick = (ticket) => {
+        setSelectedRow(ticket.TicketsID);
+        onRowClick(ticket);
     }
 
     return (
@@ -57,7 +63,7 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                     <TableHead className="text-xs w-[50px] rounded-tl-md ">
                                         <Checkbox />
                                     </TableHead>
-                                    <TableHead className="text-xs ">Open Date</TableHead>
+                                    <TableHead className="text-xs w-[150px] ">Open Date</TableHead>
                                     <TableHead className="text-xs ">Subject</TableHead>
                                     <TableHead className="text-xs  text-center ">Status</TableHead>
                                     <TableHead className="text-xs  rounded-tr-md "></TableHead>
@@ -70,7 +76,7 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                         <Checkbox />
                                     </TableHead>
                                     <TableHead className="text-xs w-[100px] ">Ticket ID</TableHead>
-                                    <TableHead className="text-xs">Open Date</TableHead>
+                                    <TableHead className="text-xs w-[200px]">Open Date</TableHead>
                                     <TableHead className="text-xs ">Subject</TableHead>
                                     <TableHead className="text-xs  ">Customer</TableHead>
                                     <TableHead className="text-xs">Reply By</TableHead>
@@ -86,9 +92,9 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                 {onHide ? (
                                     <>
                                         <TableRow
-                                            className=" cursor-pointer text-sm"
+                                            className={`cursor-pointer text-sm ${selectedRow === ticket.TicketsID ? 'bg-blue-100' : ''}`}
                                             key={ticket.TicketsID}
-                                            onClick={() => onRowClick(ticket)}>
+                                            onClick={() => handleRowClick(ticket)}>
                                             <TableCell className="font-medium text-xs "><Checkbox /></TableCell>
                                             <TableCell className="font-medium text-xs ">{ticket.OpenDate}</TableCell>
                                             <TableCell className="text-xs ">{ticket.Description}</TableCell>
@@ -109,12 +115,12 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                 ) : (
                                     <>
                                         <TableRow
-                                            className=" cursor-pointer text-sm"
+                                            className={`cursor-pointer text-sm ${selectedRow === ticket.TicketsID ? 'bg-blue-100' : ''}`}
                                             key={ticket.TicketsID}
-                                            onClick={() => onRowClick(ticket)}>
+                                            onClick={() => handleRowClick(ticket)}>
                                             <TableCell className="font-medium text-xs "><Checkbox /></TableCell>
                                             <TableCell className="font-medium text-xs ">#{ticket.TicketsID}</TableCell>
-                                            <TableCell className="font-medium text-xs ">{ticket.OpenDate}</TableCell>
+                                            <TableCell className="font-medium text-xs  ">{ticket.OpenDate}</TableCell>
                                             <TableCell className="text-xs ">{ticket.Description}</TableCell>
                                             <TableCell className="text-xs ">{ticket.Customer.Name}</TableCell>
                                             <TableCell className=" text-xs ">{ticket.ReplyBy}</TableCell>

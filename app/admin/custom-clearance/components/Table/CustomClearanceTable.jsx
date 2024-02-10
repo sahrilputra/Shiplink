@@ -59,7 +59,7 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
                                         <Button
                                             variant="secondary"
                                             size="sm"
-                                            className="h-6 px-2"
+                                            className="rounded-[3px] h-6 px-2"
                                             onClick={() => toggleOpenChange()}
                                         >
                                             <p className="text-[11px]">Update</p>

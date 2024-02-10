@@ -69,6 +69,17 @@
     gap: 30px;
 }
 
+.banerHeight {
+    border: solid 1px #DEDEDE;
+    border-radius: 6px;
+    padding: 20px 0 10px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    gap: 30px;
+}
+
 .banner {
     display: flex;
     flex-direction: row;

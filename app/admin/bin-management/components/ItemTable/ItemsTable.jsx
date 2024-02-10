@@ -92,7 +92,7 @@ export function ItemTable({ data, isOpen, setOpen }) {
                                     <TableCell className="py-2 text-xs w-[100px]">
                                         <div className="flex flex-row gap-2">
                                             <NextLink
-                                                href={"/admin/package-details"}
+                                                href={"/admin/package-details/2"}
                                             >
                                                 <Button
                                                     variant="ghost"
@@ -104,7 +104,7 @@ export function ItemTable({ data, isOpen, setOpen }) {
                                             <Button
                                                 variant="tableBlue"
                                                 size="tableIcon"
-                                                className={`rounded-sm w-max px-[10px] h-[25px]`}
+                                                className={`w-max px-[10px] h-[25px]`}
                                                 onClick={() => setOpenMoveDialog(true)}
                                             >
                                                 <p className="text-[11px]">Move</p>
