@@ -38,7 +38,7 @@ export default function Home() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/admin/login', {
+            const response = await axios.post('/api/admin/login', {
                 username: form.watch('username'),
                 password: form.watch('password')
             });
