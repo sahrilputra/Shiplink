@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -25,37 +25,72 @@ import {
     SortingState,
     getSortedRowModel,
 } from "@tanstack/react-table";
+import axios from "axios";
 import { MoreHorizontalIcon } from "lucide-react";
 
-export function CountriesTabled({ datas, isOpen, setOpen, handlerEdit, handlerDelete }) {
+export function CountriesTabled({ isOpen, setOpen, handlerEdit, handlerDelete }) {
 
-    const data = [
-        {
-            country: 'United States',
-            'CountryCode': 'AFG',
-            Numberic: '004',
-            Status: 'Active',
-        },
-        {
-            country: 'Canada',
-            'CountryCode': 'CAN',
-            Numberic: '124',
-            Status: 'Active',
-        },
-        {
-            country: 'United Kingdom',
-            'CountryCode': 'GBR',
-            Numberic: '826',
-            Status: 'Disable',
-        },
-        {
-            country: 'Australia',
-            'CountryCode': 'AUS',
-            Numberic: '036',
-            Status: 'Active',
-        },
-    ];
+    const [data, setData] = useState([]);
 
+    const fetchData = () => {
+        try {
+            fetch('/api/admin/config/countries/list', {
+                method: 'POST', // Perlu spesifikasikan metode POST
+                headers: {
+                    'Content-Type': 'application/json' // Tentukan tipe konten yang dikirimkan
+                },
+                body: JSON.stringify({
+                    user: "sahril",
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Data fetch failed');
+                    }
+                })
+                .then(data => {
+                    setData(data); // Catatan: Mengasumsikan data respons berisi array yang ingin diatur
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    // Fetch data when component is rendered
+    // fetchData();
+
+    console.log("My data : ", data)
+    // const data = [
+    //     {
+    //         country: 'United States',
+    //         'CountryCode': 'AFG',
+    //         Numberic: '004',
+    //         Status: 'Active',
+    //     },
+    //     {
+    //         country: 'Canada',
+    //         'CountryCode': 'CAN',
+    //         Numberic: '124',
+    //         Status: 'Active',
+    //     },
+    //     {
+    //         country: 'United Kingdom',
+    //         'CountryCode': 'GBR',
+    //         Numberic: '826',
+    //         Status: 'Disable',
+    //     },
+    //     {
+    //         country: 'Australia',
+    //         'CountryCode': 'AUS',
+    //         Numberic: '036',
+    //         Status: 'Active',
+    //     },
+    // ];
 
     const columns = [
         {
@@ -163,82 +198,84 @@ export function CountriesTabled({ datas, isOpen, setOpen, handlerEdit, handlerDe
         setExpandedRows(newExpandedRows);
     };
     return (
-        <Table className=" rounded-md">
-            <TableHeader className="text-sm bg-white text-black rounded-md ">
-                <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
-                    <div className="flex flex-row justify-between rounded-md">
-                        <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
-                            <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="filter"
-                                className='border border-zinc-300 flex items-center rounded'>
-                                <FilterIcons
-                                    className=""
-                                    fill="#CC0019" />
-                            </Button>
-                        </div>
-                        <div className="">
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                className="px-5"
-                            >
-                                <p className=" text-xs">Add New Province </p>
-                            </Button>
-                        </div>
-                    </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-sm">
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <>
-                        {headerGroup.headers.map((header, index) => {
-                            const isLastHeader = index === headerGroup.headers.length - 1;
-                            const isFirstHeader = index === 0;
-                            return (
-                                <TableHead
-                                    key={header.id}
-                                    className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
-                                >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+        <>
+        </>
+        // <Table className=" rounded-md">
+        //     <TableHeader className="text-sm bg-white text-black rounded-md ">
+        //         <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
+        //             <div className="flex flex-row justify-between rounded-md">
+        //                 <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
+        //                     <SearchBar />
+        //                     <Button
+        //                         variant="filter"
+        //                         size="filter"
+        //                         className='border border-zinc-300 flex items-center rounded'>
+        //                         <FilterIcons
+        //                             className=""
+        //                             fill="#CC0019" />
+        //                     </Button>
+        //                 </div>
+        //                 <div className="">
+        //                     <Button
+        //                         variant="secondary"
+        //                         size="sm"
+        //                         className="px-5"
+        //                     >
+        //                         <p className=" text-xs">Add New Province </p>
+        //                     </Button>
+        //                 </div>
+        //             </div>
+        //         </TableHead>
+        //     </TableHeader>
+        //     <TableHeader className="text-sm">
+        //         {table.getHeaderGroups().map((headerGroup) => (
+        //             <>
+        //                 {headerGroup.headers.map((header, index) => {
+        //                     const isLastHeader = index === headerGroup.headers.length - 1;
+        //                     const isFirstHeader = index === 0;
+        //                     return (
+        //                         <TableHead
+        //                             key={header.id}
+        //                             className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+        //                         >
+        //                             {header.isPlaceholder
+        //                                 ? null
+        //                                 : flexRender(
+        //                                     header.column.columnDef.header,
+        //                                     header.getContext()
+        //                                 )}
 
-                                    {console.log(header.column.columnDef.header)}
-                                </TableHead>
-                            );
-                        })}
-                    </>
-                ))}
-            </TableHeader>
-            <TableBody>
-                {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                        <TableRow
-                            key={row.id}
-                            data-state={row.getIsSelected() && "selected"}
-                            className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
-                        >
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))
-                ) : (
-                    <TableRow>
-                        <TableCell colSpan={columns.length} className="h-24 text-center">
-                            No results.
-                        </TableCell>
-                    </TableRow>
-                )}
-            </TableBody>
+        //                             {console.log(header.column.columnDef.header)}
+        //                         </TableHead>
+        //                     );
+        //                 })}
+        //             </>
+        //         ))}
+        //     </TableHeader>
+        //     <TableBody>
+        //         {table.getRowModel().rows?.length ? (
+        //             table.getRowModel().rows.map((row) => (
+        //                 <TableRow
+        //                     key={row.id}
+        //                     data-state={row.getIsSelected() && "selected"}
+        //                     className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+        //                 >
+        //                     {row.getVisibleCells().map((cell) => (
+        //                         <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
+        //                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        //                         </TableCell>
+        //                     ))}
+        //                 </TableRow>
+        //             ))
+        //         ) : (
+        //             <TableRow>
+        //                 <TableCell colSpan={columns.length} className="h-24 text-center">
+        //                     No results.
+        //                 </TableCell>
+        //             </TableRow>
+        //         )}
+        //     </TableBody>
 
-        </Table>
+        // </Table>
     )
 }

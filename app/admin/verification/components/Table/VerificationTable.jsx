@@ -82,7 +82,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                 <TableHead className="  text-xs ">Origin</TableHead>
                 <TableHead className="  text-xs ">Destination</TableHead>
                 <TableHead className="  text-xs text-center">Last Update</TableHead>
-                <TableHead className="  text-xs ">Customs Status</TableHead>
+                <TableHead className="  text-center text-xs w-[150px] ">Customs Status</TableHead>
                 <TableHead className="  text-xs w-[30px]"></TableHead>
             </TableHeader>
             <TableBody className="text-xs">
@@ -95,7 +95,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                 <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
                                 <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
                                 <TableCell className="text-right text-xs">{item.UpdateDate}</TableCell>
-                                <TableCell className="text-left text-xs" >
+                                <TableCell className="text-center text-xs w-[150px] " >
                                     <VerifiedStatus param={item.CustomsStatus} />
                                 </TableCell>
                                 <TableCell className="w-[30px] text-right text-xs">

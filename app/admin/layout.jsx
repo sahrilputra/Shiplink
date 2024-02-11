@@ -1,7 +1,7 @@
 import { Sidebar } from '@/components/sidebar/sidebar'
 import { Inter } from 'next/font/google'
 import styles from './styles.module.scss'
-import { Navbar } from '@/components/navbar/Navbar';
+import { AdminNavbars } from '@/components/navbar/AdminNavbar';
 import { ArrivalIcon, VerificationIcon } from '@/components/sidebar/icon/adminIcon';
 const inter = Inter({ subsets: ['latin'] })
 import { AdminSidebar } from '@/components/sidebar/AdminSidebar';
@@ -17,7 +17,7 @@ export default function BackofficeLayout({ children }) {
                 <div className={styles.sidebar}>
                     <AdminSidebar />
                 </div>
-                <Navbar className={styles.nav} />
+                <AdminNavbars className={styles.nav} />
                 <div className={styles.main}>
                     {children}
                 </div>
