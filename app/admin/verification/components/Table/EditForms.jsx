@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TrashIcon } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 import React from 'react'
 
 
@@ -129,9 +130,9 @@ export const EditForms = ({ counter, forms }) => {
                     <Button
                         variant="softBlue"
                         size="icon"
-                        className='w-[30px] h-[30px] '
+                        className='w-[30px] h-[30px] rounded '
                     >
-                        <TrashIcon width={20} height={20} />
+                        <XIcon width={20} height={20} />
                     </Button>
                 </div>
             </div>
