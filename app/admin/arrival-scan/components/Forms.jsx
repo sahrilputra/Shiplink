@@ -209,14 +209,14 @@ export const ArrivalForms = ({
         <>
             <div className="flex gap-2 flex-col text-zinc-600">
                 <div className="flex flex-row gap-3">
-                    <div className="flex flex-col justify-start gap-2 w-full">
+                    <div className="flex flex-col justify-start gap-2 w-[40%]">
                         <FormField
                             className="w-full text-sm"
                             name="customerID"
                             control={forms.control}
                             render={({ field, formState }) => (
                                 <>
-                                    <FormItem className="w-[50%] text-xs ">
+                                    <FormItem className="w-full text-xs ">
                                         <FormLabel className="font-bold">Search Customer</FormLabel>
                                         <FormControl className="w-full relative">
                                             <CommandPrimitive className='border-b-0' onKeyDown={handleKeyDown}>
@@ -332,34 +332,129 @@ export const ArrivalForms = ({
                                 )}
                             />
 
-                            <FormField
-                                className="w-full"
-                                name="trackingBarcode"
+
+
+
+                            {/* <FormField
+                                name="packageID"
+                                className="w-[60%] text-xs"
                                 control={forms.control}
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <>
-                                        <FormItem className="w-[60%] text-xs">
-                                            <FormLabel className=" font-bold text-zinc-600">Tracking / Barcode</FormLabel>
+                                        <FormItem className="w-full text-xs">
+                                            <FormLabel className=" font-bold">Package ID</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    id="trackingBarcode"
-                                                    className="text-xs h-[30px] rounded-sm px-2 py-0"
-                                                    placeholder={`${field.value}`}
+                                                    id="packageID"
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.packageID && "border-red-500 focus:ring-red-700"}`}
+                                                    placeholder="12xxxx"
                                                     {...field}
-                                                    disabled />
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    </>
+                                )}
+                            /> */}
+
+                        </div>
+
+                        <div className="nameWrapper flex flex-row gap-3 w-[100%]  ">
+                            <FormField
+                                className="w-[40%] "
+                                name="phoneNumber"
+                                control={forms.control}
+                                render={({ field, formState }) => (
+                                    <>
+                                        <FormItem className="w-[40%] text-xs">
+                                            <FormLabel className=" font-bold">Phone Number</FormLabel>
+                                            <FormControl>
+                                                {/* <Input
+                                                    id="phoneNumber"
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
+                                                    placeholder="+1.000.000.0000"
+                                                    {...field}
+                                                    disabled={disabled}
+                                                /> */}
+                                                <InputMask
+                                                    mask="+999 999 999 9999"
+                                                    maskChar={null}
+                                                    maskPlaceholder="0000.00.0000"
+                                                    className={` ${disabled && "bg-zinc-400/50 cursor-not-allowed"} text-xs h-[30px] pl-2`}
+                                                    disabled={disabled}
+                                                    {...field}
+                                                >
+                                                    {(inputProps) => (
+                                                        <Input
+                                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                                            id="phoneNumber"
+                                                            type="text"
+                                                            placeholder="+1.000.000.0000"
+                                                            {...inputProps}
+                                                            disabled={disabled}
+                                                        />
+                                                    )}
+                                                </InputMask>
+                                            </FormControl>
+                                        </FormItem>
+                                    </>
+                                )}
+                            />
+                            <FormField
+                                name="email"
+                                className="w-full "
+                                control={forms.control}
+                                render={({ field, formState }) => (
+                                    <>
+                                        <FormItem className="w-full text-xs">
+                                            <FormLabel className="font-bold">Email</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="email"
+                                                    type="email"
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.email && "border-red-500 focus:ring-red-700"}`}
+                                                    placeholder="customer@shiplink.ca"
+                                                    {...field}
+                                                    disabled={disabled}
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     </>
                                 )}
                             />
 
+                        </div>
+
+                    </div>
+
+                    <div className="flex flex-col gap-2 w-[30%]">
+                        <div className="flex flex-row gap-2">
+                            <FormField
+                                className="w-full"
+                                name="trackingBarcode"
+                                control={forms.control}
+                                render={({ field }) => (
+                                    <>
+                                        <FormItem className="w-[70%] text-xs">
+                                            <FormLabel className=" font-bold text-zinc-600">Tracking / Barcode</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="trackingBarcode"
+                                                    className="text-xs h-[30px] rounded-sm px-2 py-0"
+                                                    placeholder={`Tracking / Barcode Number`}
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    </>
+                                )}
+                            />
                             <FormField
                                 className="w-full text-sm"
                                 name="carrier"
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-[35%] text-xs ">
+                                        <FormItem className="text-xs w-[30%] ">
                                             <FormLabel className="font-bold">Select Carrier</FormLabel>
                                             <FormControl className="w-full relative">
                                                 <CommandPrimitive className='border-b-0' onKeyDown={handleCarrierKeyDown}>
@@ -430,99 +525,14 @@ export const ArrivalForms = ({
                                     </>
                                 )}
                             />
-
-
-                            <FormField
-                                name="packageID"
-                                className="w-[60%] text-xs"
-                                control={forms.control}
-                                render={({ field, formState }) => (
-                                    <>
-                                        <FormItem className="w-full text-xs">
-                                            <FormLabel className=" font-bold">Package ID</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    id="packageID"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.packageID && "border-red-500 focus:ring-red-700"}`}
-                                                    placeholder="12xxxx"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    </>
-                                )}
-                            />
-
-
                         </div>
-                        <div className="nameWrapper flex flex-row gap-3 w-[100%]  ">
-                            <FormField
-                                className="w-[40%] "
-                                name="phoneNumber"
-                                control={forms.control}
-                                render={({ field, formState }) => (
-                                    <>
-                                        <FormItem className="w-[50%] text-xs">
-                                            <FormLabel className=" font-bold">Phone Number</FormLabel>
-                                            <FormControl>
-                                                {/* <Input
-                                                    id="phoneNumber"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
-                                                    placeholder="+1.000.000.0000"
-                                                    {...field}
-                                                    disabled={disabled}
-                                                /> */}
-                                                <InputMask
-                                                    mask="+999 999 999 9999"
-                                                    maskChar={null}
-                                                    maskPlaceholder="0000.00.0000"
-                                                    className={` ${disabled && "bg-zinc-400/50 cursor-not-allowed"} text-xs h-[30px] pl-2`}
-                                                    disabled={disabled}
-                                                    {...field}
-                                                >
-                                                    {(inputProps) => (
-                                                        <Input
-                                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                                            id="phoneNumber"
-                                                            type="text" // Ubah tipe input menjadi teks
-                                                            placeholder="+1.000.000.0000" // Placeholder yang sesuai dengan format
-                                                            {...inputProps}
-                                                            disabled={disabled}
-                                                        />
-                                                    )}
-                                                </InputMask>
-                                            </FormControl>
-                                        </FormItem>
-                                    </>
-                                )}
-                            />
-                            <FormField
-                                name="email"
-                                className="w-full "
-                                control={forms.control}
-                                render={({ field, formState }) => (
-                                    <>
-                                        <FormItem className="w-full text-xs">
-                                            <FormLabel className="font-bold">Email</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    id="email"
-                                                    type="email"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.email && "border-red-500 focus:ring-red-700"}`}
-                                                    placeholder="customer@shiplink.ca"
-                                                    {...field}
-                                                    disabled={disabled}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    </>
-                                )}
-                            />
 
-                            <div className="nameWrapper flex flex-row gap-3 w-[100%]  text-zinc-600">
-                                <div className="flex flex-col gap-2">
-                                    <FormLabel className=" font-bold text-zinc-600">Package Dimension</FormLabel>
-                                    <div className="flex flex-row gap-2 w-full">
+
+                        <div className="nameWrapper flex flex-col gap-2 w-[100%]  text-zinc-600">
+                            <FormLabel className=" font-bold text-zinc-600">Package Dimension</FormLabel>
+                            <div className="flex flex-row gap-2">
+                                <div className="flex flex-row gap-2 w-[50%]">
+                                    <div className="flex flex-col gap-2">
                                         <FormField
                                             className="w-full flex flex-row justify-center items-end"
                                             name="length"
@@ -577,33 +587,36 @@ export const ArrivalForms = ({
                                                 </>
                                             )}
                                         />
-
-                                        <FormField
-                                            name="heightType"
-                                            className="w-full "
-                                            control={forms.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="w-[40%] text-xs" >
-                                                        <Select
-                                                            onValueChange={field.onChange}
-                                                            control={forms.control}
-                                                            defaultValue={field.value}>
-                                                            <FormControl>
-                                                                <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
-                                                                    <SelectValue placeholder="in" />
-                                                                </SelectTrigger>
-                                                            </FormControl>
-                                                            <SelectContent>
-                                                                <SelectItem className="text-xs" value="in">in</SelectItem>
-                                                                <SelectItem className="text-xs" value="mm">mm</SelectItem>
-                                                                <SelectItem className="text-xs" value="cm">cm</SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
+                                    </div>
+                                    <FormField
+                                        name="heightType"
+                                        className="w-full "
+                                        control={forms.control}
+                                        render={({ field }) => (
+                                            <>
+                                                <FormItem className="w-[40%] text-xs" >
+                                                    <Select
+                                                        onValueChange={field.onChange}
+                                                        control={forms.control}
+                                                        defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
+                                                                <SelectValue placeholder="in" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem className="text-xs" value="in">in</SelectItem>
+                                                            <SelectItem className="text-xs" value="mm">mm</SelectItem>
+                                                            <SelectItem className="text-xs" value="cm">cm</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormItem>
+                                            </>
+                                        )}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2 w-[50%]">
+                                    <div className="flex flex-row gap-2">
                                         <FormField
                                             className="w-full flex flex-row justify-center items-end"
                                             name="weight"
@@ -649,96 +662,100 @@ export const ArrivalForms = ({
                                             )}
                                         />
                                     </div>
-                                    <div className={`flex w-full justify-end ${newData !== null ? 'block' : 'hidden'}`}>
-                                        <Button
-                                            onClick={handleResetCustomerData}
-                                            variant="destructive"
-                                            type="button"
-                                            className='text-xs text-white h-7'>
-                                            Reset Forms
-                                        </Button>
-                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
-                </div>
 
-
-                <div className="flex flex-row justify-center items-center gap-3">
-                    <FormField
-                        className="w-full flex flex-row justify-center items-end"
-                        name="firstName"
-                        control={forms.control}
-                        render={({ field }) => (
-                            <>
-                                <FormItem className="w-full ">
-                                    <FormLabel className=" font-bold">Whole Box Image</FormLabel>
-                                    <FormControl>
-                                        <div className='rounded-md border border-slate-300 p-0 cursor-pointer'>
-                                            <Input
-                                                id="wholeBox"
-                                                type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
-                                                placeholder="Upload Image"
-                                            />
+                    <div className="flex flex-col gap-2 w-[30%]">
+                        <FormField
+                            className="w-full flex flex-row "
+                            name="wholeBoxImg"
+                            control={forms.control}
+                            render={({ field }) => (
+                                <>
+                                    <FormItem className="w-full ">
+                                        <div className="flex flex-col gap-2">
+                                            <FormLabel className="font-bold">Whole Box Image</FormLabel>
+                                            <FormControl>
+                                                <div className='rounded-md border border-slate-300 p-0 cursor-pointer'>
+                                                    <Input
+                                                        id="wholeBox"
+                                                        type="file"
+                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                        placeholder="Upload Image"
+                                                    />
+                                                </div>
+                                            </FormControl>
                                         </div>
-                                    </FormControl>
-                                </FormItem>
-                            </>
-                        )}
-                    />
-                    <FormField
-                        className="w-full flex flex-row justify-center items-end"
-                        name="firstName"
-                        control={forms.control}
-                        render={({ field }) => (
-                            <>
-                                <FormItem className="w-full ">
-                                    <FormLabel className=" font-bold">Label Close Up</FormLabel>
-                                    <FormControl>
-                                        <div className='rounded-md border border-slate-300 p-0'>
-                                            <Input
-                                                id="wholeBox"
-                                                type="file"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
-                                                placeholder="Upload Image"
-                                            />
+                                    </FormItem>
+                                </>
+                            )}
+                        />
+                        <FormField
+                            className="w-full flex flex-row justify-center items-end"
+                            name="labelImg"
+                            control={forms.control}
+                            render={({ field }) => (
+                                <>
+                                    <FormItem className="w-full ">
+                                        <div className="flex flex-col gap-2">
+                                            <FormLabel className=" font-bold">Label Close Up</FormLabel>
+                                            <FormControl>
+                                                <div className='rounded-md border border-slate-300 p-0'>
+                                                    <Input
+                                                        id="wholeBox"
+                                                        type="file"
+                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                        placeholder="Upload Image"
+                                                    />
+                                                </div>
+                                            </FormControl>
                                         </div>
-                                    </FormControl>
-                                </FormItem>
-                            </>
-                        )}
-                    />
-                    <FormField
-                        className="w-full flex flex-row justify-center items-end"
-                        name="firstName"
-                        control={forms.control}
-                        render={({ field }) => (
-                            <>
-                                <FormItem className="w-full ">
-                                    <FormLabel className=" font-bold">Content Images</FormLabel>
-                                    <FormControl>
-                                        <div className='rounded-md border border-slate-300 p-0'>
-                                            <Input
-                                                id="wholeBox"
-                                                type="file"
-                                                accept="image/*"
-                                                className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
-                                                placeholder="Upload Image"
-                                            />
+                                    </FormItem>
+                                </>
+                            )}
+                        />
+                        <FormField
+                            className="w-full flex flex-row justify-center items-end"
+                            name="contentImg"
+                            control={forms.control}
+                            render={({ field }) => (
+                                <>
+                                    <FormItem className="w-full ">
+                                        <div className="flex flex-col gap-2">
+                                            <FormLabel className=" font-bold">Content Images</FormLabel>
+                                            <FormControl>
+                                                <div className='rounded-md border border-slate-300 p-0'>
+                                                    <Input
+                                                        id="wholeBox"
+                                                        type="file"
+                                                        accept="image/*"
+                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                        placeholder="Upload Image"
+                                                    />
+                                                </div>
+                                            </FormControl>
                                         </div>
-                                    </FormControl>
-                                </FormItem>
-                            </>
-                        )}
-                    />
-
-
+                                    </FormItem>
+                                </>
+                            )}
+                        />
+                    </div>
                 </div>
             </div>
+            <div className={`flex w-full justify-end ${newData !== null ? 'block' : 'hidden'}`}>
+                <Button
+                    onClick={handleResetCustomerData}
+                    variant="destructive"
+                    type="button"
+                    className='text-xs text-white h-7'>
+                    Reset Forms
+                </Button>
+            </div>
+
+
+
         </>
     )
 }

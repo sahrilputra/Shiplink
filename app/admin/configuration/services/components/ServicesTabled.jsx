@@ -26,10 +26,10 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
-import data from './ServiceData.json'
 
-export function ServicesTabled({ datas, isOpen, setOpen, handlerEdit, handlerDelete }) {
-   
+
+export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDelete }) {
+
     const columns = [
         {
             accessorKey: "select",
@@ -57,20 +57,20 @@ export function ServicesTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
             },
         },
         {
-            accessorKey: "Description",
+            accessorKey: "description",
             header: "Description",
             className: "text-xs",
         },
         {
-            accessorKey: "Status",
-            header: "Status",
+            accessorKey: "status",
+            header: "status",
         },
         {
-            accessorKey: "Fee",
-            header: "Fee",
+            accessorKey: "fee",
+            header: "fee",
         },
         {
-            accessorKey: "Last Change",
+            accessorKey: "date",
             header: "Last Change",
         },
         {
@@ -135,21 +135,93 @@ export function ServicesTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+    // return (
+    //     <Table className=" rounded-md ">
+    //         <TableHeader className="text-sm bg-white text-black rounded-md ">
+    //             <TableHead colSpan={7} className="py-4 rounded-md" >
+    //                 <div className="flex flex-row justify-between rounded-md">
+    //                     <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
+    //                         <SearchBar />
+    //                         <Button
+    //                             variant="filter"
+    //                             size="filter"
+    //                             className='border border-zinc-300 flex items-center rounded'>
+    //                             <FilterIcons
+    //                                 className=""
+    //                                 fill="#CC0019" />
+    //                         </Button>
+    //                     </div>
+    //                     <div className="">
+    //                         <Button
+    //                             variant="secondary"
+    //                             size="sm"
+    //                             className="px-5"
+    //                         >
+    //                             <p className=" text-xs">Services History</p>
+    //                         </Button>
+    //                     </div>
+    //                 </div>
+    //             </TableHead>
+    //         </TableHeader>
+    //         <TableHeader className="text-sm">
+    //             {table.getHeaderGroups().map((headerGroup) => (
+    //                 <>
+    //                     {headerGroup.headers.map((header, index) => {
+    //                         const isLastHeader = index === headerGroup.headers.length - 1;
+    //                         const isFirstHeader = index === 0;
+    //                         return (
+    //                             <TableHead
+    //                                 key={header.id}
+    //                                 className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+    //                             >
+    //                                 {header.isPlaceholder
+    //                                     ? null
+    //                                     : flexRender(
+    //                                         header.column.columnDef.header,
+    //                                         header.getContext()
+    //                                     )}
+
+    //                                 {console.log(header.column.columnDef.header)}
+    //                             </TableHead>
+    //                         );
+    //                     })}
+    //                 </>
+    //             ))}
+    //         </TableHeader>
+    //         <TableBody>
+    //             {table.getRowModel().rows?.length ? (
+    //                 table.getRowModel().rows.map((row) => (
+    //                     <TableRow
+    //                         key={row.id}
+    //                         data-state={row.getIsSelected() && "selected"}
+    //                         className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+    //                     >
+    //                         {row.getVisibleCells().map((cell) => (
+    //                             <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
+    //                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
+    //                             </TableCell>
+    //                         ))}
+    //                     </TableRow>
+    //                 ))
+    //             ) : (
+    //                 <TableRow>
+    //                     <TableCell colSpan={columns.length} className="h-24 text-center">
+    //                         No results.
+    //                     </TableCell>
+    //                 </TableRow>
+    //             )}
+    //         </TableBody>
+
+    //     </Table>
+    // )
+
     return (
-        <Table className=" rounded-md ">
-            <TableHeader className="text-sm bg-white text-black rounded-md ">
-                <TableHead colSpan={7} className="py-4 rounded-md" >
+        <Table className="rounded-md">
+            <TableHeader className="text-sm bg-white text-black rounded-md">
+                <TableHead colSpan={7} className="py-4 rounded-md">
                     <div className="flex flex-row justify-between rounded-md">
                         <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
                             <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="filter"
-                                className='border border-zinc-300 flex items-center rounded'>
-                                <FilterIcons
-                                    className=""
-                                    fill="#CC0019" />
-                            </Button>
                         </div>
                         <div className="">
                             <Button
@@ -157,61 +229,30 @@ export function ServicesTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
                                 size="sm"
                                 className="px-5"
                             >
-                                <p className=" text-xs">Services History</p>
+                                <p className="text-xs">Services History</p>
                             </Button>
                         </div>
                     </div>
                 </TableHead>
             </TableHeader>
             <TableHeader className="text-sm">
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <>
-                        {headerGroup.headers.map((header, index) => {
-                            const isLastHeader = index === headerGroup.headers.length - 1;
-                            const isFirstHeader = index === 0;
-                            return (
-                                <TableHead
-                                    key={header.id}
-                                    className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
-                                >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-
-                                    {console.log(header.column.columnDef.header)}
-                                </TableHead>
-                            );
-                        })}
-                    </>
+                {columns.map(column => (
+                    <TableHead key={column.accessorKey} className="text-xs">
+                        {column.header}
+                    </TableHead>
                 ))}
             </TableHeader>
             <TableBody>
-                {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                        <TableRow
-                            key={row.id}
-                            data-state={row.getIsSelected() && "selected"}
-                            className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
-                        >
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))
-                ) : (
-                    <TableRow>
-                        <TableCell colSpan={columns.length} className="h-24 text-center">
-                            No results.
-                        </TableCell>
+                {data && data.service.map(service => (
+                    <TableRow key={service.id}>
+                        {columns.map(column => (
+                            <TableCell key={column.accessorKey} className="text-xs">
+                                {service[column.accessorKey]}
+                            </TableCell>
+                        ))}
                     </TableRow>
-                )}
+                ))}
             </TableBody>
-
         </Table>
-    )
+    );
 }

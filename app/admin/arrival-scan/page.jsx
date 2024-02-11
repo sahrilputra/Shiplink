@@ -9,6 +9,7 @@ import { RegisterDialog } from './components/Dialog/RegistedDialog'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import { ImageTable } from '../verification/components/Table/ImageTable'
 import { v4 as uuidv4 } from 'uuid'
 import {
     Form,
@@ -36,6 +37,9 @@ const formSchema = yup.object().shape({
     heightType: yup.string(),
     weight: yup.number(),
     weightType: yup.string(),
+    wholeBoxImg: yup.string(),
+    labelImg: yup.string(),
+    contentImg: yup.string(),
     DeclareContet: yup.array().of(
         yup.object().shape({
             itemID: yup.string(),
@@ -57,7 +61,7 @@ export default function ArrivalScanPage() {
         return formattedNumber;
     };
 
-    const [trackingNumber, setTrackingNumber] = useState(generateRandomNumber());
+    const [internalCode, setInternalCode] = useState(generateRandomNumber());
     const [open, setOpen] = useState(false);
 
     const [inputCount, setInputCount] = useState(1);
@@ -94,16 +98,20 @@ export default function ArrivalScanPage() {
         defaultValues: {
             customerID: "",
             fullName: "",
-            trackingBarcode: trackingNumber || "",
+            trackingBarcode: "",
             phoneNumber: "",
             email: "",
             carrier: "",
+            packageID: internalCode || "",
             length: "",
             width: "",
             height: "",
             heightType: "",
             weight: "",
             weightType: "",
+            wholeBoxImg: "",
+            labelImg: "",
+            contentImg: "",
             DeclareContet: Array.from({ length: inputCount }, () => ({
                 itemID: "",
                 qty: "",
@@ -138,6 +146,12 @@ export default function ArrivalScanPage() {
                         <div className="w-full py-4">
                             <Separator className="h-[2px]" />
                         </div>
+
+                        <div className="contentImage w-[100%] bg-blue-50 mx-auto">
+                            <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
+                                <ImageTable />
+                            </div>
+                        </div>
                         <div className="">
                             <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
                             <DeclareContet
@@ -148,7 +162,7 @@ export default function ArrivalScanPage() {
                                 inputCount={inputCount}
                                 totalInput={totalValue}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("trackingBarcode")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
+                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("packageID")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
                         </div>
                     </form>
                 </Form>

@@ -1,42 +1,48 @@
 'use client'
 import { React, useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { ArrowDownIcon } from '@/components/icons/iconCollection'
-export const CatergoryList = ({ Category, isOpen }) => {
-    isOpen = isOpen ? isOpen : false;
-
-    const [selectedItem, setSelectedItem] = useState(null);
-
+export const CatergoryList = ({ Category, data, selectedData }) => {
+    const [open, setOpen] = useState(false)
+    const [isSelected, setIsSelected] = useState(false)
     const handleClick = () => {
-        setSelectedItem(!selectedItem);
-    };
+        setOpen(!open)
+    }
+    const handleSelect = (index) => {
+        setIsSelected(index === isSelected ? false : true)
+    }
+
     return (
         <>
             <div className="flex flex-col gap-1">
-                <div className="w-full flex flex-row items-center gap-3 ">
-                    <ArrowDownIcon />
+                <div className="w-full flex flex-row items-center gap-3 px-2 py-2 cursor-pointer hover:bg-slate-50"
+                    onClick={() => handleClick()}>
+                    <ChevronDown className={`${open ? "transform rotate-180" : ""} w-[20px] h-[20px]`} />
                     <div className="w-full font-bold text-xs">{Category}</div>
                 </div >
-                {isOpen ? (
+                {open && (
                     <>
-                        <div
-                            onClick={handleClick}
-                            className={`items cursor-pointer w-full hover:bg-blue-100 rounded ${selectedItem ? 'bg-blue-200 ' : 'bg-white'
-                                }`}
-                        >
-                            <div className="px-6 py-2 w-full font-medium text-xs">Child Items 1</div>
-                        </div>
-                        <div
-                            onClick={handleClick}
-                            className={`items cursor-pointer hover:bg-blue-100 w-full rounded ${selectedItem ? 'bg-white' : 'bg-blue-200'
-                                }`}
-                        >
-                            <div className="px-6 py-2 w-full font-medium text-xs">Child Items 2</div>
-                        </div>
+                        {
+                            data.map((item, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        onClick={() => {
+                                            handleSelect(item.id);
+                                            selectedData(item.id);
+                                        }}
+                                        className={`${isSelected ? "bg-blue-100" : null}items cursor-pointer w-full hover:bg-blue-100 rounded`}
+                                    >
+                                        <div className="px-6 py-2 w-full font-medium text-xs">
+                                            {item.name}
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </>
-                ) : (
-                    <> </>
                 )}
-            </div>
+            </div >
         </>
     )
 }
