@@ -8,37 +8,31 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { keyword, page, limit, index, token } = await request.json();
-
-        // console.log("token from country", token);
+        const { country_id = "", country_code, country_name, country_numeric, status = "Active", action } = await request.json();
 
         const response = await axios.post(
-            `${process.env.API_URL}/Config/Country_list`,
+            `${process.env.API_URL}/Config/Country_setdata`,
             {
-                keyword: keyword,
-                page: page,
-                limit: limit,
-                index: index,
+                country_id: country_id,
+                country_code: country_code,
+                country_name: country_name,
+                country_numeric: country_numeric,
+                status: status,
+                action: action,
             },
             {
                 httpsAgent: agent,
                 headers: {
-                    Authorization: 
-                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmN2U5NzcyYy03NmUxLTRiNDItODg3Mi01NWVkYTMzZjEyZTUiLCJyb2xlIjoic3VwZXJhZG1pbiIsInVuaXF1ZV9uYW1lIjoic3VwZXJhZG1pbiIsIm5iZiI6MTcwNzY0MDM1NSwiZXhwIjoxNzA3NjgzNTU1LCJpYXQiOjE3MDc2NDAzNTV9.6KOCvrtE2m_Tm3JDX2-WAYNCa4Gv8D3CghuUhXG6DFo` 
+                    Authorization:
+                        `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmN2U5NzcyYy03NmUxLTRiNDItODg3Mi01NWVkYTMzZjEyZTUiLCJyb2xlIjoic3VwZXJhZG1pbiIsInVuaXF1ZV9uYW1lIjoic3VwZXJhZG1pbiIsIm5iZiI6MTcwNzY0MDM1NSwiZXhwIjoxNzA3NjgzNTU1LCJpYXQiOjE3MDc2NDAzNTV9.6KOCvrtE2m_Tm3JDX2-WAYNCa4Gv8D3CghuUhXG6DFo`
                 }
             }
         );
-
-        // console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                total: response.data.total,
-                page_total: response.data.page_total,
-                page_limit: response.data.page_limit,
-                country: response.data.country
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

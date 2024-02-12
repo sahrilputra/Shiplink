@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -11,7 +11,7 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
-import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
+import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
@@ -26,47 +26,48 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { NewProvinceDialog } from "./dialog/NewProvinceDialog";
 
 export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDelete }) {
-    const data = [
-        {
-            Country: 'Argentina',
-            Code: 'ARG',
-            State: 'Buenos Aires',
-            Province: 'B',
-        },
-        {
-            Country: 'Brazil',
-            Code: 'BRA',
-            State: 'Sao Paulo',
-            Province: 'SP',
-        },
-        {
-            Country: 'India',
-            Code: 'IND',
-            State: 'Maharashtra',
-            Province: 'MH',
-        },
-        {
-            Country: 'United Kingdom',
-            Code: 'GBR',
-            State: 'England',
-            Province: 'ENG',
-        },
-        {
-            Country: 'Australia',
-            Code: 'AUS',
-            State: 'New South Wales',
-            Province: 'NSW',
-        },
-        {
-            Country: 'Canada',
-            Code: 'CAN',
-            State: 'Ontario',
-            Province: 'ON',
-        },
-    ];
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
+    const [province, setProvince] = useState([]);
+    const [rowSelection, setRowSelection] = React.useState({})
+    const [sorting, setSorting] = React.useState([])
+    const [expandedRows, setExpandedRows] = useState([]);
+    const [isEdit, setIsEdit] = useState(false);
+    const [createNewDialogOpen, setCreateNewDialogOpen] = useState(false);
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/config/province`,
+                query
+            );
+            console.log(response.data)
+            const data = await response.data;
+            setProvince(data.province);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
 
     const columns = [
         {
@@ -95,20 +96,20 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
             },
         },
         {
-            accessorKey: "Country",
+            accessorKey: "country_name",
             header: "Country",
             className: "text-xs",
         },
         {
-            accessorKey: "Code",
+            accessorKey: "province_code",
             header: "Province Code",
         },
         {
-            accessorKey: "State",
+            accessorKey: "province_name",
             header: "State / Province",
         },
         {
-            accessorKey: "Province",
+            accessorKey: "country_code",
             header: "Province",
         },
         {
@@ -140,14 +141,8 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
         }
     ]
 
-
-    const [rowSelection, setRowSelection] = React.useState({})
-    const [sorting, setSorting] = React.useState([])
-    const [expandedRows, setExpandedRows] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
-
     const table = useReactTable({
-        data,
+        data: province,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -174,82 +169,100 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
         setExpandedRows(newExpandedRows);
     };
     return (
-        <Table className=" rounded-md">
-            <TableHeader className="text-sm bg-white text-black rounded-md ">
-                <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
-                    <div className="flex flex-row justify-between rounded-md">
-                        <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
-                            <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="filter"
-                                className='border border-zinc-300 flex items-center rounded'>
-                                <FilterIcons
-                                    className=""
-                                    fill="#CC0019" />
-                            </Button>
-                        </div>
-                        <div className="">
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                className="px-5"
-                            >
-                                <p className=" text-xs">Add New Province</p>
-                            </Button>
-                        </div>
-                    </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-sm">
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <>
-                        {headerGroup.headers.map((header, index) => {
-                            const isLastHeader = index === headerGroup.headers.length - 1;
-                            const isFirstHeader = index === 0;
-                            return (
-                                <TableHead
-                                    key={header.id}
-                                    className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+        <>
+            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} />
+            <Table className=" rounded-md">
+                <TableHeader className="text-sm bg-white text-black rounded-md ">
+                    <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
+                        <div className="flex flex-row justify-between rounded-md">
+                            <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
+                                <div className="relative">
+                                    <Input
+                                        type="text"
+                                        placeholder="Search..."
+                                        className="pr-8 pl-2 text-xs border border-zinc-300"
+                                        onChange={handleSearchChange}
+
+                                    />
+                                    <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
+                                        <SearchIcon
+                                            width={15}
+                                            height={15}
+                                        />
+                                    </div>
+                                </div>
+                                <Button
+                                    variant="filter"
+                                    size="filter"
+                                    className='border border-zinc-300 flex items-center rounded'>
+                                    <FilterIcons
+                                        className=""
+                                        fill="#CC0019" />
+                                </Button>
+                            </div>
+                            <div className="">
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    className="px-5"
+                                    onClick={() => { setCreateNewDialogOpen(true) }}
                                 >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+                                    <p className=" text-xs">Add New Province</p>
+                                </Button>
+                            </div>
+                        </div>
+                    </TableHead>
+                </TableHeader>
+                <TableHeader className="text-sm">
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <>
+                            {headerGroup.headers.map((header, index) => {
+                                const isLastHeader = index === headerGroup.headers.length - 1;
+                                const isFirstHeader = index === 0;
+                                return (
+                                    <TableHead
+                                        key={header.id}
+                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                    >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
 
-                                    {console.log(header.column.columnDef.header)}
-                                </TableHead>
-                            );
-                        })}
-                    </>
-                ))}
-            </TableHeader>
-            <TableBody>
-                {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                        <TableRow
-                            key={row.id}
-                            data-state={row.getIsSelected() && "selected"}
-                            className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
-                        >
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                            ))}
+                                        {console.log(header.column.columnDef.header)}
+                                    </TableHead>
+                                );
+                            })}
+                        </>
+                    ))}
+                </TableHeader>
+                <TableBody>
+                    {table.getRowModel().rows?.length ? (
+                        table.getRowModel().rows.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                data-state={row.getIsSelected() && "selected"}
+                                className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                            >
+                                {row.getVisibleCells().map((cell) => (
+                                    <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={columns.length} className="h-24 text-center">
+                                No results.
+                            </TableCell>
                         </TableRow>
-                    ))
-                ) : (
-                    <TableRow>
-                        <TableCell colSpan={columns.length} className="h-24 text-center">
-                            No results.
-                        </TableCell>
-                    </TableRow>
-                )}
-            </TableBody>
+                    )}
+                </TableBody>
 
-        </Table>
+            </Table>
+        </>
     )
 }

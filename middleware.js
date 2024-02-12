@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
-
 // This function can be marked `async` if using `await` inside
-export function middleware(request) {
 
+export function middleware(request) {
     const token = request.cookies.get('token')
     if (token) {
         return NextResponse.redirect(new URL('/admin/arrival-scan', request.url))

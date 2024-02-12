@@ -16,7 +16,9 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
         verified: "rounded-[3px] bg-greenStatus/80 border border-greenStatus w-[80px] justify-center text-white  tracking-wide ",
-        unverified: "rounded-[3px] bg-yellowStatus/80 border border-yellowStatus w-[80px] justify-center text-white  tracking-wide"
+        unverified: "rounded-[3px] bg-yellowStatus/80 border border-yellowStatus w-[80px] justify-center text-white  tracking-wide",
+        active: "rounded-[3px] bg-green-600/80 border border-greenStatus w-[80px] justify-center text-white tracking-wide",
+        redStatus: "rounded-[3px] bg-red-600/80 border border-red-600 w-[80px] justify-center text-white tracking-wide",
       },
     },
     defaultVariants: {

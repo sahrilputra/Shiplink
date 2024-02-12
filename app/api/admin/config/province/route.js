@@ -13,7 +13,7 @@ export async function POST(request) {
         // console.log("token from country", token);
 
         const response = await axios.post(
-            `${process.env.API_URL}/Config/Country_list`,
+            `${process.env.API_URL}/Config/Province_list`,
             {
                 keyword: keyword,
                 page: page,
@@ -23,8 +23,8 @@ export async function POST(request) {
             {
                 httpsAgent: agent,
                 headers: {
-                    Authorization: 
-                    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmN2U5NzcyYy03NmUxLTRiNDItODg3Mi01NWVkYTMzZjEyZTUiLCJyb2xlIjoic3VwZXJhZG1pbiIsInVuaXF1ZV9uYW1lIjoic3VwZXJhZG1pbiIsIm5iZiI6MTcwNzY0MDM1NSwiZXhwIjoxNzA3NjgzNTU1LCJpYXQiOjE3MDc2NDAzNTV9.6KOCvrtE2m_Tm3JDX2-WAYNCa4Gv8D3CghuUhXG6DFo` 
+                    Authorization:
+                        `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmN2U5NzcyYy03NmUxLTRiNDItODg3Mi01NWVkYTMzZjEyZTUiLCJyb2xlIjoic3VwZXJhZG1pbiIsInVuaXF1ZV9uYW1lIjoic3VwZXJhZG1pbiIsIm5iZiI6MTcwNzY0MDM1NSwiZXhwIjoxNzA3NjgzNTU1LCJpYXQiOjE3MDc2NDAzNTV9.6KOCvrtE2m_Tm3JDX2-WAYNCa4Gv8D3CghuUhXG6DFo`
                 }
             }
         );
@@ -38,7 +38,7 @@ export async function POST(request) {
                 total: response.data.total,
                 page_total: response.data.page_total,
                 page_limit: response.data.page_limit,
-                country: response.data.country
+                province: response.data.province
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {
