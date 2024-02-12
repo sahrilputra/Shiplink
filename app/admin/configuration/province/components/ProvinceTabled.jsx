@@ -168,9 +168,13 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+
+    const reloadData = () => {
+        fetchData();
+    };
     return (
         <>
-            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} />
+            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} />
             <Table className=" rounded-md">
                 <TableHeader className="text-sm bg-white text-black rounded-md ">
                     <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >

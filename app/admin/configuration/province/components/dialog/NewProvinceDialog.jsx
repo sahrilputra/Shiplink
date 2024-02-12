@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Dialog,
     DialogClose,
@@ -23,11 +23,6 @@ import {
     CommandItem,
 } from "@/components/ui/command"
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import {
     Form,
     FormControl,
     FormDescription,
@@ -40,10 +35,8 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import InputMask from 'react-input-mask';
 import axios from "axios";
-import { CheckIcon } from 'lucide-react'
 
 const formSchema = yup.object().shape({
-    province_id: yup.string().required(),
     country_code: yup.string().required(),
     province_name: yup.string().required(),
     province_code: yup.string().required(),
@@ -51,49 +44,69 @@ const formSchema = yup.object().shape({
 
 
 export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
-    const onClose = () => {
-        setOpen(false)
-    }
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            province_id: "",
             country_code: "",
             province_name: "",
             province_code: "",
         },
         mode: "onChange",
     })
+    const [openCommand, setOpenCommand] = useState(false)
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
+    const [selectedCountry, setSelectedCountry] = useState({
+        country_code: "",
+        country_name: "",
+    });
+    const [country, setCountry] = useState([]);
 
+    const handleOpenCommand = (event) => {
+        if (!event.target.value.trim() || event.target.value.length < 2) {
+            setOpenCommand(false);
+        } else {
+            setOpenCommand(true);
+        }
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    }
 
-    const languages = [
-        { label: "English", value: "en" },
-        { label: "French", value: "fr" },
-        { label: "German", value: "de" },
-        { label: "Spanish", value: "es" },
-        { label: "Portuguese", value: "pt" },
-        { label: "Russian", value: "ru" },
-        { label: "Japanese", value: "ja" },
-        { label: "Korean", value: "ko" },
-        { label: "Chinese", value: "zh" },
-    ]
+    const handleSelectCountry = (code, name) => {
+        setSelectedCountry({
+            country_code: code,
+            country_name: name,
+        });
+        form.setValue('country_code', code);
+        form.setValue('country_name', name);
+        setOpenCommand(false)
+    }
 
+    const onClose = () => {
+        setOpen(false)
+    }
 
     const handleSave = async (formData) => {
         try {
             formData.action = 'add';
             const response = await axios.post(
-                `/api/admin/config/countries/setData`,
+                `/api/admin/config/province/setData`,
                 formData
             );
             toast({
-                title: 'Country created successfully!',
+                title: `Province ${formData.province_name} created!`,
                 description: response.data.message,
                 status: 'success',
             });
-            onClose();
             reloadData();
+            onClose();
         } catch (error) {
             console.log('Error', error);
             toast({
@@ -104,6 +117,22 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
         }
     };
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/config/countries/list`,
+                query
+            );
+            const data = await response.data;
+            setCountry(data.country);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
 
 
     return (
@@ -125,59 +154,40 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                                 action="">
                                 <div className="flex flex-col gap-3">
                                     <div className="flex flex-row w-full gap-4 text-xs">
-                                        <FormField
-                                            className="w-full"
-                                            name="country_name"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="w-[100%] text-neutral-900 space-y-1">
-                                                        <FormLabel className="text-sm"  >Country Code</FormLabel>
-                                                        <Popover>
-                                                            <PopoverTrigger asChild>
-                                                                <FormControl>
-                                                                    <Button
-                                                                        variant="outline"
-                                                                        role="combobox"
-                                                                        className="shadow-none text-xs "
-                                                                    >
-                                                                        {field.value
-                                                                            ? languages.find(
-                                                                                (language) => language.value === field.value
-                                                                            )?.label
-                                                                            : "Select language"}
-                                                                    </Button>
-                                                                </FormControl>
-                                                            </PopoverTrigger>
-                                                            <PopoverContent className="w-[200px] p-0">
-                                                                <Command>
-                                                                    <CommandInput
-                                                                        placeholder="Search framework..."
-                                                                        className="h-9"
-                                                                    />
-                                                                    <CommandEmpty>No framework found.</CommandEmpty>
-                                                                    <CommandGroup>
-                                                                        {languages.map((language) => (
-                                                                            <CommandItem
-                                                                                value={language.label}
-                                                                                key={language.value}
-                                                                                onSelect={() => {
-                                                                                    form.setValue("language", language.value)
-                                                                                }}
-                                                                            >
-                                                                                {language.label}
+                                        <div className="relative w-[100%]">
+                                            <div className="flex flex-col gap-1 w-full">
+                                                <p className="text-sm text-neutral-900 space-y-1">Country</p>
+                                                <Input
+                                                    className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest"
+                                                    id="country_code"
+                                                    type="text"
+                                                    placeholder="Search Country"
+                                                    onChange={handleOpenCommand}
 
-                                                                            </CommandItem>
-                                                                        ))}
-                                                                    </CommandGroup>
-                                                                </Command>
-                                                            </PopoverContent>
-                                                        </Popover>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                </>
+                                                />
+                                            </div>
+                                            {openCommand && (
+                                                <div className="absolute bottom-100 w-full p-2 shadow bg-white">
+                                                    <Command>
+                                                        <CommandEmpty>No Country Found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {country.map((item) => (
+                                                                <CommandItem
+                                                                    value={item.country_id}
+                                                                    key={item.country_numeric}
+                                                                    onSelect={() => {
+                                                                        handleSelectCountry(item.country_code, item.country_name)
+                                                                    }}
+                                                                >
+                                                                    {item.country_name}
+
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </Command>
+                                                </div>
                                             )}
-                                        />
+                                        </div>
 
                                         <FormField
                                             name="country_code"
@@ -210,10 +220,10 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="w-[100%] text-neutral-900 space-y-1">
+                                                    <FormItem className="w-[100%] text-neutral-900 space-y-1  ">
                                                         <FormLabel className="text-sm">State / Province Name</FormLabel>
                                                         <FormControl>
-                                                            <Input type="text" id="province_name" placeholder="" className="text-xs p-0 px-2" {...field} />
+                                                            <Input type="text" id="province_name" placeholder="" className="text-xs p-0 px-2 capitalize" {...field} />
                                                         </FormControl>
                                                     </FormItem>
                                                 </>
@@ -226,17 +236,17 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="w-[40%] text-neutral-900 space-y-1">
-                                                        <FormLabel className="text-sm"  >State Code</FormLabel>
+                                                        <FormLabel className="text-sm">State Code</FormLabel>
                                                         <FormControl >
                                                             <InputMask
-                                                                mask="aaa"
+                                                                mask="999"
                                                                 maskPlaceholder="000"
                                                                 {...field}
                                                                 className='tracking-widest'
                                                             >
                                                                 {(inputProps) => (
                                                                     <Input
-                                                                        className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest bg-zinc-500"
+                                                                        className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest bg-zinc-500 uppercase"
                                                                         id="province_code"
                                                                         type="text" // Ubah tipe input menjadi teks
                                                                         placeholder="_ _ _" // Placeholder yang sesuai dengan format
@@ -264,7 +274,6 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                                         </Button>
                                         <Button
                                             variant="destructive"
-
                                             size="sm"
                                             className="w-full"
                                             type="submit"
