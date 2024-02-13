@@ -13,9 +13,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
-import { SearchBar } from "@/components/ui/searchBar";
-import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
 import {
     ColumnDef,
     flexRender,
@@ -29,8 +26,11 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { NewProvinceDialog } from "./dialog/NewProvinceDialog";
+import { EditProvinceDialog } from "./dialog/EditProvince";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DeletePronviceDialog } from "./dialog/DeletePronviceDialog";
 
-export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDelete }) {
+export function ProvinceTabled({ }) {
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -40,9 +40,11 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
     const [province, setProvince] = useState([]);
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
-    const [expandedRows, setExpandedRows] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
+    const [isEditDialog, setIsEditDialog] = useState(false);
     const [createNewDialogOpen, setCreateNewDialogOpen] = useState(false);
+    const [selectedRowData, setSelectedRowData] = useState(null);
+    const [deletId, setDeleteId] = useState(null);
+    const [deleteDialog, setDeleteDialog] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -50,7 +52,6 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
                 `/api/admin/config/province`,
                 query
             );
-            console.log(response.data)
             const data = await response.data;
             setProvince(data.province);
         } catch (error) {
@@ -115,26 +116,44 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
         {
             id: "Action",
             header: "Action",
-            cell: ({ value }) => {
+            cell: ({ row }) => {
                 return (
-                    <div className="flex flex-row gap-2">
-                        <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-[3px] w-max px-[6px] h-[25px]`}
-                            onClick={() => handlerEdit()}
-                        >
-                            <p className="text-[11px]">Edit</p>
-                        </Button>
-                        <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-[3px] w-max px-[5px] h-[25px]`}
-                            onClick={() => handlerDelete()}
-                        >
-                            <MoreHorizontalIcon width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
-                        </Button>
-
+                    <div className="" key={row.original.province_id}>
+                        <div className="flex flex-row gap-2">
+                            <Button
+                                variant="tableBlue"
+                                size="tableIcon"
+                                className={`rounded-[3px] w-max px-[6px] h-[25px]`}
+                                onClick={() => handleEditClicked(row)}
+                            >
+                                <p className="text-[11px]">Edit</p>
+                            </Button>
+                            {/* <ProvinceMenus province={row.original} />
+                             */}
+                            <DropdownMenu >
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="tableBlue"
+                                        size="tableIcon"
+                                        className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                    >
+                                        <MoreHorizontalIcon width={15} height={15} />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="text-xs" side="left" align="left">
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem className="text-xs text-myBlue">
+                                            See this Country In Country Tab
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            onClick={() => handlerDelete(row.original.province_code)}
+                                            className="text-xs text-red-700">
+                                            Delete This Province
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
                 )
             },
@@ -154,27 +173,27 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
             rowSelection,
         },
 
-    })
+    });
 
+    const handleEditClicked = (row) => {
+        setSelectedRowData(row.original);
+        setIsEditDialog(true)
+    }
 
-    const toggleEdit = () => {
-        setIsEdit(!isEdit)
+    const handlerDelete = (item) => {
+        setDeleteId(item)
+        setDeleteDialog(true)
     }
-    const toggleCancel = () => {
-        setIsEdit(false)
-    }
-    const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
-        newExpandedRows[index] = !newExpandedRows[index];
-        setExpandedRows(newExpandedRows);
-    };
 
     const reloadData = () => {
         fetchData();
     };
+
     return (
         <>
+            <DeletePronviceDialog open={deleteDialog} setOpen={setDeleteDialog} deleteID={deletId} reloadData={reloadData} />
             <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} />
+            <EditProvinceDialog key={selectedRowData?.province_id} open={isEditDialog} setOpen={setIsEditDialog} reloadData={reloadData} data={selectedRowData} />
             <Table className=" rounded-md">
                 <TableHeader className="text-sm bg-white text-black rounded-md ">
                     <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
@@ -213,6 +232,15 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
                                 >
                                     <p className=" text-xs">Add New Province</p>
                                 </Button>
+
+                                {/* <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        className="px-5"
+                                        onClick={handlerDelete()}
+                                    >
+                                        <p className=" text-xs">Delete</p>
+                                    </Button> */}
                             </div>
                         </div>
                     </TableHead>
@@ -234,8 +262,6 @@ export function ProvinceTabled({ datas, isOpen, setOpen, handlerEdit, handlerDel
                                                 header.column.columnDef.header,
                                                 header.getContext()
                                             )}
-
-                                        {console.log(header.column.columnDef.header)}
                                     </TableHead>
                                 );
                             })}
