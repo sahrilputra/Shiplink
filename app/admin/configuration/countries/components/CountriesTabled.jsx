@@ -29,6 +29,9 @@ import { CountryMenus } from "../../components/menus/CountryMenus";
 import { CreateNewCountry } from "./dialog/CreateNewCountry";
 import { EditCountryDialog } from "./dialog/EditCountry";
 import { Badge } from "@/components/ui/badge";
+import { DeleteCountryDialog } from "./dialog/DeleteCountry";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 
 export function CountriesTabled({ }) {
     const [query, setQuery] = useState({
@@ -46,6 +49,8 @@ export function CountriesTabled({ }) {
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [loading, setLoading] = useState(true)
+    const [deleteID, setDeleteID] = useState(null)
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
     const fetchData = async () => {
         try {
@@ -121,7 +126,7 @@ export function CountriesTabled({ }) {
             header: "Status",
             cell: ({ row }) => {
                 return (
-                    <Badge variant={`${row.original.status === "Disable" ? "redStatus" : "active" }`}>{row.original.status}</Badge>
+                    <Badge variant={`${row.original.status === "Disable" ? "redStatus" : "active"}`}>{row.original.status}</Badge>
                 );
             }
         },
@@ -130,7 +135,8 @@ export function CountriesTabled({ }) {
             header: "Action",
             cell: ({ row }) => {
                 return (
-                    <div className="flex flex-row gap-2">
+
+                    <div key={row.id} className="flex flex-row gap-2">
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
@@ -139,7 +145,29 @@ export function CountriesTabled({ }) {
                         >
                             <p className="text-[11px]">Edit</p>
                         </Button>
-                        <CountryMenus />
+                        <DropdownMenu >
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="tableBlue"
+                                    size="tableIcon"
+                                    className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                >
+                                    <MoreHorizontalIcon width={15} height={15} />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="text-xs" side="left" align="left">
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem className="text-xs text-myBlue">
+                                        See All Province With this coutnry
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        onClick={() => handlerDelete(row.original.country_code)}
+                                        className="text-xs text-red-700">
+                                        Delete This Province
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 )
             },
@@ -163,6 +191,11 @@ export function CountriesTabled({ }) {
     })
 
 
+    const handlerDelete = (item) => {
+        setDeleteID(item)
+        setOpenDeleteDialog(true)
+    }
+
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -180,6 +213,7 @@ export function CountriesTabled({ }) {
 
     return (
         <>
+            <DeleteCountryDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} deleteID={deleteID} />
             <CreateNewCountry open={openNewCountryDialog} setOpen={setOpenNewCountryDialog} reloadData={reloadData} />
             <EditCountryDialog key={selectedRowData?.country_id} open={openEditDialog} setOpen={setOpenEditDialog} data={selectedRowData} reloadData={reloadData} />
             <Table className=" rounded-md">

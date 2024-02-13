@@ -17,9 +17,9 @@ import {
 import { MoreHorizontalIcon } from "lucide-react"
 import NextLink from "next/link"
 
-export const CountryMenus = ({ }) => {
+export const CountryMenus = ({ deleteHandler, row }) => {
     // const [editDialogOpen, setEditDialogOpen] = useState(false)
-
+    console.log("Row : ", row)
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
@@ -42,6 +42,7 @@ export const CountryMenus = ({ }) => {
                         Status : Disable
                     </DropdownMenuItem>
                     <DropdownMenuItem
+                        onClick={() => deleteHandler()}
                         className="text-xs text-red-700">
                         Delete This Country
                     </DropdownMenuItem>
