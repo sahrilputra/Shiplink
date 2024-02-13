@@ -9,7 +9,7 @@ import ItemsPackage from '../dashboard/components/items/itemsPackage';
 import { PaymentModals } from '../dashboard/components/dashboardMenus/payments/paymentModals';
 import { ModalContext } from '@/context/ModalContext';
 import data from '../../../data/dashboardData.json'
-
+import NextLink from 'next/link'
 export default function ShippingLebel() {
 
     const [expandedItemId, setExpandedItemId] = useState(null);
@@ -49,7 +49,6 @@ export default function ShippingLebel() {
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.tabs}>
-
                         <div className="w-[311px] h-[46px] p-[5px] justify-start items-start gap-[19px] inline-flex">
                             <h2 className=' text-lg font-bold'>Outgoing Shipment</h2>
 
@@ -62,12 +61,14 @@ export default function ShippingLebel() {
                                 <input type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
                                 <SearchIcon className="w-4 h-4" />
                             </div>
-                            <Button
-                                variant="secondary"
-                                className="h-10 px-10 text-xs"
-                            >
-                                <p>Consolidate</p>
-                            </Button>
+                            <NextLink href={"/new-labels"} >
+                                <Button
+                                    variant="destructive"
+                                    className="h-10 px-10 text-xs"
+                                >
+                                    <p>New Shipping label</p>
+                                </Button>
+                            </NextLink>
                         </div>
                     </div>
                 </div>
