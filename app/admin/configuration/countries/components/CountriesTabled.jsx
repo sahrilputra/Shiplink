@@ -31,7 +31,7 @@ import { EditCountryDialog } from "./dialog/EditCountry";
 import { Badge } from "@/components/ui/badge";
 import { DeleteCountryDialog } from "./dialog/DeleteCountry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
+import { DeleteRowCountryDialog } from "./dialog/DeleteRowCountry";
 
 export function CountriesTabled({ }) {
     const [query, setQuery] = useState({
@@ -51,7 +51,8 @@ export function CountriesTabled({ }) {
     const [loading, setLoading] = useState(true)
     const [deleteID, setDeleteID] = useState(null)
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-
+    const [rowSelectDelete, setRowSelectDelete] = useState([])
+    const [openRowDelete, setOpenRowDelete] = useState(false)
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -135,7 +136,6 @@ export function CountriesTabled({ }) {
             header: "Action",
             cell: ({ row }) => {
                 return (
-
                     <div key={row.id} className="flex flex-row gap-2">
                         <Button
                             variant="tableBlue"
@@ -190,6 +190,13 @@ export function CountriesTabled({ }) {
 
     })
 
+    console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.country_code));
+    const handlerRowDelete = () => {
+        const selectedRows = table.getSelectedRowModel().rows.map(row => row.original.country_code);
+        setRowSelectDelete(selectedRows);
+        setOpenRowDelete(true);
+    };
+
 
     const handlerDelete = (item) => {
         setDeleteID(item)
@@ -213,6 +220,7 @@ export function CountriesTabled({ }) {
 
     return (
         <>
+            <DeleteRowCountryDialog open={openRowDelete} setOpen={setOpenRowDelete} deleteID={rowSelectDelete} />
             <DeleteCountryDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} deleteID={deleteID} />
             <CreateNewCountry open={openNewCountryDialog} setOpen={setOpenNewCountryDialog} reloadData={reloadData} />
             <EditCountryDialog key={selectedRowData?.country_id} open={openEditDialog} setOpen={setOpenEditDialog} data={selectedRowData} reloadData={reloadData} />
@@ -246,14 +254,28 @@ export function CountriesTabled({ }) {
                                 </Button>
                             </div>
                             <div className="">
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    className="px-5"
-                                    onClick={() => setOpenNewCountryDialog(true)}
-                                >
-                                    <p className=" text-xs">Add New Province </p>
-                                </Button>
+                                {
+                                    Object.keys(rowSelection).length === 0 ? (
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className="px-5"
+                                            onClick={() => setOpenNewCountryDialog(true)}
+                                        >
+                                            <p className=" text-xs">Add New Country </p>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            className="w-[100px]"
+                                            onClick={handlerRowDelete}
+                                        >
+                                            <p className=" text-xs">Delete</p>
+                                        </Button>
+                                    )
+                                }
+
                             </div>
                         </div>
                     </TableHead>
