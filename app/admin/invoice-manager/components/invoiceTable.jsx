@@ -6,6 +6,7 @@ import { ExternalLink, MoreHorizontalIcon, Plus, Delete } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
+import NextLink from 'next/link';
 import {
     Pagination,
     PaginationContent,
@@ -15,7 +16,6 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-import NextLink from 'next/link';
 import {
     Table,
     TableBody,
@@ -115,12 +115,13 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
                         >
                             <MoreHorizontalIcon width={15} height={15} />
                         </Button>
-                        <Button
-                            variant="tableBlue"
-                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                            <Delete width={15} height={15} />
-                        </Button>
-
+                        <NextLink href={'/view/invoice'}>
+                            <Button
+                                variant="tableBlue"
+                                className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
+                                <Delete width={15} height={15} />
+                            </Button>
+                        </NextLink>
                     </div>
                 )
             },
