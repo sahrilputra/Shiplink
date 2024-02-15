@@ -13,14 +13,15 @@ import { ImageTable } from '../verification/components/Table/ImageTable'
 import { v4 as uuidv4 } from 'uuid'
 import {
     Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form"
-import { Tester } from './components/Tester'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
+import Image from 'next/image'
 
 
 const formSchema = yup.object().shape({
@@ -43,8 +44,8 @@ const formSchema = yup.object().shape({
     DeclareContet: yup.array().of(
         yup.object().shape({
             itemID: yup.string(),
-            qty: yup.number().typeError('This Error'),
-            value: yup.number().typeError('This Error'),
+            qty: yup.number().typeError('Error'),
+            value: yup.number().typeError('Error'),
             description: yup.string(),
             hsDescription: yup.string(),
             hsCode: yup.string(),
@@ -125,18 +126,36 @@ export default function ArrivalScanPage() {
         mode: "onChange",
     })
 
+    const handleSubmit = () => {
+        console.log("Form Submitted!");
 
+    }
+
+    console.log(form.watch.customerID, 'watched value')
+    console.log(form.getValues('customerID'), 'getValues value')
+    console.log(form.getValues('labelImg'), 'getValues value')
+    const labelImg = form.getValues('labelImg');
+    const wholeBoxImg = form.getValues('wholeBoxImg');
+    const contentImg = form.getValues('contentImg');
+    console.log("labelImg", labelImg)
+    const images = [labelImg, wholeBoxImg, contentImg].filter(image => image !== null);
+
+    console.log("images", images)
+    // const images = [form.getValues('labelImg'), form.getValues('wholeBoxImg'), form.getValues('contentImg')].filter(image => image !== null);
+    // console.log(images, 'images')
     const declareContent = form.watch("DeclareContet");
     const totalValue = Array.isArray(declareContent)
         ? declareContent.reduce((acc, item) => acc + parseFloat(item.value || 0), 0)
         : 0;
+
     return (
         <>
             <div className={styles.forms}>
                 <Form {...form}>
                     <form
                         className='flex gap-2 flex-col text-zinc-600'
-                        action="">
+                        action=""
+                    >
                         <ArrivalForms
                             emptyMessage="No resulsts."
                             placeholder="Find something"
@@ -149,7 +168,30 @@ export default function ArrivalScanPage() {
 
                         <div className="contentImage w-[100%] bg-blue-50 mx-auto">
                             <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
-                                <ImageTable />
+                                <Carousel>
+                                    <CarouselContent className="flex items-center justify-center p-3">
+                                        {images.length > 0 ? (
+                                            images.map((image, index) => (
+                                                <CarouselItem
+                                                    key={index}
+                                                    className="basis-1/3"
+                                                >
+                                                    <Image
+                                                        src={image}
+                                                        width={200}
+                                                        height={200}
+                                                        alt={`Image ${index}`}
+                                                        style={{ objectFit: "cover", width: '200px', height: '130px' }}
+                                                    />
+                                                </CarouselItem>
+                                            ))
+                                        ) : (
+                                            <div className='text-xs'>No image to diplay here</div>
+                                        )}
+                                    </CarouselContent>
+                                    <CarouselPrevious />
+                                    <CarouselNext />
+                                </Carousel>
                             </div>
                         </div>
                         <div className="">

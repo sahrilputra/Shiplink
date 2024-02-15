@@ -78,13 +78,13 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
 
                                 <Button
                                     variant="destructive"
-                                    type="button"
-                                    className=" h-[30px] rounded-sm px-4 py-0"
-                                    size="sm"
+                                    type="submit"
                                     onClick={(e) => {
-                                        setOpen(true)
                                         e.preventDefault()
                                     }}
+                                    className=" h-[30px] rounded-sm px-4 py-0"
+                                    size="sm"
+
                                 >
                                     <p className='text-xs'>Register Package</p>
                                 </Button>
@@ -93,6 +93,16 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                     </TableRow>
                 </TableBody>
             </Table>
+            {/* <Button
+                                    variant="destructive"
+                                    type="submit"
+                                    className=" h-[30px] rounded-sm px-4 py-0"
+                                    size="sm"
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        e.preventDefault()
+                                    }}
+                                > */}
         </>
     )
 }

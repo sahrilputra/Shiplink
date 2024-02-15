@@ -86,8 +86,18 @@ export const ArrivalForms = ({
             fullName: "",
             phoneNumber: "",
             email: "",
+            trackingBarcode: "",
+            carrier: "",
+            length: "",
+            width: "",
+            height: "",
+            heightType: "",
+            weight: "",
+            weightType: "",
+            wholeBoxImg: "",
+            labelImg: "",
+            contentImg: "",
         });
-        // Clear any additional state variables
         setCustomerID("");
         setNewData(null);
         setDisabled(false);
@@ -104,7 +114,6 @@ export const ArrivalForms = ({
     };
 
     // NEW
-
 
     const [value, setValue] = useState(null)
     const inputRef = useRef(null)
@@ -189,21 +198,8 @@ export const ArrivalForms = ({
         setInputCarrierValue(carrierSelected?.label)
     }, [carrierSelected])
 
-    // const handleSelectOption = useCallback(
-    //     selectedOption => {
-    //         setInputValue(selectedOption.id)
 
-    //         setSelected(selectedOption)
-    //         onValueChange?.(selectedOption)
 
-    //         // This is a hack to prevent the input from being focused after the user selects an option
-    //         // We can call this hack: "The next tick"
-    //         setTimeout(() => {
-    //             inputRef?.current?.blur()
-    //         }, 0)
-    //     },
-    //     [onValueChange]
-    // )
 
     return (
         <>
@@ -332,30 +328,6 @@ export const ArrivalForms = ({
                                 )}
                             />
 
-
-
-
-                            {/* <FormField
-                                name="packageID"
-                                className="w-[60%] text-xs"
-                                control={forms.control}
-                                render={({ field, formState }) => (
-                                    <>
-                                        <FormItem className="w-full text-xs">
-                                            <FormLabel className=" font-bold">Package ID</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    id="packageID"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.packageID && "border-red-500 focus:ring-red-700"}`}
-                                                    placeholder="12xxxx"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    </>
-                                )}
-                            /> */}
-
                         </div>
 
                         <div className="nameWrapper flex flex-row gap-3 w-[100%]  ">
@@ -368,13 +340,6 @@ export const ArrivalForms = ({
                                         <FormItem className="w-[40%] text-xs">
                                             <FormLabel className=" font-bold">Phone Number</FormLabel>
                                             <FormControl>
-                                                {/* <Input
-                                                    id="phoneNumber"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"}`}
-                                                    placeholder="+1.000.000.0000"
-                                                    {...field}
-                                                    disabled={disabled}
-                                                /> */}
                                                 <InputMask
                                                     mask="+999 999 999 9999"
                                                     maskChar={null}
@@ -512,9 +477,6 @@ export const ArrivalForms = ({
                                                                             )
                                                                         })}
                                                                     </CommandGroup>
-                                                                    {/* <CommandEmpty className="text-xs text-center py-2">
-                                                                        {valueCarrier}
-                                                                    </CommandEmpty> */}
                                                                 </CommandList>
                                                             </div>
                                                         ) : null}
@@ -682,8 +644,19 @@ export const ArrivalForms = ({
                                                     <Input
                                                         id="wholeBox"
                                                         type="file"
-                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
+                                                        onChange={(event) => {
+                                                            const file = event.target.files[0];
+                                                            if (file) {
+                                                                const reader = new FileReader();
+                                                                reader.onload = (e) => {
+                                                                    const base64String = e.target.result;
+                                                                    field.onChange(base64String);
+                                                                };
+                                                                reader.readAsDataURL(file);
+                                                            }
+                                                        }}
                                                     />
                                                 </div>
                                             </FormControl>
@@ -704,10 +677,21 @@ export const ArrivalForms = ({
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-300 p-0'>
                                                     <Input
-                                                        id="wholeBox"
+                                                        id="labelImg"
                                                         type="file"
-                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
+                                                        className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
+                                                        onChange={(event) => {
+                                                            const file = event.target.files[0];
+                                                            if (file) {
+                                                                const reader = new FileReader();
+                                                                reader.onload = (e) => {
+                                                                    const base64String = e.target.result;
+                                                                    field.onChange(base64String);
+                                                                };
+                                                                reader.readAsDataURL(file);
+                                                            }
+                                                        }}
                                                     />
                                                 </div>
                                             </FormControl>
@@ -728,11 +712,21 @@ export const ArrivalForms = ({
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-300 p-0'>
                                                     <Input
-                                                        id="wholeBox"
+                                                        id="contentImg"
                                                         type="file"
-                                                        accept="image/*"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
+                                                        onChange={(event) => {
+                                                            const file = event.target.files[0];
+                                                            if (file) {
+                                                                const reader = new FileReader();
+                                                                reader.onload = (e) => {
+                                                                    const base64String = e.target.result;
+                                                                    field.onChange(base64String);
+                                                                };
+                                                                reader.readAsDataURL(file);
+                                                            }
+                                                        }}
                                                     />
                                                 </div>
                                             </FormControl>
@@ -759,18 +753,3 @@ export const ArrivalForms = ({
         </>
     )
 }
-
-// const formData = {};
-
-// // Assign forms field values to the corresponding properties of the formData object
-// formData.firstName = forms.getValues("firstName");
-// formData.wholeBoxImage = forms.getValues("wholeBox");
-// formData.labelCloseUp = forms.getValues("labelCloseUp");
-// formData.contentImages = forms.getValues("contentImages");
-// formData.length = forms.getValues("length");
-// formData.lengthType = forms.getValues("lengthType");
-// formData.weight = forms.getValues("weight");
-// formData.weightType = forms.getValues("weightType");
-
-// // Use the formData object as your parameter
-// yourFunction(formData);
