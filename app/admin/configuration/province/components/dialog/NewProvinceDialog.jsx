@@ -10,11 +10,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/components/ui/use-toast'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
     Command,
     CommandEmpty,

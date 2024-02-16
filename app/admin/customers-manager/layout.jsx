@@ -11,7 +11,7 @@ export default function CustomerLayout({ children }) {
         <>
             <div className={styles.container}>
                 <div className={styles.wrapper}>
-                    <div className={`${show === "true" ? styles.configHeader  : styles.banerHeight} `} >
+                    <div className={`${show === "true" ? styles.configHeader : styles.banerHeight} `} >
                         <div className={styles.banner}>
                             <div className={styles.icon}>
                                 <Image

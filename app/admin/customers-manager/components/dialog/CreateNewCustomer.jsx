@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     Dialog,
     DialogContent,
@@ -6,8 +7,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
-import React from 'react'
+import { NewCustomerForms } from '../forms/NewCustomer'
 
 export default function CreateNewCustomer({ open, setOpen }) {
     return (
@@ -15,12 +15,11 @@ export default function CreateNewCustomer({ open, setOpen }) {
             {/* <DialogTrigger>Open</DialogTrigger> */}
             <DialogContent >
                 <DialogHeader>
-                    <DialogTitle>Create New Customer</DialogTitle>
-                    <DialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
-                    </DialogDescription>
+                    <DialogTitle className="font-bold">Create New Customer</DialogTitle>
                 </DialogHeader>
+                <DialogDescription className="w-[400px]">
+                    <NewCustomerForms />
+                </DialogDescription>
             </DialogContent>
         </Dialog>
     )
