@@ -102,26 +102,27 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
             cell: ({ value }) => {
                 return (
                     <div className="flex flex-row gap-2">
-                        <Button
-                            variant="secondary"
-                            className=" px-[5px] h-[25px] text-[11px] flex flex-row justify-center gap-1 items-center">
-                            <p>View</p>
-                        </Button>
+                        <NextLink href={'/view/invoice'}>
+                            <Button
+                                variant="secondary"
+                                className=" px-[5px] h-[25px] text-[11px] flex flex-row justify-center gap-1 items-center">
+                                <p>View</p>
+                            </Button>
+                        </NextLink>
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
-                            onClick={() => toggleOpenChange()}
                         >
                             <MoreHorizontalIcon width={15} height={15} />
                         </Button>
-                        <NextLink href={'/view/invoice'}>
-                            <Button
-                                variant="tableBlue"
-                                className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                <Delete width={15} height={15} />
-                            </Button>
-                        </NextLink>
+
+                        <Button
+                            variant="tableBlue"
+                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
+                            <Delete width={15} height={15} />
+                        </Button>
+
                     </div>
                 )
             },
