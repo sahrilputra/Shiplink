@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import { WarehouseDataList } from './components/table/WarehouseDataTable'
 import data from '../../../data/admin/WarehouseDataList.json'
+import { Loaders } from '@/components/ui/loaders'
 export default function WarehousePage() {
 
     // const [open, setOpen] = useState(false);

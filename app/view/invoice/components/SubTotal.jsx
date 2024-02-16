@@ -24,7 +24,7 @@ export const SubTotal = () => {
                 <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ fontWeight: 'extrabold', fontSize: '10px', width: '130px' }}>HST 7% ($, 2.00)</Text>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
-                    <Text style={{ fontWeight: '500', color: '#5A5A5A', fontSize: '10px' }}>$2.00</Text>
+                    <Text style={{ color: '#5A5A5A', fontSize: '10px' }}>$2.00</Text>
                 </View>
             </View>
             <View style={{ display: 'flex', gap: 3, flexDirection: 'column', height: 5, justifyContent: 'space-between', alignContent: 'flex-end', width: "100%", borderBottomWidth: 1, borderBottomColor: '#dedede', borderBottomStyle: 'solid' }}>

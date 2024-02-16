@@ -17,6 +17,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { NewWarehouseDialog } from "../dialog/NewWarehouseDialog";
 import NextLink from "next/link";
 import { WarehouseMenus } from "../menus/WarehouseMenus";
+import { Skeleton } from "@/components/ui/skeleton"
 import axios from "axios";
 import {
     ColumnDef,
@@ -49,6 +50,8 @@ export function WarehouseDataList({ }) {
     const [warehouse, setWarehouse] = useState([]);
     const [deleteID, setDeleteId] = useState(null);
     const [deleteDialog, setDeleteDialog] = useState(false);
+    const [isSkeleton, setIsSkeleton] = useState(true);
+
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -65,6 +68,7 @@ export function WarehouseDataList({ }) {
             console.log(response)
             const data = await response.data;
             setWarehouse(data.warehouse);
+            setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
         }
@@ -295,9 +299,34 @@ export function WarehouseDataList({ }) {
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                No results.
-                            </TableCell>
+                            {
+                                isSkeleton ? (
+                                    <TableCell colSpan={columns.length} className="h-24 text-center ">
+                                        <div className="flex flex-col gap-2 w-full">
+                                            <div className="flex flex-row gap-2 justify-between">
+                                                <Skeleton className={"w-[30px] rounded h-[30px]"} />
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                                <Skeleton className={"w-[50px] rounded h-[30px]"} />
+                                            </div>
+                                            <div className="flex flex-row gap-2 justify-between">
+                                                <Skeleton className={"w-[30px] rounded h-[30px]"} />
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                                <Skeleton className={"w-[50px] rounded h-[30px]"} />
+                                            </div>
+                                            <div className="flex flex-row gap-2 justify-between">
+                                                <Skeleton className={"w-[30px] rounded h-[30px]"} />
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                                <Skeleton className={"w-[50px] rounded h-[30px]"} />
+                                            </div>
+                                        </div>
+                                    </TableCell>
+                                ) : (
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                )
+                            }
+
                         </TableRow>
                     )}
                 </TableBody>

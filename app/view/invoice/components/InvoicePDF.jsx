@@ -1,8 +1,10 @@
 import React from 'react'
-import { Document, Page, View } from '@react-pdf/renderer'
+import { Document, Page } from '@react-pdf/renderer'
 import { InvoiceHead } from './InvoiceHead'
 import { InvoiceUser } from './InvoiceUser'
 import { InvoiceItemsTable } from './InvoiceItemsTable'
+
+
 export const InvoicePDF = () => {
     return (
         <>
