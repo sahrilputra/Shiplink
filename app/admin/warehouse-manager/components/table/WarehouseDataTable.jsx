@@ -134,7 +134,7 @@ export function WarehouseDataList({ }) {
                 return (
                     <div className="" key={row}>
                         <div className="flex flex-row gap-2">
-                            <NextLink href={"/admin/warehouse-manager/1"}>
+                            <NextLink href={`/admin/warehouse-manager/${row.original.warehouse_id}`}>
                                 <Button
                                     variant="tableBlue"
                                     size="sm"
