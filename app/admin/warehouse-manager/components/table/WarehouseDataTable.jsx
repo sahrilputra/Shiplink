@@ -28,7 +28,16 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-
+import { DeleteSingleWarehouse } from "../WarehouseDialog/DeleteSingleWarehouse";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Dialog, DialogContent, } from "@/components/ui/dialog"
 
 export function WarehouseDataList({ }) {
 
@@ -38,6 +47,8 @@ export function WarehouseDataList({ }) {
     const [isEdit, setIsEdit] = useState(false);
     const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
     const [warehouse, setWarehouse] = useState([]);
+    const [deleteID, setDeleteId] = useState(null);
+    const [deleteDialog, setDeleteDialog] = useState(false);
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -132,7 +143,35 @@ export function WarehouseDataList({ }) {
                                     <p className="text-xs">Details</p>
                                 </Button>
                             </NextLink>
-                            <WarehouseMenus />
+                            <div className="">
+                                <Dialog>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button
+                                                variant="tableBlue"
+                                                size="tableIcon"
+                                                className={`rounded-sm w-max px-[5px] h-[25px]`}
+                                            >
+                                                <MoreHorizontalIcon width={15} height={15} />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent side={"left"} sideOffset={2}>
+                                            <DropdownMenuItem >
+                                                <p className="text-xs text-myBlue">Settings</p>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem >
+                                                <p className="text-xs">Edit Information</p>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                triggerChildren="Delete"
+                                                onClick={() => handlerDelete(row.original.warehouse_id)}
+                                            >
+                                                <p className="text-xs text-red-800">Delete</p>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </Dialog>
+                            </div>
                         </div>
                     </div>
                 )
@@ -166,12 +205,17 @@ export function WarehouseDataList({ }) {
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+    const handlerDelete = (item) => {
+        setDeleteId(item)
+        setDeleteDialog(true)
+    }
 
     const reloadData = () => {
         fetchData();
     };
     return (
         <>
+            <DeleteSingleWarehouse open={deleteDialog} setOpen={setDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
             <NewWarehouseDialog open={openNewWarehouse} setOpen={setOpenNewWarehouse} reload={reloadData} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">

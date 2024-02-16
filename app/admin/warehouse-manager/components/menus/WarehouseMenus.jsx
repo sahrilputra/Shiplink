@@ -40,7 +40,6 @@ export const WarehouseMenus = ({ getSelectedItem, dataIDhandler, dataId }) => {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-
             </Dialog>
         </>
     );

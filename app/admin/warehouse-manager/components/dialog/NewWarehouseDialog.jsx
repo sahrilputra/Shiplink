@@ -142,9 +142,6 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
         form.setValue('country_code', code);
         setOpenCommand(false)
     }
-
-    console.log("form data :", form.watch())
-
     return (
         <Dialog open={open} onOpenChange={setOpen}
             className="w-max"
