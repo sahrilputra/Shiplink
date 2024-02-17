@@ -1,10 +1,14 @@
 import React from 'react'
 import { Input } from './input'
 import { SearchIcon } from '../icons/iconCollection'
-export const SearchBar = () => {
+export const SearchBar = ({ handleSearch }) => {
     return (
         <div className="relative">
-            <Input type="text" placeholder="Search..." className="pr-8 pl-2 text-xs border border-zinc-300" />
+            <Input
+                type="text" placeholder="Search..."
+                className="pr-8 pl-2 text-xs border border-zinc-300 text-black"
+                onChange={handleSearch}
+            />
             <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
                 <SearchIcon
                     width={15}

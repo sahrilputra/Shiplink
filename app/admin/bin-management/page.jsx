@@ -17,6 +17,7 @@ export default function BinManagementPage() {
 
     const [creteNewDialog, setCreateNewDialog] = useState(false)
     const [selectedBinID, setSelectedBinID] = useState(null)
+    const [isReloadData, setIsReloadData] = useState(false)
 
     const handleBinSelection = (id) => {
         setSelectedBinID(id)
@@ -36,6 +37,7 @@ export default function BinManagementPage() {
     return (
 
         <>
+            <CreateNewBinDialog open={creteNewDialog} setOpen={setCreateNewDialog} setReloadData={setIsReloadData} />
             <div className={styles.wrapper}>
                 <div className={styles.binItems}>
                     <div className={styles.configHeader}>
@@ -57,26 +59,8 @@ export default function BinManagementPage() {
                             <BinMenus />
                         </div>
                     </div>
-                    {/* <div className="px-2 py-2 border-b border-[#dedede]">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="icon"
-                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                                <FilterIcons fill="#CC0019" />
-                            </Button>
-                            <Button
-                                onClick={() => setCreateNewDialog(true)}
-                                variant="filter"
-                                size="icon"
-                                className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
-                                <Plus fill="#CC0019" />
-                            </Button>
-                        </div>
-                    </div> */}
                     <div className="px-2 py-2">
-                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} data={data} isSelected={selectedBinID} />
+                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} isSelected={selectedBinID} isReloadData={isReloadData} />
                     </div>
                 </div>
                 <div className={styles.childContent}>
@@ -106,7 +90,7 @@ export default function BinManagementPage() {
                     </div>
                 </div>
             </div>
-            <CreateNewBinDialog open={creteNewDialog} setOpen={setCreateNewDialog} />
+
         </>
 
     )

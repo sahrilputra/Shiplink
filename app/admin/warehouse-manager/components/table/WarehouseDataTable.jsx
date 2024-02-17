@@ -303,7 +303,7 @@ export function WarehouseDataList({ }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-       
+
                     {isSkeleton || !table.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&

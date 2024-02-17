@@ -22,7 +22,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import Image from 'next/image'
-
+import { DeclareContentProvider } from './components/Context/DeclareContentContext'
 
 const formSchema = yup.object().shape({
     customerID: yup.string(),
@@ -150,65 +150,66 @@ export default function ArrivalScanPage() {
 
     return (
         <>
-            <div className={styles.forms}>
-                <Form {...form}>
-                    <form
-                        className='flex gap-2 flex-col text-zinc-600'
-                        action=""
-                    >
-                        <ArrivalForms
-                            emptyMessage="No resulsts."
-                            placeholder="Find something"
-                            forms={form}
-                        />
-
-                        <div className="w-full py-4">
-                            <Separator className="h-[2px]" />
-                        </div>
-
-                        <div className="contentImage w-[100%] bg-blue-50 mx-auto">
-                            <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
-                                <Carousel>
-                                    <CarouselContent className="flex items-center justify-center p-3">
-                                        {images.length > 0 ? (
-                                            images.map((image, index) => (
-                                                <CarouselItem
-                                                    key={index}
-                                                    className="basis-1/3"
-                                                >
-                                                    <Image
-                                                        src={image}
-                                                        width={200}
-                                                        height={200}
-                                                        alt={`Image ${index}`}
-                                                        style={{ objectFit: "cover", width: '200px', height: '130px' }}
-                                                    />
-                                                </CarouselItem>
-                                            ))
-                                        ) : (
-                                            <div className='text-xs'>No image to diplay here</div>
-                                        )}
-                                    </CarouselContent>
-                                    <CarouselPrevious />
-                                    <CarouselNext />
-                                </Carousel>
-                            </div>
-                        </div>
-                        <div className="">
-                            <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
-                            <DeclareContet
+            <DeclareContentProvider>
+                <div className={styles.forms}>
+                    <Form {...form}>
+                        <form
+                            className='flex gap-2 flex-col text-zinc-600'
+                            action=""
+                        >
+                            <ArrivalForms
+                                emptyMessage="No resulsts."
+                                placeholder="Find something"
                                 forms={form}
-                                setOpen={setOpen}
-                                addContent={addContent}
-                                removeContent={removeContent}
-                                inputCount={inputCount}
-                                totalInput={totalValue}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("packageID")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
-                        </div>
-                    </form>
-                </Form>
-            </div>
+
+                            <div className="w-full py-4">
+                                <Separator className="h-[2px]" />
+                            </div>
+
+                            <div className="contentImage w-[100%] bg-blue-50 mx-auto">
+                                <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
+                                    <Carousel>
+                                        <CarouselContent className="flex items-center justify-center p-3">
+                                            {images.length > 0 ? (
+                                                images.map((image, index) => (
+                                                    <CarouselItem
+                                                        key={index}
+                                                        className="basis-1/3"
+                                                    >
+                                                        <Image
+                                                            src={image}
+                                                            width={200}
+                                                            height={200}
+                                                            alt={`Image ${index}`}
+                                                            style={{ objectFit: "cover", width: '200px', height: '130px' }}
+                                                        />
+                                                    </CarouselItem>
+                                                ))
+                                            ) : (
+                                                <div className='text-xs'>No image to diplay here</div>
+                                            )}
+                                        </CarouselContent>
+                                        <CarouselPrevious />
+                                        <CarouselNext />
+                                    </Carousel>
+                                </div>
+                            </div>
+                            <div className="">
+                                <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
+                                <DeclareContet
+                                    forms={form}
+                                    addContent={addContent}
+                                    removeContent={removeContent}
+                                    inputCount={inputCount}
+                                    totalInput={totalValue}
+                                />
+                                <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("packageID")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
+                            </div>
+                        </form>
+                    </Form>
+                </div>
+            </DeclareContentProvider>
         </>
     )
 }

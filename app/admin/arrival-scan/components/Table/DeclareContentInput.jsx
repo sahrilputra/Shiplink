@@ -141,7 +141,7 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                     type="button"
                                     size="tableIcon"
                                     onClick={(e) => {
-                                        remove()
+                                        remove(index)
                                         e.preventDefault()
                                     }}
                                     className="px-1 py-1 w-6 h-6"

@@ -16,55 +16,70 @@ import {
 } from "@/components/ui/form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import axios from "axios";
 
 const formSchema = yup.object().shape({
-    BinID: yup.string().required(),
-    Row: yup.number().required(),
-    Section: yup.number().required(),
-    Level: yup.number().required(),
+    row: yup.string().required(),
+    section: yup.string().required(),
+    level: yup.string().required(),
 })
 
 
-
-export const CreateNewBinForms = ({ close, data = null }) => {
+export const CreateNewBinForms = ({ close, data = null, setLoading, reloadData }) => {
     const { toast } = useToast()
+
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            BinID: "",
-            Row: "",
-            Section: "",
-            Level: ""
+            row: "",
+            section: "",
+            level: "",
         },
         mode: "onChange",
     })
+
+    const handleSave = async (formData) => {
+        console.log("submitting", formData)
+        setLoading(true)
+        try {
+            formData.bins_id = "";
+            formData.action = 'add';
+            const response = await axios.post(
+                `/api/admin/bin_manager/setData`,
+                formData
+            );
+
+            toast({
+                title: 'New Bins created successfully!',
+                description: response.data.message,
+                status: 'success',
+            });
+            setLoading(false)
+            close();
+            reloadData(true)
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error creating bins!',
+                description: 'An error occurred while creating the bins.',
+                status: 'error',
+            });
+        }
+    };
+
+    console.log("wathcing form", form.formState.isSubmitting)
     return (
         <>
             <Form {...form}>
                 <form
+                    onSubmit={form.handleSubmit(handleSave)}
                     className=''
                     action="">
-
                     <div className="flex flex-col gap-2 text-xs">
-                        <FormField
-                            className="w-full"
-                            name="BinID"
-                            control={form.control}
-                            render={({ field }) => (
-                                <>
-                                    <FormItem className="w-full text-neutral-900">
-                                        <FormLabel className="text-sm">Bin ID</FormLabel>
-                                        <FormControl>
-                                            <Input id="BinID" placeholder="#423432" className="text-sm" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </>
-                            )}
-                        />
-                        <div className="flex flex-row justify-between gap-3">
+                        <div className="flex flex-row justify-between gap-3 py-3">
                             <FormField
-                                name="Row"
+                                name="row"
                                 className="w-full text-neutral-900"
                                 control={form.control}
                                 render={({ field }) => (
@@ -72,15 +87,14 @@ export const CreateNewBinForms = ({ close, data = null }) => {
                                         <FormItem className="w-full text-neutral-900">
                                             <FormLabel className="text-sm"  >Row</FormLabel>
                                             <FormControl >
-                                                <Input type="number" id="Row" placeholder="0000001" className="text-sm"  {...field} />
+                                                <Input type="number" id="row" placeholder="Row" className="text-sm"  {...field} />
                                             </FormControl>
-                                            <FormMessage />
                                         </FormItem>
                                     </>
                                 )}
                             />
                             <FormField
-                                name="Section"
+                                name="section"
                                 className="w-full text-neutral-900"
                                 control={form.control}
                                 render={({ field }) => (
@@ -88,15 +102,14 @@ export const CreateNewBinForms = ({ close, data = null }) => {
                                         <FormItem className="w-full text-neutral-900">
                                             <FormLabel className="text-sm"  >Section</FormLabel>
                                             <FormControl >
-                                                <Input type="number" id="Section" placeholder="0000001" className="text-sm"  {...field} />
+                                                <Input type="number" id="section" placeholder="Section" className="text-sm"  {...field} />
                                             </FormControl>
-                                            <FormMessage />
                                         </FormItem>
                                     </>
                                 )}
                             />
                             <FormField
-                                name="Level"
+                                name="level"
                                 className="w-full text-neutral-900"
                                 control={form.control}
                                 render={({ field }) => (
@@ -104,9 +117,8 @@ export const CreateNewBinForms = ({ close, data = null }) => {
                                         <FormItem className="w-full text-neutral-900">
                                             <FormLabel className="text-sm"  >Level</FormLabel>
                                             <FormControl >
-                                                <Input type="number" id="Level" placeholder="Level" className="text-sm"  {...field} />
+                                                <Input type="number" id="level" placeholder="Level" className="text-sm"  {...field} />
                                             </FormControl>
-                                            <FormMessage />
                                         </FormItem>
                                     </>
                                 )}
@@ -116,6 +128,7 @@ export const CreateNewBinForms = ({ close, data = null }) => {
                             <Button
                                 variant="redOutline"
                                 size="sm"
+                                type="button"
                                 className="w-full"
                                 onClick={(e) => {
                                     e.preventDefault()
@@ -129,12 +142,7 @@ export const CreateNewBinForms = ({ close, data = null }) => {
 
                                 size="sm"
                                 className="w-full"
-                                onClick={() => {
-                                    toast({
-                                        title: "Saved New Sequence!",
-                                        description: "Friday, February 10, 2023 at 5:57 PM",
-                                    })
-                                }}
+                                type="submit"
                             >
                                 <p className=' font-normal text-xs'>Save</p>
                             </Button>

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Dialog,
     DialogClose,
@@ -10,29 +10,38 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { CreateNewBinForms } from '../forms/CreateNewBinForms'
+import { Loaders } from '@/components/ui/loaders'
 
-import { Separator } from '@/components/ui/separator'
 
-export const CreateNewBinDialog = ({ open, setOpen }) => {
+export const CreateNewBinDialog = ({ open, setOpen, setReloadData }) => {
     const onClose = () => {
         setOpen(false)
     }
+    const [loading, setLoading] = useState(false)
+
     return (
-        <Dialog open={open} onOpenChange={setOpen}
-            className="w-max"
-        >
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle className="font-bold">
-                        <p>Create New Bin</p>
-                    </DialogTitle>
-                </DialogHeader>
-                <DialogDescription className=" flex justify-center items-center mx-auto">
-                    <div className="flex justify-center items-center mx-auto">
-                        <CreateNewBinForms close={onClose} />
-                    </div>
-                </DialogDescription>
-            </DialogContent>
-        </Dialog>
+        <>
+            {
+                loading ? (
+                    <Loaders />
+                ) : (
+                    <Dialog open={open} onOpenChange={setOpen}
+                        className="w-max"
+                    >
+                        <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                                <DialogTitle className="font-bold">
+                                    <p>Create New Country</p>
+                                </DialogTitle>
+                            </DialogHeader>
+                            <div className="">
+                                <CreateNewBinForms close={onClose} setLoading={setLoading} reloadData={setReloadData} />
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                )
+            }
+
+        </>
     )
 }

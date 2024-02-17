@@ -13,19 +13,34 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { DeclareContentInput } from './DeclareContentInput'
+import { useDeclareContentContext } from '../Context/DeclareContentContext'
 
-export const DeclareContet = ({ setOpen, forms, removeContent, addContent, inputCount, totalInput }) => {
+export const DeclareContet = ({
+    forms,
+    inputCount,
+    totalInput
+}) => {
+    const { addContent, calculateTotal, removeContent } = useDeclareContentContext()
+    const totalValue = calculateTotal();
+    console.log("addContent", addContent)
+    console.log('totalValue', totalValue)
+
+
+    const handleRemoveContent = (index) => {
+        removeContent(index);
+    };
+
     return (
         <>
             <Table>
                 <TableHeader className="bg-sky-50 border ">
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs">Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs ">HS Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3   text-myBlue font-bold text-xs w-[140px]">HS Code</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3   text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3  text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs">Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[140px]">HS Code</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
+                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                 </TableHeader>
                 <TableBody className="px-2">
                     {Array.from({ length: inputCount }).map((_, index) => (
@@ -33,7 +48,7 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                             forms={forms}
                             key={index}
                             index={index}
-                            remove={removeContent(index)}
+                            remove={() => removeContent(index)} // Mengubah prop remove menjadi fungsi yang memanggil handleRemoveContent dengan indeks yang sesuai
                         />
                     ))}
 
@@ -93,16 +108,7 @@ export const DeclareContet = ({ setOpen, forms, removeContent, addContent, input
                     </TableRow>
                 </TableBody>
             </Table>
-            {/* <Button
-                                    variant="destructive"
-                                    type="submit"
-                                    className=" h-[30px] rounded-sm px-4 py-0"
-                                    size="sm"
-                                    onClick={(e) => {
-                                        setOpen(true)
-                                        e.preventDefault()
-                                    }}
-                                > */}
+
         </>
     )
 }
