@@ -106,15 +106,15 @@ export const NewCustomerForms = ({ close, data = null }) => {
                             )}
                         />
                         <FormField
-                            name="Country"
+                            name="Emails"
                             className="w-full text-neutral-900"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full text-neutral-900 space-y-1">
-                                        <FormLabel className="text-sm"  >Country</FormLabel>
+                                        <FormLabel className="text-sm"  >Emails</FormLabel>
                                         <FormControl >
-                                            <Input id="Country" className="text-sm bg-slate-100"  {...field} />
+                                            <Input id="Emails" type='Emails' className="text-sm bg-slate-100"  {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>

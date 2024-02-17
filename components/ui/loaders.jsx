@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 export const Loaders = () => {
-    const [dots, setDots] = useState('');
+    // const [dots, setDots] = useState('');
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setDots((prevDots) => {
-                return prevDots.length >= 3 ? '' : prevDots + '.';
-            });
-        }, 500);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setDots((prevDots) => {
+    //             return prevDots.length >= 3 ? '' : prevDots + '.';
+    //         });
+    //     }, 500);
 
-        return () => clearInterval(interval);
-    }, []);
+    //     return () => clearInterval(interval);
+    // }, []);
 
     return (
         <>
@@ -67,11 +67,27 @@ export const Loaders = () => {
                 @keyframes l10 {
                     to {transform:translate(calc(100%/3))}
                 }
+
+                .blink-text {
+                    animation: blink-animation 1s infinite;
+                }
+
+                @keyframes blink-animation {
+                    0% {
+                        opacity: 1;
+                    }
+                    50% {
+                        opacity: 0;
+                    }
+                    100% {
+                        opacity: 1;
+                    }
+                }
             `}</style>
             <div className="loader-container">
                 <div className='flex flex-col items-center gap-2'>
                     <div className="loader"></div>
-                    <p className='text-red-700 font-bold w-[100px] text-nowrap'>Loading {dots}</p>
+                    <div className='text-red-700 font-bold w-[100px] text-nowrap text-center tracking-wider blink-text'>Loading</div>
                 </div>
             </div>
         </>

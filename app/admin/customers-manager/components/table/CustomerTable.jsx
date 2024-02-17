@@ -31,7 +31,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Loader } from "lucide-react";
 
 export function CustomerTable({ data, open, setOpen }) {
-
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [customer, setCustomer] = useState([]);
@@ -249,8 +248,6 @@ export function CustomerTable({ data, open, setOpen }) {
                         ))
                     )}
                 </TableBody>
-
-
             </Table>
         </>
     )

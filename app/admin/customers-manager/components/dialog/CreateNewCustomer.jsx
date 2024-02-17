@@ -17,9 +17,9 @@ export default function CreateNewCustomer({ open, setOpen }) {
                 <DialogHeader>
                     <DialogTitle className="font-bold">Create New Customer</DialogTitle>
                 </DialogHeader>
-                <DialogDescription className="w-[400px]">
+                <div className="w-[400px]">
                     <NewCustomerForms />
-                </DialogDescription>
+                </div>
             </DialogContent>
         </Dialog>
     )
