@@ -29,6 +29,7 @@ import { NewProvinceDialog } from "./dialog/NewProvinceDialog";
 import { EditProvinceDialog } from "./dialog/EditProvince";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { DeletePronviceDialog } from "./dialog/DeletePronviceDialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProvinceTabled({ }) {
     const [query, setQuery] = useState({
@@ -43,8 +44,9 @@ export function ProvinceTabled({ }) {
     const [isEditDialog, setIsEditDialog] = useState(false);
     const [createNewDialogOpen, setCreateNewDialogOpen] = useState(false);
     const [selectedRowData, setSelectedRowData] = useState(null);
-    const [deletId, setDeleteId] = useState(null);
+    const [deleteID, setDeleteID] = useState([])
     const [deleteDialog, setDeleteDialog] = useState(false);
+    const [isSkeleton, setIsSkeleton] = useState(true);
 
     const fetchData = async () => {
         try {
@@ -53,6 +55,7 @@ export function ProvinceTabled({ }) {
                 query
             );
             const data = await response.data;
+            setIsSkeleton(false)
             setProvince(data.province);
         } catch (error) {
             console.log('Error:', error);
@@ -175,23 +178,33 @@ export function ProvinceTabled({ }) {
 
     });
 
+
     const handleEditClicked = (row) => {
         setSelectedRowData(row.original);
         setIsEditDialog(true)
     }
 
-    const handlerDelete = (item) => {
-        setDeleteId(item)
-        setDeleteDialog(true)
+    const handlerDelete = (itemOrItems) => {
+        if (Array.isArray(itemOrItems) && itemOrItems.length > 0) {
+            setDeleteID(itemOrItems);
+            setDeleteDialog(true);
+        } else {
+            setDeleteID([itemOrItems]);
+            setDeleteDialog(true);
+        }
     }
+
 
     const reloadData = () => {
         fetchData();
     };
 
+    const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.province_code);
+
+
     return (
         <>
-            <DeletePronviceDialog open={deleteDialog} setOpen={setDeleteDialog} deleteID={deletId} reloadData={reloadData} />
+            <DeletePronviceDialog open={deleteDialog} setOpen={setDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
             <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} />
             <EditProvinceDialog key={selectedRowData?.province_id} open={isEditDialog} setOpen={setIsEditDialog} reloadData={reloadData} data={selectedRowData} />
             <Table className=" rounded-md">
@@ -224,23 +237,29 @@ export function ProvinceTabled({ }) {
                                 </Button>
                             </div>
                             <div className="">
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    className="px-5"
-                                    onClick={() => { setCreateNewDialogOpen(true) }}
-                                >
-                                    <p className=" text-xs">Add New Province</p>
-                                </Button>
+                                {
+                                    Object.keys(rowSelection).length === 0 ? (
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className="px-5"
+                                            onClick={() => { setCreateNewDialogOpen(true) }}
+                                        >
+                                            <p className=" text-xs">Add New Province</p>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            className="w-[100px]"
+                                            onClick={() => handlerDelete(selectedWarehouseIds)}
 
-                                {/* <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        className="px-5"
-                                        onClick={handlerDelete()}
-                                    >
-                                        <p className=" text-xs">Delete</p>
-                                    </Button> */}
+                                        >
+                                            <p className=" text-xs">Delete</p>
+                                        </Button>
+                                    )
+                                }
+
                             </div>
                         </div>
                     </TableHead>
@@ -262,6 +281,8 @@ export function ProvinceTabled({ }) {
                                                 header.column.columnDef.header,
                                                 header.getContext()
                                             )}
+
+                                        {console.log(header.column.columnDef.header)}
                                     </TableHead>
                                 );
                             })}
@@ -269,29 +290,50 @@ export function ProvinceTabled({ }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-                    {table.getRowModel().rows?.length ? (
+
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                            >
+                                                <Skeleton className={"w-full rounded h-[25px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
+                    ) : (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
-                                className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}`}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
+                                    <TableCell
+                                        key={cell.id}
+                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                    >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}
                             </TableRow>
                         ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                No results.
-                            </TableCell>
-                        </TableRow>
                     )}
                 </TableBody>
-
             </Table>
         </>
     )
