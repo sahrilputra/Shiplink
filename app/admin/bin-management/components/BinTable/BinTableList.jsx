@@ -27,8 +27,16 @@ import {
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DeleteDialog } from "../dialog/DeleteDialog";
-
-export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNewDialog, isSelected, isReloadData }) {
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Dialog, DialogContent, } from "@/components/ui/dialog"
+export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNewDialog, isSelected, isReloadData, setBinTotal }) {
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -38,12 +46,23 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
     });
     const [bins, setBins] = useState([]);
     const [rowSelection, setRowSelection] = React.useState({})
-    const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
-
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
+    const [sorting, setSorting] = React.useState([]);
 
+    // Tambahkan fungsi untuk melakukan sorting pada data
+    const sortData = (field, direction) => {
+        const sortedData = [...bins];
+        sortedData.sort((a, b) => {
+            if (direction === 'asc') {
+                return a[field] > b[field] ? 1 : -1;
+            } else {
+                return a[field] < b[field] ? 1 : -1;
+            }
+        });
+        setBins(sortedData);
+    };
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -53,6 +72,7 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
             const data = await response.data;
             setBins(data.bins);
             setIsSkeleton(false);
+            setBinTotal(data.total);
         } catch (error) {
             console.log('Error:', error);
         }
@@ -116,6 +136,7 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
             accessorKey: "bins_id",
             header: "ID",
             className: "text-xs",
+            isSortable: true,
         },
         {
             accessorKey: "row",
@@ -146,6 +167,11 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
 
     });
 
+    const removeSorting = () => {
+        setSorting([]);
+        fetchData(); // Memuat kembali data untuk mereset urutan ke aslinya
+    };
+
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.bins_id);
 
     return (
@@ -157,14 +183,40 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         <div className="flex w-full flex-row justify-between gap-1 items-center">
                             <div className=" w-full flex flex-row gap-2 items-center">
                                 <SearchBar handleSearch={handleSearchChange} />
-                                <Button
-                                    variant="filter"
-                                    size="filter"
-                                    className='border border-zinc-300 flex items-center rounded'>
-                                    <FilterIcons
-                                        className=""
-                                        fill="#CC0019" />
-                                </Button>
+                                <div className="">
+                                    <Dialog>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="filter"
+                                                    size="filter"
+                                                    className='border border-zinc-300 flex items-center rounded'>
+                                                    <FilterIcons
+                                                        className=""
+                                                        fill="#CC0019" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent side={"bottom"} >
+                                                <DropdownMenuItem onClick={() => {
+                                                    sortData('bins_id', 'asc');
+                                                    setSorting([{ id: 'bins_id', desc: false }]);
+                                                }}>
+                                                    <p className="text-xs text-myBlue">Sort Ascending</p>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => {
+                                                    sortData('bins_id', 'desc');
+                                                    setSorting([{ id: 'bins_id', desc: true }]);
+                                                }}>
+                                                    <p className="text-xs">Sort Descending</p>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={removeSorting}>
+                                                    <p className="text-xs">Remove Sort</p>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </Dialog>
+                                </div>
+
                             </div>
                             <div className="w-[40%] flex justify-end  ">
                                 {Object.keys(rowSelection).length === 0 ? (
@@ -244,12 +296,14 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
+                                onClick={() => handleSelect(row.id)}
                                 data-state={row.getIsSelected() && "selected"}
-                                className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""} ${isSelected === row.id ? " bg-blue-200" : ""} cursor-pointer`}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell
                                         key={cell.id}
+                                        onClick={() => handleSelect(cell.id)}
                                         className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
                                     >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}

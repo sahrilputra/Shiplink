@@ -18,6 +18,7 @@ export default function BinManagementPage() {
     const [creteNewDialog, setCreateNewDialog] = useState(false)
     const [selectedBinID, setSelectedBinID] = useState(null)
     const [isReloadData, setIsReloadData] = useState(false)
+    const [binTotal, setBinTotal] = useState(0)
 
     const handleBinSelection = (id) => {
         setSelectedBinID(id)
@@ -52,7 +53,7 @@ export default function BinManagementPage() {
                             </div>
                             <div className={`${styles.title} flex flex-col`}>
                                 <h1 className=" text-zinc-900 text-sm font-bold ">Bin Manager</h1>
-                                <p className=" text-blue-900 text-sm font-light ">Bin Manager | 124 Bin | 1100 Items </p>
+                                <p className=" text-blue-900 text-sm font-light ">Bin Manager | {binTotal > 0 ? (binTotal) : ""} Bin | 1100 Items </p>
                             </div>
                         </div>
                         <div className={`${styles.menus}`}>
@@ -60,7 +61,7 @@ export default function BinManagementPage() {
                         </div>
                     </div>
                     <div className="px-2 py-2">
-                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} isSelected={selectedBinID} isReloadData={isReloadData} />
+                        <BinTableList handleSelect={handleBinSelection} setCreateNewDialog={setCreateNewDialog} isSelected={selectedBinID} isReloadData={isReloadData} setBinTotal={setBinTotal} />
                     </div>
                 </div>
                 <div className={styles.childContent}>
