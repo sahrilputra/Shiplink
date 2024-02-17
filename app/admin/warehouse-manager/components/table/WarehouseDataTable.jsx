@@ -29,7 +29,7 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-import { DeleteSingleWarehouse } from "../WarehouseDialog/DeleteSingleWarehouse";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -39,6 +39,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
+import { DeleteSingleWarehouse } from "../dialog/DeleteSingleWarehouse";
+import { DeleteMuchWarehouse } from "../dialog/DeleteMuchWarehouse";
 
 export function WarehouseDataList({ }) {
 
@@ -50,6 +52,7 @@ export function WarehouseDataList({ }) {
     const [warehouse, setWarehouse] = useState([]);
     const [deleteID, setDeleteId] = useState(null);
     const [deleteDialog, setDeleteDialog] = useState(false);
+    const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
 
     const [query, setQuery] = useState({
@@ -198,6 +201,9 @@ export function WarehouseDataList({ }) {
 
     });
 
+    console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.warehouse_id));
+    const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.warehouse_id);
+
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -219,6 +225,7 @@ export function WarehouseDataList({ }) {
     };
     return (
         <>
+            <DeleteMuchWarehouse open={deleteMuchDialog} setOpen={setDeleteMuchDialog} deleteID={selectedWarehouseIds} reloadData={reloadData} />
             <DeleteSingleWarehouse open={deleteDialog} setOpen={setDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
             <NewWarehouseDialog open={openNewWarehouse} setOpen={setOpenNewWarehouse} reload={reloadData} />
             <div className="text-sm bg-white text-black pb-3">
@@ -248,14 +255,27 @@ export function WarehouseDataList({ }) {
                                 fill="#CC0019" />
                         </Button>
                     </div>
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        className='border border-zinc-300 flex items-center rounded'
-                        onClick={() => setOpenNewWarehouse(true)}
-                    >
-                        <p>New Warehouse</p>
-                    </Button>
+                    {
+                        Object.keys(rowSelection).length === 0 ? (
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                className='border border-zinc-300 flex items-center rounded'
+                                onClick={() => setOpenNewWarehouse(true)}
+                            >
+                                <p>New Warehouse</p>
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                className="w-[100px]"
+                                onClick={() => setDeleteMuchDialog(true)}
+                            >
+                                <p className=" text-xs">Delete</p>
+                            </Button>
+                        )
+                    }
                 </div>
             </div>
             <Table className=" rounded-md">
@@ -283,7 +303,33 @@ export function WarehouseDataList({ }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-                    {table.getRowModel().rows?.length ? (
+       
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                            >
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
+                    ) : (
+                        // Jika data telah dimuat, render data aktual
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
@@ -291,43 +337,15 @@ export function WarehouseDataList({ }) {
                                 className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
+                                    <TableCell
+                                        key={cell.id}
+                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                    >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}
                             </TableRow>
                         ))
-                    ) : (
-                        <TableRow>
-                            {
-                                isSkeleton ? (
-                                    <TableCell colSpan={columns.length} className="h-24 text-center ">
-                                        <div className="flex flex-col gap-2 w-full">
-                                            <div className="flex flex-row gap-2 justify-between">
-                                                <Skeleton className={"w-[30px] rounded h-[30px]"} />
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                                <Skeleton className={"w-[50px] rounded h-[30px]"} />
-                                            </div>
-                                            <div className="flex flex-row gap-2 justify-between">
-                                                <Skeleton className={"w-[30px] rounded h-[30px]"} />
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                                <Skeleton className={"w-[50px] rounded h-[30px]"} />
-                                            </div>
-                                            <div className="flex flex-row gap-2 justify-between">
-                                                <Skeleton className={"w-[30px] rounded h-[30px]"} />
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                                <Skeleton className={"w-[50px] rounded h-[30px]"} />
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                ) : (
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        No results.
-                                    </TableCell>
-                                )
-                            }
-
-                        </TableRow>
                     )}
                 </TableBody>
 
@@ -335,3 +353,5 @@ export function WarehouseDataList({ }) {
         </>
     )
 }
+
+
