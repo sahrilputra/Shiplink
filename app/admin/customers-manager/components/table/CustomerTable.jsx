@@ -19,11 +19,12 @@ import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
 import NextLink from "next/link";
 import { CustomerManagerDropDown } from "../menus/CustomerManagerMenus";
+import { Loaders } from "@/components/ui/loaders";
+
 export function CustomerTable({ data, open, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
-
 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -43,6 +44,7 @@ export function CustomerTable({ data, open, setOpen }) {
 
     return (
         <>
+            <Loaders />
             <div className="text-sm bg-white text-black pb-[10px]">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
