@@ -30,8 +30,8 @@ export const Loaders = () => {
                 }
 
                 .loader {
-                    --s: 25px;
-                    --g: 5px;
+                    --s: 40px;
+                    --g: 10px;
                     width: calc(3*(1.353*var(--s) + var(--g)));
                     display: grid;
                     justify-items: end;
@@ -71,7 +71,7 @@ export const Loaders = () => {
             <div className="loader-container">
                 <div className='flex flex-col items-center gap-2'>
                     <div className="loader"></div>
-                    <p className='text-red-700 font-bold'>Loading {dots}</p>
+                    <p className='text-red-700 font-bold w-[100px] text-nowrap'>Loading {dots}</p>
                 </div>
             </div>
         </>

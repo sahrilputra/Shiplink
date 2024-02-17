@@ -38,7 +38,7 @@ export async function POST(request) {
                 total: response.data.total,
                 page_total: response.data.page_total,
                 page_limit: response.data.page_limit,
-                warehouse: response.data.warehouse
+                customer: response.data.customer
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {
