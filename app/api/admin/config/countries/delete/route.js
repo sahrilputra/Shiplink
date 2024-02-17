@@ -8,7 +8,7 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const country_code = await request.json();
+        const country_code = await request.text();
         console.log("code : ", country_code)
         const response = await axios.get(
             `${process.env.API_URL}/Config/Country_delete?country_code=${country_code}`,

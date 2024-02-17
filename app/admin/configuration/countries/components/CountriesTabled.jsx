@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import React, { useState, useEffect } from "react";
 import {
@@ -32,6 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { DeleteCountryDialog } from "./dialog/DeleteCountry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { DeleteRowCountryDialog } from "./dialog/DeleteRowCountry";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function CountriesTabled({ }) {
     const [query, setQuery] = useState({
@@ -49,10 +51,11 @@ export function CountriesTabled({ }) {
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [loading, setLoading] = useState(true)
-    const [deleteID, setDeleteID] = useState(null)
+    const [deleteID, setDeleteID] = useState([])
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
     const [rowSelectDelete, setRowSelectDelete] = useState([])
     const [openRowDelete, setOpenRowDelete] = useState(false)
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -61,6 +64,7 @@ export function CountriesTabled({ }) {
             );
             const data = await response.data;
             setCountry(data.country);
+            setIsSkeleton(false);
             setLoading(false)
         } catch (error) {
             console.log('Error:', error);
@@ -197,12 +201,15 @@ export function CountriesTabled({ }) {
         setOpenRowDelete(true);
     };
 
-
-    const handlerDelete = (item) => {
-        setDeleteID(item)
-        setOpenDeleteDialog(true)
+    const handlerDelete = (itemOrItems) => {
+        if (Array.isArray(itemOrItems) && itemOrItems.length > 0) {
+            setDeleteID(itemOrItems);
+            setOpenDeleteDialog(true);
+        } else {
+            setDeleteID([itemOrItems]);
+            setOpenDeleteDialog(true);
+        }
     }
-
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -218,10 +225,11 @@ export function CountriesTabled({ }) {
         fetchData();
     };
 
+    const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.country_code);
+
     return (
         <>
-            <DeleteRowCountryDialog open={openRowDelete} setOpen={setOpenRowDelete} deleteID={rowSelectDelete} />
-            <DeleteCountryDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} deleteID={deleteID} />
+            <DeleteCountryDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
             <CreateNewCountry open={openNewCountryDialog} setOpen={setOpenNewCountryDialog} reloadData={reloadData} />
             <EditCountryDialog key={selectedRowData?.country_id} open={openEditDialog} setOpen={setOpenEditDialog} data={selectedRowData} reloadData={reloadData} />
             <Table className=" rounded-md">
@@ -269,7 +277,8 @@ export function CountriesTabled({ }) {
                                             variant="destructive"
                                             size="sm"
                                             className="w-[100px]"
-                                            onClick={handlerRowDelete}
+                                            onClick={() => handlerDelete(selectedWarehouseIds)}
+
                                         >
                                             <p className=" text-xs">Delete</p>
                                         </Button>
@@ -306,35 +315,48 @@ export function CountriesTabled({ }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-                    {table.getRowModel().rows?.length ? (
+
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                            >
+                                                <Skeleton className={"w-full rounded h-[25px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
+                    ) : (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
-                                className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}`}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
+                                    <TableCell
+                                        key={cell.id}
+                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                    >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}
                             </TableRow>
                         ))
-                    ) : (
-                        <TableRow>
-                            {
-                                loading ? (
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        Waiting Data
-                                    </TableCell>
-                                ) : (
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        No results.
-                                    </TableCell>
-                                )
-                            }
-
-                        </TableRow>
                     )}
                 </TableBody>
 
