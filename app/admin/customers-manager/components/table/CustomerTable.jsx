@@ -28,15 +28,27 @@ import NextLink from "next/link";
 import { CustomerManagerDropDown } from "../menus/CustomerManagerMenus";
 import { Loaders } from "@/components/ui/loaders";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader } from "lucide-react";
+import { DeleteCustomer } from "../dialog/DeleteCustomer";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { MoreHorizontalIcon } from "lucide-react"
 import CreateNewCustomer from "../dialog/CreateNewCustomer";
+import { Dialog } from "@/components/ui/dialog";
 export function CustomerTable({ data, open, setOpen }) {
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [customer, setCustomer] = useState([]);
+    const [customerID, setCustomerID] = useState(null);
     const [rowSelection, setRowSelection] = React.useState({})
+    const [openDelete, setOpenDelete] = useState(false)
     const [sorting, setSorting] = React.useState([])
     const [query, setQuery] = useState({
         keyword: "",
@@ -109,12 +121,44 @@ export function CustomerTable({ data, open, setOpen }) {
                                 <p className="text-[11px] text-myBlue">Details</p>
                             </Button>
                         </NextLink>
-                        <CustomerManagerDropDown />
+                        <Dialog>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="tableBlue"
+                                        size="tableIcon"
+                                        className={`rounded-sm w-max px-[5px] h-[20px]`}
+                                    >
+                                        <MoreHorizontalIcon width={15} height={15} />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent side={"left"} sideOffset={2}>
+                                    <DropdownMenuItem >
+                                        <p className="text-xs text-myBlue">Copy Customer ID</p>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem >
+                                        <p className="text-xs">Copy Login URL</p>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <p className="text-xs">Customer Details</p>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        onClick={() => handlerDelete(row.original.customer_id)}
+                                    >
+                                        <p className="text-xs text-red-700">Delete</p>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </Dialog>
                     </div>
                 )
             },
         }
     ]
+    const handlerDelete = (item) => {
+        setOpenDelete(true)
+        setCustomerID(item)
+    }
 
     const table = useReactTable({
         data: customer,
@@ -130,6 +174,8 @@ export function CustomerTable({ data, open, setOpen }) {
         },
 
     })
+
+
 
 
     const toggleEdit = () => {
@@ -154,6 +200,7 @@ export function CustomerTable({ data, open, setOpen }) {
     return (
         <>
             {/* <Loaders /> */}
+            <DeleteCustomer open={openDelete} setOpen={setOpenDelete} reloadData={reloadData} deleteID={customerID} />
             <CreateNewCustomer open={isCreateOpen} setOpen={setIsCreateOpen} reload={reloadData} />
             <div className="text-sm bg-white text-black pb-[10px]">
                 <div className="flex flex-row justify-between">

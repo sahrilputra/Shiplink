@@ -12,8 +12,15 @@ import {
 import { MoreHorizontalIcon } from "lucide-react"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 
-export const CustomerManagerDropDown = ({ getSelectedItem, dataIDhandler, dataId }) => {
+export const CustomerManagerDropDown = ({ setDeleteOpen, itemID }) => {
+    console.log("selected itemID", itemID);
+    // State untuk menyimpan itemID yang dipilih
+    const [selectedItemID, setSelectedItemID] = useState(null);
 
+    // Ketika komponen di-render, pastikan itemID yang dipilih disetel ke state local
+    if (itemID !== selectedItemID) {
+        setSelectedItemID(itemID);
+    }
     return (
         <>
             <Dialog>
@@ -37,12 +44,13 @@ export const CustomerManagerDropDown = ({ getSelectedItem, dataIDhandler, dataId
                         <DropdownMenuItem>
                             <p className="text-xs">Customer Details</p>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => setDeleteOpen(selectedItemID)} // Gunakan selectedItemID yang disimpan di state local
+                        >
                             <p className="text-xs text-red-700">Delete</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-
             </Dialog>
         </>
     );
