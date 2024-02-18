@@ -29,14 +29,15 @@ import { CustomerManagerDropDown } from "../menus/CustomerManagerMenus";
 import { Loaders } from "@/components/ui/loaders";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader } from "lucide-react";
-
+import CreateNewCustomer from "../dialog/CreateNewCustomer";
 export function CustomerTable({ data, open, setOpen }) {
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [isSkeleton, setIsSkeleton] = useState(true);
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [customer, setCustomer] = useState([]);
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
-    const [isSkeleton, setIsSkeleton] = useState(true);
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -146,10 +147,14 @@ export function CustomerTable({ data, open, setOpen }) {
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+    const reloadData = () => {
+        fetchData();
+    };
 
     return (
         <>
-            <Loaders />
+            {/* <Loaders /> */}
+            <CreateNewCustomer open={isCreateOpen} setOpen={setIsCreateOpen} reload={reloadData} />
             <div className="text-sm bg-white text-black pb-[10px]">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -169,7 +174,7 @@ export function CustomerTable({ data, open, setOpen }) {
                             variant="destructive"
                             size="sm"
                             className="px-5"
-                            onClick={() => toggleOpenDialog()}
+                            onClick={() => setIsCreateOpen(true)}
                         >
                             <p className=" text-xs">Create New Customer</p>
                         </Button>

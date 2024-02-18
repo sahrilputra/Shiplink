@@ -34,10 +34,11 @@ export const CustomerManagerDropDown = ({ getSelectedItem, dataIDhandler, dataId
                         <DropdownMenuItem >
                             <p className="text-xs">Copy Login URL</p>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                            triggerChildren="Delete"
-                        >
+                        <DropdownMenuItem>
                             <p className="text-xs">Customer Details</p>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <p className="text-xs text-red-700">Delete</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

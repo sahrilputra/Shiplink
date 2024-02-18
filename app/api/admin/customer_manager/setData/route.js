@@ -9,41 +9,44 @@ const agent = new https.Agent({
 export async function POST(request) {
 
     try {
-        const { customer_id, customer_name, customer_plans, country_code, email, password } = await request.json();
+        const {
+            customer_id = "",
+            customer_name,
+            customer_plans,
+            country_name = "",
+            country_code,
+            email,
+            password
+        } = await request.json();
 
-        const response = await axios.post('https://sla.webelectron.com/api/Auth/GetToken', {
-            customer_id: "",
-            customer_name: customer_name,
-            customer_plans: customer_plans,
-            country_code: country_code,
-            email: email,
-            password: password,
-        }, {
-            httpsAgent: agent
-        });
-
-        console.log("response", response.data); // Log the response data
-
-        const token = response.data.token;
-        cookies().set('token', token, {
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-            path: '/',
-            secure: true,
-            sameSite: 'strict'
-        })
-
-        cookies().set('user', username, {
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-            path: '/',
-            secure: true,
-            sameSite: 'strict'
-        })
-
+        const response = await axios.post(
+            `${process.env.API_URL}/Customers/Customer_setdata`,
+            {
+                customer_id: "",
+                customer_name: customer_name,
+                customer_plans: customer_plans,
+                country_code: country_code,
+                email: email,
+                password: password,
+            },
+            {
+                httpsAgent: agent,
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmN2U5NzcyYy03NmUxLTRiNDItODg3Mi01NWVkYTMzZjEyZTUiLCJyb2xlIjoic3VwZXJhZG1pbiIsInVuaXF1ZV9uYW1lIjoic3VwZXJhZG1pbiIsIm5iZiI6MTcwNzY0MDM1NSwiZXhwIjoxNzA3NjgzNTU1LCJpYXQiOjE3MDc2NDAzNTV9.6KOCvrtE2m_Tm3JDX2-WAYNCa4Gv8D3CghuUhXG6DFo`,
+                },
+            }
+        );
         if (response.status === 200) {
-
-            return NextResponse.json({ message: response.data.message }, { status: 200 });
+            const responseData = {
+                status: true,
+                message: response.data.message,
+            };
+            return NextResponse.json(responseData, { status: 200 });
         } else {
-            return NextResponse.error({ message: response.data.message }, { status: 400 });
+            return NextResponse.error(
+                { message: response.data.message },
+                { status: 400 }
+            );
         }
     } catch (error) {
         console.error(error);

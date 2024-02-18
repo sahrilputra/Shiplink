@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -17,47 +17,131 @@ import {
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { CheckIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { PopoverClose } from '@radix-ui/react-popover'
+import axios from "axios";
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Loaders } from '@/components/ui/loaders'
 
 const formSchema = yup.object().shape({
-    FullName: yup.string().required(),
-    Plans: yup.string().required(),
-    Country: yup.string().required(),
-    Emails: yup.string().required(),
-    Password: yup.string().required(),
+    customer_name: yup.string().required(),
+    customer_plans: yup.string().required(),
+    country_code: yup.string().required(),
+    country_name: yup.string().required(),
+    email: yup.string().required(),
+    password: yup.string().required(),
 })
 
 
+export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => {
 
-export const NewCustomerForms = ({ close, data = null }) => {
+    const [country, setCountry] = useState([]);
+    const [popOverOpen, setPopOverOpen] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState({
+        country_code: "",
+        country_name: "",
+    });
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            FullName: "",
-            Plans: "",
+            customer_name: "",
+            customer_plans: "",
             Country: "",
-            Emails: "",
-            Password: "",
+            email: "",
+            password: "",
         },
         mode: "onChange",
     })
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/config/countries/list`,
+                query
+            );
+            const data = await response.data;
+            setCountry(data.country);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
+    const handleSelectCountry = (code, name) => {
+        setSelectedCountry({
+            country_code: code,
+            country_name: name,
+        });
+        form.setValue('country_code', code);
+        form.setValue('country_name', name);
+    }
+
+    const handleSave = async (formData) => {
+        setLoading(true)
+        console.log("dikirim", formData)
+        try {
+            const response = await axios.post(
+                `/api/admin/customer_manager/setData`,
+                formData
+            );
+            toast({
+                title: `New Customer ${formData.customer_name} is created!`,
+                description: response.data.message,
+                status: 'success',
+            });
+            setLoading(false)
+            close();
+            reload();
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error creating New Customer!',
+                description: `Error : ${error.message}`,
+                status: 'error',
+            });
+        }
+    };
     return (
         <>
             <Form {...form}>
                 <form
+                    onSubmit={form.handleSubmit(handleSave)}
                     className=''
                     action="">
                     <div className="flex flex-col gap-2 text-xs">
                         <FormField
                             className="w-full"
-                            name="FullName"
+                            name="customer_name"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full text-neutral-900 space-y-1">
                                         <FormLabel className="text-sm">Customer Full Name</FormLabel>
                                         <FormControl>
-                                            <Input id="FullName" placeholder="Full Name" className="text-sm bg-slate-100" {...field} />
+                                            <Input id="customer_name" placeholder="Full Name" className="text-sm bg-slate-100" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -67,10 +151,10 @@ export const NewCustomerForms = ({ close, data = null }) => {
 
                         <FormField
                             control={form.control}
-                            name="Plans"
+                            name="customer_plans"
                             render={({ field }) => (
                                 <FormItem className="w-full text-neutral-900 space-y-1">
-                                    <FormLabel className="text-sm">Customer Full Name</FormLabel>
+                                    <FormLabel className="text-sm">Customer Plans</FormLabel>
                                     <FormControl>
                                         <RadioGroup
                                             onValueChange={field.onChange}
@@ -105,16 +189,95 @@ export const NewCustomerForms = ({ close, data = null }) => {
                                 </FormItem>
                             )}
                         />
+
                         <FormField
-                            name="Emails"
+                            control={form.control}
+                            name="country_name"
+                            className="w-full"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col w-full">
+                                    <FormLabel className="text-sm">Select Country</FormLabel>
+                                    <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
+                                        <PopoverTrigger asChild>
+                                            <FormControl className="w-full">
+                                                <Button
+                                                    onClick={() => setPopOverOpen(true)}
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    type="button"
+                                                    className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                >
+                                                    <span className='text-black font-bold w-[50px]'>{form.getValues('country_code') ? form.getValues('country_code') : "..."}</span>
+                                                    <span className='text-sm'>
+                                                        {field.value ? field.value : "Select Country"}
+                                                    </span>
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[400px] p-0">
+                                            <Command className="w-full">
+                                                <CommandInput
+                                                    placeholder="Search Country..."
+                                                    className="h-9 w-full text-xs"
+                                                />
+                                                <CommandEmpty
+                                                    className="w-full text-xs text-center py-2"
+                                                >
+                                                    No Country found.
+                                                </CommandEmpty>
+
+                                                <CommandGroup className="h-[150px]">
+                                                    <ScrollArea className="h-[150px]">
+                                                        {console.log(field.value)}
+                                                        {country.map((item) => (
+                                                            <>
+                                                                <PopoverClose asChild>
+                                                                    <CommandItem
+                                                                        value={item.country_name}
+                                                                        key={item.country_id}
+                                                                        className="text-xs"
+                                                                        onSelect={() => {
+                                                                            handleSelectCountry(
+                                                                                item.country_code,
+                                                                                item.country_name
+                                                                            );
+                                                                            form.setValue('country_code', item.country_code);
+                                                                            form.setValue('country_name', item.country_name);
+                                                                            field.onChange(item.country_name); // Perbarui nilai field.value
+                                                                            setPopOverOpen(false)
+                                                                        }}
+                                                                    >
+
+                                                                        {item.country_name}
+                                                                        <CheckIcon
+                                                                            className={`ml-auto h-4 w-4 ${item.country_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                        />
+
+                                                                    </CommandItem>
+                                                                </PopoverClose>
+                                                            </>
+
+
+                                                        ))}
+                                                    </ScrollArea>
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name="email"
                             className="w-full text-neutral-900"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full text-neutral-900 space-y-1">
-                                        <FormLabel className="text-sm"  >Emails</FormLabel>
+                                        <FormLabel className="text-sm"  >Email</FormLabel>
                                         <FormControl >
-                                            <Input id="Emails" type='Emails' className="text-sm bg-slate-100"  {...field} />
+                                            <Input id="email" type='email' className="text-sm bg-slate-100"  {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -123,7 +286,7 @@ export const NewCustomerForms = ({ close, data = null }) => {
                         />
 
                         <FormField
-                            name="Password"
+                            name="password"
                             className="w-full text-neutral-900"
                             control={form.control}
                             render={({ field }) => (
@@ -131,7 +294,13 @@ export const NewCustomerForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-neutral-900 space-y-1">
                                         <FormLabel className="text-sm"  >Password</FormLabel>
                                         <FormControl >
-                                            <Input type="Password" id="Password" className="text-sm bg-slate-100"  {...field} />
+                                            <>
+                                                <div className="relative">
+                                                    <Input type="password" id="password" className="text-sm bg-slate-100"  {...field} />
+
+                                                </div>
+                                            </>
+
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -156,12 +325,7 @@ export const NewCustomerForms = ({ close, data = null }) => {
 
                             size="sm"
                             className="w-full"
-                            onClick={() => {
-                                toast({
-                                    title: "Saved New Sequence!",
-                                    description: "Friday, February 10, 2023 at 5:57 PM",
-                                })
-                            }}
+                            type="submit"
                         >
                             <p className=' font-normal text-xs'>Save</p>
                         </Button>

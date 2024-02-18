@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -8,19 +8,31 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { NewCustomerForms } from '../forms/NewCustomer'
+import { Loaders } from '@/components/ui/loaders'
 
-export default function CreateNewCustomer({ open, setOpen }) {
+export default function CreateNewCustomer({ open, setOpen, reload }) {
+    const [loading, setLoading] = useState(false)
+    const closeDialog = () => setOpen(false)
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            {/* <DialogTrigger>Open</DialogTrigger> */}
-            <DialogContent >
-                <DialogHeader>
-                    <DialogTitle className="font-bold">Create New Customer</DialogTitle>
-                </DialogHeader>
-                <div className="w-[400px]">
-                    <NewCustomerForms />
-                </div>
-            </DialogContent>
-        </Dialog>
+        <>
+            {loading ?
+                (
+                    <Loaders />
+                ) : (
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        {/* <DialogTrigger>Open</DialogTrigger> */}
+                        <DialogContent >
+                            <DialogHeader>
+                                <DialogTitle className="font-bold">Create New Customer</DialogTitle>
+                            </DialogHeader>
+                            <div className="w-[400px]">
+                                <NewCustomerForms reload={reload} close={closeDialog} setLoading={setLoading} />
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                )
+            }
+        </>
+
     )
 }
