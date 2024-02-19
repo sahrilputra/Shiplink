@@ -197,6 +197,7 @@ export function ProvinceTabled({ }) {
 
     const reloadData = () => {
         fetchData();
+        setRowSelection({});
     };
 
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.province_code);

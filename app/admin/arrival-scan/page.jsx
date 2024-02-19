@@ -173,18 +173,19 @@ export default function ArrivalScanPage() {
                                         <CarouselContent className="flex items-center justify-center p-3">
                                             {images.length > 0 ? (
                                                 images.map((image, index) => (
-                                                    <CarouselItem
-                                                        key={index}
-                                                        className="basis-1/3"
-                                                    >
-                                                        <Image
-                                                            src={image}
-                                                            width={200}
-                                                            height={200}
-                                                            alt={`Image ${index}`}
-                                                            style={{ objectFit: "cover", width: '200px', height: '130px' }}
-                                                        />
-                                                    </CarouselItem>
+                                                    <>
+                                                        <div className="basis-1/3" key={index}>
+                                                            <CarouselItem>
+                                                                <Image
+                                                                    src={image}
+                                                                    width={200}
+                                                                    height={200}
+                                                                    alt={`Image ${index}`}
+                                                                    style={{ objectFit: "cover", width: '200px', height: '130px' }}
+                                                                />
+                                                            </CarouselItem>
+                                                        </div>
+                                                    </>
                                                 ))
                                             ) : (
                                                 <div className='text-xs'>No image to diplay here</div>

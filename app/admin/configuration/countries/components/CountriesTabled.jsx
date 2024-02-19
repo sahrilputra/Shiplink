@@ -223,6 +223,7 @@ export function CountriesTabled({ }) {
     };
     const reloadData = () => {
         fetchData();
+        setRowSelection({});
     };
 
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.country_code);

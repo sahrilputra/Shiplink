@@ -33,7 +33,7 @@ export const DeletePronviceDialog = ({ open, setOpen, deleteID, reloadData }) =>
                     { data: deleteID }
                 );
                 toast({
-                    title: `Country Deleted!`,
+                    title: `Province Deleted!`,
                     description: response.data.message,
                     status: 'success',
                 });
@@ -44,7 +44,7 @@ export const DeletePronviceDialog = ({ open, setOpen, deleteID, reloadData }) =>
         } catch (error) {
             setLoading(false);
             toast({
-                title: 'Error Deleting Country!',
+                title: 'Error Deleting Province!',
                 description: 'An error occurred while deleting warehouses.',
                 status: 'error',
             });

@@ -8,10 +8,10 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const province_code = await request.json();
-        console.log("code : ", province_code)
+        const { data } = await request.json();
+        console.log("code : ", data)
         const response = await axios.get(
-            `${process.env.API_URL}/Config/Province_delete?province_code=${province_code}`,
+            `${process.env.API_URL}/Config/Province_delete?province_code=${data}`,
             {
                 httpsAgent: agent,
                 headers: {
