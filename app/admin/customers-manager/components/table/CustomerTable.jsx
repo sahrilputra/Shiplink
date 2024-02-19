@@ -40,6 +40,8 @@ import {
 import { MoreHorizontalIcon } from "lucide-react"
 import CreateNewCustomer from "../dialog/CreateNewCustomer";
 import { Dialog } from "@/components/ui/dialog";
+
+
 export function CustomerTable({ data, open, setOpen }) {
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);

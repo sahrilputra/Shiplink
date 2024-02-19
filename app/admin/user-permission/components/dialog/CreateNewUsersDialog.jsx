@@ -1,20 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog'
 import { CreateNewUserForms } from '../forms/CreateNewUsersForms'
-export const NewUserDialog = ({ open, setOpen }) => {
-    const onClose = () => {
-        setOpen(false)
-    }
+import { Loaders } from '@/components/ui/loaders'
+export const NewUserDialog = ({ open, setOpen, reload }) => {
+
+    const [loading, setLoading] = useState(false)
+    const closeDialog = () => setOpen(false)
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <p>Create New User</p>
-                </DialogHeader>
-                <DialogDescription>
-                    <CreateNewUserForms close={onClose} />
-                </DialogDescription>
-            </DialogContent>
-        </Dialog>
+        <>
+            {loading ? (
+                <Loaders />
+            ) : (
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <p>Create New User</p>
+                        </DialogHeader>
+                        <div>
+                            <CreateNewUserForms close={closeDialog} setLoading={setLoading} reload={reload} />
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+        </>
     )
 }
