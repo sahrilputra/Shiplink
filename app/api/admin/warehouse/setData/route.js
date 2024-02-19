@@ -21,7 +21,7 @@ export async function POST(request) {
         } = await request.json();
 
         console.log("getReq", request.body, warehouse_id, warehouse_name, phone_number, country_code, address, warehouse_catalog, warehouse_manager, email, action)
-        
+
         const response = await axios.post(
             `${process.env.API_URL}/Warehouse/Warehouse_setdata`,
             {
@@ -39,7 +39,8 @@ export async function POST(request) {
             {
                 httpsAgent: agent,
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmN2U5NzcyYy03NmUxLTRiNDItODg3Mi01NWVkYTMzZjEyZTUiLCJyb2xlIjoic3VwZXJhZG1pbiIsInVuaXF1ZV9uYW1lIjoic3VwZXJhZG1pbiIsIm5iZiI6MTcwNzY0MDM1NSwiZXhwIjoxNzA3NjgzNTU1LCJpYXQiOjE3MDc2NDAzNTV9.6KOCvrtE2m_Tm3JDX2-WAYNCa4Gv8D3CghuUhXG6DFo`,
+                    Authorization:
+                        `Bearer ${process.env.BEARER_TOKEN}`
                 },
             }
         );
