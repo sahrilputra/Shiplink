@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import React, { useEffect, useState } from "react";
 import {
@@ -136,7 +137,7 @@ export function UserTable() {
                 return (
                     <div className="" key={row}>
                         <div className="flex flex-row gap-2">
-                            <NextLink href={`/admin/user-permission/${row.original.user_code}`}>
+                            <NextLink href={`/admin/user-permission/profiles/${row.original.user_code}`}>
                                 <Button
                                     variant="secondary"
                                     size="sm"
