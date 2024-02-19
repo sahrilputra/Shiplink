@@ -24,6 +24,7 @@ import { NewRoleDialog } from "../dialog/NewRoleDialog";
 import { NewUserDialog } from "../dialog/CreateNewUsersDialog";
 import { MoreRoleAction } from "../menus/MoreRoleAction";
 import { MoreTableAction } from "../menus/MoreTableAction";
+import { DeleteUsersDialog } from "../dialog/DeleteUsersDialog";
 import axios from "axios";
 import {
     ColumnDef,
@@ -41,7 +42,8 @@ export function UserTable() {
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
     const [newUserDialogOpen, setNewUserDialogOpen] = useState(false);
 
-    const [expandedRows, setExpandedRows] = useState([]);
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deleteID, setDeleteID] = useState([])
     const [isEdit, setIsEdit] = useState(false);
     const [user, setUser] = useState([]);
     const [sorting, setSorting] = useState([]);
@@ -134,7 +136,7 @@ export function UserTable() {
                 return (
                     <div className="" key={row}>
                         <div className="flex flex-row gap-2">
-                            <NextLink href={`/admin/user-permission/${row.original.user_id}`}>
+                            <NextLink href={`/admin/user-permission/${row.original.user_code}`}>
                                 <Button
                                     variant="secondary"
                                     size="sm"
@@ -170,6 +172,7 @@ export function UserTable() {
                                                 Change Role
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
+                                                onClick={() => handlerDelete(row.original.user_code)}
                                                 className="text-xs text-red-700">
                                                 Delete User
                                             </DropdownMenuItem>
@@ -200,9 +203,32 @@ export function UserTable() {
 
     const reloadData = () => {
         fetchData();
+        setRowSelection({});
     };
+
+    const handlerDelete = (itemOrItems) => {
+        if (Array.isArray(itemOrItems) && itemOrItems.length > 0) {
+            setDeleteID(itemOrItems);
+            setDeleteOpen(true);
+        } else {
+            setDeleteID([itemOrItems]);
+            setDeleteOpen(true);
+        }
+    }
+
+    
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
+
+    const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.user_code);
+
     return (
         <>
+            <DeleteUsersDialog open={deleteOpen} setOpen={setDeleteOpen} reloadData={reloadData} deleteID={deleteID} />
             <NewRoleDialog open={roleDialogOpen} setOpen={setRoleDialogOpen} />
             <NewUserDialog open={newUserDialogOpen} setOpen={setNewUserDialogOpen} reload={reloadData} />
 
@@ -210,7 +236,7 @@ export function UserTable() {
                 <div className="py-2 px-3" >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar handleSearch={setQuery} />
+                            <SearchBar handleSearch={handleSearchChange} />
                             <Button
                                 variant="filter"
                                 size="filter"
@@ -219,18 +245,34 @@ export function UserTable() {
                                     className=""
                                     fill="#CC0019" />
                             </Button>
-                            <DatePickerWithRange className={"text-black"} />
                         </div>
                         <div className="inline-flex gap-[10px] justify-evenly items-center">
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                className="w-[120px]"
-                                onClick={() => setNewUserDialogOpen(true)}
-                            >
-                                <p className=" text-xs">Create New User</p>
-                            </Button>
-                            <MoreRoleAction setRoleDialogOpen={setRoleDialogOpen} />
+                            {
+                                Object.keys(rowSelection).length === 0 ? (
+                                    <>
+                                        <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            className="w-[120px]"
+                                            onClick={() => setNewUserDialogOpen(true)}
+                                        >
+                                            <p className=" text-xs">Create New User</p>
+                                        </Button>
+                                        <MoreRoleAction setRoleDialogOpen={setRoleDialogOpen} />
+                                    </>
+                                ) : (
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        className="w-[100px]"
+                                        onClick={() => handlerDelete(selectedWarehouseIds)}
+                                    >
+                                        <p className=" text-xs">Delete</p>
+                                    </Button>
+                                )
+                            }
+
+
                         </div>
                     </div>
                 </div>

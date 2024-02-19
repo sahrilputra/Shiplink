@@ -165,13 +165,13 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                                         <PopoverContent className="w-[300px] p-0">
                                             <Command className="w-full">
                                                 <CommandInput
-                                                    placeholder="Search Country..."
+                                                    placeholder="Search Warehouses..."
                                                     className="h-9 w-full text-xs"
                                                 />
                                                 <CommandEmpty
                                                     className="w-full text-xs text-center py-2"
                                                 >
-                                                    No Country found.
+                                                    No Warehouses found.
                                                 </CommandEmpty>
 
                                                 <CommandGroup className="h-[150px]">
