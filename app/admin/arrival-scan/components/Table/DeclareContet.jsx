@@ -13,22 +13,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { DeclareContentInput } from './DeclareContentInput'
-import { useDeclareContentContext } from '../Context/DeclareContentContext'
 
 export const DeclareContet = ({
     forms,
-    inputCount,
-    totalInput
+    fields,
+    append,
+    remove,
+    total
 }) => {
-    const { addContent, calculateTotal, removeContent } = useDeclareContentContext()
-    const totalValue = calculateTotal();
-    console.log("addContent", addContent)
-    console.log('totalValue', totalValue)
 
-
-    const handleRemoveContent = (index) => {
-        removeContent(index);
-    };
 
     return (
         <>
@@ -42,16 +35,16 @@ export const DeclareContet = ({
                     <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
                     <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                 </TableHeader>
-                <TableBody className="px-2">
-                    {Array.from({ length: inputCount }).map((_, index) => (
+                <TableBody>
+                    {fields.map((field, index) => (
                         <DeclareContentInput
-                            forms={forms}
-                            key={index}
+                            key={field.id}
                             index={index}
-                            remove={() => removeContent(index)} // Mengubah prop remove menjadi fungsi yang memanggil handleRemoveContent dengan indeks yang sesuai
+                            forms={forms}
+                            handleRemoveContent={() => remove(index)}
+                            itemID={field.itemID}
                         />
                     ))}
-
                 </TableBody>
             </Table>
             <Table>
@@ -63,10 +56,7 @@ export const DeclareContet = ({
                                 size="sm"
                                 type="button"
                                 className="px-4 h-7 py-3"
-                                onClick={(e) => {
-                                    addContent()
-                                    e.preventDefault()
-                                }}
+                                onClick={() => append({})}
                             >
                                 <p className='text-xs'>Add Other Content</p>
                             </Button>
@@ -76,7 +66,7 @@ export const DeclareContet = ({
                         <TableCell className="font-medium flex flex-row justify-between w-full items-center p-0 px-5 py-2  ">
                             <div className="flex flex-row gap-4">
                                 <p className=' text-sm font-bold text-myBlue'>Totals : </p>
-                                <p className=' text-sm font-semibold'>${totalInput} </p>
+                                <p className=' text-sm font-semibold'>$ {total}</p>
 
                             </div>
                             <div className="flex flex-row justify-center gap-4">

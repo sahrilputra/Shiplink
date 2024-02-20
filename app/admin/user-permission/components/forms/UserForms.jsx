@@ -58,7 +58,6 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
 
     console.log("then result", data)
     const handleCancel = () => {
-        form.reset()
         handleDisable()
     }
 

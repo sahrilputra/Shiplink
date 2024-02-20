@@ -42,7 +42,10 @@ export default function Profiles({ params }) {
     useEffect(() => {
         fetchData();
     }, []);
-    
+
+    // const reloadData = () => {
+    //     fetchData();
+    // }
     // fetchData();
     const handleDisable = () => {
         setDisable(!disable)

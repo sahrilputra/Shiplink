@@ -632,7 +632,7 @@ export const ArrivalForms = ({
                     <div className="flex flex-col gap-2 w-[30%]">
                         <FormField
                             className="w-full flex flex-row "
-                            name="wholeBoxImg"
+                            name="box_images"
                             control={forms.control}
                             render={({ field }) => (
                                 <>
@@ -642,19 +642,30 @@ export const ArrivalForms = ({
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-300 p-0 cursor-pointer'>
                                                     <Input
-                                                        id="wholeBox"
+                                                        id="labelImg"
                                                         type="file"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
+                                                        multiple
                                                         onChange={(event) => {
-                                                            const file = event.target.files[0];
-                                                            if (file) {
-                                                                const reader = new FileReader();
-                                                                reader.onload = (e) => {
-                                                                    const base64String = e.target.result;
-                                                                    field.onChange(base64String);
+                                                            const files = event.target.files;
+                                                            if (files) {
+                                                                const images = [];
+                                                                let processedFiles = 0;
+                                                                const readAndProcessFile = (file) => {
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = (e) => {
+                                                                        images.push(e.target.result);
+                                                                        processedFiles++;
+                                                                        if (processedFiles === files.length) {
+                                                                            forms.setValue("box_images", images); // Atur nilai field label_images menggunakan setValue dari useForm
+                                                                        } else {
+                                                                            readAndProcessFile(files[processedFiles]);
+                                                                        }
+                                                                    };
+                                                                    reader.readAsDataURL(file);
                                                                 };
-                                                                reader.readAsDataURL(file);
+                                                                readAndProcessFile(files[processedFiles]);
                                                             }
                                                         }}
                                                     />
@@ -667,7 +678,7 @@ export const ArrivalForms = ({
                         />
                         <FormField
                             className="w-full flex flex-row justify-center items-end"
-                            name="labelImg"
+                            name="label_images"
                             control={forms.control}
                             render={({ field }) => (
                                 <>
@@ -681,15 +692,26 @@ export const ArrivalForms = ({
                                                         type="file"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
+                                                        multiple
                                                         onChange={(event) => {
-                                                            const file = event.target.files[0];
-                                                            if (file) {
-                                                                const reader = new FileReader();
-                                                                reader.onload = (e) => {
-                                                                    const base64String = e.target.result;
-                                                                    field.onChange(base64String);
+                                                            const files = event.target.files;
+                                                            if (files) {
+                                                                const images = [];
+                                                                let processedFiles = 0;
+                                                                const readAndProcessFile = (file) => {
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = (e) => {
+                                                                        images.push(e.target.result);
+                                                                        processedFiles++;
+                                                                        if (processedFiles === files.length) {
+                                                                            forms.setValue("label_images", images); // Atur nilai field label_images menggunakan setValue dari useForm
+                                                                        } else {
+                                                                            readAndProcessFile(files[processedFiles]);
+                                                                        }
+                                                                    };
+                                                                    reader.readAsDataURL(file);
                                                                 };
-                                                                reader.readAsDataURL(file);
+                                                                readAndProcessFile(files[processedFiles]);
                                                             }
                                                         }}
                                                     />
@@ -702,7 +724,7 @@ export const ArrivalForms = ({
                         />
                         <FormField
                             className="w-full flex flex-row justify-center items-end"
-                            name="contentImg"
+                            name="content_images"
                             control={forms.control}
                             render={({ field }) => (
                                 <>
@@ -712,19 +734,30 @@ export const ArrivalForms = ({
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-300 p-0'>
                                                     <Input
-                                                        id="contentImg"
+                                                        id="content_images"
                                                         type="file"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
+                                                        multiple
                                                         onChange={(event) => {
-                                                            const file = event.target.files[0];
-                                                            if (file) {
-                                                                const reader = new FileReader();
-                                                                reader.onload = (e) => {
-                                                                    const base64String = e.target.result;
-                                                                    field.onChange(base64String);
+                                                            const files = event.target.files;
+                                                            if (files) {
+                                                                const images = [];
+                                                                let processedFiles = 0;
+                                                                const readAndProcessFile = (file) => {
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = (e) => {
+                                                                        images.push(e.target.result);
+                                                                        processedFiles++;
+                                                                        if (processedFiles === files.length) {
+                                                                            forms.setValue("content_images", images); // Atur nilai field label_images menggunakan setValue dari useForm
+                                                                        } else {
+                                                                            readAndProcessFile(files[processedFiles]);
+                                                                        }
+                                                                    };
+                                                                    reader.readAsDataURL(file);
                                                                 };
-                                                                reader.readAsDataURL(file);
+                                                                readAndProcessFile(files[processedFiles]);
                                                             }
                                                         }}
                                                     />

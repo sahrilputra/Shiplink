@@ -5,8 +5,14 @@ import { TableCell, TableRow } from '@/components/ui/tableDashboard'
 import { CheckIcon, XIcon } from 'lucide-react'
 import React from 'react'
 import InputMask from 'react-input-mask';
+import { v4 as uuidv4 } from 'uuid'
+export const DeclareContentInput = ({
+    forms,
+    index,
+    handleRemoveContent,
+    itemID,
+}) => {
 
-export const DeclareContentInput = ({ index, remove, forms, items }) => {
     return (
         <>
             <TableRow className="text-xs px-2">
@@ -140,11 +146,8 @@ export const DeclareContentInput = ({ index, remove, forms, items }) => {
                                     variant="softBlue"
                                     type="button"
                                     size="tableIcon"
-                                    onClick={(e) => {
-                                        remove(index)
-                                        e.preventDefault()
-                                    }}
                                     className="px-1 py-1 w-6 h-6"
+                                    onClick={handleRemoveContent}
                                 >
                                     <XIcon className="w-4 h-4" />
                                 </Button>

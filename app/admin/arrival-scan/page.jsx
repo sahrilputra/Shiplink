@@ -8,9 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { RegisterDialog } from './components/Dialog/RegistedDialog'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
-import { ImageTable } from '../verification/components/Table/ImageTable'
-import { v4 as uuidv4 } from 'uuid'
+import { useForm, useFieldArray } from 'react-hook-form'
 import {
     Form,
 } from "@/components/ui/form"
@@ -22,8 +20,6 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import Image from 'next/image'
-import { DeclareContentProvider } from './components/Context/DeclareContentContext'
-
 const formSchema = yup.object().shape({
     customerID: yup.string(),
     fullName: yup.string(),
@@ -38,9 +34,18 @@ const formSchema = yup.object().shape({
     heightType: yup.string(),
     weight: yup.number(),
     weightType: yup.string(),
-    wholeBoxImg: yup.string(),
-    labelImg: yup.string(),
-    contentImg: yup.string(),
+    box_images: yup.array().of(
+        yup.object().shape({
+        }),
+    ),
+    label_images: yup.array().of(
+        yup.object().shape({
+        }),
+    ),
+    content_images: yup.array().of(
+        yup.object().shape({
+        }),
+    ),
     DeclareContet: yup.array().of(
         yup.object().shape({
             itemID: yup.string(),
@@ -65,35 +70,6 @@ export default function ArrivalScanPage() {
     const [internalCode, setInternalCode] = useState(generateRandomNumber());
     const [open, setOpen] = useState(false);
 
-    const [inputCount, setInputCount] = useState(1);
-
-
-    const removeContent = (index) => {
-        return () => {
-            setInputCount((prevCount) => prevCount - 1);
-            form.setValue('DeclareContet', (prevDeclareContent) => {
-                return prevDeclareContent.filter((_, i) => i !== index);
-            });
-        }
-    }
-    const addContent = () => {
-        setInputCount((prevCount) => prevCount + 1);
-        const uniqueId = uuidv4();
-        form.setValue('DeclareContet', (prevDeclareContent) => [
-            ...prevDeclareContent,
-            {
-                itemID: uniqueId,
-                qty: "",
-                value: "",
-                description: "",
-                hsDescription: "",
-                hsCode: "",
-                madeIn: "",
-            },
-        ]);
-
-    }
-
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -110,107 +86,128 @@ export default function ArrivalScanPage() {
             heightType: "",
             weight: "",
             weightType: "",
-            wholeBoxImg: "",
-            labelImg: "",
-            contentImg: "",
-            DeclareContet: Array.from({ length: inputCount }, () => ({
-                itemID: "",
-                qty: "",
-                value: "",
-                description: "",
-                hsDescription: "",
-                hsCode: "",
-                madeIn: "",
-            })),
+            box_images: [
+                {}
+            ],
+            label_images: [
+                {}
+            ],
+            content_images: [
+                {}
+            ],
+            DeclareContet: [
+                {
+                    itemID: "",
+                    qty: 0,
+                    value: 0,
+                    description: "",
+                    hsDescription: "",
+                    hsCode: "",
+                    madeIn: "",
+                }
+            ],
         },
         mode: "onChange",
     })
 
-    const handleSubmit = () => {
-        console.log("Form Submitted!");
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "DeclareContet",
+    });
 
-    }
 
-    console.log(form.watch.customerID, 'watched value')
-    console.log(form.getValues('customerID'), 'getValues value')
-    console.log(form.getValues('labelImg'), 'getValues value')
-    const labelImg = form.getValues('labelImg');
-    const wholeBoxImg = form.getValues('wholeBoxImg');
-    const contentImg = form.getValues('contentImg');
-    console.log("labelImg", labelImg)
-    const images = [labelImg, wholeBoxImg, contentImg].filter(image => image !== null);
+    // const labelImg = form.getValues('label_images');
+    // const wholeBoxImg = form.getValues('wholeBoxImg');
+    // const contentImg = form.getValues('contentImg');
+    // console.log("Box Image", form.watch('box_images'))
+    // console.log("Label Image", form.watch('label_images'))
+    // console.log("Content Image", form.watch('content_images'))
 
-    console.log("images", images)
-    // const images = [form.getValues('labelImg'), form.getValues('wholeBoxImg'), form.getValues('contentImg')].filter(image => image !== null);
-    // console.log(images, 'images')
-    const declareContent = form.watch("DeclareContet");
-    const totalValue = Array.isArray(declareContent)
-        ? declareContent.reduce((acc, item) => acc + parseFloat(item.value || 0), 0)
-        : 0;
+    const boxImages = form.watch('box_images');
+    const labelImages = form.watch('label_images');
+    const contentImages = form.watch('content_images');
+    const allImages = [...boxImages, ...labelImages, ...contentImages];
 
+    console.log("Semua Gambar", allImages);
+    const IMAGE_SIZE = allImages.length;
+    const OPTIONS = { loop: true };
+    const [api, setApi] = useState({
+        IMAGE_SIZE,
+    });
+    // const calculateTotal = () => {
+    //     return form.watch('DeclareContet').reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
+    // };
+
+    const calculateTotal = () => {
+        const declareContent = form.watch('DeclareContet');
+        const total = declareContent.reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
+        console.log('Total:', total);
+        return total;
+    };
+    const Totals = calculateTotal();
+    console.log("Totalssss : ", Totals)
+    
     return (
         <>
-            <DeclareContentProvider>
-                <div className={styles.forms}>
-                    <Form {...form}>
-                        <form
-                            className='flex gap-2 flex-col text-zinc-600'
-                            action=""
-                        >
-                            <ArrivalForms
-                                emptyMessage="No resulsts."
-                                placeholder="Find something"
+
+            <div className={styles.forms}>
+                <Form {...form}>
+                    <form
+                        className='flex gap-2 flex-col text-zinc-600'
+                        action=""
+                    >
+                        <ArrivalForms
+                            emptyMessage="No resulsts."
+                            placeholder="Find something"
+                            forms={form}
+                        />
+
+                        <div className="w-full py-4">
+                            <Separator className="h-[2px]" />
+                        </div>
+
+                        <div className="contentImage w-[100%] bg-blue-50 mx-auto">
+                            <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
+                                <Carousel  >
+                                    <CarouselContent className="flex items-center justify-center p-3 w-full">
+                                        {allImages.length > 0 ? (
+                                            allImages.map((image, index) => (
+                                                <>
+                                                    <CarouselItem key={index} className="basis-1/3">
+                                                        <Image
+                                                            src={image}
+                                                            width={200}
+                                                            height={200}
+                                                            alt={`Image ${index}`}
+                                                            style={{ objectFit: "contain", width: '200px', height: '130px' }}
+                                                        />
+                                                    </CarouselItem>
+                                                </>
+                                            ))
+                                        ) : (
+                                            <div className='text-xs'>No image to diplay here</div>
+                                        )}
+                                    </CarouselContent>
+                                    <CarouselPrevious type="button" />
+                                    <CarouselNext type="button" />
+                                </Carousel>
+                            </div>
+                        </div>
+                        <div className="">
+                            <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
+                            <DeclareContet
+                                total={Totals}
+                                fields={fields}
+                                append={append}
+                                remove={remove}
                                 forms={form}
                             />
+                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("packageID")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
+                        </div>
+                    </form>
+                </Form>
+            </div>
 
-                            <div className="w-full py-4">
-                                <Separator className="h-[2px]" />
-                            </div>
-
-                            <div className="contentImage w-[100%] bg-blue-50 mx-auto">
-                                <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
-                                    <Carousel>
-                                        <CarouselContent className="flex items-center justify-center p-3">
-                                            {images.length > 0 ? (
-                                                images.map((image, index) => (
-                                                    <>
-                                                        <div className="basis-1/3" key={index}>
-                                                            <CarouselItem>
-                                                                <Image
-                                                                    src={image}
-                                                                    width={200}
-                                                                    height={200}
-                                                                    alt={`Image ${index}`}
-                                                                    style={{ objectFit: "cover", width: '200px', height: '130px' }}
-                                                                />
-                                                            </CarouselItem>
-                                                        </div>
-                                                    </>
-                                                ))
-                                            ) : (
-                                                <div className='text-xs'>No image to diplay here</div>
-                                            )}
-                                        </CarouselContent>
-                                        <CarouselPrevious />
-                                        <CarouselNext />
-                                    </Carousel>
-                                </div>
-                            </div>
-                            <div className="">
-                                <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
-                                <DeclareContet
-                                    forms={form}
-                                    addContent={addContent}
-                                    removeContent={removeContent}
-                                    inputCount={inputCount}
-                                    totalInput={totalValue}
-                                />
-                                <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("packageID")} unitID={form.watch("customerID")} name={form.watch("fullName")} />
-                            </div>
-                        </form>
-                    </Form>
-                </div>
-            </DeclareContentProvider>
         </>
     )
 }
