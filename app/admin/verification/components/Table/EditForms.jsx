@@ -7,8 +7,9 @@ import { XIcon } from 'lucide-react'
 import React from 'react'
 
 
-export const EditForms = ({ counter, forms }) => {
+export const EditForms = ({ counter, forms, data }) => {
     console.log("counters", counter)
+   
     return (
         <>
             <div className=" flex flex-row gap-3 justify-start border-y-2 border-zinc-600/20 p-2">

@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/tableDashboard'
 import { CheckIcon, XIcon } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid'
 export const DeclareContentInput = ({
@@ -13,6 +14,16 @@ export const DeclareContentInput = ({
     itemID,
 }) => {
 
+    const countingSubTotal = () => {
+        const qty = forms.getValues(`package_content[${index}].qty`);
+        const value = forms.getValues(`package_content[${index}].value`);
+        const subTotal = Number(qty) * Number(value); // Menghitung subtotal
+        forms.setValue(`package_content[${index}].subTotal`, subTotal);
+    }
+    
+    useEffect(() => {
+        countingSubTotal();
+    }, [forms.getValues(`package_content[${index}].qty`), forms.getValues(`package_content[${index}].value`)]);
     return (
         <>
             <TableRow className="text-xs px-2">

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel"
 import { ImageDisplay } from './ImageDisplay'
 import Image from 'next/image'
+import { Card } from '@/components/ui/card'
 export const ImageTable = ({ labelImg, wholeBoxImg, contentImg, images = null }) => {
     //  const images = [labelImg, wholeBoxImg, contentImg].filter(image => image !== null);
     console.log("Images: ", images)
@@ -18,26 +19,25 @@ export const ImageTable = ({ labelImg, wholeBoxImg, contentImg, images = null })
         <>
             <ImageDisplay open={openImage} setOpen={setOpenImage} clickedImage={images} />
             <Carousel>
-                <CarouselContent className="flex items-center justify-center p-3">
-                    {images.map((image, index) => (
-
-                        <CarouselItem
-                            key={index}
-                            className="basis-1/3"
-                            onClick={() => setOpenImage(true)}
-                        >
-                            <img
-                                style={{ objectFit: "cover", width: '200px', height: '130px' }}
-                                src={`https://sla.webelectron.com/api/Package/getimages?fullName=${image.images}`}
-                                alt=""
-                            />
+                <CarouselContent>
+                    {Array.from({ length: images.length }).map((_, index) => (
+                        <CarouselItem key={index} className="basis-1/3">
+                            <div className="p-1">
+                                <Card>
+                                    <img
+                                        style={{ objectFit: "contain", width: '100%', height: '150px' }}
+                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
+                                        alt=""
+                                    />
+                                </Card>
+                            </div>
                         </CarouselItem>
-
                     ))}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
             </Carousel>
+
         </>
     )
 }

@@ -84,7 +84,7 @@ export const DeclareContet = ({
                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                 <FormControl>
                                                     <SelectTrigger className="text-xs w-[150px] h-[30px] rounded-sm px-2 py-0'">
-                                                        <SelectValue placeholder="Select Bin Location " className='text-xs' />
+                                                        <SelectValue placeholder="Select Bin Location" className='text-xs' defaultValue={"Unregister"} />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>

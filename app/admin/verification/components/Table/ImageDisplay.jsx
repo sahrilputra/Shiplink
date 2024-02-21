@@ -41,6 +41,7 @@ export const ImageDisplay = ({ open, setOpen, clickedImage }) => {
                                 <CarouselPrevious className="left-[10px]" />
                                 <CarouselNext className="right-[10px]" />
                             </Carousel>
+                            
                         </div>
                     </div>
                 </DialogDescription>

@@ -58,6 +58,11 @@ const carrierList = [
         "carrierName": "Canada Post",
         "value": "Canada Post"
     },
+    {
+        "id": 6,
+        "carrierName": "Other",
+        "value": ""
+    },
 ]
 export const ArrivalForms = ({
     options,
@@ -183,8 +188,6 @@ export const ArrivalForms = ({
         setInputCarrierValue(carrierSelected?.label)
     }, [carrierSelected])
 
-
-
     // Fetch Customer Data
     const [customerData, setCustomerData] = useState([])
     const [query, setQuery] = useState({
@@ -213,6 +216,7 @@ export const ArrivalForms = ({
     }, [query]);
 
 
+    console.log("Watch Carrier : ", forms.watch('carrier_code'))
     return (
         <>
             <div className="flex gap-2 flex-col text-zinc-600">
@@ -429,14 +433,21 @@ export const ArrivalForms = ({
                                 className="w-full text-sm"
                                 name="carrier_code"
                                 control={forms.control}
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <>
                                         <FormItem className="text-xs w-[30%] ">
                                             <FormLabel className="font-bold">Select Carrier</FormLabel>
                                             <FormControl className="w-full relative">
                                                 <CommandPrimitive className='border-b-0' onKeyDown={handleCarrierKeyDown}>
                                                     <div>
-                                                        <CommandArrival
+                                                        <Input
+                                                            id="carrier_code"
+                                                            onFocus={() => setCarrierOpen(true)}
+                                                            onBlur={handlerCarrier}
+                                                            {...field}
+                                                            className={`${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
+                                                        />
+                                                        {/* <CommandArrival
                                                             ref={inputCarrierRef}
                                                             value={inputCarrierValue}
                                                             setValue={setValueCarrier}
@@ -446,7 +457,7 @@ export const ArrivalForms = ({
                                                             className="text-xs border border-neutral-300 px-2"
                                                             disableSearchIcon={true}
                                                             onChange={field.value}
-                                                        />
+                                                        /> */}
                                                     </div>
                                                     <div className="mt-1 relative">
                                                         {isCarrierOpen ? (

@@ -9,8 +9,10 @@ import { Separator } from '@/components/ui/separator'
 import { RegisterDialog } from './components/Dialog/RegistedDialog'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Card, CardContent } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
 import { useForm, useFieldArray, useFormContext, FormProvider, FieldErrors } from 'react-hook-form'
+
 import {
     Form,
 } from "@/components/ui/form"
@@ -49,6 +51,7 @@ const formSchema = yup.object().shape({
             hs_desc: yup.string(),
             hs_code: yup.string(),
             made_in: yup.string(),
+            subtotal: yup.number()
         })
     ),
     box_images: yup.array(),
@@ -64,7 +67,7 @@ export default function ArrivalScanPage() {
         return formattedNumber;
     };
 
-    const [total, setTotal] = useState(0);
+
     const [internalCode, setInternalCode] = useState(generateRandomNumber());
     const [open, setOpen] = useState(false);
 
@@ -95,6 +98,7 @@ export default function ArrivalScanPage() {
                     hs_desc: "",
                     hs_code: "",
                     made_in: "",
+                    subtotal: 0,
                 }
             ],
             box_images: [
@@ -111,7 +115,6 @@ export default function ArrivalScanPage() {
         mode: "onChange",
     })
 
-    const methods = useFormContext();
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "package_content",
@@ -122,30 +125,6 @@ export default function ArrivalScanPage() {
     const contentImages = form.watch('content_images');
     const allImages = [...boxImages, ...labelImages, ...contentImages];
 
-    const IMAGE_SIZE = allImages.length;
-    const OPTIONS = { loop: true };
-    const [api, setApi] = useState({
-        IMAGE_SIZE,
-    });
-
-    const calculateTotal = () => {
-        const declareContent = form.watch('package_content');
-        const total = declareContent.reduce((acc, item) => acc + parseFloat(item.value || 0), 0);
-        setTotal(total, () => {
-            form.setValue('total_price', total);
-        });
-
-    };
-
-    useEffect(() => {
-        calculateTotal();
-    }, [form.watch('package_content')]);
-
-    console.log("Declare Content", form.watch('package_content'));
-    console.log("Total Price", total);
-    console.log("COURIER", form.watch('carrier_code'));
-
-
     const handleSave = async (formData) => {
         console.log("dikirim", formData)
         try {
@@ -154,15 +133,15 @@ export default function ArrivalScanPage() {
                 formData
             );
             toast({
-                title: `New Warehouse ${formData.warehouse_name} created!`,
+                title: `New Package Has Register to ${formData.customer_name}!`,
                 description: response.data.message,
                 status: 'success',
             });
         } catch (error) {
             console.log('Error', error);
             toast({
-                title: 'Error creating Warehouse',
-                description: 'An error occurred while creating the Warehouse.',
+                title: 'Error Register New Package',
+                description: 'An error occurred while creating the Package.',
                 status: 'error',
             });
         }
@@ -171,7 +150,24 @@ export default function ArrivalScanPage() {
     const onError = (error) => {
         console.log("Form Errors", error)
     }
+    const [total, setTotal] = useState(0);
 
+    const calculateTotal = () => {
+        let totalPrice = 0;
+        // Iterasi melalui setiap item dalam package_content
+        form.getValues().package_content.forEach((item) => {
+            totalPrice += item.subtotal; // Menambahkan subtotal item ke dalam total
+        });
+        setTotal(totalPrice); // Menetapkan nilai total menggunakan setState
+        form.setValue("total_price", totalPrice); // Menetapkan nilai total ke dalam formulir jika diperlukan
+    }
+
+    useEffect(() => {
+        calculateTotal();
+    }, [(form.watch('package_content'))]);
+
+
+    console.log("Content : ", form.watch('package_content'))
     return (
         <>
             <div className={styles.forms}>
@@ -193,25 +189,28 @@ export default function ArrivalScanPage() {
 
                         <div className="contentImage w-[100%] bg-blue-50 mx-auto">
                             <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
-                                <Carousel  >
-                                    <CarouselContent className="flex items-center justify-center p-3 w-full">
-                                        {allImages.length > 0 ? (
-                                            allImages.map((image, index) => (
-                                                <>
-                                                    <CarouselItem key={index} className="basis-1/3">
+                                <Carousel
+                                    opts={{
+                                        align: "start",
+                                    }}
+                                    className="w-full"
+                                >
+                                    <CarouselContent>
+                                        {Array.from({ length: allImages.length }).map((_, index) => (
+                                            <CarouselItem key={index} className="basis-1/3">
+                                                <div className="p-1">
+                                                    <Card>
                                                         <Image
-                                                            src={image}
+                                                            src={allImages[index]}
                                                             width={200}
                                                             height={200}
                                                             alt={`Image ${index}`}
-                                                            style={{ objectFit: "contain", width: '200px', height: '130px' }}
+                                                            style={{ objectFit: "cover", width: '200px', height: '130px' }}
                                                         />
-                                                    </CarouselItem>
-                                                </>
-                                            ))
-                                        ) : (
-                                            <div className='text-xs'>No image to diplay here</div>
-                                        )}
+                                                    </Card>
+                                                </div>
+                                            </CarouselItem>
+                                        ))}
                                     </CarouselContent>
                                     <CarouselPrevious type="button" />
                                     <CarouselNext type="button" />
@@ -220,7 +219,7 @@ export default function ArrivalScanPage() {
                         </div>
 
                         <div className="">
-                            <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
+                            <p className='py-1 px-2 text-sm'>Optional Declare Content Total : {total}</p>
                             <DeclareContet
                                 total={total}
                                 fields={fields}
