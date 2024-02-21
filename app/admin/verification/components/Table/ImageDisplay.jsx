@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import {
     Dialog,
@@ -17,7 +18,7 @@ import {
 } from "@/components/ui/carousel"
 import { Button } from '@/components/ui/button'
 
-export const ImageDisplay = ({ open, setOpen }) => {
+export const ImageDisplay = ({ open, setOpen, clickedImage }) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent>
@@ -26,16 +27,13 @@ export const ImageDisplay = ({ open, setOpen }) => {
                         <div className="imageContainer flex flex-col w-[600px] items-center">
                             <Carousel className="w-full ">
                                 <CarouselContent className=" ">
-                                    {Array.from({ length: 5 }).map((_, index) => (
+                                    {clickedImage.map((image, index) => (
                                         <CarouselItem key={index} className=" w-full h-full grow-1">
                                             <div className="w-full">
-                                                <Image
-                                                    src={'/assets/packageImage/packagePicture.png'}
-                                                    width={500}
-                                                    height={500}
-                                                    alt='package image'
+                                                <img
                                                     className='object-cover w-full rounded-md '
-                                                />
+                                                    src={`https://sla.webelectron.com/api/Package/getimages?fullName=${image.images}`}
+                                                    alt="" />
                                             </div>
                                         </CarouselItem>
                                     ))}

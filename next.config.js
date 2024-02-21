@@ -8,7 +8,6 @@ const nextConfig = {
         includePaths: [path.join(__dirname, 'styles')],
         prependData: `@import "base.scss";`,
     },
-    optimizedFonts: false,
 }
 
 module.exports = nextConfig

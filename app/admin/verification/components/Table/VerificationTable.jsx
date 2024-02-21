@@ -44,6 +44,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
 
     const [expandedRow, setExpandedRow] = useState(null);
 
+    const [newContet, setNewContent] = useState({})
     const [isEdit, setIsEdit] = useState(false);
     const [editCount, setEditCount] = useState(1);
 
@@ -74,6 +75,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
         },
         mode: "onChange",
     })
+
     return (
         <Table>
             <TableHeader className="text-sm">
@@ -90,16 +92,15 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                     data.map((item, index) => (
                         <>
                             <TableRow key={item.id} className={`${expandedRow === index && "bg-blue-100 hover:bg-blue-100"}`} >
-                                <TableCell className="font-medium text-xs">{item.TrackingID}</TableCell>
-                                <TableCell className="font-medium text-xs">{item.CustomerName}</TableCell>
+                                <TableCell className="font-medium text-xs">{item.tracking_id}</TableCell>
+                                <TableCell className="font-medium text-xs">{item.customer_name}</TableCell>
                                 <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
                                 <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
-                                <TableCell className="text-right text-xs">{item.UpdateDate}</TableCell>
+                                <TableCell className="text-right text-xs">{item.updated_at}</TableCell>
                                 <TableCell className="text-center text-xs w-[150px] " >
-                                    <VerifiedStatus param={item.CustomsStatus} />
+                                    <VerifiedStatus param={item.status} />
                                 </TableCell>
                                 <TableCell className="w-[30px] text-right text-xs">
-
                                     <Button
                                         variant="tableBlue"
                                         size="tableIcon"
@@ -124,15 +125,17 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                         <TableRow key={`expanded_${item.id}`} className="bg-blue-50 hover:bg-blue-50">
                                             <TableCell className="font-medium" colSpan={7}>
                                                 <div className="w-[80%] flex justify-center items-center mx-auto">
-                                                    <ImageTable />
+                                                    <ImageTable images={item.images} />
                                                 </div>
                                                 {
+
                                                     isEdit ? (
-                                                        <EditForms forms={form} counter={editCount} />
+                                                        <EditForms forms={form} counter={editCount} data={item.content} />
                                                     ) : (
-                                                        < ExpandedTable />
+                                                        < ExpandedTable content={item.content} />
                                                     )
                                                 }
+
                                             </TableCell>
                                         </TableRow>
                                         <TableRow className="bg-blue-100 hover:bg-blue-100 ">
@@ -149,6 +152,7 @@ export function VerificationTable({ data, isOpen, setOpen }) {
                                     </Form>
                                 </>
                             )}
+                            {console.log(item)}
                         </>
                     ))
                 }

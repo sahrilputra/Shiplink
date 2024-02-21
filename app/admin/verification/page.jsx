@@ -100,8 +100,8 @@ export default function VerificationPages() {
                         </div>
 
                         <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
-                            <DataTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} />
-                            {/* <VerificationTable data={filterData} isOpen={open} setOpen={setOpen} /> */}
+                            {/* <DataTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} /> */}
+                            <VerificationTable data={data} isOpen={open} setOpen={setOpen} />
                         </div>
 
                     </div>
