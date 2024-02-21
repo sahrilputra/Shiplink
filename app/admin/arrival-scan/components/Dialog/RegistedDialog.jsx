@@ -59,7 +59,6 @@ export function RegisterDialog({ open, setOpen, trackingNumber, unitID, name }) 
                         variant="redOutline"
                         className="w-full"
                         type="submit"
-                        onClick={() => handlePrint()}
                     >
                         Print
                     </Button>

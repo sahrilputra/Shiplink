@@ -19,13 +19,14 @@ export const DeclareContentInput = ({
                 <TableCell className="p-0 h-8 px-2 py-2 font-medium">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
-                        name={`DeclareContet[${index}].qty`}
+                        name={`package_content[${index}].qty`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
+                                            min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="width" type="number" placeholder="0" {...field} />
                                     </FormControl>
@@ -37,13 +38,14 @@ export const DeclareContentInput = ({
                 <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
-                        name={`DeclareContet[${index}].value`}
+                        name={`package_content[${index}].value`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
+                                            min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="value" type="number" placeholder="0" {...field} />
                                     </FormControl>
@@ -55,7 +57,7 @@ export const DeclareContentInput = ({
                 <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
-                        name={`DeclareContet[${index}].description`}
+                        name={`package_content[${index}].desc`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
@@ -63,7 +65,7 @@ export const DeclareContentInput = ({
                                     <FormControl>
                                         <Input
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="description" placeholder="Description" {...field} />
+                                            id="desc" placeholder="Description" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -73,7 +75,7 @@ export const DeclareContentInput = ({
                 <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
-                        name={`DeclareContet[${index}].hsDescription`}
+                        name={`package_content[${index}].hs_desc`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
@@ -81,7 +83,7 @@ export const DeclareContentInput = ({
                                     <FormControl>
                                         <Input
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="hsDescription" placeholder="HS Description" {...field} />
+                                            id="hs_desc" placeholder="HS Description" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -91,7 +93,7 @@ export const DeclareContentInput = ({
                 <TableCell className="p-0 h-8 px-2 py-2  w-[140px]">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
-                        name={`DeclareContet[${index}].hsCode`}
+                        name={`package_content[${index}].hs_code`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
@@ -106,7 +108,7 @@ export const DeclareContentInput = ({
                                             {(inputProps) => (
                                                 <Input
                                                     className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                                    id="hsCode"
+                                                    id="hs_code"
                                                     type="text" // Ubah tipe input menjadi teks
                                                     placeholder="0000.00.0000" // Placeholder yang sesuai dengan format
                                                     {...inputProps}
@@ -123,15 +125,16 @@ export const DeclareContentInput = ({
                 <TableCell className="p-0 h-8 px-2 py-2 w-[100px] ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
-                        name={`DeclareContet[${index}].madeIn`}
+                        name={`package_content[${index}].made_in`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
-                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left"
-                                            id="madeIn" placeholder="CAN" {...field} />
+                                            max="3"
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase"
+                                            id="made_in" placeholder="CAN" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>

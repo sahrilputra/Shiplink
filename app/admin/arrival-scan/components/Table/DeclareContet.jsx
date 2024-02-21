@@ -13,7 +13,13 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { DeclareContentInput } from './DeclareContentInput'
-
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
 export const DeclareContet = ({
     forms,
     fields,
@@ -70,23 +76,30 @@ export const DeclareContet = ({
 
                             </div>
                             <div className="flex flex-row justify-center gap-4">
-                                <Select>
-                                    <SelectTrigger className="text-xs w-[150px] h-[30px] rounded-sm px-2 py-0'">
-                                        <SelectValue placeholder="Select Bin Location " className='text-xs' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem className="text-xs" value="light">Bin A</SelectItem>
-                                        <SelectItem className="text-xs" value="dark">Bin B</SelectItem>
-                                        <SelectItem className="text-xs" value="system">Bin C</SelectItem>
-                                    </SelectContent>
-                                </Select>
-
+                                <FormField
+                                    control={forms.control}
+                                    name="bin_location"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger className="text-xs w-[150px] h-[30px] rounded-sm px-2 py-0'">
+                                                        <SelectValue placeholder="Select Bin Location " className='text-xs' />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem className="text-xs" value="A">Bin A</SelectItem>
+                                                    <SelectItem className="text-xs" value="B">Bin B</SelectItem>
+                                                    <SelectItem className="text-xs" value="C">Bin C</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <Button
                                     variant="destructive"
                                     type="submit"
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                    }}
                                     className=" h-[30px] rounded-sm px-4 py-0"
                                     size="sm"
 

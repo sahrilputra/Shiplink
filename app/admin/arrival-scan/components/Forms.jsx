@@ -31,8 +31,6 @@ import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { PopoverClose } from '@radix-ui/react-popover'
 
-
-
 const carrierList = [
     {
         "id": 1,
@@ -74,30 +72,14 @@ export const ArrivalForms = ({
         setCustomerID(e.target.value)
         const selectedData = data.find((item) => item.id === e.target.value)
         setNewData(data.find((item) => item.id === e.target.value))
-        forms.setValue("fullName", selectedData?.full_name || "");
-        forms.setValue("phoneNumber", selectedData?.phone || "");
-        forms.setValue("email", selectedData?.email || "");
+        forms.setValue("customer_name", selectedData?.full_name || "");
+        forms.setValue("customer_phone", selectedData?.phone || "");
+        forms.setValue("customer_email", selectedData?.email || "");
         setDisabled(true)
     }
 
     const handleResetCustomerData = () => {
-        forms.reset({
-            customerID: "",
-            fullName: "",
-            phoneNumber: "",
-            email: "",
-            trackingBarcode: "",
-            carrier: "",
-            length: "",
-            width: "",
-            height: "",
-            heightType: "",
-            weight: "",
-            weightType: "",
-            wholeBoxImg: "",
-            labelImg: "",
-            contentImg: "",
-        });
+        forms.reset();
         setCustomerID("");
         setNewData(null);
         setDisabled(false);
@@ -208,7 +190,7 @@ export const ArrivalForms = ({
                     <div className="flex flex-col justify-start gap-2 w-[40%]">
                         <FormField
                             className="w-full text-sm"
-                            name="customerID"
+                            name="customer_id"
                             control={forms.control}
                             render={({ field, formState }) => (
                                 <>
@@ -250,7 +232,7 @@ export const ArrivalForms = ({
                                                                                         event.stopPropagation()
                                                                                     }}
                                                                                     onSelect={() => {
-                                                                                        forms.setValue("customerID", item.id)
+                                                                                        forms.setValue("customer_id", item.id)
                                                                                         handleDataChange({ target: { value: item.id } })
                                                                                         setOpen(false)
                                                                                     }}
@@ -289,7 +271,7 @@ export const ArrivalForms = ({
                         <div className="nameWrapper flex flex-row gap-3 w-full text-sm">
                             <FormField
                                 className="w-full text-sm"
-                                name="customerID"
+                                name="customer_id"
                                 control={forms.control}
                                 render={({ field, formState }) => (
                                     <>
@@ -307,7 +289,7 @@ export const ArrivalForms = ({
                                 )}
                             />
                             <FormField
-                                name="fullName"
+                                name="customer_name"
                                 className="w-[60%] text-xs"
                                 control={forms.control}
                                 render={({ field, formState }) => (
@@ -316,8 +298,8 @@ export const ArrivalForms = ({
                                             <FormLabel className=" font-bold">Customer Full Name</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    id="fullName"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.fullName && "border-red-500 focus:ring-red-700"}`}
+                                                    id="customer_name"
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.customer_name && "border-red-500 focus:ring-red-700"}`}
                                                     placeholder="John Doe"
                                                     {...field}
                                                     disabled={disabled}
@@ -333,7 +315,7 @@ export const ArrivalForms = ({
                         <div className="nameWrapper flex flex-row gap-3 w-[100%]  ">
                             <FormField
                                 className="w-[40%] "
-                                name="phoneNumber"
+                                name="customer_phone"
                                 control={forms.control}
                                 render={({ field, formState }) => (
                                     <>
@@ -351,7 +333,7 @@ export const ArrivalForms = ({
                                                     {(inputProps) => (
                                                         <Input
                                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                                            id="phoneNumber"
+                                                            id="customer_phone"
                                                             type="text"
                                                             placeholder="+1.000.000.0000"
                                                             {...inputProps}
@@ -365,7 +347,7 @@ export const ArrivalForms = ({
                                 )}
                             />
                             <FormField
-                                name="email"
+                                name="customer_email"
                                 className="w-full "
                                 control={forms.control}
                                 render={({ field, formState }) => (
@@ -374,9 +356,9 @@ export const ArrivalForms = ({
                                             <FormLabel className="font-bold">Email</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    id="email"
+                                                    id="customer_email"
                                                     type="email"
-                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.email && "border-red-500 focus:ring-red-700"}`}
+                                                    className={`text-xs h-[30px] rounded-sm px-2 py-0 ${disabled && "bg-zinc-400/50 cursor-not-allowed"} ${formState.errors.customer_email && "border-red-500 focus:ring-red-700"}`}
                                                     placeholder="customer@shiplink.ca"
                                                     {...field}
                                                     disabled={disabled}
@@ -395,7 +377,7 @@ export const ArrivalForms = ({
                         <div className="flex flex-row gap-2">
                             <FormField
                                 className="w-full"
-                                name="trackingBarcode"
+                                name="barcode_tracking"
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
@@ -403,7 +385,7 @@ export const ArrivalForms = ({
                                             <FormLabel className=" font-bold text-zinc-600">Tracking / Barcode</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    id="trackingBarcode"
+                                                    id="barcode_tracking"
                                                     className="text-xs h-[30px] rounded-sm px-2 py-0"
                                                     placeholder={`Tracking / Barcode Number`}
                                                     {...field}
@@ -415,7 +397,7 @@ export const ArrivalForms = ({
                             />
                             <FormField
                                 className="w-full text-sm"
-                                name="carrier"
+                                name="carrier_code"
                                 control={forms.control}
                                 render={({ field }) => (
                                     <>
@@ -429,12 +411,11 @@ export const ArrivalForms = ({
                                                             value={inputCarrierValue}
                                                             setValue={setValueCarrier}
                                                             onBlur={handlerCarrier}
-
                                                             onFocus={() => setCarrierOpen(true)}
                                                             placeholder={`${field.value || "Carrier"}`}
                                                             className="text-xs border border-neutral-300 px-2"
                                                             disableSearchIcon={true}
-                                                            onChange={field.onChange}
+                                                            onChange={field.value}
                                                         />
                                                     </div>
                                                     <div className="mt-1 relative">
@@ -458,7 +439,7 @@ export const ArrivalForms = ({
                                                                                         event.stopPropagation()
                                                                                     }}
                                                                                     onSelect={() => {
-                                                                                        forms.setValue("carrier", item.value)
+                                                                                        forms.setValue("carrier_code", item.value)
                                                                                         setCarrierOpen(false)
                                                                                     }}
                                                                                 >
@@ -497,15 +478,16 @@ export const ArrivalForms = ({
                                     <div className="flex flex-col gap-2">
                                         <FormField
                                             className="w-full flex flex-row justify-center items-end"
-                                            name="length"
+                                            name="package_length"
                                             control={forms.control}
                                             render={({ field, formState }) => (
                                                 <>
                                                     <FormItem className="w-full text-xs">
                                                         <FormControl>
                                                             <Input
-                                                                id="length"
-                                                                className={`text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.length && "border-red-500 focus:ring-red-700 text-red-800"}`}
+                                                                min="0"
+                                                                id="package_length"
+                                                                className={`text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.package_length && "border-red-500 focus:ring-red-700 text-red-800"}`}
                                                                 type="number"
                                                                 placeholder="length" {...field} />
                                                         </FormControl>
@@ -515,15 +497,16 @@ export const ArrivalForms = ({
                                         />
                                         <FormField
                                             className="w-full flex flex-row justify-center items-end"
-                                            name="width"
+                                            name="package_witdth"
                                             control={forms.control}
                                             render={({ field, formState }) => (
                                                 <>
                                                     <FormItem className="w-full text-xs">
                                                         <FormControl>
                                                             <Input
-                                                                id="width"
-                                                                className={`${formState.errors.width && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
+                                                                min="0"
+                                                                id="package_witdth"
+                                                                className={`${formState.errors.package_witdth && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
                                                                 type="number"
                                                                 placeholder="width" {...field} />
                                                         </FormControl>
@@ -533,16 +516,17 @@ export const ArrivalForms = ({
                                         />
                                         <FormField
                                             className="w-full flex flex-row justify-center items-end"
-                                            name="height"
+                                            name="package_height"
                                             control={forms.control}
                                             render={({ field, formState }) => (
                                                 <>
                                                     <FormItem className="w-full text-xs">
                                                         <FormControl>
                                                             <Input
-                                                                id="height"
+                                                                id="package_height"
+                                                                min="0"
                                                                 type="number"
-                                                                className={`${formState.errors.height && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
+                                                                className={`${formState.errors.package_height && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
                                                                 placeholder="height" {...field} />
                                                         </FormControl>
                                                     </FormItem>
@@ -551,7 +535,7 @@ export const ArrivalForms = ({
                                         />
                                     </div>
                                     <FormField
-                                        name="heightType"
+                                        name="package_height_unit"
                                         className="w-full "
                                         control={forms.control}
                                         render={({ field }) => (
@@ -581,15 +565,16 @@ export const ArrivalForms = ({
                                     <div className="flex flex-row gap-2">
                                         <FormField
                                             className="w-full flex flex-row justify-center items-end"
-                                            name="weight"
+                                            name="package_weight"
                                             control={forms.control}
                                             render={({ field, formState }) => (
                                                 <>
                                                     <FormItem className="w-full text-xs">
                                                         <FormControl>
                                                             <Input
-                                                                id="weight"
-                                                                className={`${formState.errors.weight && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
+                                                                id="package_weight"
+                                                                min="0"
+                                                                className={`${formState.errors.package_weight && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
                                                                 placeholder="weight"
                                                                 type="number"
                                                                 {...field} />
@@ -599,7 +584,7 @@ export const ArrivalForms = ({
                                             )}
                                         />
                                         <FormField
-                                            name="weightType"
+                                            name="package_weight_unit"
                                             className="w-full "
                                             control={forms.control}
                                             render={({ field }) => (
@@ -658,7 +643,7 @@ export const ArrivalForms = ({
                                                                         images.push(e.target.result);
                                                                         processedFiles++;
                                                                         if (processedFiles === files.length) {
-                                                                            forms.setValue("box_images", images); // Atur nilai field label_images menggunakan setValue dari useForm
+                                                                            forms.setValue("box_images", images);
                                                                         } else {
                                                                             readAndProcessFile(files[processedFiles]);
                                                                         }

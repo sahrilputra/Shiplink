@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 // import { CarrierList } from './components/carrierList'
 // import Image from 'next/image'
@@ -9,13 +9,52 @@ import { SearchBar } from '@/components/ui/searchBar'
 import { Input } from '@/components/ui/input'
 import { VerificationTable } from './components/Table/VerificationTable'
 import { DatePickerWithRange } from '@/components/date/DateRangePicker'
-import data from '../../../data/admin/verificationData.json'
 import Image from 'next/image'
 import { VerificationMenus } from './components/menus/VerificationMenus'
+import axios from 'axios'
+import { DataTable } from './components/Table/DataTable'
+
 export default function VerificationPages() {
-
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const [open, setOpen] = useState(false);
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0
+    });
+    const [data, setData] = useState([]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/verification/list`,
+                    query
+                );
+                console.log(response)
+                const data = await response.data;
+                setData(data.package_info);
+                setIsSkeleton(false);
+            } catch (error) {
+                setIsSkeleton(false);
+                console.log('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [query]);
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
     const [selectedTab, setSelectedTab] = useState("All");
     console.log("parent : ", selectedTab)
 
@@ -61,7 +100,8 @@ export default function VerificationPages() {
                         </div>
 
                         <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
-                            <VerificationTable data={filterData} isOpen={open} setOpen={setOpen} />
+                            <DataTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} />
+                            {/* <VerificationTable data={filterData} isOpen={open} setOpen={setOpen} /> */}
                         </div>
 
                     </div>
