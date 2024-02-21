@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -30,6 +30,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { PopoverClose } from '@radix-ui/react-popover'
+import axios from 'axios'
 
 const carrierList = [
     {
@@ -69,13 +70,15 @@ export const ArrivalForms = ({
     const [disabled, setDisabled] = useState(false);
 
     const handleDataChange = (e) => {
+
         setCustomerID(e.target.value)
-        const selectedData = data.find((item) => item.id === e.target.value)
-        setNewData(data.find((item) => item.id === e.target.value))
-        forms.setValue("customer_name", selectedData?.full_name || "");
-        forms.setValue("customer_phone", selectedData?.phone || "");
+        const selectedData = customerData.find((item) => item.customer_id === e.target.value)
+        setNewData(customerData.find((item) => item.customer_id === e.target.value))
+        forms.setValue("customer_name", selectedData?.customer_name || "");
+        forms.setValue("customer_phone", selectedData?.phone_number || "");
         forms.setValue("customer_email", selectedData?.email || "");
         setDisabled(true)
+        console.log("Selected Data : ", selectedData)
     }
 
     const handleResetCustomerData = () => {
@@ -182,6 +185,33 @@ export const ArrivalForms = ({
 
 
 
+    // Fetch Customer Data
+    const [customerData, setCustomerData] = useState([])
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/customer_manager/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setCustomerData(data.customer);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
 
     return (
         <>
@@ -205,7 +235,7 @@ export const ArrivalForms = ({
                                                         setValue={isLoading ? undefined : setInputValue}
                                                         onBlur={handleBlur}
                                                         onFocus={() => setOpen(true)}
-                                                        placeholder={`${field.value ? data.find((item) => item.id === field.value)?.id : "Customer"}`}
+                                                        placeholder={`${field.value ? customerData.find((item) => item.customer_id === field.value)?.id : "Customer"}`}
                                                         className="text-xs border border-neutral-300 px-2"
                                                         disableSearchIcon={true}
                                                     />
@@ -216,13 +246,13 @@ export const ArrivalForms = ({
                                                             <CommandList className="ring-1 ring-slate-200  bg-blue-100 rounded-lg">
                                                                 <ScrollArea>
                                                                     <CommandGroup>
-                                                                        {data.map((item) => {
-                                                                            const isSelected = selected?.value === item.id
+                                                                        {customerData.map((item) => {
+                                                                            const isSelected = selected?.value === item.customer_id
                                                                             return (
                                                                                 <CommandItem
-                                                                                    value={item.id}
+                                                                                    value={item.customer_id}
                                                                                     setValue={field.onChange}
-                                                                                    key={item.id}
+                                                                                    key={item.customer_id}
                                                                                     className={cn(
                                                                                         "flex items-center gap-2 w-full",
                                                                                         !isSelected ? "pl-8" : null
@@ -232,19 +262,19 @@ export const ArrivalForms = ({
                                                                                         event.stopPropagation()
                                                                                     }}
                                                                                     onSelect={() => {
-                                                                                        forms.setValue("customer_id", item.id)
-                                                                                        handleDataChange({ target: { value: item.id } })
+                                                                                        forms.setValue("customer_id", item.customer_id)
+                                                                                        handleDataChange({ target: { value: item.customer_id } })
                                                                                         setOpen(false)
                                                                                     }}
                                                                                 >
                                                                                     <div className='text-xs w-full justify-between flex flex-row'>
-                                                                                        <p>{item.id} | </p>
-                                                                                        <p>{item.full_name}</p>
+                                                                                        <p>{item.customer_id} | </p>
+                                                                                        <p>{item.customer_name}</p>
                                                                                     </div>
                                                                                     <CheckIcon
                                                                                         className={cn(
                                                                                             "ml-auto h-4 w-4",
-                                                                                            item.id === field.value
+                                                                                            item.customer_id === field.value
                                                                                                 ? "opacity-100"
                                                                                                 : "opacity-0"
                                                                                         )}
@@ -379,14 +409,14 @@ export const ArrivalForms = ({
                                 className="w-full"
                                 name="barcode_tracking"
                                 control={forms.control}
-                                render={({ field }) => (
+                                render={({ field, formState }) => (
                                     <>
                                         <FormItem className="w-[70%] text-xs">
                                             <FormLabel className=" font-bold text-zinc-600">Tracking / Barcode</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="barcode_tracking"
-                                                    className="text-xs h-[30px] rounded-sm px-2 py-0"
+                                                    className={`${formState.errors.barcode_tracking && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
                                                     placeholder={`Tracking / Barcode Number`}
                                                     {...field}
                                                 />
@@ -547,7 +577,7 @@ export const ArrivalForms = ({
                                                         defaultValue={field.value}>
                                                         <FormControl>
                                                             <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
-                                                                <SelectValue placeholder="in" />
+                                                                <SelectValue placeholder="in" defaultValue={"in"} />
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
@@ -596,7 +626,7 @@ export const ArrivalForms = ({
                                                             defaultValue={field.value}>
                                                             <FormControl>
                                                                 <SelectTrigger className="text-xs h-[30px] rounded-sm px-2 py-0">
-                                                                    <SelectValue placeholder="Ibs" />
+                                                                    <SelectValue placeholder="Ibs" defaultValue={"Ibs"} />
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>

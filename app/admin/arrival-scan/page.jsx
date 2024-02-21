@@ -27,7 +27,7 @@ import Image from 'next/image'
 const formSchema = yup.object().shape({
     customer_id: yup.string(),
     customer_name: yup.string(),
-    customer_phone: yup.number(),
+    customer_phone: yup.string(),
     customer_email: yup.string().email(),
     barcode_tracking: yup.string(),
     carrier_code: yup.string(),
@@ -81,9 +81,9 @@ export default function ArrivalScanPage() {
             package_length: "",
             package_witdth: "",
             package_height: "",
-            package_height_unit: "",
+            package_height_unit: "in",
             package_weight: "",
-            package_weight_unit: "",
+            package_weight_unit: "Ibs",
             bin_location: "",
             total_price: 0,
             package_content: [
