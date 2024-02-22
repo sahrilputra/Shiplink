@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -15,19 +15,56 @@ import Image from "next/image"
 import Barcode from 'react-jsbarcode';
 import { usePDF } from 'react-to-pdf';
 import ReactToPrint, { useReactToPrint } from "react-to-print"
+import axios from "axios";
 
-export function RegisterDialog({ open, setOpen, trackingNumber, unitID, name }) {
+export function RegisterDialog({ open, setOpen }) {
     const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
 
+    const [isSkeleton, setIsSkeleton] = useState(true);
+    const [data, setData] = useState([]);
+
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/verification/list`,
+                    query
+                );
+                console.log(response)
+                const data = await response.data;
+                setData(data.package_info);
+                setIsSkeleton(false);
+            } catch (error) {
+                setIsSkeleton(false);
+                console.log('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [query]);
+
+
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="w-max">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-bold">Package Registered</DialogTitle>
+                    <DialogTitle className="text-lg font-bold">Package Registered!</DialogTitle>
                 </DialogHeader>
 
                 <div className="w-max" ref={componentRef}>
@@ -42,14 +79,14 @@ export function RegisterDialog({ open, setOpen, trackingNumber, unitID, name }) 
                         />
 
                         <div className="flex justify-between w-full flex-row text-sm">
-                            <p>{name}</p>
-                            <p>{`#${unitID}`}</p>
+                            {/* <p>{name}</p>
+                            <p>{`#${unitID}`}</p> */}
                         </div>
                         <div className="w-full flex justify-center items-center p-1">
-                            <Barcode value={`${trackingNumber}`}
+                            {/* <Barcode value={`${trackingNumber}`}
                                 options={{ format: 'code128', width: '3', lineColor: "#2d2d2d", textMargin: 10, fontSize: 16, height: 70 }}
                                 renderer="svg" className="tracking-wider "
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>

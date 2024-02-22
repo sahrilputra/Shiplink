@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
@@ -14,16 +15,14 @@ export const DeclareContentInput = ({
     itemID,
 }) => {
 
-    const countingSubTotal = () => {
-        const qty = forms.getValues(`package_content[${index}].qty`);
-        const value = forms.getValues(`package_content[${index}].value`);
-        const subTotal = Number(qty) * Number(value); // Menghitung subtotal
-        forms.setValue(`package_content[${index}].subTotal`, subTotal);
+    const countingSubtotal = ({ qty = 0, value = 0 }) => {
+        const parseQty = parseInt(qty, 10)
+        const parseValue = parseInt(value, 10)
+        forms.setValue(`package_content[${index}].qty`, parseQty)
+        forms.setValue(`package_content[${index}].value`, parseValue)
+        forms.setValue(`package_content[${index}].subtotal`, parseQty * parseValue)
     }
-    
-    useEffect(() => {
-        countingSubTotal();
-    }, [forms.getValues(`package_content[${index}].qty`), forms.getValues(`package_content[${index}].value`)]);
+
     return (
         <>
             <TableRow className="text-xs px-2">
@@ -39,7 +38,14 @@ export const DeclareContentInput = ({
                                         <Input
                                             min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="width" type="number" placeholder="0" {...field} />
+                                            id="width"
+                                            type="number"
+                                            placeholder="1"
+                                            onChange={() =>
+                                                countingSubtotal({ qty: field })
+                                            }
+                                            {...field}
+                                        />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -58,7 +64,12 @@ export const DeclareContentInput = ({
                                         <Input
                                             min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="value" type="number" placeholder="0" {...field} />
+                                            id="value"
+                                            type="number"
+                                            onChange={() =>
+                                                countingSubtotal({ value: field })
+                                            }
+                                            placeholder="0" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -76,7 +87,8 @@ export const DeclareContentInput = ({
                                     <FormControl>
                                         <Input
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="desc" placeholder="Description" {...field} />
+                                            id="desc"
+                                            placeholder="Description" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -120,8 +132,8 @@ export const DeclareContentInput = ({
                                                 <Input
                                                     className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                                     id="hs_code"
-                                                    type="text" // Ubah tipe input menjadi teks
-                                                    placeholder="0000.00.0000" // Placeholder yang sesuai dengan format
+                                                    type="text"
+                                                    placeholder="0000.00.0000"
                                                     {...inputProps}
                                                 />
                                             )}

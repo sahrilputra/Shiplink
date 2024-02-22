@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/carousel"
 import axios from "axios";
 import Image from 'next/image'
+import { Loaders } from '@/components/ui/loaders'
 
 const formSchema = yup.object().shape({
     customer_id: yup.string(),
@@ -44,7 +45,7 @@ const formSchema = yup.object().shape({
     total_price: yup.number(),
     package_content: yup.array().of(
         yup.object().shape({
-            id: yup.string().max(3),
+            id: yup.string(),
             qty: yup.number().typeError('Error'),
             value: yup.number().typeError('Error'),
             desc: yup.string(),
@@ -61,14 +62,7 @@ const formSchema = yup.object().shape({
 
 export default function ArrivalScanPage() {
     const { toast } = useToast()
-    const generateRandomNumber = () => {
-        const randomNumber = Math.floor(Math.random() * 1000);
-        const formattedNumber = `SL${randomNumber.toString().padStart(6, '0')}`;
-        return formattedNumber;
-    };
 
-
-    const [internalCode, setInternalCode] = useState(generateRandomNumber());
     const [open, setOpen] = useState(false);
 
     const form = useForm({
@@ -92,7 +86,7 @@ export default function ArrivalScanPage() {
             package_content: [
                 {
                     itemID: "",
-                    qty: 0,
+                    qty: 1,
                     value: 0,
                     desc: "",
                     hs_desc: "",
@@ -124,14 +118,19 @@ export default function ArrivalScanPage() {
     const labelImages = form.watch('label_images');
     const contentImages = form.watch('content_images');
     const allImages = [...boxImages, ...labelImages, ...contentImages];
-
+    const [loading, setLoading] = useState(false);
+    const [rerender, setRerender] = useState(false);
+    
     const handleSave = async (formData) => {
+        setLoading(true);
         console.log("dikirim", formData)
         try {
             const response = await axios.post(
                 `/api/admin/arrival_scan/register`,
                 formData
             );
+            setLoading(false);
+            setOpen(true);
             toast({
                 title: `New Package Has Register to ${formData.customer_name}!`,
                 description: response.data.message,
@@ -139,6 +138,7 @@ export default function ArrivalScanPage() {
             });
         } catch (error) {
             console.log('Error', error);
+            setLoading(false);
             toast({
                 title: 'Error Register New Package',
                 description: 'An error occurred while creating the Package.',
@@ -150,23 +150,24 @@ export default function ArrivalScanPage() {
     const onError = (error) => {
         console.log("Form Errors", error)
     }
-    const [total, setTotal] = useState(0);
+    const [total, setTotal] = useState(Number(0));
 
     const calculateTotal = () => {
         let totalPrice = 0;
-        // Iterasi melalui setiap item dalam package_content
         form.getValues().package_content.forEach((item) => {
-            totalPrice += item.subtotal; // Menambahkan subtotal item ke dalam total
+            totalPrice += Number(item.qty) * Number(item.value);
         });
-        setTotal(totalPrice); // Menetapkan nilai total menggunakan setState
-        form.setValue("total_price", totalPrice); // Menetapkan nilai total ke dalam formulir jika diperlukan
+        console.log("Total Price : ", totalPrice)
+        setTotal(Number(totalPrice));
+        form.setValue("total_price", Number(totalPrice));
     }
 
     useEffect(() => {
         calculateTotal();
-    }, [(form.watch('package_content'))]);
+    }, [form.watch('package_content').map(item => `${item.qty}-${item.value}`)]);
 
 
+    console.log("Tracking Barcode : ", form.watch('barcode_tracking'))
     console.log("Content : ", form.watch('package_content'))
     return (
         <>
@@ -219,7 +220,7 @@ export default function ArrivalScanPage() {
                         </div>
 
                         <div className="">
-                            <p className='py-1 px-2 text-sm'>Optional Declare Content Total : {total}</p>
+                            <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
                             <DeclareContet
                                 total={total}
                                 fields={fields}
@@ -227,12 +228,13 @@ export default function ArrivalScanPage() {
                                 remove={remove}
                                 forms={form}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingNumber={form.watch("packageID")} unitID={form.watch("customer_id")} name={form.watch("customer_name")} />
+                            <RegisterDialog open={open} setOpen={setOpen} />
                         </div>
+
+                        {loading && <Loaders />}
                     </form>
                 </Form>
             </div>
-
         </>
     )
 }
