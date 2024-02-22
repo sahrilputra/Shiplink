@@ -20,7 +20,7 @@ import { EditForms } from "./EditForms";
 import { ImageTable } from "./ImageTable";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import {
     Form,
     FormControl,
@@ -30,6 +30,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = yup.object().shape({
     itemID: yup.string(),
@@ -40,7 +41,7 @@ const formSchema = yup.object().shape({
     hsCode: yup.string(),
     madeIn: yup.string(),
 })
-export function VerificationTable({ data, isOpen, setOpen }) {
+export function VerificationTable({ data, isOpen, setOpen, isSkeleton }) {
 
     const [expandedRow, setExpandedRow] = useState(null);
 
@@ -65,16 +66,26 @@ export function VerificationTable({ data, isOpen, setOpen }) {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            itemID: "",
-            qty: "",
-            value: "",
-            description: "",
-            hsDescription: "",
-            hsCode: "",
-            madeIn: "",
+            package_content: [
+                {
+                    itemID: "",
+                    qty: "",
+                    value: "",
+                    desc: "",
+                    hs_desc: "",
+                    hs_code: "",
+                    made_in: "",
+                }
+            ]
         },
         mode: "onChange",
     })
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "package_content",
+    });
+
 
     return (
         <Table>
@@ -89,73 +100,105 @@ export function VerificationTable({ data, isOpen, setOpen }) {
             </TableHeader>
             <TableBody className="text-xs">
                 {
-                    data.map((item, index) => (
+                    isSkeleton ? (
                         <>
-                            <TableRow key={item.id} className={`${expandedRow === index && "bg-blue-100 hover:bg-blue-100"}`} >
-                                <TableCell className="font-medium text-xs">{item.tracking_id}</TableCell>
-                                <TableCell className="font-medium text-xs">{item.customer_name}</TableCell>
-                                <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
-                                <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
-                                <TableCell className="text-right text-xs">{item.updated_at}</TableCell>
-                                <TableCell className="text-center text-xs w-[150px] " >
-                                    <VerifiedStatus param={item.status} />
+                            <TableRow>
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
                                 </TableCell>
-                                <TableCell className="w-[30px] text-right text-xs">
-                                    <Button
-                                        variant="tableBlue"
-                                        size="tableIcon"
-                                        className={` w-max px-[5px] h-[25px]`}
-                                        onClick={() => toggleRow(index)}
-                                    >
-                                        <ArrowDownV2Icons
-                                            width={15}
-                                            height={15}
-                                            className={` text-myBlue outline-myBlue fill-myBlue ${expandedRow === index ? 'rotate-180' : ''}`}
-                                        />
-                                    </Button>
-
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <Skeleton className={"w-full rounded h-[30px]"} />
                                 </TableCell>
                             </TableRow>
-                            {expandedRow === index && (
-                                <>
-                                    <Form {...form}>
-                                        <form
-                                            className='flex gap-2 flex-col text-zinc-600'
-                                            action=""></form>
-                                        <TableRow key={`expanded_${item.id}`} className="bg-blue-50 hover:bg-blue-50">
-                                            <TableCell className="font-medium" colSpan={7}>
-                                                <div className="w-[80%] flex justify-center items-center mx-auto">
-                                                    <ImageTable images={item.images} />
-                                                </div>
-                                                {
-
-                                                    isEdit ? (
-                                                        <EditForms forms={form} counter={editCount} data={item.content} />
-                                                    ) : (
-                                                        < ExpandedTable content={item.content} />
-                                                    )
-                                                }
-
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow className="bg-blue-100 hover:bg-blue-100 ">
-                                            <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
-                                                {
-                                                    isEdit ? (
-                                                        <EditMode cancel={toggleCancel} increaseContent={setEditCount} />
-                                                    ) : (
-                                                        <TableAction edit={toggleEdit} />
-                                                    )
-                                                }
-                                            </TableCell>
-                                        </TableRow>
-                                    </Form>
-                                </>
-                            )}
-                            {console.log(item)}
                         </>
-                    ))
+                    ) : (
+                        <>
+                            {
+                                data.map((item, index) => (
+                                    <>
+                                        <TableRow key={item.id} className={`${expandedRow === index && "bg-blue-100 hover:bg-blue-100"}`} >
+                                            <TableCell className="font-medium text-xs">{item.tracking_id}</TableCell>
+                                            <TableCell className="font-medium text-xs">{item.customer_name}</TableCell>
+                                            <TableCell className="font-medium text-xs">{item.Origin}</TableCell>
+                                            <TableCell className="font-medium text-xs">{item.Destination}</TableCell>
+                                            <TableCell className="text-right text-xs">{item.updated_at}</TableCell>
+                                            <TableCell className="text-center text-xs w-[150px] " >
+                                                <VerifiedStatus param={item.status} />
+                                            </TableCell>
+                                            <TableCell className="w-[30px] text-right text-xs">
+                                                <Button
+                                                    variant="tableBlue"
+                                                    size="tableIcon"
+                                                    className={` w-max px-[5px] h-[25px]`}
+                                                    onClick={() => toggleRow(index)}
+                                                >
+                                                    <ArrowDownV2Icons
+                                                        width={15}
+                                                        height={15}
+                                                        className={` text-myBlue outline-myBlue fill-myBlue ${expandedRow === index ? 'rotate-180' : ''}`}
+                                                    />
+                                                </Button>
+
+                                            </TableCell>
+                                        </TableRow>
+                                        {expandedRow === index && (
+                                            <>
+                                                <Form {...form}>
+                                                    <form
+                                                        className='flex gap-2 flex-col text-zinc-600'
+                                                        action=""></form>
+                                                    <TableRow key={`expanded_${item.id}`} className="bg-blue-50 hover:bg-blue-50">
+                                                        <TableCell className="font-medium" colSpan={7}>
+                                                            <div className="w-[80%] flex justify-center items-center mx-auto py-3">
+                                                                <ImageTable images={item.images} />
+                                                            </div>
+                                                            {
+
+                                                                isEdit ? (
+                                                                    <EditForms forms={form} counter={editCount} data={item.content} removeContent={remove} fields={fields} />
+                                                                ) : (
+                                                                    <ExpandedTable content={item.content} />
+                                                                )
+                                                            }
+
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow className="bg-blue-100 hover:bg-blue-100 ">
+                                                        <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
+                                                            {
+                                                                isEdit ? (
+                                                                    <EditMode cancel={toggleCancel} increaseContent={setEditCount} append={append} />
+                                                                ) : (
+                                                                    <TableAction edit={toggleEdit} item={item} />
+                                                                )
+                                                            }
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </Form>
+                                            </>
+                                        )}
+                                    </>
+                                ))
+                            }
+                        </>
+                    )
                 }
+
             </TableBody >
 
         </Table>

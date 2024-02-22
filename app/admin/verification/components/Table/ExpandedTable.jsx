@@ -28,26 +28,26 @@ export const ExpandedTable = ({ content }) => {
                                 <div className="flex flex-col relative w-[50%] h-10 justify-center items-center">
                                     <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>User Description</p>
                                     <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.desc}</p>
+                                        <p className=' text-sm font-light'>{item.desc ? item.desc : "undefined"}</p>
                                     </div>
                                 </div>
 
                                 <div className="flex flex-col relative  w-[50%] h-10 justify-center items-center">
                                     <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>HS Description</p>
                                     <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.hs_desc}</p>
+                                        <p className=' text-sm font-light'>{item.hs_desc ? item.hs_desc : "undefined"}</p>
                                     </div>
                                 </div>
                                 <div className="flex flex-col relative w-[200px] h-10 justify-center items-center">
                                     <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>HS Code</p>
                                     <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.hs_code}</p>
+                                        <p className=' text-sm font-light'>{item.hs_code ? item.hs_code : "undefined"}</p>
                                     </div>
                                 </div>
                                 <div className="flex flex-col relative w-[100px] h-10 justify-center items-center">
                                     <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>Made In</p>
                                     <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.made_in}</p>
+                                        <p className=' text-sm font-light'>{item.made_in ? item.made_in : "undefined"}</p>
                                     </div>
                                 </div>
                             </div>

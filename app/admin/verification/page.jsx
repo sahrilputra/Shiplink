@@ -13,6 +13,7 @@ import Image from 'next/image'
 import { VerificationMenus } from './components/menus/VerificationMenus'
 import axios from 'axios'
 import { DataTable } from './components/Table/DataTable'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function VerificationPages() {
     const [isSkeleton, setIsSkeleton] = useState(true);
@@ -58,8 +59,30 @@ export default function VerificationPages() {
     const [selectedTab, setSelectedTab] = useState("All");
     console.log("parent : ", selectedTab)
 
-    const filterData = selectedTab === 'All' ? data : data.filter(item => item.CustomsStatus === selectedTab);
-
+    // const filterData = selectedTab === 'All' ? data : data.filter(item => item.CustomsStatus === selectedTab);
+    const handlerSelectedTab = (tab) => {
+        setSelectedTab(tab);
+        setIsSkeleton(true);
+        if (tab === 'All') {
+            setQuery({
+                ...query,
+                status: ""
+            })
+            setIsSkeleton(false);
+        } else if (tab === 'Unverified') {
+            setQuery({
+                ...query,
+                status: "Registration"
+            })
+            setIsSkeleton(false);
+        } else {
+            setQuery({
+                ...query,
+                status: tab
+            })
+            setIsSkeleton(false);
+        }
+    }
     return (
         <>
             <div className={styles.wrapper}>
@@ -79,14 +102,14 @@ export default function VerificationPages() {
                         </div>
                     </div>
                     <div className={`${styles.menus}`}>
-                        <VerificationMenus selectedTab={setSelectedTab} isSelected={selectedTab} />
+                        <VerificationMenus selectedTab={setSelectedTab} isSelected={selectedTab} handlerTab={handlerSelectedTab} />
                     </div>
                 </div>
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
                             <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                                <SearchBar />
+                                <SearchBar handleSearch={handleSearchChange} />
                                 <Button
                                     variant="filter"
                                     size="filter"
@@ -101,7 +124,7 @@ export default function VerificationPages() {
 
                         <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
                             {/* <DataTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} /> */}
-                            <VerificationTable data={data} isOpen={open} setOpen={setOpen} />
+                            <VerificationTable data={data} isOpen={open} setOpen={setOpen} isSkeleton={isSkeleton} />
                         </div>
 
                     </div>

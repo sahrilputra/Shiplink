@@ -8,13 +8,14 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export const TableAction = ({ edit }) => {
+export const TableAction = ({ edit, item }) => {
+    const height_unit = item.package_height_unit
     return (
         <>
             <div className="w-[100%] flex flex-row justify-between gap-2 items-center">
                 <div className="flex flex-col w-[300px]">
                     <p className='text-myBlue text-xs'>Package Dimension</p>
-                    <p className='font-light text-xs'>12 mm x 10 mm x 10 mm | 10 Ibs</p>
+                    <p className='font-light text-xs'>{item.package_length} {height_unit} x {item.package_width} {height_unit} x  {item.package_height} {height_unit} | {item.package_weight}  {item.package_weight_unit}</p>
                 </div>
                 <div className="">
                     <Select>

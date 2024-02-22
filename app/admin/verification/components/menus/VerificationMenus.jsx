@@ -3,7 +3,7 @@ import { Menus } from './Menus'
 import { MenuItems } from './MenusItem'
 import { useRouter, usePathname } from 'next/navigation';
 
-export const VerificationMenus = ({ selectedTab, isSelected }) => {
+export const VerificationMenus = ({ selectedTab, isSelected, handlerTab }) => {
     const handleTabClick = (tabName) => {
         selectedTab(tabName);
     }
@@ -12,14 +12,14 @@ export const VerificationMenus = ({ selectedTab, isSelected }) => {
             <div className="">
                 <button
                     className={`${isSelected === "All" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-                    onClick={() => handleTabClick("All")}
+                    onClick={() => handlerTab("All")}
                 >
                     <div className="">All</div>
                 </button>
             </div>
             <div className="">
                 <button
-                    onClick={() => handleTabClick("Verified")}
+                    onClick={() => handlerTab("Verified")}
                     className={`${isSelected === "Verified" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                 >
                     <div className="">Verified</div>
@@ -27,7 +27,7 @@ export const VerificationMenus = ({ selectedTab, isSelected }) => {
             </div>
             <div className="">
                 <button
-                    onClick={() => handleTabClick("Unverified")}
+                    onClick={() => handlerTab("Unverified")}
                     className={`${isSelected === "Unverified" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                 >
                     <div className="">Unverified</div>

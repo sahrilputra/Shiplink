@@ -11,6 +11,7 @@ import {
 import { ImageDisplay } from './ImageDisplay'
 import Image from 'next/image'
 import { Card } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 export const ImageTable = ({ labelImg, wholeBoxImg, contentImg, images = null }) => {
     //  const images = [labelImg, wholeBoxImg, contentImg].filter(image => image !== null);
     console.log("Images: ", images)
@@ -37,7 +38,6 @@ export const ImageTable = ({ labelImg, wholeBoxImg, contentImg, images = null })
                 <CarouselPrevious />
                 <CarouselNext />
             </Carousel>
-
         </>
     )
 }
