@@ -20,7 +20,7 @@ import axios from "axios";
 import data from '../../../../../data/admin/TransportLotsData.json'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export function ExitingLotsDialog() {
+export function ExitingLotsDialog({ close }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [lots, setLots] = useState([]);
@@ -103,6 +103,22 @@ export function ExitingLotsDialog() {
                         </Command>
                     </PopoverContent>
                 </Popover>
+                <div className="flex flex-row justify-between w-full gap-3 py-2">
+                    <Button
+                        type="button"
+                        variant="redOutline"
+                        className="w-full"
+                        onClick={close}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        variant="destructive"
+                    >Save changes
+                    </Button>
+                </div>
             </div>
         </>
     )

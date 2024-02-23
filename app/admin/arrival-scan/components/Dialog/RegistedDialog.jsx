@@ -18,7 +18,7 @@ import { usePDF } from 'react-to-pdf';
 import ReactToPrint, { useReactToPrint } from "react-to-print"
 import axios from "axios";
 
-export function RegisterDialog({ open, setOpen, trackingID, name }) {
+export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
     const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -73,13 +73,14 @@ export function RegisterDialog({ open, setOpen, trackingID, name }) {
 
                         <div className="flex justify-between w-full flex-row text-sm">
                             <p>{name}</p>
-                            <p>{`#${trackingID}`}</p>
+                            <p>{`#${userID}`}</p>
                         </div>
-                        <div className="w-full flex justify-center items-center p-1">
+                        <div className="w-full flex flex-col justify-center items-center p-1">
                             <img
-                                src={`sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`}
-                                style={{ height: 20, width: 100, objectFit: "contain" }}
+                                src={`https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`}
+                                style={{ height: '80px', width: "100%", objectFit: "contain" }}
                                 alt="" />
+                                <p className="text-center tracking-wider py-2">{trackingID}</p>
                             {/* <Barcode value={`${trackingID}`}
                                 options={{ format: 'code128', width: '3', lineColor: "#2d2d2d", textMargin: 10, fontSize: 16, height: 70 }}
                                 renderer="svg" className="tracking-wider "

@@ -20,6 +20,9 @@ import axios from "axios";
 export function AssingLotsDialog({ open, setOpen }) {
     const [select, setSeleceted] = useState("New");
 
+    const close = () => {
+        setOpen(false)
+    }
     const handleSelect = (e) => {
         setSeleceted(e)
     }
@@ -44,41 +47,32 @@ export function AssingLotsDialog({ open, setOpen }) {
                             <div className="flex flex-col gap-2 ">
                                 <div className="flex flex-row gap-3 text-sm text-center">
 
-                                    <p
+                                    <div
                                         onClick={() => handleSelect("New")}
                                         className={`${select === "New" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
                                         New Lot
-                                    </p>
-                                    <p
+                                    </div>
+                                    <div
                                         onClick={() => handleSelect("Exiting")}
                                         className={`${select === "Exiting" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
-                                        Existing Lot</p>
+                                        Existing Lot
+                                    </div>
                                 </div>
                                 <div className="w-full">
                                     <Separator className="w-full h-[1px]" />
                                 </div>
-                                <div className="flex flex-col gap-2 py-4">
+                                <div className="flex flex-col gap-2 pt-3">
                                     {
                                         select === "New" ? (
-                                            <NewLotsFrom />
+                                            <NewLotsFrom close={close} />
                                         ) : (
-                                            <ExitingLotsDialog />
+                                            <ExitingLotsDialog close={close} />
                                         )
                                     }
 
                                 </div>
                             </div>
                         </div>
-                        <DialogFooter>
-                            <div className="flex flex-row justify-between w-full">
-                                <Button
-                                    variant="redOutline">Cancel</Button>
-                                <Button
-                                    variant="destructive"
-                                >Save changes
-                                </Button>
-                            </div>
-                        </DialogFooter>
                     </form>
                 </Form>
             </DialogContent>

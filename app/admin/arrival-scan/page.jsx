@@ -122,7 +122,7 @@ export default function ArrivalScanPage() {
     const [rerender, setRerender] = useState(false);
     const [trackingId, setTrackingId] = useState("")
     const [userName, setUserName] = useState("")
-
+    const [userID, setUserID] = useState("")
     const handleSave = async (formData) => {
         setLoading(true);
         console.log("dikirim", formData)
@@ -134,6 +134,7 @@ export default function ArrivalScanPage() {
             setTrackingId(response.data.tracking_id);
             setLoading(false);
             setOpen(true);
+            setUserID(formData.customer_id)
             setUserName(formData.customer_name)
             toast({
                 title: `New Package Has Register to ${formData.customer_name}!`,
@@ -230,7 +231,7 @@ export default function ArrivalScanPage() {
                                 remove={remove}
                                 forms={form}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} />
+                            <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} userID={userID} />
                         </div>
 
                         {loading && <Loaders />}

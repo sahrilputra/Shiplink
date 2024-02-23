@@ -1,5 +1,6 @@
+
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -11,14 +12,133 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
-import { ArrowDownV2Icons } from "@/components/icons/iconCollection";
-import { MoreHorizontalIcon } from "lucide-react";
+import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
+import { SearchBar } from "@/components/ui/searchBar";
+import { DatePickerWithRange } from "@/components/date/DateRangePicker";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getPaginationRowModel,
+    SortingState,
+    getSortedRowModel,
+} from "@tanstack/react-table";
+import axios from "axios";
 import { CustomBrokerDropdownMenus } from "../Menus/DropdownMenus";
-export function CustomClearanceTable({ data, isOpen, setOpen }) {
 
+export function CustomClearanceTable({ data, isOpen, setOpen }) {
+    const [isEditDialog, setEditDialog] = useState(false);
+
+    const [rowSelection, setRowSelection] = React.useState({})
+    const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
+    const [lots, setLots] = useState([]);
+    const [deleteID, setDeleteId] = useState(null);
+    const [deleteDialog, setDeleteDialog] = useState(false);
+    const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
+    const [isSkeleton, setIsSkeleton] = useState(true);
 
+
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0
+
+    });
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/transport/lots/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setLots(data.lots);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
+    const columns = [
+
+        {
+            accessorKey: "lots_id",
+            header: "Lots ID",
+            className: "text-xs",
+        },
+        {
+            accessorKey: "label",
+            header: "Lots Labels",
+        },
+        {
+            accessorKey: "trip_number",
+            header: "Manifest Number",
+        },
+        {
+            accessorKey: "destination",
+            header: "Destination",
+        },
+        {
+            accessorKey: "status",
+            header: "Current Status",
+        },
+        {
+            id: "Action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex w-[130px] flex-row gap-2">
+                        <div className="flex flex-row gap-2">
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                className="rounded-[3px] h-6 px-2"
+                                onClick={() => toggleOpenChange()}
+                            >
+                                <p className="text-[11px]">Update</p>
+                            </Button>
+                            <CustomBrokerDropdownMenus />
+                        </div>
+                    </div>
+                )
+            },
+        },
+    ]
+    const table = useReactTable({
+        data: lots,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            sorting,
+            rowSelection,
+        },
+
+    });
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -26,7 +146,7 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
         setIsEdit(false)
     }
     const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
+        const newExpandedRows = { ...expandedRows };
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
@@ -35,53 +155,96 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
         setOpen(true)
     }
     return (
-        <Table>
-            <TableHeader className="text-sm">
-                <TableHead className="text-xs w-[100px]">Lots ID</TableHead>
-                <TableHead className="text-xs ">Lots Labels</TableHead>
-                <TableHead className="text-xs ">Manifest Number</TableHead>
-                <TableHead className="text-xs ">Destination</TableHead>
-                <TableHead className="text-xs ">Current Status</TableHead>
-                <TableHead className="text-xs w-[30px]"></TableHead>
-            </TableHeader>
-            <TableBody className="text-xs">
-                {
-                    data.map((item, index) => (
+        <>
+            <div className="">
+                <div className="wrap inline-flex gap-[10px] justify-evenly items-center py-2 px-2">
+                    <SearchBar />
+                    <Button
+                        variant="filter"
+                        size="filter"
+                        className='border border-zinc-300 flex items-center rounded'>
+                        <FilterIcons
+                            className=""
+                            fill="#CC0019" />
+                    </Button>
+                    <DatePickerWithRange className={"text-black"} />
+                </div>
+            </div >
+
+            <Table className=" rounded-md">
+                <TableHeader className="text-sm">
+                    {table.getHeaderGroups().map((headerGroup) => (
                         <>
-                            <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"}`} >
-                                <TableCell className=" font-medium">{item.LotsID}</TableCell>
-                                <TableCell className=" ">{item.LotsLabels}</TableCell>
-                                <TableCell className=" ">{item.ManifestNumber}</TableCell>
-                                <TableCell className=" ">{item.Destination}</TableCell>
-                                <TableCell className=" ">{item.CurrentStatus}</TableCell>
-                                <TableCell className=" w-[30px]">
-                                    <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="secondary"
-                                            size="sm"
-                                            className="rounded-[3px] h-6 px-2"
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <p className="text-[11px]">Update</p>
-                                        </Button>
-                                        <CustomBrokerDropdownMenus />
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                            {/* {expandedRows[index] && (
-                                <>
-                                    <TableRow key={`expanded_${item.id}`} className="bg-blue-100 hover:bg-blue-100">
-                                        <TableCell className="font-medium" colSpan={7}>
-                                        </TableCell>
-                                    </TableRow>
-
-                                </>
-                            )} */}
+                            {headerGroup.headers.map((header, index) => {
+                                const isLastHeader = index === headerGroup.headers.length - 1;
+                                const isFirstHeader = index === 0;
+                                return (
+                                    <TableHead
+                                        key={header.id}
+                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                    >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                );
+                            })}
                         </>
-                    ))
-                }
-            </TableBody>
+                    ))}
+                </TableHeader>
+                <TableBody>
 
-        </Table>
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                            >
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
+                    ) : (
+                        // Jika data telah dimuat, render data aktual
+                        table.getRowModel().rows.map((row) => (
+                            <>
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200"} `}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </>
+                        ))
+                    )}
+                </TableBody>
+
+            </Table>
+        </>
     )
 }

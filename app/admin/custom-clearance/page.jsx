@@ -44,22 +44,7 @@ export default function VerificationPages() {
                 </div>
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
-                        <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
-                            <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                                <SearchBar />
-                                <Button
-                                    variant="filter"
-                                    size="filter"
-                                    className='border border-zinc-300 flex items-center rounded'>
-                                    <FilterIcons
-                                        className=""
-                                        fill="#CC0019" />
-                                </Button>
-                                <DatePickerWithRange />
-                            </div>
-                        </div>
-
-                        <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
+                        <div className={`${styles.listTable} flex flex-col gap-1`}>
                             <CustomClearanceTable data={data} isOpen={open} setOpen={setOpen} />
                             <UpdateDialog open={open} setOpen={setOpen} />
                         </div>

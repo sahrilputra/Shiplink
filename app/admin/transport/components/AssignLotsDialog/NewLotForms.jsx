@@ -25,19 +25,23 @@ import {
 } from "@/components/ui/form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-
+import { useToast } from '@/components/ui/use-toast'
+import { Loaders } from '@/components/ui/loaders'
+import Image from 'next/image'
 const formSchema = yup.object().shape({
     LotsId: yup.string().required().max(50, "character is too long"),
     LotsLabel: yup.string().required(),
     Origin: yup.string().required(),
     Destination: yup.string().required(),
     TripNumber: yup.date().required(),
+    Documents: yup.string()
 })
 
 
 
 export const NewLotsFrom = ({ close, data = null }) => {
-
+    const toast = useToast()
+    const [loading, setLoading] = useState(false);
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -47,13 +51,47 @@ export const NewLotsFrom = ({ close, data = null }) => {
             Destination: data?.Destination || "",
             TripNumber: data?.TripNumber || "",
             Status: data?.Status || "",
+            Documents: data?.documents || "",
         },
         mode: "onChange",
     })
+
+
+    const handleSave = async (formData) => {
+        setLoading(true)
+        console.log("dikirim", formData)
+        try {
+            formData.action = 'add';
+            const response = await axios.post(
+                `/api/admin/transport/lots/setDatta`,
+                formData
+            );
+            toast({
+                title: `New Lots ${formData.LotsLabel} created!`,
+                description: response.data.message,
+                status: 'success',
+            });
+            setLoading(false)
+            reload();
+            close();
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error creating new Lots',
+                description: 'An error occurred while creating the Lots.',
+                status: 'error',
+            });
+        }
+    };
+
     return (
         <>
+            {loading && <Loaders />}
+          
             <Form {...form}>
                 <form
+                    onSubmit={form.handleSubmit(handleSave)}
                     className='flex gap-4 flex-col'
                     action="">
 
@@ -189,6 +227,22 @@ export const NewLotsFrom = ({ close, data = null }) => {
                         )}
                     />
 
+                    <div className="flex flex-row justify-between w-full gap-3 py-2">
+                        <Button
+                            type="button"
+                            variant="redOutline"
+                            className="w-full"
+                            onClick={close}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            variant="destructive"
+                        >Save changes
+                        </Button>
+                    </div>
                 </form>
             </Form >
         </>
