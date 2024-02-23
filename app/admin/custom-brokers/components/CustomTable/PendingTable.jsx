@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -11,19 +12,126 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
-import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
+import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
-import { SearchBar } from "@/components/ui/searchBar";
-import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MoreHorizontalIcon } from "lucide-react";
-import { BrokerDeclareContent } from "./BrokerDeclareContent";
+import NextLink from "next/link";
+import { Skeleton } from "@/components/ui/skeleton"
+import axios from "axios";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getPaginationRowModel,
+    SortingState,
+    getSortedRowModel,
+} from "@tanstack/react-table";
+import { Input } from "@/components/ui/input";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { DropdownPendingList } from "../dropdown/DropdownPendingList";
-export function PendingTable({ data, isOpen, setOpen }) {
+import { BrokerDeclareContent } from "./BrokerDeclareContent";
 
-    const [expandedRows, setExpandedRows] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
-    const [isHeaderChecked, setIsHeaderChecked] = useState(false);
+export function PendingTable({ data, isSkeleton, handleSearchChange }) {
+    const [rowSelection, setRowSelection] = React.useState({})
+    const [sorting, setSorting] = React.useState([])
+    const [expandedRows, setExpandedRows] = useState({});
+    const columns = [
+        {
+            accessorKey: "select",
+            id: "select",
+            header: ({ table }) => {
+                return (
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() ||
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
+                )
+            },
+            cell: ({ row }) => {
+                return (
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                    />
+                )
+            },
+        },
+        {
+            accessorKey: "tracking_id",
+            header: "Tracking ID",
+            className: "text-xs",
+        },
+        {
+            accessorKey: "customer_name",
+            header: "Customer Name",
+        },
+        {
+            accessorKey: "address",
+            header: "Destination",
+        },
+        {
+            accessorKey: "updated_at",
+            header: "Update Date",
+        },
+        {
+            accessorKey: "status",
+            header: "Customs Status",
+        },
+        {
+            id: "Action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="w-[60px]" key={row}>
+                        <div className="flex flex-row gap-2 ">
+                            <DropdownPendingList />
+                            <Button
+                                onClick={() => toggleRow(row.id)}
+                                variant="tableBlue"
+                                size="tableIcon"
+                                className={` w-max px-[5px] h-[25px]`}
+                            >
+                                <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue  ${expandedRows[row.id] ? 'rotate-180' : ''}`} />
+                            </Button>
+                        </div>
+                    </div>
+                )
+            },
+        }
+    ]
+    // ${expandedRows[index] ? 'rotate-180' : ''}
+
+    const table = useReactTable({
+        data: data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            sorting,
+            rowSelection,
+        },
+
+    });
+
+    console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.warehouse_id));
+    const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.warehouse_id);
 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -32,106 +140,154 @@ export function PendingTable({ data, isOpen, setOpen }) {
         setIsEdit(false)
     }
     const toggleRow = (index) => {
-        const newExpandedRows = Array(data.length).fill(false);
-        newExpandedRows[index] = true;
+        const newExpandedRows = { ...expandedRows };
+        newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+    const handlerDelete = (item) => {
+        setDeleteId(item)
+        setDeleteDialog(true)
+    }
 
-
-    const toggleHeaderCheckbox = () => {
-        setIsHeaderChecked(!isHeaderChecked);
-    };
-
-    const toggleItemCheckbox = (index) => {
-        const newData = [...data];
-        newData[index].isChecked = !newData[index].isChecked;
-        setData(newData);
+    const reloadData = () => {
+        fetchData();
     };
 
     return (
         <>
-            <div className="text-sm bg-white text-black">
-                <div className="p-4 " >
-                    <div className="flex flex-row justify-between">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
-                            <Button
-                                variant="filter"
-                                size="filter"
-                                className='border border-zinc-300 flex items-center rounded'>
-                                <FilterIcons
-                                    className=""
-                                    fill="#CC0019" />
-                            </Button>
-                            <DatePickerWithRange className={"text-black"} />
+            <div className="text-sm bg-white text-black pb-3">
+                <div className="flex flex-row justify-between">
+                    <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                        <div className="relative">
+                            <Input
+                                type="text"
+                                placeholder="Search..."
+                                className="pr-8 pl-2 text-xs border border-zinc-300"
+                                onChange={handleSearchChange}
+
+                            />
+                            <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
+                                <SearchIcon
+                                    width={15}
+                                    height={15}
+                                />
+                            </div>
                         </div>
-                        <div className="">
+                        <Button
+                            variant="filter"
+                            size="filter"
+                            className='border border-zinc-300 flex items-center rounded'>
+                            <FilterIcons
+                                className=""
+                                fill="#CC0019" />
+                        </Button>
+                    </div>
+                    {/* {
+                        Object.keys(rowSelection).length === 0 ? (
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                className='border border-zinc-300 flex items-center rounded'
+                                onClick={() => setOpenNewWarehouse(true)}
+                            >
+                                <p>New Warehouse</p>
+                            </Button>
+                        ) : (
                             <Button
                                 variant="destructive"
                                 size="sm"
                                 className="w-[100px]"
+                                onClick={() => setDeleteMuchDialog(true)}
                             >
-                                <p className=" text-xs">Print</p>
+                                <p className=" text-xs">Delete</p>
                             </Button>
-                        </div>
-                    </div>
+                        )
+                    } */}
                 </div>
             </div>
-            <Table className="border border-zinc-300 rounded-sm">
-
-                <TableHeader className="text-xs h-[40px] py-[5px]">
-                    <TableHead className="w-[50px]">
-                        <Checkbox className="w-4 h-4" />
-                    </TableHead>
-                    <TableHead className="w-[200px] text-xs h-0 text-left">Tracking ID</TableHead>
-                    <TableHead className="w-[200px] text-xs h-0 ">Customer Name</TableHead>
-                    <TableHead className="w-[200px] text-xs h-0 ">Destination</TableHead>
-                    <TableHead className="w-[200px] text-xs h-0 ">Update Date</TableHead>
-                    <TableHead className="w-[200px] text-xs h-0 ">Customs Status</TableHead>
-                    <TableHead className="w-[100px] text-xs h-0"></TableHead>
+            <Table className=" rounded-md">
+                <TableHeader className="text-sm">
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <>
+                            {headerGroup.headers.map((header, index) => {
+                                const isLastHeader = index === headerGroup.headers.length - 1;
+                                const isFirstHeader = index === 0;
+                                return (
+                                    <TableHead
+                                        key={header.id}
+                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                    >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                );
+                            })}
+                        </>
+                    ))}
                 </TableHeader>
-                <TableBody className="text-xs">
-                    {
-                        data.map((item, index) => (
-                            <>
-                                <TableRow key={item.id} className={`${expandedRows[index] && "bg-blue-100 hover:bg-blue-100"} h-50px`} >
-                                    <TableCell className="font-medium w-[50px]">
-                                        <Checkbox className="w-4 h-4" />
-                                    </TableCell>
-                                    <TableCell className="font-medium ">{item.TrackingID}</TableCell>
-                                    <TableCell className="font-medium ">{item.CustomerName}</TableCell>
-                                    <TableCell className="font-medium ">{item.Destination}</TableCell>
-                                    <TableCell className="font-medium ">{item.UpdateDate}</TableCell>
-                                    <TableCell className="font-medium ">{item.CustomsStatus}</TableCell>
-                                    <TableCell className="w-[30px]  ">
-                                        <div className="flex flex-row gap-2 ">
-                                            <DropdownPendingList />
-                                            <Button
-                                                variant="tableBlue"
-                                                size="tableIcon"
-                                                className={` w-max px-[5px] h-[25px]`}
-                                                onClick={() => toggleRow(index)}
+                <TableBody>
+
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
                                             >
-                                                <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[index] ? 'rotate-180' : ''}`} />
-                                            </Button>
-                                        </div>
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
                                     </TableCell>
                                 </TableRow>
-                                {expandedRows[index] && (
-                                    <>
-                                        <TableRow >
-                                            <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
-                                                <BrokerDeclareContent />
-                                            </TableCell>
-                                        </TableRow>
-                                    </>
+                            )}
+                        </>
+                    ) : (
+                        table.getRowModel().rows.map((row) => (
+                            <>
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className={row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : ""}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${cell.isLast ? "w-[60px]" : cell.isFirst ? "w-[50px]" : ""} text-xs  ${expandedRows[row.id] && "bg-blue-100 hover:bg-blue-100"}`}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                                {expandedRows[row.id] && (
+                                    <TableRow>
+                                        <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
+                                            <BrokerDeclareContent data={row.original.content} details={row.original} />
+                                        </TableCell>
+                                    </TableRow>
                                 )}
                             </>
                         ))
-                    }
+                    )}
                 </TableBody>
 
             </Table>
         </>
     )
 }
+
+
+

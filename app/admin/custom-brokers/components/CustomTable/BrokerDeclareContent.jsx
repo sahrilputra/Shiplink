@@ -13,13 +13,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export const BrokerDeclareContent = ({ }) => {
+export const BrokerDeclareContent = ({ data, details }) => {
     const [open, setOpen] = React.useState(false);
-
+    console.log("data :", data)
+    console.log("Looping data : ", data.map((item) => item.id))
     return (
         <>
-            <PackageDialogDetails open={open} setOpen={setOpen} />
-            <Table>
+            <PackageDialogDetails open={open} setOpen={setOpen} details={details} />
+
+            <Table >
                 <TableHeader className="bg-blue-100 ">
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Qty</TableHead>
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Value</TableHead>
@@ -28,30 +30,37 @@ export const BrokerDeclareContent = ({ }) => {
                     <TableHead className="w-[200px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2  ">HS Code</TableHead>
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2  ">Made in</TableHead>
                 </TableHeader>
-                <TableBody>
-                    <TableRow className="text-xs bg-white">
-                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>1</p>
-                        </TableCell>
-                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>$120.00</p>
-                        </TableCell>
-                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>Description</p>
-                        </TableCell>
-                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>HS Description</p>
-                        </TableCell>
-                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>HS Code</p>
-                        </TableCell>
-                        <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>CAD</p>
-                        </TableCell>
 
-                    </TableRow>
+                <TableBody>
+                    {
+                        data.map((item, index) => (
+                            <TableRow className="text-xs bg-white" key={index}>
+                                <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
+                                    <p>{item.qty ? item.qty : "undefined"}</p>
+                                </TableCell>
+                                <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
+                                    <p>${item.value ? item.value : "undefined"}</p>
+                                </TableCell>
+                                <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
+                                    <p>{item.desc ? item.desc : "undefined"}</p>
+                                </TableCell>
+                                <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
+                                    <p>{item.hs_desc ? item.hs_desc : "undefined"}</p>
+                                </TableCell>
+                                <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
+                                    <p>{item.hs_code ? item.hs_code : "undefined"}</p>
+                                </TableCell>
+                                <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
+                                    <p>{item.made_in ? item.made_in : "undefined"}</p>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    }
                 </TableBody>
+
             </Table>
+
+
             <Table>
                 <TableBody>
                     <TableRow className="text-xs h-4 w-full bg-white">
@@ -59,7 +68,7 @@ export const BrokerDeclareContent = ({ }) => {
                             <div className="flex justify-between w-full">
                                 <div className="flex flex-row gap-4">
                                     <p className=' text-sm font-bold text-myBlue'>Totals : </p>
-                                    <p className=' text-sm font-semibold'>$123.00 </p>
+                                    <p className=' text-sm font-semibold'>${details?.total_price || "0"} </p>
 
                                 </div>
                                 <div className="flex flex-row gap-4">

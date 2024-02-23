@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 import { FilterIcons } from '@/components/icons/iconCollection'
 import { Button } from '@/components/ui/button'
@@ -9,9 +9,49 @@ import { PendingTable } from './components/CustomTable/PendingTable'
 import data from '../../../data/admin/CustomBrokerData.json'
 import Image from 'next/image'
 import { CustomMenus } from './components/ConfigMenus'
+import axios from 'axios'
 export default function CustomBrokerPage() {
 
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const [open, setOpen] = useState(false);
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0
+    });
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/verification/list`,
+                    query
+                );
+                console.log(response)
+                const data = await response.data;
+                setData(data.package_info);
+                setIsSkeleton(false);
+            } catch (error) {
+                setIsSkeleton(false);
+                console.log('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [query]);
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
 
     const [selectedTab, setSelectedTab] = useState("Clearance Pending");
     console.log("parent : ", selectedTab)
@@ -45,7 +85,7 @@ export default function CustomBrokerPage() {
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <PendingTable data={filterData} />
+                            <PendingTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} />
                         </div>
                     </div>
                 </div>
