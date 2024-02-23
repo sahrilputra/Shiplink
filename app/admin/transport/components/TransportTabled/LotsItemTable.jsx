@@ -254,7 +254,7 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                                         <>
                                             <TableRow >
                                                 <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                    <ExpandedLotsData />
+                                                    <ExpandedLotsData data={row.original}/>
                                                 </TableCell>
                                             </TableRow>
                                         </>

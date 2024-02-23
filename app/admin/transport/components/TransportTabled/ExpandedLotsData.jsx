@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
-export const ExpandedLotsData = () => {
+export const ExpandedLotsData = ({ data }) => {
     return (
         <>
             <Table>
@@ -12,13 +12,13 @@ export const ExpandedLotsData = () => {
                 <TableBody>
                     <TableRow className="text-xs bg-white">
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>11/04/2023 11:30:30</p>
+                            <p>{data?.updated_at || "undefined"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>12131231231</p>
+                            <p>{data?.trip_number || "undefined"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>100 Package</p>
+                            <p>{data?.total || "undefined"}</p>
                         </TableCell>
                     </TableRow>
                 </TableBody>

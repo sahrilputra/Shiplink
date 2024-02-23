@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import data from '../../../data/admin/TransportSingleItemData.json'
 import { SingleItemsTable } from './components/TransportTabled/SingleItemTable'
 import { AssingLotsDialog } from './components/AssignLotsDialog/AssignToLotsDialog'
-export default function TransportPage({props}) {
+export default function TransportPage({ props }) {
     const [open, setOpen] = useState(false);
     console.log("props", props)
     // props.setContent("Showing All Lots")
@@ -18,7 +18,6 @@ export default function TransportPage({props}) {
         <>
             <div className={styles.carrier}>
                 <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
-
                 </div>
 
                 <div className={`${styles.listTable} flex flex-col gap-1`}>
