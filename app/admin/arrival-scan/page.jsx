@@ -120,7 +120,9 @@ export default function ArrivalScanPage() {
     const allImages = [...boxImages, ...labelImages, ...contentImages];
     const [loading, setLoading] = useState(false);
     const [rerender, setRerender] = useState(false);
-    
+    const [trackingId, setTrackingId] = useState("")
+    const [userName, setUserName] = useState("")
+
     const handleSave = async (formData) => {
         setLoading(true);
         console.log("dikirim", formData)
@@ -129,8 +131,10 @@ export default function ArrivalScanPage() {
                 `/api/admin/arrival_scan/register`,
                 formData
             );
+            setTrackingId(response.data.tracking_id);
             setLoading(false);
             setOpen(true);
+            setUserName(formData.customer_name)
             toast({
                 title: `New Package Has Register to ${formData.customer_name}!`,
                 description: response.data.message,
@@ -166,9 +170,7 @@ export default function ArrivalScanPage() {
         calculateTotal();
     }, [form.watch('package_content').map(item => `${item.qty}-${item.value}`)]);
 
-
-    console.log("Tracking Barcode : ", form.watch('barcode_tracking'))
-    console.log("Content : ", form.watch('package_content'))
+    console.log("tracking from Page : ", trackingId)
     return (
         <>
             <div className={styles.forms}>
@@ -228,7 +230,7 @@ export default function ArrivalScanPage() {
                                 remove={remove}
                                 forms={form}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} />
+                            <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} />
                         </div>
 
                         {loading && <Loaders />}

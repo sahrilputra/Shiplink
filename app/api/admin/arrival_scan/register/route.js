@@ -67,6 +67,7 @@ export async function POST(request) {
             const responseData = {
                 status: true,
                 message: response.data.message,
+                tracking_id: response.data.tracking_id,
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

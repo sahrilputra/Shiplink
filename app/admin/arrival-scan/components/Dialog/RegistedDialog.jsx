@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,48 +18,40 @@ import { usePDF } from 'react-to-pdf';
 import ReactToPrint, { useReactToPrint } from "react-to-print"
 import axios from "axios";
 
-export function RegisterDialog({ open, setOpen }) {
+export function RegisterDialog({ open, setOpen, trackingID, name }) {
     const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
 
+    console.log("Tracking ID :", trackingID)
+
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([]);
-
-    const [query, setQuery] = useState({
-        keyword: "",
-        date_start: "",
-        date_end: "",
-        tracking_id: "",
-        status: "",
-        page: 0,
-        limit: 0,
-        index: 0
-    });
-
+    console.log("name :", name)
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `api/admin/arrival_scan/barcode`,
+                data,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${process.env.BEARER_TOKEN}`
+                    }
+                }
+            );
+            console.log(response)
+            setIsSkeleton(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/verification/list`,
-                    query
-                );
-                console.log(response)
-                const data = await response.data;
-                setData(data.package_info);
-                setIsSkeleton(false);
-            } catch (error) {
-                setIsSkeleton(false);
-                console.log('Error:', error);
-            }
-        };
-
         fetchData();
-    }, [query]);
-
-
+        setData(trackingID)
+    }, [trackingID]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -79,11 +72,15 @@ export function RegisterDialog({ open, setOpen }) {
                         />
 
                         <div className="flex justify-between w-full flex-row text-sm">
-                            {/* <p>{name}</p>
-                            <p>{`#${unitID}`}</p> */}
+                            <p>{name}</p>
+                            <p>{`#${trackingID}`}</p>
                         </div>
                         <div className="w-full flex justify-center items-center p-1">
-                            {/* <Barcode value={`${trackingNumber}`}
+                            <img
+                                src={`sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`}
+                                style={{ height: 20, width: 100, objectFit: "contain" }}
+                                alt="" />
+                            {/* <Barcode value={`${trackingID}`}
                                 options={{ format: 'code128', width: '3', lineColor: "#2d2d2d", textMargin: 10, fontSize: 16, height: 70 }}
                                 renderer="svg" className="tracking-wider "
                             /> */}
