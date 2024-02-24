@@ -26,25 +26,30 @@ export default function CustomBrokerPage() {
     });
     const [data, setData] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/verification/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setData(data.package_info);
+            console.log("Package Length : ", data.package_info.length)
+            setIsSkeleton(false);
+        } catch (error) {
+            setIsSkeleton(false);
+            console.log('Error:', error);
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/verification/list`,
-                    query
-                );
-                console.log(response)
-                const data = await response.data;
-                setData(data.package_info);
-                setIsSkeleton(false);
-            } catch (error) {
-                setIsSkeleton(false);
-                console.log('Error:', error);
-            }
-        };
-
         fetchData();
     }, [query]);
+
+    const reload = () => {
+        setIsSkeleton(true);
+        fetchData();
+    }
 
     const handleSearchChange = (event) => {
         setQuery({
@@ -53,12 +58,14 @@ export default function CustomBrokerPage() {
         });
     };
 
-    const [selectedTab, setSelectedTab] = useState("Clearance Pending");
+    const [selectedTab, setSelectedTab] = useState("");
     console.log("parent : ", selectedTab)
 
-    const filterData = selectedTab === 'Clearance Pending' ? data.filter(item => item.CustomsStatus === 'Clearance Pending') : data.filter(item => item.CustomsStatus === selectedTab);
-    const clearancePendingCount = data.filter(item => item.CustomsStatus === 'Clearance Pending').length;
-    const clearanceCustomsCount = data.filter(item => item.CustomsStatus === 'Cleared Custom').length;
+    const filterData = selectedTab !== 'Cleared Custom'
+        ? data.filter(item => item.status !== 'Cleared Custom') 
+        : data.filter(item => item.status === 'Cleared Custom');
+    const clearancePendingCount = data.filter(item => item.status !== 'Cleared Custom').length;
+    const clearanceCustomsCount = data.filter(item => item.status === 'Cleared Custom').length;
 
     return (
         <>
@@ -85,7 +92,7 @@ export default function CustomBrokerPage() {
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <PendingTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} />
+                            <PendingTable data={filterData} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} reload={reload} />
                         </div>
                     </div>
                 </div>

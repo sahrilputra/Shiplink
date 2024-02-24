@@ -20,9 +20,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
-
-export const ExpandedTable = ({ content, edit, item }) => {
+import axios from 'axios'
+export const ExpandedTable = ({ content, edit, item, trackingID, reloadData }) => {
     const height_unit = item?.package_height_unit || "cm"
+    const handleSave = async (data) => {
+        console.log("data : ", data)
+        try {
+            const response = await axios.post(
+                `/api/admin/verification/setVerified`,
+                {
+                    data: trackingID,
+                }
+            );
+            console.log(response)
+            reloadData()
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 
     return (
         <>
@@ -108,7 +123,7 @@ export const ExpandedTable = ({ content, edit, item }) => {
                                 type="button"
                                 className=" h-[30px] rounded-sm px-4 py-0"
                                 size="sm"
-
+                                onClick={() => handleSave(trackingID)}
                             >
                                 <p className='text-xs font-light'>Mark As Verified</p>
                             </Button>

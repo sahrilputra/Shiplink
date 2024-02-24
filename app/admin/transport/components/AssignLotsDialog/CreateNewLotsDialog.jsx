@@ -13,12 +13,12 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { NewLotsFrom } from "./NewLotForms"
 import { Form } from "@/components/ui/form"
-import { ExitingLotsDialog } from "./ExitingLots"
 import { useState } from "react"
 import axios from "axios";
+import React from 'react'
 
-export function AssingLotsDialog({ open, setOpen }) {
-    const [select, setSeleceted] = useState("Exiting");
+export function CreateNewLotsDialog({ open, setOpen }) {
+    const [select, setSeleceted] = useState("New");
 
     const close = () => {
         setOpen(false)
@@ -38,25 +38,23 @@ export function AssingLotsDialog({ open, setOpen }) {
                         <DialogHeader>
                             <DialogTitle>
                                 <div className="flex flex-col gap-2 font-bold">
-                                    <p>Assing To Lots</p>
+                                    <p>Create New Lots</p>
                                 </div>
-
                             </DialogTitle>
                         </DialogHeader>
                         <div className="py-4">
                             <div className="flex flex-col gap-2 ">
                                 <div className="flex flex-row gap-3 text-sm text-center">
                                     <div
-                                        onClick={() => handleSelect("Exiting")}
-                                        className={`${select === "Exiting" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
-                                        Existing Lot
+                                        className={`${select === "New" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
+                                        New Lot
                                     </div>
                                 </div>
                                 <div className="w-full">
                                     <Separator className="w-full h-[1px]" />
                                 </div>
                                 <div className="flex flex-col gap-2 pt-3">
-                                    <ExitingLotsDialog close={close} />
+                                    <NewLotsFrom close={close} />
                                 </div>
                             </div>
                         </div>

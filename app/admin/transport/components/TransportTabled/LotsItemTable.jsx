@@ -29,7 +29,7 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 
-export function LotsItemsTable({ data, isOpen, setOpen }) {
+export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const [isEditDialog, setEditDialog] = useState(false);
 
     const [rowSelection, setRowSelection] = React.useState({})
@@ -254,7 +254,7 @@ export function LotsItemsTable({ data, isOpen, setOpen }) {
                                         <>
                                             <TableRow >
                                                 <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                    <ExpandedLotsData data={row.original}/>
+                                                    <ExpandedLotsData data={row.original} />
                                                 </TableCell>
                                             </TableRow>
                                         </>

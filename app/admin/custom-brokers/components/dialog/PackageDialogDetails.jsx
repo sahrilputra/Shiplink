@@ -32,7 +32,7 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                         <div className="imageContainer flex flex-col w-[400px] items-center">
                             <Carousel className="w-full ">
                                 <CarouselContent className=" ">
-                                    {Array.from({ length: images.length }).map((_, index) => (
+                                    {Array.from({ length: images?.length }).map((_, index) => (
                                         <CarouselItem key={index} className=" w-full h-full grow-1">
                                             <div className="w-full">
                                                 <Card>

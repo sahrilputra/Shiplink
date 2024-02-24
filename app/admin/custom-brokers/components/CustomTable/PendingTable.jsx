@@ -28,19 +28,11 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { DropdownPendingList } from "../dropdown/DropdownPendingList";
 import { BrokerDeclareContent } from "./BrokerDeclareContent";
 
-export function PendingTable({ data, isSkeleton, handleSearchChange }) {
+export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState({});
@@ -98,7 +90,7 @@ export function PendingTable({ data, isSkeleton, handleSearchChange }) {
                 return (
                     <div className="w-[60px]" key={row}>
                         <div className="flex flex-row gap-2 ">
-                            <DropdownPendingList />
+                            <DropdownPendingList  data={row.original} />
                             <Button
                                 onClick={() => toggleRow(row.id)}
                                 variant="tableBlue"
@@ -140,18 +132,20 @@ export function PendingTable({ data, isSkeleton, handleSearchChange }) {
         setIsEdit(false)
     }
     const toggleRow = (index) => {
-        const newExpandedRows = { ...expandedRows };
-        newExpandedRows[index] = !newExpandedRows[index];
-        setExpandedRows(newExpandedRows);
+        const newExpandedRows = {};
+        if (expandedRows[index]) {
+            setExpandedRows({});
+        } else {
+            newExpandedRows[index] = true;
+            setExpandedRows(newExpandedRows);
+        }
     };
     const handlerDelete = (item) => {
         setDeleteId(item)
         setDeleteDialog(true)
     }
 
-    const reloadData = () => {
-        fetchData();
-    };
+
 
     return (
         <>
@@ -275,7 +269,7 @@ export function PendingTable({ data, isSkeleton, handleSearchChange }) {
                                 {expandedRows[row.id] && (
                                     <TableRow>
                                         <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
-                                            <BrokerDeclareContent data={row.original.content} details={row.original} />
+                                            <BrokerDeclareContent data={row.original.content} details={row.original} TrackingID={row.original.tracking_id} reload={reload} />
                                         </TableCell>
                                     </TableRow>
                                 )}

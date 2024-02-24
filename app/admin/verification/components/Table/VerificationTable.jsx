@@ -133,9 +133,9 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
                                                         {
 
                                                             isEdit ? (
-                                                                <EditForms counter={editCount} data={item.content} edit={toggleEdit} cancel={toggleCancel} trackingID={item.tracking_id} reloadData={reloadData}/>
+                                                                <EditForms counter={editCount} data={item.content} edit={toggleEdit} cancel={toggleCancel} trackingID={item.tracking_id} reloadData={reloadData} />
                                                             ) : (
-                                                                <ExpandedTable content={item.content} item={item} edit={toggleEdit} />
+                                                                <ExpandedTable content={item.content} item={item} edit={toggleEdit} trackingID={item.tracking_id} reloadData={reloadData} />
                                                             )
                                                         }
 

@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 
-export function SingleItemsTable({ isOpen, setOpen }) {
+export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -211,6 +211,9 @@ export function SingleItemsTable({ isOpen, setOpen }) {
         setOpen(true)
     }
 
+    const toggleOpenNewLots = () => {
+        setOpenNewDialog(true)
+    }
     const reloadData = () => {
         fetchData();
     };
@@ -249,10 +252,9 @@ export function SingleItemsTable({ isOpen, setOpen }) {
                                 variant="secondary"
                                 size="sm"
                                 className="px-10"
-                                disabled
-                                onClick={() => toggleOpenChange()}
+                                onClick={() => toggleOpenNewLots()}
                             >
-                                <p className=" text-xs">Assign to Lot</p>
+                                <p className=" text-xs">New Lots</p>
                             </Button>
                         ) : (
                             <Button

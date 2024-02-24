@@ -12,12 +12,12 @@ import { MoreHorizontalIcon } from "lucide-react"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import { PackageDialogDetails } from '../dialog/PackageDialogDetails'
-export const DropdownPendingList = () => {
+export const DropdownPendingList = ({ data }) => {
 
     const [isDetailsOpen, setDetailsOpen] = useState(false);
     const render = () => {
         if (isDetailsOpen) {
-            return <PackageDialogDetails open={isDetailsOpen} setOpen={setDetailsOpen} />
+            return <PackageDialogDetails open={isDetailsOpen} setOpen={setDetailsOpen} details={data} />
         }
     }
 

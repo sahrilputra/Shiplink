@@ -11,8 +11,8 @@ export const CustomMenus = ({ selectedTab, isSelected }) => {
     <Menus>
       <div className="">
         <button
-          className={`${isSelected === "Clearance Pending" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-          onClick={() => handleTabClick("Clearance Pending")}
+          className={`${isSelected === "" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+          onClick={() => handleTabClick("")}
         >
           <div className="">Pending</div>
         </button>

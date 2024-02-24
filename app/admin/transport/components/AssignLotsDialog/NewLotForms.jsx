@@ -40,7 +40,7 @@ const formSchema = yup.object().shape({
 
 
 export const NewLotsFrom = ({ close, data = null }) => {
-    const toast = useToast()
+    const { toast } = useToast()
     const [loading, setLoading] = useState(false);
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -88,7 +88,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
     return (
         <>
             {loading && <Loaders />}
-          
+
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleSave)}

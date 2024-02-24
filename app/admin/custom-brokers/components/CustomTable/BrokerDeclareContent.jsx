@@ -1,10 +1,13 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { CheckIcon, XIcon } from 'lucide-react'
 import { PackageDialogDetails } from '../dialog/PackageDialogDetails'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useToast } from '@/components/ui/use-toast'
 import {
     Select,
     SelectContent,
@@ -12,15 +15,69 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Loaders } from '@/components/ui/loaders'
+import axios from 'axios'
+import { useForm } from 'react-hook-form'
+const formSchema = yup.object().shape({
+    entry_number: yup.string(),
+    tracking_id: yup.string(),
+})
 
-export const BrokerDeclareContent = ({ data, details }) => {
+
+export const BrokerDeclareContent = ({ data, details, TrackingID, reload }) => {
+    const { toast } = useToast()
+    const [loading, setLoading] = useState(false)
     const [open, setOpen] = React.useState(false);
     console.log("data :", data)
     console.log("Looping data : ", data.map((item) => item.id))
+    const form = useForm({
+        resolver: yupResolver(formSchema),
+        defaultValues: {
+            entry_number: "",
+            tracking_id: TrackingID
+        },
+        mode: "onChange",
+    })
+
+    const handleSave = async (formData) => {
+        setLoading(true)
+        console.log("dikirim", formData)
+        try {
+            const response = await axios.post(
+                `/api/admin/customs_broker/setData`,
+                formData
+            );
+            toast({
+                title: `Succes New Status For ${TrackingID}!`,
+                description: response.data.message,
+                status: 'success',
+            });
+            setLoading(false)
+            reload();
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error Cannot Change Status!',
+                description: 'An error occurred while Assign the Entry Number.',
+                status: 'error',
+            });
+        }
+    };
+
     return (
         <>
+            {loading && <Loaders />}
             <PackageDialogDetails open={open} setOpen={setOpen} details={details} />
-
             <Table >
                 <TableHeader className="bg-blue-100 ">
                     <TableHead className="w-[100px] text-myBlue font-bold text-xs p-0 h-8 px-5 py-2 ">Qty</TableHead>
@@ -57,10 +114,7 @@ export const BrokerDeclareContent = ({ data, details }) => {
                         ))
                     }
                 </TableBody>
-
             </Table>
-
-
             <Table>
                 <TableBody>
                     <TableRow className="text-xs h-4 w-full bg-white">
@@ -79,40 +133,62 @@ export const BrokerDeclareContent = ({ data, details }) => {
                         </TableCell>
                     </TableRow>
                     <TableRow className="text-xs">
-                        <TableCell className="font-medium flex flex-row justify-between w-full items-center bg-sky-50 p-0 py-2 px-5">
-                            <Button
-                                variant="secondary"
-                                size="xs"
-                                onClick={() => setOpen(true)}
-                            >
-                                <p className='text-xs'>Package Details</p>
-                            </Button>
-                            <div className="">
-                                <Select>
-                                    <SelectTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2">
-                                        <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Invoice</p>
-                                        <SelectValue placeholder="Download Invoice " className='text-xs h-full border-none pl-3 w-[250px] rounded-tr-none rounded-br-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" ' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="light">Invoice A</SelectItem>
-                                        <SelectItem value="dark">Invoice B</SelectItem>
-                                        <SelectItem value="system">Invoice C</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="flex flex-row gap-[-3px] w-max border border-zinc-300 rounded-md h-8 items-center ">
-                                <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Entry Number</p>
-                                <Input type="text" className="h-full border-none pl-3 w-[150px] rounded-tl-none rounded-bl-none rounded-tr-md rounded-br-md focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" />
-                            </div>
-                            <div className="flex flex-row justify-center gap-4  ">
+                        <TableCell className="font-medium flex flex-row justify-between w-full items-center bg-sky-50 p-0 py-2 px-5 gap-5">
+                            <div className="w-[50%] flex flex-row gap-2 justify-start">
                                 <Button
                                     variant="secondary"
-                                    className="px-3"
                                     size="xs"
+                                    onClick={() => setOpen(true)}
                                 >
-                                    <p className='text-xs'>Save</p>
+                                    <p className='text-xs'>Package Details</p>
                                 </Button>
+                                <div className="">
+                                    <Select>
+                                        <SelectTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2">
+                                            <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Invoice</p>
+                                            <SelectValue placeholder="Download Invoice " className='text-xs h-full border-none pl-3 w-[250px] rounded-tr-none rounded-br-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" ' />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="light">Invoice A</SelectItem>
+                                            <SelectItem value="dark">Invoice B</SelectItem>
+                                            <SelectItem value="system">Invoice C</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(handleSave)} className="w-[50%] flex flex-row gap-2 justify-end">
+                                    <FormField
+                                        control={form.control}
+                                        name="entry_number"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <div className="flex flex-row gap-[-3px] w-max border border-zinc-300 rounded-md h-8 items-center ">
+                                                        <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Entry Number</p>
+                                                        <Input
+                                                            type="text"
+                                                            className="h-full border-none pl-3 w-[150px] rounded-tl-none rounded-bl-none rounded-tr-md rounded-br-md focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+                                                            {...field}
+                                                        />
+                                                    </div>
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="flex flex-row justify-end items-ends gap-4  ">
+                                        <Button
+                                            variant="secondary"
+                                            className="px-3"
+                                            size="xs"
+                                        >
+                                            <p className='text-xs'>Save</p>
+                                        </Button>
+
+                                    </div>
+                                </form>
+                            </Form>
+
                         </TableCell>
                     </TableRow>
                 </TableBody>
