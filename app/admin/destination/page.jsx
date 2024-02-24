@@ -9,8 +9,10 @@ import { Separator } from '@/components/ui/separator'
 import { DestinationTabled } from './components/DestinationTabled/DestinationScan'
 import data from '../../../data/admin/DestinationScanData.json'
 import { DestinationLotsDetails } from './components/DestinationLotsDetails'
+import Image from 'next/image'
 export default function PARSPage() {
 
+    const [totalData, setTotalData] = useState(null)
     const [clickedID, setDataID] = useState(null)
     const [clickedData, setClickedData] = useState(null);
     const [key, setKey] = useState(0);
@@ -38,15 +40,40 @@ export default function PARSPage() {
 
     return (
         <>
-            <div className={styles.carrier}>
-                <div className={styles.leftTabled}>
-                    <DestinationTabled data={data} handleData={handleDataID} isSelected={clickedID} />
+            <div className={styles.wrapper}>
+                <div className={styles.configHeader}>
+                    <div className={styles.banner}>
+                        <div className={styles.icon}>
+                            <Image
+                                src={"/backoffice/destination-blue.png"}
+                                width={40}
+                                height={40}
+                                alt='Destination icon'
+                            />
+                        </div>
+                        <div className={`${styles.title} flex flex-col`}>
+                            <h1 className=" text-zinc-900 text-sm font-bold ">Destination Scan</h1>
+                            <p className=" text-blue-900 text-sm font-light ">{totalData ? totalData : "0"} Lots</p>
+                        </div>
+                    </div>
+
+                    <div className={`${styles.menus}`}>
+                    </div>
                 </div>
 
-                <div className={styles.details}>
-                    <DestinationLotsDetails data={clickedData} key={key}/>
+                <div className={styles.childContent}>
+                    <div className={styles.carrier}>
+                        <div className={styles.leftTabled}>
+                            <DestinationTabled data={data} handleData={handleDataID} isSelected={clickedID} setTotalData={setTotalData} />
+                        </div>
+
+                        <div className={styles.details}>
+                            <DestinationLotsDetails data={clickedData} key={key} />
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </>
     )
 }

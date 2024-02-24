@@ -30,7 +30,26 @@ export async function POST(request) {
         } = await request.json();
 
         console.log("ACEPETED")
-        console.log("package_content:");
+        console.log("Showing All Data : ",
+            customer_id,
+            customer_name,
+            customer_phone,
+            customer_email,
+            barcode_tracking,
+            carrier_code,
+            package_length,
+            package_witdth,
+            package_height,
+            package_height_unit,
+            package_weight,
+            package_weight_unit,
+            bin_location,
+            total_price,
+            package_content,
+            box_images,
+            label_images,
+            content_images,
+        );
 
         const response = await axios.post(
             `${process.env.API_URL}/Package/Register_package`,

@@ -190,6 +190,7 @@ export const ArrivalForms = ({
 
     // Fetch Customer Data
     const [customerData, setCustomerData] = useState([])
+  
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -197,6 +198,7 @@ export const ArrivalForms = ({
         index: 0
     });
 
+    
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -213,6 +215,7 @@ export const ArrivalForms = ({
 
     useEffect(() => {
         fetchData();
+      
     }, [query]);
 
 

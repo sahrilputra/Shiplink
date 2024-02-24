@@ -164,12 +164,39 @@ export default function ArrivalScanPage() {
         });
         console.log("Total Price : ", totalPrice)
         setTotal(Number(totalPrice));
-        form.setValue("total_price", Number(totalPrice));
+        form.setValue("total_price", totalPrice);
     }
 
     useEffect(() => {
         calculateTotal();
     }, [form.watch('package_content').map(item => `${item.qty}-${item.value}`)]);
+
+
+    const [binData, setBinData] = useState([])
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
+
+    const fetchBinData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/bin_manager/list`,
+                query
+            );
+            console.log("response from bin manager : ", response.data)
+            const data = await response.data;
+            setBinData(data.bins);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchBinData();
+    }, [query]);
 
     console.log("tracking from Page : ", trackingId)
     return (
@@ -230,6 +257,7 @@ export default function ArrivalScanPage() {
                                 append={append}
                                 remove={remove}
                                 forms={form}
+                                binData={binData}
                             />
                             <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} userID={userID} />
                         </div>

@@ -12,6 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { DeclareContentInput } from './DeclareContentInput'
 import {
     FormControl,
@@ -25,7 +26,8 @@ export const DeclareContet = ({
     fields,
     append,
     remove,
-    total
+    total,
+    binData
 }) => {
 
 
@@ -88,9 +90,13 @@ export const DeclareContet = ({
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem className="text-xs" value="A">Bin A</SelectItem>
-                                                    <SelectItem className="text-xs" value="B">Bin B</SelectItem>
-                                                    <SelectItem className="text-xs" value="C">Bin C</SelectItem>
+                                                    <ScrollArea className="h-[150px]">
+                                                        {
+                                                            binData.map((bin, index) => (
+                                                                <SelectItem className="text-xs" value={bin.bins_id} key={index}>{bin.bins_id}</SelectItem>
+                                                            ))
+                                                        }
+                                                    </ScrollArea>
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />

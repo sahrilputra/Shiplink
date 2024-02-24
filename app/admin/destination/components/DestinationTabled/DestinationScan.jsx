@@ -1,5 +1,6 @@
+
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -12,22 +13,129 @@ import {
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
-import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
-import { ExternalLink } from "lucide-react";
-import { MoreHorizontalIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getPaginationRowModel,
+    SortingState,
+    getSortedRowModel,
+} from "@tanstack/react-table";
+import axios from "axios";
 import { DestinationMenus } from "../menus/DestinationMenus";
-import { SelectBins } from "./SelectBin";
 
-export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelected }) {
+export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelected, setTotalData }) {
+    const [isEditDialog, setEditDialog] = useState(false);
 
+    const [rowSelection, setRowSelection] = React.useState({})
+    const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
+    const [lots, setLots] = useState([]);
+    const [deleteID, setDeleteId] = useState(null);
+    const [deleteDialog, setDeleteDialog] = useState(false);
+    const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
+    const [isSkeleton, setIsSkeleton] = useState(true);
 
+
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0
+
+    });
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/destination/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setLots(data.lots);
+            setTotalData(data.lots.length);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
+    const columns = [
+
+        {
+            accessorKey: "lots_id",
+            header: "Lots ID",
+            className: "text-xs",
+        },
+        {
+            accessorKey: "label",
+            header: "Register Date",
+        },
+        {
+            accessorKey: "trip_number",
+            header: "Destination",
+        },
+        {
+            accessorKey: "destination",
+            header: "Bin Assign",
+        },
+        {
+            accessorKey: "status",
+            header: "Current Status",
+        },
+        {
+            id: "Action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex w-[40px] items-center justify-center  flex-row gap-2">
+                        <div className="flex flex-row gap-2">
+                            <DestinationMenus dataID={row.id} />
+                        </div>
+                    </div>
+                )
+            },
+        },
+    ]
+    const table = useReactTable({
+        data: lots,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            sorting,
+            rowSelection,
+        },
+
+    });
+
+    const HandlerGetItemID = (id) => {
+        handleData(id);
+    }
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -35,93 +143,106 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
         setIsEdit(false)
     }
     const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
+        const newExpandedRows = { ...expandedRows };
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
-
-    const HandlerGetItemID = (id) => {
-        handleData(id);
-    }
 
     const toggleOpenChange = () => {
         setOpen(true)
     }
     return (
-        <Table className="rounded-[6px]">
-            <TableHeader className="text-sm bg-white rounded-[10px] text-black">
-                <TableHead colSpan={7} className="p-4 text-black rounded-[6px]" >
-                    <div className="flex flex-row justify-between">
-                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center text-black">
-                            <SearchBar />
-                            <div className="h-[37px]  border-neutral-300 flex items-center  ">
-                                <Input type="text" className="text-xs " />
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                >
-                                    <p className="text-xs">Scan Lots</p>
-                                </Button>
-                            </div>
-                        </div>
+        <>
+            <div className="">
+                <div className="wrap inline-flex gap-[10px] justify-evenly items-center py-2 px-2">
+                    <SearchBar />
+                    <Button
+                        variant="filter"
+                        size="filter"
+                        className='border border-zinc-300 flex items-center rounded'>
+                        <FilterIcons
+                            className=""
+                            fill="#CC0019" />
+                    </Button>
+                    <DatePickerWithRange className={"text-black"} />
+                </div>
+            </div >
 
-                        <div className="h-[37px]  border-neutral-300 flex items-center  ">
-                            <SelectBins />
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                            >
-                                <p className="text-xs">Assign To Bin</p>
-                            </Button>
-                        </div>
-                    </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-sm">
-                <TableHead className="w-[50px]">
-                    <Checkbox
-                        className="text-xs"
-                        onChange={() => { }}
-                    />
-                </TableHead>
-                <TableHead className="text-xs ">Lots ID</TableHead>
-                <TableHead className="text-xs " >Register Date</TableHead>
-                <TableHead className="text-xs ">Destination</TableHead>
-                <TableHead className="text-xs w-[130px]">Bin Assign</TableHead>
-                <TableHead className="text-xs w-[180px]">Current Status</TableHead>
-                <TableHead className="text-xs "></TableHead>
-            </TableHeader>
-            <TableBody className="text-xs">
-                {
-                    data.map((item, index) => (
+            <Table className=" rounded-md">
+                <TableHeader className="text-sm">
+                    {table.getHeaderGroups().map((headerGroup) => (
                         <>
-                            <TableRow
-                                key={item.LotsID}
-                                className={`cursor-pointer ${isSelected === item.LotsID ? "bg-blue-200 " : ""}`}
-                                onClick={() => HandlerGetItemID(item.LotsID)}
-                            >
-                                <TableCell className=" w-[50px]">
-                                    <Checkbox
-                                        className="text-xs"
-                                        onChange={() => { }}
-                                    />
-                                </TableCell>
-                                <TableCell className=" font-medium ">{item.LotsID}</TableCell>
-                                <TableCell className=" font-medium ">{item.RegisterDate}</TableCell>
-                                <TableCell className=" font-medium ">{item.Destination}</TableCell>
-                                <TableCell className=" font-medium ">{item.BinAssign}</TableCell>
-                                <TableCell className=" font-medium ">{item.CurrentStatus}</TableCell>
-                                <TableCell className=" w-[30px]  ">
-                                    <div className="flex flex-row gap-2">
-                                        <DestinationMenus dataID={item.index} />
-                                    </div>
-                                </TableCell>
-                            </TableRow >
+                            {headerGroup.headers.map((header, index) => {
+                                const isLastHeader = index === headerGroup.headers.length - 1;
+                                const isFirstHeader = index === 0;
+                                return (
+                                    <TableHead
+                                        key={header.id}
+                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                    >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                );
+                            })}
                         </>
-                    ))
-                }
-            </TableBody>
+                    ))}
+                </TableHeader>
+                <TableBody>
 
-        </Table >
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                            >
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
+                    ) : (
+                        // Jika data telah dimuat, render data aktual
+                        table.getRowModel().rows.map((row) => (
+                            <>
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            onClick={() => HandlerGetItemID(row.original.lots_id)}
+                                            key={cell.id}
+                                            className={`cursor-pointer ${isSelected === row.original.lots_id ? "bg-blue-200 " : ""} text-xs`}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </>
+                        ))
+                    )}
+                </TableBody>
+
+            </Table>
+        </>
     )
 }

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from 'axios'
 
 const formSchema = yup.object().shape({
     TaxName: yup.string(),
@@ -23,7 +24,7 @@ const formSchema = yup.object().shape({
     TaxRate: yup.number(),
 });
 
-export const NewType = ({ close, data = null }) => {
+export const NewType = ({ close, data = null, selected }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [clicked, isClicked] = useState(false);
     const toggleClicked = (clickedButtons) => {
@@ -39,10 +40,34 @@ export const NewType = ({ close, data = null }) => {
         },
         mode: "onChange",
     });
+
+    const handleSave = async (data) => {
+        console.log("data", data)
+        try {
+            const response = await axios.post(
+                `/api/admin/config/tax/setData`,
+                {
+                    tax_assignment_id: "",
+                    TaxName: data.TaxName,
+                    Abbreviation: data.Abbreviation,
+                    TaxNumber: data.TaxNumber,
+                    TaxRate: data.TaxRate,
+                    action: "add",
+                }
+            );
+            const responseData = await response.data;
+            console.log("responseData", responseData)
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
     return (
         <>
             <Form {...form}>
-                <form className="flex gap-4 flex-col" action="">
+                <form
+                    onSubmit={form.handleSubmit(handleSave)}
+                    className="flex gap-4 flex-col"
+                    action="">
                     <div className="profile flex flex-row flex-wrap gap-2 w-full items-end text-xs justify-start">
                         <FormField
                             className="w-[300px]"
@@ -61,7 +86,7 @@ export const NewType = ({ close, data = null }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
+                                      
                                     </FormItem>
                                 </>
                             )}
@@ -83,7 +108,7 @@ export const NewType = ({ close, data = null }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
+                                  
                                     </FormItem>
                                 </>
                             )}
@@ -106,7 +131,7 @@ export const NewType = ({ close, data = null }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
+                            
                                     </FormItem>
                                 </>
                             )}
@@ -129,7 +154,7 @@ export const NewType = ({ close, data = null }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
+                                      
                                     </FormItem>
                                 </>
                             )}
@@ -147,12 +172,13 @@ export const NewType = ({ close, data = null }) => {
                                 type="button"
                                 size="xs"
                                 className="w-[100px]"
+                                onClick={() => close()}
                             >
                                 <p className=" font-normal text-xs">Cancel</p>
                             </Button>
                             <Button
                                 variant="destructive"
-                                type="button"
+                                type="submit"
                                 size="xs"
                                 className="w-[100px]"
                             >

@@ -1,5 +1,5 @@
 'use client'
-import { React, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 import { Button } from '@/components/ui/button'
 import { ProvinceList } from './components/ProvinceList'
@@ -7,10 +7,61 @@ import { TaxDetails } from './components/TaxDetails'
 import { NewType } from './components/NewType'
 import { FormControl } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { CheckIcon } from 'lucide-react'
+import axios from 'axios'
+import { cn } from '@/lib/utils'
+import { ScrollArea } from '@/components/ui/scroll-area'
+
 
 export default function Tax() {
     const [clicked, setClicked] = useState(false);
     const handleClick = (isClicked) => { setClicked(isClicked) }
+    const [value, setValue] = useState("")
+    const [open, setOpen] = useState(false)
+    const [seletedProvince, setSeletedProvince] = useState("")
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0
+    });
+    const [country, setCountry] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/config/countries/list`,
+                query
+            );
+            const data = await response.data;
+            setCountry(data.country);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
+    const handleSelect = (item) => {
+        setSeletedProvince(item);
+    }
+    const handleClose = () => {
+        setClicked(false)
+    }
     return (
         <>
             <div className={styles.taxLayout}>
@@ -18,28 +69,57 @@ export default function Tax() {
                 <div className={styles.left}>
                     <div className="w-[100%]  p-5 bg-white rounded-md border border-neutral-200 flex-col justify-start items-start gap-[15px] inline-flex">
                         <div className=" text-zinc-700 text-sm font-bold" >Tax Configuration</div>
-
-                        <Select className="text-xs w-[200px] rounded-sm px-1 py-0">
-                            <div className="text-black text-sm font-bold ">Select Country : </div>
-                            <SelectTrigger className='text-xs h-[35px] w-[200px] rounded-sm px-1 py-0'>
-                                <SelectValue className='text-xs h-[30px] rounded-sm px-1 py-0' placeholder="United States" />
-                            </SelectTrigger>
-                            <SelectContent className="text-xs">
-                                <SelectItem className="text-xs" value="Purolator">United States</SelectItem>
-                                <SelectItem className="text-xs" value="Feedex">Canada</SelectItem>
-                                <SelectItem className="text-xs" value="Amazon">Rusia</SelectItem>
-                                <SelectItem className="text-xs" value="DHL">English</SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <div className="">
+                            <Popover open={open} onOpenChange={setOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        role="combobox"
+                                        aria-expanded={open}
+                                        className="w-[200px] justify-between text-xs px-2 h-[35px] shadow-none capitalize"
+                                    >
+                                        {
+                                            value ? value : "Select Country..."
+                                        }
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-[200px] p-0">
+                                    <Command>
+                                        <CommandInput placeholder="Search Country..." className="h-9 text-xs" />
+                                        <CommandEmpty>No Country found.</CommandEmpty>
+                                        <ScrollArea className="h-[200px]">
+                                            <CommandGroup>
+                                                {country.map((item) => (
+                                                    <CommandItem
+                                                        key={item.country_name}
+                                                        value={item.country_name}
+                                                        className="text-xs"
+                                                        onSelect={(currentValue) => {
+                                                            setValue(currentValue === value ? "" : currentValue)
+                                                            setOpen(false)
+                                                        }}
+                                                    >
+                                                        {item.country_name}
+                                                        <CheckIcon
+                                                            className={`ml-auto h-4 w-4 ${value.toLowerCase() === item.country_name.toLowerCase() ? "opacity-100" : "opacity-0"}`}
+                                                        />
+                                                    </CommandItem>
+                                                ))}
+                                            </CommandGroup>
+                                        </ScrollArea>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
+                        </div>
                         <div className="flex-col justify-start items-start gap-0.5 flex w-full">
-                            <ProvinceList />
+                            <ProvinceList countryName={value} handleSelect={setSeletedProvince} isSelect={seletedProvince} />
                         </div>
                     </div>
                 </div>
 
                 <div className={styles.right}>
                     <div className="w-[100%] p-5 bg-white rounded-md border border-neutral-200 flex-col justify-start items-start gap-1 inline-flex">
-                        <div className=" text-zinc-700 text-sm font-bold" >Tax Assignment</div>
+                        <div className=" text-zinc-700 text-sm font-bold" >Tax Assignment : {seletedProvince ? seletedProvince : ""}</div>
                         <div className="py-[5px] flex-col justify-start items-start gap-2.5 flex">
                             <Button
                                 variant="softBlue"
@@ -52,7 +132,7 @@ export default function Tax() {
                         </div>
                         {clicked && (
                             <>
-                                <NewType />
+                                <NewType selected={seletedProvince} close={handleClose}/>
                             </>
                         )}
                         <TaxDetails />
