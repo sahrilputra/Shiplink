@@ -8,7 +8,17 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export const EditMode = ({ cancel, increaseContent, append }) => {
+export const EditMode = ({ cancel, increaseContent, append, forms }) => {
+    const handleAddNewContent = () => {
+        append({
+            qty: "",
+            value: "",
+            desc: "",
+            hs_desc: "",
+            hs_code: "",
+            made_in: ""
+        });
+    };
     return (
         <>
             <div className="w-[100%] flex flex-row justify-between gap-2 items-center">
@@ -18,7 +28,7 @@ export const EditMode = ({ cancel, increaseContent, append }) => {
                         size="sm"
                         type="button"
                         className=" h-[30px] rounded-sm px-4 py-0"
-                        onClick={() => append({})}
+                        onClick={handleAddNewContent}
                     >
                         <p className='text-xs'>Add Other Content</p>
                     </Button>
@@ -44,7 +54,6 @@ export const EditMode = ({ cancel, increaseContent, append }) => {
 
                 </div>
             </div>
-
         </>
     )
 }

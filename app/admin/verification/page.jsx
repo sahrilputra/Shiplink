@@ -30,26 +30,26 @@ export default function VerificationPages() {
     });
     const [data, setData] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/verification/list`,
-                    query
-                );
-                console.log(response)
-                const data = await response.data;
-                setData(data.package_info);
-                setIsSkeleton(false);
-            } catch (error) {
-                setIsSkeleton(false);
-                console.log('Error:', error);
-            }
-        };
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/verification/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setData(data.package_info);
+            setIsSkeleton(false);
+        } catch (error) {
+            setIsSkeleton(false);
+            console.log('Error:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, [query]);
-
+    
     const handleSearchChange = (event) => {
         setQuery({
             ...query,
@@ -72,7 +72,7 @@ export default function VerificationPages() {
         } else if (tab === 'Unverified') {
             setQuery({
                 ...query,
-                status: "Registration"
+                status: "Received"
             })
             setIsSkeleton(false);
         } else {
@@ -83,6 +83,11 @@ export default function VerificationPages() {
             setIsSkeleton(false);
         }
     }
+
+    const reloadData = () => {
+        setIsSkeleton(true); // Set skeleton loading state
+        fetchData(); // Refetch data using the useEffect hook
+    };
     return (
         <>
             <div className={styles.wrapper}>
@@ -124,7 +129,7 @@ export default function VerificationPages() {
 
                         <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
                             {/* <DataTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} /> */}
-                            <VerificationTable data={data} isOpen={open} setOpen={setOpen} isSkeleton={isSkeleton} />
+                            <VerificationTable data={data} isOpen={open} setOpen={setOpen} isSkeleton={isSkeleton} reloadData={reloadData} />
                         </div>
 
                     </div>

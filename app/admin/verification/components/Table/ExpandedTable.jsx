@@ -3,10 +3,30 @@ import { ImageTable } from './ImageTable'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { TrashIcon } from 'lucide-react'
-export const ExpandedTable = ({ content }) => {
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/tableDashboard"
+
+export const ExpandedTable = ({ content, edit, item }) => {
+    const height_unit = item?.package_height_unit || "cm"
+
     return (
         <>
-            <div className="">
+            <div className="w-full">
                 {
                     content.map((item, index) => (
                         <>
@@ -55,6 +75,46 @@ export const ExpandedTable = ({ content }) => {
                     ))
                 }
 
+                <div className="font-medium p-0 px-5 py-2 bg-blue-100 hover:bg-blue-100 w-full" >
+                    <div className="w-[100%] flex flex-row justify-between gap-2 items-center">
+                        <div className="flex flex-col w-[300px]">
+                            <p className='text-myBlue text-xs'>Package Dimension</p>
+                            <p className='font-light text-xs'>{item?.package_length || "0"} {height_unit} x {item?.package_width || "0"} {height_unit} x  {item?.package_height || "0"} {height_unit} | {item?.package_weight || "0"}  {item?.package_weight_unit || "0"}</p>
+                        </div>
+                        <div className="">
+                            <Select>
+                                <SelectTrigger className="w-[180px] text-xs h-[30px] rounded-sm px-2 py-0" >
+                                    <SelectValue placeholder="Invoice" />
+                                </SelectTrigger>
+                                <SelectContent className="text-xs">
+                                    <SelectItem className="text-xs text-myBlue " value="invoice1">Download Invoice 1</SelectItem>
+                                    <SelectItem className="text-xs text-myBlue" value="invoice2">Download Invoice 2</SelectItem>
+                                    <SelectItem className="text-xs text-myBlue" value="invoice3">Download Invoice 3</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className=" flex flex-row justify-center gap-2 items-center">
+                            <Button
+                                variant="secondary"
+                                type="button"
+                                className=" h-[30px] rounded-sm px-4 py-0"
+                                size="sm"
+                                onClick={edit}
+                            >
+                                <p className='text-xs font-light'>Edit</p>
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                type="button"
+                                className=" h-[30px] rounded-sm px-4 py-0"
+                                size="sm"
+
+                            >
+                                <p className='text-xs font-light'>Mark As Verified</p>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )

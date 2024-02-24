@@ -32,16 +32,7 @@ import {
 } from "@/components/ui/form"
 import { Skeleton } from "@/components/ui/skeleton";
 
-const formSchema = yup.object().shape({
-    itemID: yup.string(),
-    qty: yup.number(),
-    value: yup.number(),
-    description: yup.string(),
-    hsDescription: yup.string(),
-    hsCode: yup.string(),
-    madeIn: yup.string(),
-})
-export function VerificationTable({ data, isOpen, setOpen, isSkeleton }) {
+export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadData }) {
 
     const [expandedRow, setExpandedRow] = useState(null);
 
@@ -62,31 +53,6 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton }) {
             setExpandedRow(index);
         }
     };
-
-    const form = useForm({
-        resolver: yupResolver(formSchema),
-        defaultValues: {
-            package_content: [
-                {
-                    itemID: "",
-                    qty: "",
-                    value: "",
-                    desc: "",
-                    hs_desc: "",
-                    hs_code: "",
-                    made_in: "",
-                }
-            ]
-        },
-        mode: "onChange",
-    })
-
-    const { fields, append, remove } = useFieldArray({
-        control: form.control,
-        name: "package_content",
-    });
-
-
     return (
         <Table>
             <TableHeader className="text-sm">
@@ -144,6 +110,7 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton }) {
                                                 <Button
                                                     variant="tableBlue"
                                                     size="tableIcon"
+                                                    type="button"
                                                     className={` w-max px-[5px] h-[25px]`}
                                                     onClick={() => toggleRow(index)}
                                                 >
@@ -158,38 +125,33 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton }) {
                                         </TableRow>
                                         {expandedRow === index && (
                                             <>
-                                                <Form {...form}>
-                                                    <form
-                                                        className='flex gap-2 flex-col text-zinc-600'
-                                                        action=""></form>
-                                                    <TableRow key={`expanded_${item.id}`} className="bg-blue-50 hover:bg-blue-50">
-                                                        <TableCell className="font-medium" colSpan={7}>
-                                                            <div className="w-[80%] flex justify-center items-center mx-auto py-3">
-                                                                <ImageTable images={item.images} />
-                                                            </div>
-                                                            {
+                                                <TableRow key={`expanded_${item.id}`} className="bg-blue-50 hover:bg-blue-50">
+                                                    <TableCell className="font-medium" colSpan={7}>
+                                                        <div className="w-[80%] flex justify-center items-center mx-auto py-3">
+                                                            <ImageTable images={item.images} />
+                                                        </div>
+                                                        {
 
-                                                                isEdit ? (
-                                                                    <EditForms forms={form} counter={editCount} data={item.content} removeContent={remove} fields={fields} />
-                                                                ) : (
-                                                                    <ExpandedTable content={item.content} />
-                                                                )
-                                                            }
+                                                            isEdit ? (
+                                                                <EditForms counter={editCount} data={item.content} edit={toggleEdit} cancel={toggleCancel} trackingID={item.tracking_id} reloadData={reloadData}/>
+                                                            ) : (
+                                                                <ExpandedTable content={item.content} item={item} edit={toggleEdit} />
+                                                            )
+                                                        }
 
-                                                        </TableCell>
-                                                    </TableRow>
-                                                    <TableRow className="bg-blue-100 hover:bg-blue-100 ">
-                                                        <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
-                                                            {
-                                                                isEdit ? (
-                                                                    <EditMode cancel={toggleCancel} increaseContent={setEditCount} append={append} />
-                                                                ) : (
-                                                                    <TableAction edit={toggleEdit} item={item} />
-                                                                )
-                                                            }
-                                                        </TableCell>
-                                                    </TableRow>
-                                                </Form>
+                                                    </TableCell>
+                                                </TableRow>
+                                                {/* <TableRow className="bg-blue-100 hover:bg-blue-100 ">
+                                                    <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
+                                                        {
+                                                            isEdit ? (
+                                                                <EditMode cancel={toggleCancel} increaseContent={setEditCount} />
+                                                            ) : (
+                                                                <TableAction edit={toggleEdit} item={item} />
+                                                            )
+                                                        }
+                                                    </TableCell>
+                                                </TableRow> */}
                                             </>
                                         )}
                                     </>
