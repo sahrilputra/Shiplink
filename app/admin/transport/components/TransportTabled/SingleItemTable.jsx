@@ -28,13 +28,15 @@ import {
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { AssingLotsDialog } from "../AssignLotsDialog/AssignToLotsDialog";
 
@@ -50,7 +52,6 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
-
     const [selectedItemsID, setSelectedItemsID] = useState([])
     const [openAssignLots, setOpenAssignLots] = useState(false);
     const [query, setQuery] = useState({
@@ -59,12 +60,13 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         date_end: "",
         tracking_id: "",
         status: "",
-        page: 0,
+        page: 1,
         limit: 0,
         index: 0
 
     });
 
+    
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -346,6 +348,8 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                 </TableBody>
 
             </Table>
+
+
         </>
     )
 }

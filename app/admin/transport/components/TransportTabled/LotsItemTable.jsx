@@ -114,7 +114,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                         >
                             <p className="text-[11px]">Edit Lots</p>
                         </Button>
-                        <LotsMoreMenusDropDrown data={data} dataID={row.original} />
+                        <LotsMoreMenusDropDrown data={row.original} dataID={row.original.lots_id}  />
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
@@ -167,7 +167,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     return (
         <>
             <div className="">
-                <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                <div className="wrap inline-flex gap-[10px] justify-evenly items-center pb-3">
                     <SearchBar />
                     <Button
                         variant="filter"

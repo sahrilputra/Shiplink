@@ -21,44 +21,25 @@ export const EditLotsDialog = ({ open, setOpen, data }) => {
                 {/* <Button variant="outline">Edit Profile</Button> */}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[450px]">
-                <Form>
-                    <form action="#">
-                        <DialogHeader>
-                            <DialogTitle>
-                                <div className="flex flex-col gap-2 font-bold">
-                                    <p>Edit Lot</p>
-                                </div>
-
-                            </DialogTitle>
-                        </DialogHeader>
-                        <div className="py-4">
-                            <div className="flex flex-col gap-2 ">
-                                <div className="w-full">
-                                    <Separator className="w-full h-[1px]" />
-                                </div>
-                                <div className="flex flex-col gap-2 py-4">
-                                    <NewLotsFrom />
-                                </div>
-                            </div>
+                <DialogHeader>
+                    <DialogTitle>
+                        <div className="flex flex-col gap-2 font-bold">
+                            <p>Edit Lot</p>
                         </div>
-                        <DialogFooter>
-                            <div className="flex flex-row justify-between w-full gap-3">
-                                <DialogClose asChild>
-                                    <Button
-                                        className="w-full"
-                                        variant="redOutline"
-                                    >Cancel
-                                    </Button>
-                                </DialogClose>
-                                <Button
-                                    className="w-full"
-                                    variant="destructive"
-                                >Save changes
-                                </Button>
-                            </div>
-                        </DialogFooter>
-                    </form>
-                </Form>
+
+                    </DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                    <div className="flex flex-col gap-2 ">
+                        <div className="w-full">
+                            <Separator className="w-full h-[1px]" />
+                        </div>
+                        <div className="flex flex-col gap-2 py-4">
+                            <NewLotsFrom data={data} />
+                        </div>
+                    </div>
+                </div>
+
             </DialogContent>
         </Dialog >
     )

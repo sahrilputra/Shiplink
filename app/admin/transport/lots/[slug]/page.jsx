@@ -1,13 +1,53 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../styles.module.scss'
-import data from '../../../../../data/admin/LotsDetailsData.json'
-import { LotsItemsTable } from '../../components/TransportTabled/LotsItemTable';
-import { AssingLotsDialog } from '../../components/AssignLotsDialog/AssignToLotsDialog';
 import { LotsDetailsTable } from '../../components/TransportTabled/LotsDetailsTable';
-export default function LotsDetails({ slug }) {
+import axios from 'axios'
+export default function LotsDetails({ params }) {
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const [open, setOpen] = useState(false);
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        lots_id: params.slug,
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0
+    });
+    const [data, setData] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/transport/lots/details`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setData(data.package_info);
+            setIsSkeleton(false);
+        } catch (error) {
+            setIsSkeleton(false);
+            console.log('Error:', error);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, [query]);
+
+    const reload = () => {
+        setIsSkeleton(true);
+        fetchData();
+    }
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
     return (
         <>
             <div className={styles.carrier}>
@@ -16,7 +56,7 @@ export default function LotsDetails({ slug }) {
                 </div>
 
                 <div className={`${styles.listTable} flex flex-col gap-1`}>
-                    <LotsDetailsTable data={data} setOpen={setOpen} isOpen={open} />
+                    <LotsDetailsTable data={data} setOpen={setOpen} handleSearchChange={handleSearchChange} isSkeleton={isSkeleton} />
                 </div>
             </div>
         </>

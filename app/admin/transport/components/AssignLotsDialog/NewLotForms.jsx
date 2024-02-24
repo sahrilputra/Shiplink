@@ -45,12 +45,12 @@ export const NewLotsFrom = ({ close, data = null }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            LotsId: data?.LotsId || "",
-            LotsLabel: data?.LotsLabel || "",
-            Origin: data?.Origin || "",
-            Destination: data?.Destination || "",
-            TripNumber: data?.TripNumber || "",
-            Status: data?.Status || "",
+            LotsId: data?.lots_id || "",
+            LotsLabel: data?.label || "",
+            Origin: data?.country_name || "",
+            Destination: data?.destination_name || "",
+            TripNumber: data?.trip_number || "",
+            Status: data?.status || "",
             Documents: data?.documents || [],
         },
         mode: "onChange",
