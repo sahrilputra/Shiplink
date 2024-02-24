@@ -26,7 +26,6 @@ export default function TransportPage({ props }) {
                     <SingleItemsTable data={data} setOpen={setOpen} isOpen={open} setOpenNewDialog={setOpenNewDialog} />
                 </div>
                 <CreateNewLotsDialog open={openNewDialog} setOpen={setOpenNewDialog} />
-                <AssingLotsDialog open={open} setOpen={setOpen} />
             </div>
         </>
     )

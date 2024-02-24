@@ -36,6 +36,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
+import { AssingLotsDialog } from "../AssignLotsDialog/AssignToLotsDialog";
 
 export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
@@ -50,6 +51,8 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
 
+    const [selectedItemsID, setSelectedItemsID] = useState([])
+    const [openAssignLots, setOpenAssignLots] = useState(false);
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",
@@ -70,7 +73,8 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             );
             console.log(response)
             const data = await response.data;
-            setWarehouse(data.package_info);
+            const filteredData = data.package_info.filter(item => item.lots_id === null);
+            setWarehouse(filteredData);
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
@@ -133,7 +137,7 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                 variant="tableBlue"
                                 size="tableIcon"
                                 className={`w-max px-[10px] h-[25px]`}
-                                onClick={() => toggleOpenChange()}
+                                onClick={() => toggleOpenChange([row.original.tracking_id])}
                             >
                                 <p className="text-[11px]">Assign</p>
                             </Button>
@@ -187,10 +191,6 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         },
 
     });
-
-    console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.warehouse_id));
-    const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.warehouse_id);
-
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -207,8 +207,9 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         setDeleteDialog(true)
     }
 
-    const toggleOpenChange = () => {
-        setOpen(true)
+    const toggleOpenChange = (data) => {
+        setOpenAssignLots(true)
+        setSelectedItemsID(data)
     }
 
     const toggleOpenNewLots = () => {
@@ -217,8 +218,13 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     const reloadData = () => {
         fetchData();
     };
+
+    // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
+    const checkedItems = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
+    console.log("Selected : ", selectedItemsID)
     return (
         <>
+            <AssingLotsDialog open={openAssignLots} setOpen={setOpenAssignLots} dataID={selectedItemsID} reload={reloadData} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -261,7 +267,7 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                 variant="secondary"
                                 size="sm"
                                 className="px-10"
-                                onClick={() => toggleOpenChange()}
+                                onClick={() => toggleOpenChange(checkedItems)}
                             >
                                 <p className=" text-xs">Assign to Lot</p>
                             </Button>

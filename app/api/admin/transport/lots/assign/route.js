@@ -9,29 +9,16 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            LotsId,
-            LotsLabel,
-            Origin,
-            Destination,
-            TripNumber,
-            Status,
-            Documents,
-            action,
+            lots_id,
+            tracking_id
         } = await request.json();
 
-        console.log("Lots Log : ", LotsId, LotsLabel, Origin, Destination, TripNumber, Status, Documents, action)
+        console.log("Lots Log : ", lots_id, tracking_id)
         const response = await axios.post(
-            `${process.env.API_URL}/Lots/Lots_list`,
+            `${process.env.API_URL}/Lots/AsignPackage_lots`,
             {
-                lots_id: LotsId,
-                label: LotsLabel,
-                country_origin: Origin,
-                destination: Destination,
-                pickup_schedule: "",
-                trip_number: TripNumber,
-                status_id: Status,
-                documents: Documents,
-                action: action,
+                lots_id: lots_id,
+                tracking_id: tracking_id
             },
             {
                 httpsAgent: agent,
@@ -42,16 +29,12 @@ export async function POST(request) {
             }
         );
 
-        // console.log("response from api : ", response.data); // Log the response data
+        console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                total: response.data.total,
-                page_total: response.data.page_total,
-                page_limit: response.data.page_limit,
-                lots: response.data.lots
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

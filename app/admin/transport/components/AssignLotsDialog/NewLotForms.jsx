@@ -28,16 +28,16 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
 import Image from 'next/image'
+import axios from 'axios'
+
 const formSchema = yup.object().shape({
     LotsId: yup.string().required().max(50, "character is too long"),
     LotsLabel: yup.string().required(),
     Origin: yup.string().required(),
     Destination: yup.string().required(),
-    TripNumber: yup.date().required(),
-    Documents: yup.string()
+    TripNumber: yup.string().required(),
+    Documents: yup.array().of(yup.string())
 })
-
-
 
 export const NewLotsFrom = ({ close, data = null }) => {
     const { toast } = useToast()
@@ -51,19 +51,36 @@ export const NewLotsFrom = ({ close, data = null }) => {
             Destination: data?.Destination || "",
             TripNumber: data?.TripNumber || "",
             Status: data?.Status || "",
-            Documents: data?.documents || "",
+            Documents: data?.documents || [],
         },
         mode: "onChange",
     })
+    const handleFileChange = (event) => {
+        const files = event.target.files;
+        const uploadedFiles = [];
 
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
 
+            reader.onloadend = () => {
+                uploadedFiles.push(reader.result);
+
+                if (uploadedFiles.length === files.length) {
+                    form.setValue('Documents', uploadedFiles);
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
     const handleSave = async (formData) => {
         setLoading(true)
         console.log("dikirim", formData)
         try {
-            formData.action = 'add';
+            formData.action = `${data === null ? "add" : "edit"}`;
             const response = await axios.post(
-                `/api/admin/transport/lots/setDatta`,
+                `/api/admin/transport/lots/setData`,
                 formData
             );
             toast({
@@ -107,7 +124,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                         <FormControl>
                                             <Input id="LotsId" placeholder="1231" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+
                                     </FormItem>
                                 </>
                             )}
@@ -123,7 +140,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                         <FormControl >
                                             <Input type="text" id="LotsLabel" placeholder="Regular Daily Move"  {...field} />
                                         </FormControl>
-                                        <FormMessage />
+
                                     </FormItem>
                                 </>
                             )}
@@ -139,7 +156,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                         <FormControl >
                                             <Input type="text" id="Origin" placeholder="Select Origin" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+
                                     </FormItem>
                                 </>
                             )}
@@ -155,7 +172,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                         <FormControl >
                                             <Input type="text" id="Destination" placeholder="Input Destination" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+
                                     </FormItem>
                                 </>
                             )}
@@ -173,7 +190,6 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                     <FormControl >
                                         <Input type="text" id="TripNumber" placeholder="ABC12345678" {...field} />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -186,18 +202,17 @@ export const NewLotsFrom = ({ close, data = null }) => {
                             <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                 <FormLabel className="w-[40%]">Select Status</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
+                                    <FormControl className='text-xs'>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Status" />
+                                            <SelectValue className='text-xs' placeholder="Status" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="Cleared Custom">Cleared Custom</SelectItem>
-                                        <SelectItem value="Ready To Pickup">Ready To Pickup</SelectItem>
-                                        <SelectItem value="Pending">Pending</SelectItem>
+                                        <SelectItem className='text-xs' value="Cleared Custom">Cleared Custom</SelectItem>
+                                        <SelectItem className='text-xs' value="Ready To Pickup">Ready To Pickup</SelectItem>
+                                        <SelectItem className='text-xs' value="Pending">Pending</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -205,23 +220,22 @@ export const NewLotsFrom = ({ close, data = null }) => {
                     <div className="w-full">
                         <Separator className="h-[2px]" />
                     </div>
-
                     <FormField
-                        name="TripNumber"
+                        name="Documents"
                         className="w-full"
                         control={form.control}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full flex flex-col gap-1">
-                                    <FormLabel className="">Upload Documents</FormLabel>
+                                    <FormLabel className="text-xs">Upload Documents</FormLabel>
                                     <FormControl >
                                         <Input
-                                            className=" file:w-[100px] file:h-full file:p-0 text-center last:text-center last:w-full file:bg-myBlue  bg-zinc-400/50 px-0 py-2 p-0 file:text-white"
-                                            type="file" id="" placeholder="" accept="application/pdf" {...field}
+                                            multiple
+                                            className=" file:w-[100px] file:text-xs  file:h-full file:p-0 text-center last:text-center last:w-full file:bg-myBlue  bg-zinc-400/50 px-0 pl-2 py-2 p-0 file:text-white"
+                                            type="file" id="" placeholder="" accept="application/pdf" onChange={handleFileChange}
                                             capture="environment"
                                         />
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -240,7 +254,8 @@ export const NewLotsFrom = ({ close, data = null }) => {
                             type="submit"
                             className="w-full"
                             variant="destructive"
-                        >Save changes
+                        >
+                            <p>Save changes</p>
                         </Button>
                     </div>
                 </form>

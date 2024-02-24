@@ -20,7 +20,7 @@ import axios from "axios";
 import data from '../../../../../data/admin/TransportLotsData.json'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export function ExitingLotsDialog({ close }) {
+export function ExitingLotsDialog({ close, selectedLotsID }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [lots, setLots] = useState([]);
@@ -86,6 +86,7 @@ export function ExitingLotsDialog({ close }) {
                                                 onSelect={(currentValue) => {
                                                     setValue(currentValue === value ? "" : currentValue)
                                                     setOpen(false)
+                                                    selectedLotsID(lots.lots_id)
                                                 }}
                                             >
                                                 <Check
@@ -103,7 +104,7 @@ export function ExitingLotsDialog({ close }) {
                         </Command>
                     </PopoverContent>
                 </Popover>
-                <div className="flex flex-row justify-between w-full gap-3 py-2">
+                <div className="flex flex-row justify-between w-full gap-3 pt-4">
                     <Button
                         type="button"
                         variant="redOutline"

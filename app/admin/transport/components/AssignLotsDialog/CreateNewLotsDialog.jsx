@@ -33,33 +33,29 @@ export function CreateNewLotsDialog({ open, setOpen }) {
                 {/* <Button variant="outline">Edit Profile</Button> */}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[450px]">
-                <Form>
-                    <form action="#">
-                        <DialogHeader>
-                            <DialogTitle>
-                                <div className="flex flex-col gap-2 font-bold">
-                                    <p>Create New Lots</p>
-                                </div>
-                            </DialogTitle>
-                        </DialogHeader>
-                        <div className="py-4">
-                            <div className="flex flex-col gap-2 ">
-                                <div className="flex flex-row gap-3 text-sm text-center">
-                                    <div
-                                        className={`${select === "New" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
-                                        New Lot
-                                    </div>
-                                </div>
-                                <div className="w-full">
-                                    <Separator className="w-full h-[1px]" />
-                                </div>
-                                <div className="flex flex-col gap-2 pt-3">
-                                    <NewLotsFrom close={close} />
-                                </div>
+                <DialogHeader>
+                    <DialogTitle>
+                        <div className="flex flex-col gap-2 font-bold">
+                            <p>Create New Lots</p>
+                        </div>
+                    </DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                    <div className="flex flex-col gap-2 ">
+                        <div className="flex flex-row gap-3 text-sm text-center">
+                            <div
+                                className={`${select === "New" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
+                                New Lot
                             </div>
                         </div>
-                    </form>
-                </Form>
+                        <div className="w-full">
+                            <Separator className="w-full h-[1px]" />
+                        </div>
+                        <div className="flex flex-col gap-2 pt-3">
+                            <NewLotsFrom close={close} />
+                        </div>
+                    </div>
+                </div>
             </DialogContent>
         </Dialog>
     )

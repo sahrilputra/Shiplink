@@ -15,54 +15,122 @@ import { NewLotsFrom } from "./NewLotForms"
 import { Form } from "@/components/ui/form"
 import { ExitingLotsDialog } from "./ExitingLots"
 import { useState } from "react"
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import axios from "axios";
+import { useForm } from 'react-hook-form'
+import { useToast } from '@/components/ui/use-toast'
+import { Loaders } from "@/components/ui/loaders"
 
-export function AssingLotsDialog({ open, setOpen }) {
-    const [select, setSeleceted] = useState("Exiting");
+
+const formSchema = yup.object().shape({
+    lots_id: yup.string().required(),
+    tracking_id: yup.array().of(yup.string())
+})
+
+export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
 
     const close = () => {
         setOpen(false)
     }
+    const { toast } = useToast()
+    const form = useForm({
+        resolver: yupResolver(formSchema),
+        defaultValues: {
+            lots_id: "",
+            tracking_id: [],
+        },
+        mode: "onChange",
+    })
+    const [select, setSeleceted] = useState("Exiting");
+    const [loading, setLoading] = useState(false);
+    const [selectedLots, setSelectedLots] = useState(null);
+
     const handleSelect = (e) => {
         setSeleceted(e)
     }
 
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {/* <Button variant="outline">Edit Profile</Button> */}
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[450px]">
-                <Form>
-                    <form action="#">
-                        <DialogHeader>
-                            <DialogTitle>
-                                <div className="flex flex-col gap-2 font-bold">
-                                    <p>Assing To Lots</p>
-                                </div>
+    console.log("Form Watch", form.watch("tracking_id"))
+    console.log("Form Watch", form.watch("lots_id"))
+    const handleSelectedLotsID = (e) => {
+        setSelectedLots(e)
+        form.setValue("lots_id", e)
+    }
 
-                            </DialogTitle>
-                        </DialogHeader>
-                        <div className="py-4">
-                            <div className="flex flex-col gap-2 ">
-                                <div className="flex flex-row gap-3 text-sm text-center">
-                                    <div
-                                        onClick={() => handleSelect("Exiting")}
-                                        className={`${select === "Exiting" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
-                                        Existing Lot
+    const handleSave = async (formData) => {
+        formData.tracking_id = formData.tracking_id || [];
+        formData.tracking_id.push(...dataID);
+        console.log("submitting", formData)
+        setLoading(true)
+        try {
+            const response = await axios.post(
+                `/api/admin/transport/lots/assign`,
+                formData
+            );
+
+            toast({
+                title: `{${dataID.length}} Package assigned successfully!`,
+                description: response.data.message,
+                status: 'success',
+            });
+            reload()
+            close()
+            setLoading(false)
+            form.reset()
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error creating assigned the package!',
+                description: 'An error occurred while assign the package!.',
+                status: 'error',
+            });
+        }
+    };
+
+    console.log("Data ID", dataID)
+    console.log("selectedLots", selectedLots)
+    return (
+        <>
+            {loading && <Loaders />}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                    {/* <Button variant="outline">Edit Profile</Button> */}
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[450px]">
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(handleSave)}
+                            action="#">
+                            <DialogHeader>
+                                <DialogTitle>
+                                    <div className="flex flex-col gap-2 font-bold">
+                                        <p>Assing To Lots</p>
+                                    </div>
+
+                                </DialogTitle>
+                            </DialogHeader>
+                            <div className="py-4">
+                                <div className="flex flex-col gap-2 ">
+                                    <div className="flex flex-row gap-3 text-sm text-center">
+                                        <div
+                                            onClick={() => handleSelect("Exiting")}
+                                            className={`${select === "Exiting" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
+                                            Existing Lot
+                                        </div>
+                                    </div>
+                                    <div className="w-full">
+                                        <Separator className="w-full h-[1px]" />
+                                    </div>
+                                    <div className="flex flex-col gap-2 pt-3">
+                                        <ExitingLotsDialog close={close} selectedLotsID={handleSelectedLotsID} />
                                     </div>
                                 </div>
-                                <div className="w-full">
-                                    <Separator className="w-full h-[1px]" />
-                                </div>
-                                <div className="flex flex-col gap-2 pt-3">
-                                    <ExitingLotsDialog close={close} />
-                                </div>
                             </div>
-                        </div>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+        </>
     )
 }

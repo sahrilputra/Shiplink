@@ -139,7 +139,6 @@ export const CreateNewBinForms = ({ close, data = null, setLoading, reloadData }
                             </Button>
                             <Button
                                 variant="destructive"
-
                                 size="sm"
                                 className="w-full"
                                 type="submit"
