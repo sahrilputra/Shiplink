@@ -48,40 +48,40 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData }) =
                             <div
                                 key={index}
                                 className=" flex flex-row gap-3 justify-start border-y-2 border-zinc-600/20 p-2">
-                                <div className="flex flex-col relative w-[80px] h-10 justify-center items-center">
-                                    <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>Qty</p>
-                                    <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light pl-2'>{item.qty}</p>
+                                <div className="flex flex-col relative w-[80px] h-10 justify-start items-start">
+                                    <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>Qty</p>
+                                    <div className="h-5 w-full flex justify-start items-end">
+                                        <p className=' text-xs font-light pl-2'>{item.qty}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col relative w-[150px] h-10 justify-center items-center">
-                                    <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>Value</p>
-                                    <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>$ {item.value}</p>
+                                <div className="flex flex-col relative w-[150px] h-10 justify-start items-start">
+                                    <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>Value</p>
+                                    <div className="h-5 w-full flex justify-start items-end">
+                                        <p className=' text-xs font-light'>$ {item.value}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col relative w-[50%] h-10 justify-center items-center">
-                                    <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>User Description</p>
-                                    <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.desc ? item.desc : "undefined"}</p>
+                                <div className="flex flex-col relative w-[50%] h-10 justify-start items-start">
+                                    <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>User Description</p>
+                                    <div className="h-5 w-full flex justify-start items-end">
+                                        <p className=' text-xs font-light'>{item.desc ? item.desc : "undefined"}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col relative  w-[50%] h-10 justify-center items-center">
-                                    <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>HS Description</p>
-                                    <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.hs_desc ? item.hs_desc : "undefined"}</p>
+                                <div className="flex flex-col relative  w-[50%] h-10 justify-start items-start">
+                                    <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>HS Description</p>
+                                    <div className="h-5 w-full flex justify-start items-end">
+                                        <p className=' text-xs font-light'>{item.hs_desc ? item.hs_desc : "undefined"}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col relative w-[200px] h-10 justify-center items-center">
-                                    <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>HS Code</p>
-                                    <div className="h-10 w-full flex justify-start items-end">
-                                        <p className=' text-sm font-light'>{item.hs_code ? item.hs_code : "undefined"}</p>
+                                <div className="flex flex-col relative w-[200px] h-10 justify-start items-start">
+                                    <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>HS Code</p>
+                                    <div className="h-5 w-full flex justify-start items-end">
+                                        <p className=' text-xs font-light'>{item.hs_code ? item.hs_code : "undefined"}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col relative w-[100px] h-10 justify-center items-center">
-                                    <p className=' absolute top-0 left-0 text-myBlue text-xs h-[20px]'>Made In</p>
-                                    <div className="h-10 w-full flex justify-start items-end">
+                                <div className="flex flex-col relative w-[100px] h-10 justify-start items-start">
+                                    <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>Made In</p>
+                                    <div className="h-5 w-full flex justify-start items-end">
                                         <p className=' text-sm font-light'>{item.made_in ? item.made_in : "undefined"}</p>
                                     </div>
                                 </div>

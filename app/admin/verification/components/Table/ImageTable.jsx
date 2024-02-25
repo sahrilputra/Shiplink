@@ -18,13 +18,15 @@ export const ImageTable = ({ labelImg, wholeBoxImg, contentImg, images = null })
     const [openImage, setOpenImage] = useState(false);
     return (
         <>
-            <ImageDisplay open={openImage} setOpen={setOpenImage} clickedImage={images} />
+            <ImageDisplay open={openImage} setOpen={setOpenImage} images={images} />
             <Carousel>
                 <CarouselContent>
-                    {Array.from({ length: images.length }).map((_, index) => (
+                    {Array.from({ length: images?.length }).map((_, index) => (
                         <CarouselItem key={index} className="basis-1/3">
                             <div className="p-1">
-                                <Card>
+                                <Card
+                                    onClick={() => { setOpenImage(true) }}
+                                >
                                     <img
                                         style={{ objectFit: "contain", width: '100%', height: '150px' }}
                                         src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}

@@ -37,24 +37,40 @@ const formSchema = yup.object().shape({
 })
 export const EditForms = ({ counter, data, edit, cancel, trackingID, reloadData }) => {
     const { toast } = useToast()
+    // const form = useForm({
+    //     resolver: yupResolver(formSchema),
+    //     defaultValues: {
+    //         package_content: [
+    //             {
+    //                 tracking_id: trackingID,
+    //                 qty: 0,
+    //                 value: 0,
+    //                 desc: "",
+    //                 hs_desc: "",
+    //                 hs_code: "",
+    //                 made_in: "",
+    //                 subtotal: 0,
+    //             }
+    //         ]
+    //     },
+    //     mode: "onChange",
+    // })
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            package_content: [
-                {
-                    tracking_id: trackingID,
-                    qty: 0,
-                    value: 0,
-                    desc: "",
-                    hs_desc: "",
-                    hs_code: "",
-                    made_in: "",
-                    subtotal: 0,
-                }
-            ]
+            package_content: Array.from({ length: data.length }, (_, index) => ({
+                tracking_id: trackingID,
+                qty: 0,
+                value: 0,
+                desc: "",
+                hs_desc: "",
+                hs_code: "",
+                made_in: "",
+                subtotal: 0,
+            }))
         },
         mode: "onChange",
-    })
+    });
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
@@ -104,25 +120,6 @@ export const EditForms = ({ counter, data, edit, cancel, trackingID, reloadData 
 
     useEffect(() => {
         handlingDataValue()
-        if (fields.length !== data.length) {
-            // Hapus semua entri data yang ada dalam formulir
-            while (fields.length > 0) {
-                remove(0);
-            }
-            // Tambahkan entri data baru berdasarkan panjang parameter data
-            data.forEach((item) => {
-                append({
-                    tracking_id: trackingID,
-                    qty: parseInt(item.qty),
-                    value: parseInt(item.value),
-                    desc: item.desc,
-                    hs_desc: item.hs_desc,
-                    hs_code: item.hs_code,
-                    made_in: item.made_in,
-                    subtotal: parseInt(item.qty) * parseInt(item.value)
-                });
-            });
-        }
     }, [data])
 
     const handleSave = async (formData) => {
