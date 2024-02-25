@@ -127,7 +127,7 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                 return (
                     <div className="w-[80px]" key={row}>
                         <div className="flex flex-row gap-2">
-                            <NextLink href={"/admin/package-details/2"}>
+                            <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                                 <Button
                                     variant="ghost"
                                     className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">

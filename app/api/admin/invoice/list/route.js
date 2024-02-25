@@ -13,7 +13,7 @@ export async function POST(request) {
         // console.log("token from country", token);
 
         const response = await axios.post(
-            `${process.env.API_URL}/Customers/Customer_list`,
+            `${process.env.API_URL}/InvoiceManager/Invoice_list`,
             {
                 keyword: keyword,
                 page: page,
@@ -29,7 +29,7 @@ export async function POST(request) {
             }
         );
 
-        console.log("response from api : ", response.data); // Log the response data
+        // console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
@@ -38,7 +38,7 @@ export async function POST(request) {
                 total: response.data.total,
                 page_total: response.data.page_total,
                 page_limit: response.data.page_limit,
-                customer: response.data.customer
+                invoice: response.data.invoice
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

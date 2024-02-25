@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -36,12 +36,32 @@ const formSchema = yup.object().shape({
     Origin: yup.string().required(),
     Destination: yup.string().required(),
     TripNumber: yup.string().required(),
+    Status: yup.number().required(),
     Documents: yup.array().of(yup.string())
 })
 
 export const NewLotsFrom = ({ close, data = null }) => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
+    const [statusList, setStatusList] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(
+                `/api/admin/transport/lots/status/list`,
+            );
+            console.log(response)
+            const data = await response.data.data;
+            setStatusList(data.data);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -64,7 +84,8 @@ export const NewLotsFrom = ({ close, data = null }) => {
             const reader = new FileReader();
 
             reader.onloadend = () => {
-                uploadedFiles.push(reader.result);
+                const base64String = reader.result.split(',')[1]; // Get the Base64 string excluding the data URL part
+                uploadedFiles.push(base64String);
 
                 if (uploadedFiles.length === files.length) {
                     form.setValue('Documents', uploadedFiles);
@@ -77,6 +98,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
     const handleSave = async (formData) => {
         setLoading(true)
         console.log("dikirim", formData)
+
         try {
             formData.action = `${data === null ? "add" : "edit"}`;
             const response = await axios.post(
@@ -101,6 +123,8 @@ export const NewLotsFrom = ({ close, data = null }) => {
             });
         }
     };
+
+    console.log("DOCS : ", form.watch("Documents"))
 
     return (
         <>
@@ -194,23 +218,32 @@ export const NewLotsFrom = ({ close, data = null }) => {
                             </>
                         )}
                     />
-
                     <FormField
                         control={form.control}
                         name="Status"
                         render={({ field }) => (
                             <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                 <FormLabel className="w-[40%]">Select Status</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select
+                                    onValueChange={(value) => {
+                                        const selectedStatus = statusList.find(item => item.status === value);
+                                        field.onChange(selectedStatus ? selectedStatus.id_status : ''); // Set id_status as value if found, otherwise empty string
+                                    }}
+                                    defaultValue={field.value}
+                                >
                                     <FormControl className='text-xs'>
                                         <SelectTrigger>
                                             <SelectValue className='text-xs' placeholder="Status" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem className='text-xs' value="Cleared Custom">Cleared Custom</SelectItem>
-                                        <SelectItem className='text-xs' value="Ready To Pickup">Ready To Pickup</SelectItem>
-                                        <SelectItem className='text-xs' value="Pending">Pending</SelectItem>
+                                        {
+                                            statusList?.map((item, index) => (
+                                                <SelectItem className='text-xs' key={index} value={item.status}>
+                                                    {item.status}
+                                                </SelectItem>
+                                            ))
+                                        }
                                     </SelectContent>
                                 </Select>
                             </FormItem>

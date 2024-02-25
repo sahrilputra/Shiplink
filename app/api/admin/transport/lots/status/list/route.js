@@ -6,20 +6,11 @@ import { cookies } from 'next/headers'
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
-export async function POST(request) {
+export async function GET(request) {
     try {
-        const { keyword, page, limit, index, token } = await request.json();
-
-        // console.log("token from country", token);
-
         const response = await axios.post(
-            `${process.env.API_URL}/Customers/Customer_list`,
-            {
-                keyword: keyword,
-                page: page,
-                limit: limit,
-                index: index,
-            },
+            `${process.env.API_URL}/Lots/Status_Lots`,
+            null,
             {
                 httpsAgent: agent,
                 headers: {
@@ -35,10 +26,7 @@ export async function POST(request) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                total: response.data.total,
-                page_total: response.data.page_total,
-                page_limit: response.data.page_limit,
-                customer: response.data.customer
+                data: response.data
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { ExternalLink, MoreHorizontalIcon, Plus, Delete } from "lucide-react";
@@ -39,10 +39,38 @@ import {
     VisibilityState,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import axios from 'axios'
 
+export function InvoiceTable({ isOpen, setOpen }) {
 
+    const [isSkeleton, setIsSkeleton] = useState(true);
+    const [data, setData] = useState([])
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
 
-export function InvoiceTable({ data, isOpen, setOpen }) {
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/invoice/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setData(data.invoice);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]);
 
     const columns = [
         {
@@ -71,29 +99,29 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
             },
         },
         {
-            accessorKey: "InvoiceId",
+            accessorKey: "invoice_id",
             header: "Inovice ID",
         },
         {
-            accessorKey: "Date",
+            accessorKey: "date",
             header: "Date",
         },
         {
-            accessorKey: "BilledTo",
+            accessorKey: "billed_name",
             header: "Billed To",
         },
         {
-            accessorKey: "CustomerEmail",
+            accessorKey: "email",
             header: "Customer Email",
 
 
         },
         {
-            accessorKey: "Totals",
+            accessorKey: "total",
             header: "Total Due",
         },
         {
-            accessorKey: "Status",
+            accessorKey: "status",
             header: "Status",
         },
         {
@@ -255,26 +283,47 @@ export function InvoiceTable({ data, isOpen, setOpen }) {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isSkeleton || !table.getRowModel().rows?.length ? (
+                            <>
+                                {isSkeleton &&
+                                    [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+
+                                {!isSkeleton && !table.getRowModel().rows?.length && (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </>
+                        ) : (
+                            // Jika data telah dimuat, render data aktual
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={row.isLast && "w-[30px]"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className={`${cell.isLast && "w-[30px]"} text-xs `}>
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                        >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
-                                </TableCell>
-                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

@@ -60,6 +60,7 @@ export const EditForms = ({ counter, data, edit, cancel, trackingID, reloadData 
         control: form.control,
         name: "package_content",
     });
+    console.log("Data Length : ", data.length)
 
     const handlingDataValue = () => {
         data.map((item, index) => {
@@ -76,7 +77,6 @@ export const EditForms = ({ counter, data, edit, cancel, trackingID, reloadData 
         })
     }
 
-
     const [subtotal, setSubTotal] = useState(0);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -89,10 +89,6 @@ export const EditForms = ({ counter, data, edit, cancel, trackingID, reloadData 
             form.setValue(`package_content[${index}].subtotal`, Number(subtotalValue));
         });
     };
-    // form.getValues().package_content.forEach((item, index) => {
-    //     console.log("ITEMS :", index, item)
-    // })
-
     // Fungsi untuk menghitung total
     const calculateTotal = () => {
         setTotal(subtotal);
@@ -108,41 +104,27 @@ export const EditForms = ({ counter, data, edit, cancel, trackingID, reloadData 
 
     useEffect(() => {
         handlingDataValue()
+        if (fields.length !== data.length) {
+            // Hapus semua entri data yang ada dalam formulir
+            while (fields.length > 0) {
+                remove(0);
+            }
+            // Tambahkan entri data baru berdasarkan panjang parameter data
+            data.forEach((item) => {
+                append({
+                    tracking_id: trackingID,
+                    qty: parseInt(item.qty),
+                    value: parseInt(item.value),
+                    desc: item.desc,
+                    hs_desc: item.hs_desc,
+                    hs_code: item.hs_code,
+                    made_in: item.made_in,
+                    subtotal: parseInt(item.qty) * parseInt(item.value)
+                });
+            });
+        }
     }, [data])
 
-    // const handleSave = async (formData) => {
-    //     setLoading(true);
-    //     console.log("DATA SENT : ", formData);
-    //     formData.package_content.map((item, index) => {
-    //         form.setValue(`package_content[${index}].tracking_id`, trackingID)
-    //     })
-    //     try {
-    //         // Loop through each item in formData.package_content
-    //         for (const item of formData.package_content) {
-    //             const response = await axios.post(
-    //                 `/api/admin/verification/register_package_content`,
-    //                 item  // Send each item separately to the API
-    //             );
-    //             console.log('Response:', response);
-    //             // You may want to handle the response here if needed
-    //         }
-
-    //         setLoading(false);
-    //         cancel();
-    //         toast({
-    //             title: `All Declare Contents Registered successfully for ${formData.tracking_id}!`,
-    //             status: 'success',
-    //         });
-    //     } catch (error) {
-    //         console.log('Error', error);
-    //         setLoading(false);
-    //         toast({
-    //             title: 'Error Registering New Declare Contents',
-    //             description: 'An error occurred while Registering Declare Contents.',
-    //             status: 'error',
-    //         });
-    //     }
-    // };
     const handleSave = async (formData) => {
         setLoading(true);
         console.log("DATA SENT : ", formData);

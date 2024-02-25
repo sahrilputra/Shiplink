@@ -24,6 +24,7 @@ export function ExitingLotsDialog({ close, selectedLotsID }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [lots, setLots] = useState([]);
+    const [status, setStatus] = useState([]);
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [query, setQuery] = useState({
         keyword: "",
@@ -76,10 +77,10 @@ export function ExitingLotsDialog({ close, selectedLotsID }) {
                         <Command>
                             <CommandInput placeholder="Search Lots..." />
                             <CommandEmpty>No Lots Found.</CommandEmpty>
-                            <CommandGroup>
-                                {lots.map((lots) => (
-                                    <>
-                                        <ScrollArea className="h-[200px] w-[300px] rounded-md border p-4">
+                            <ScrollArea className="h-[200px] w-[300px] rounded-md border p-4">
+                                <CommandGroup>
+                                    {lots?.map((lots) => (
+                                        <>
                                             <CommandItem
                                                 key={lots.lots_id}
                                                 value={lots.label}
@@ -97,10 +98,10 @@ export function ExitingLotsDialog({ close, selectedLotsID }) {
                                                 />
                                                 <p className=" text-xs">{lots.lots_id} | {lots.label} </p>
                                             </CommandItem>
-                                        </ScrollArea>
-                                    </>
-                                ))}
-                            </CommandGroup>
+                                        </>
+                                    ))}
+                                </CommandGroup>
+                            </ScrollArea>
                         </Command>
                     </PopoverContent>
                 </Popover>

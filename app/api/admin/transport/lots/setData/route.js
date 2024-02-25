@@ -19,9 +19,9 @@ export async function POST(request) {
             action,
         } = await request.json();
 
-        console.log("Lots Log : ", LotsId, LotsLabel, Origin, Destination, TripNumber, Status, Documents, action)
+        
         const response = await axios.post(
-            `${process.env.API_URL}/Lots/Lots_list`,
+            `${process.env.API_URL}/Lots/Lots_setdata`,
             {
                 lots_id: LotsId,
                 label: LotsLabel,
@@ -42,16 +42,13 @@ export async function POST(request) {
             }
         );
 
-        // console.log("response from api : ", response.data); // Log the response data
+        console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                total: response.data.total,
-                page_total: response.data.page_total,
-                page_limit: response.data.page_limit,
-                lots: response.data.lots
+                response: response.data
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

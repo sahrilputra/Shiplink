@@ -114,7 +114,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                         >
                             <p className="text-[11px]">Edit Lots</p>
                         </Button>
-                        <LotsMoreMenusDropDrown data={row.original} dataID={row.original.lots_id}  />
+                        <LotsMoreMenusDropDrown data={row.original} dataID={row.original.lots_id} />
                         <Button
                             variant="tableBlue"
                             size="tableIcon"

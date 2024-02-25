@@ -114,7 +114,7 @@ export function CustomerTable({ data, open, setOpen }) {
                     <div className="flex flex-row gap-2">
                         <NextLink
                             className="focus:outline-none focus:ring-0 focus:border-transparent"
-                            href={"/admin/customers-manager/1"}>
+                            href={`/admin/customers-manager/${row.original.customer_id}`}>
                             <Button
                                 variant="tableBlue"
                                 size="tableIcon"

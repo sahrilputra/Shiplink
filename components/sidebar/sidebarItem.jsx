@@ -13,11 +13,10 @@ export const SidebarItem = ({ icon, isClicked, title, isActive, href, isLast, is
                 className=" px-[10px] "
                 href={href}
             >
-
                 <div className={`grid place-items-center items-center h-[40px] rounded-[3px] 
                  ${isActive ? "bg-red-700 text-white opacity-100" : isClicked ? "bg-blue-700" : "opacity-50 hover:bg-red-700/30 transition-colors duration-200"}
                 `}>
-                    <div className={`${isActive ? "text-white border-none " : "text-black"} ${isLast ? " border-b" : ""} flex flex-row items-center h-full justify-center gap-3 w-[210px] px-[15px] border-t border-zinc-300`}>
+                    <div className={`${isActive ? "text-white border-none " : "text-black"} ${isLast ? " border-b" : ""} ${styles.sidebarItems} flex flex-row items-center h-full justify-center gap-3 w-[210px] px-[15px] border-t border-zinc-300`}>
                         <div className={` text-black ${styles.icons} ${isActive && 'text-white fill-white stroke-white'}`}>
                             {icon}
                         </div>

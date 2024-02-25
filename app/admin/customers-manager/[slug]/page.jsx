@@ -1,7 +1,7 @@
 
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { UserProfileForms } from './components/userForms'
 import { InvoiceList } from './components/invoiceData/invoiceList'
@@ -9,12 +9,49 @@ import { PaymentCards } from './components/PaymentsCard'
 import { CustomerPackageList } from './components/userPackageData/dataList'
 import listData from '../../../../data/admin/CustomerPackageDataList.json'
 import { MoreAction } from './components/menus/MoreAction'
+import axios from 'axios'
+
 export default function UserPage({ params }) {
 
+    console.log("hello :", params.slug)
+    const [query, setQuery] = useState({
+        keyword: `${params.slug}`,
+        page: 0,
+        limit: 0,
+        index: 0
+
+    })
+    const [data, setData] = useState({})
+    const [skeleton, setSkeleton] = useState(true);
+
+    const fethcData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/customer_manager/list`,
+                query
+            );
+            console.log(response)
+            const responseData = await response.data.customer
+            setData(responseData)
+            setSkeleton(false)
+        } catch (error) {
+            setSkeleton(false)
+            console.log("Error", error)
+        }
+    }
+
+    useEffect(() => {
+        fethcData();
+    }, [query])
+
+
+    console.log("hello data : ", data)
     const [moreOpen, setMoreOpen] = useState(false);
     const toggleMoreOpen = () => {
         setMoreOpen(!moreOpen)
     }
+
+
     return (
         <>
             <div className="w-full">
