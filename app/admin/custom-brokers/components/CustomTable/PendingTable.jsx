@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { MoreHorizontalIcon } from "lucide-react";
 import NextLink from "next/link";
 import { Skeleton } from "@/components/ui/skeleton"
+import { ChevronDown, ChevronUp } from "lucide-react";
 import axios from "axios";
 import {
     ColumnDef,
@@ -31,10 +32,21 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { DropdownPendingList } from "../dropdown/DropdownPendingList";
 import { BrokerDeclareContent } from "./BrokerDeclareContent";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 
-export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
+export function PendingTable({ data, isSkeleton, handleSearchChange, reload, setQuery, query }) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
+    const [isSortedDesc, setIsSortedDesc] = useState(false);
+    const [isSorted, setIsSorted] = useState(false);
     const [expandedRows, setExpandedRows] = useState({});
     const columns = [
         {
@@ -64,12 +76,48 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
         },
         {
             accessorKey: "tracking_id",
-            header: "Tracking ID",
+            header: () => {
+                return (
+                    <div
+                        className="cursor-pointer select-none"
+                        onClick={() => {
+                            setSorting([{ id: "tracking_id", desc: !isSortedDesc }]);
+                            setIsSortedDesc(!isSortedDesc);
+                        }}
+                    >
+                        <div className="flex flex-row gap-2 items-center">
+                            Tracking ID
+                            <>
+                                {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                            </>
+                        </div>
+
+                    </div>
+                );
+            },
             className: "text-xs",
         },
         {
             accessorKey: "customer_name",
-            header: "Customer Name",
+            header: () => {
+                return (
+                    <div
+                        className="cursor-pointer select-none"
+                        onClick={() => {
+                            setSorting([{ id: "tracking_id", desc: !isSortedDesc }]);
+                            setIsSortedDesc(!isSortedDesc);
+                        }}
+                    >
+                        <div className="flex flex-row gap-2 items-center">
+                            Customer Name
+                            <>
+                                {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                            </>
+                        </div>
+
+                    </div>
+                );
+            },
         },
         {
             accessorKey: "address",
@@ -90,7 +138,7 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
                 return (
                     <div className="w-[60px]" key={row}>
                         <div className="flex flex-row gap-2 ">
-                            <DropdownPendingList  data={row.original} />
+                            <DropdownPendingList data={row.original} />
                             <Button
                                 onClick={() => toggleRow(row.id)}
                                 variant="tableBlue"
@@ -110,16 +158,15 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
     const table = useReactTable({
         data: data,
         columns,
+        state: {
+            sorting,
+            rowSelection,
+        },
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,
-        state: {
-            sorting,
-            rowSelection,
-        },
-
     });
 
     console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.warehouse_id));
@@ -145,6 +192,9 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
         setDeleteDialog(true)
     }
 
+    const handlePageChange = (pageNumber) => {
+        setQuery({ ...query, page: pageNumber });
+    };
 
 
     return (
@@ -176,27 +226,7 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
                                 fill="#CC0019" />
                         </Button>
                     </div>
-                    {/* {
-                        Object.keys(rowSelection).length === 0 ? (
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                className='border border-zinc-300 flex items-center rounded'
-                                onClick={() => setOpenNewWarehouse(true)}
-                            >
-                                <p>New Warehouse</p>
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                className="w-[100px]"
-                                onClick={() => setDeleteMuchDialog(true)}
-                            >
-                                <p className=" text-xs">Delete</p>
-                            </Button>
-                        )
-                    } */}
+
                 </div>
             </div>
             <Table className=" rounded-md">
@@ -277,8 +307,37 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload }) {
                         ))
                     )}
                 </TableBody>
-
             </Table>
+            <div className="flex justify-end w-full items-end">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     )
 }

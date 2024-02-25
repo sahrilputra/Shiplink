@@ -62,7 +62,7 @@ export default function CustomBrokerPage() {
     console.log("parent : ", selectedTab)
 
     const filterData = selectedTab !== 'Cleared Custom'
-        ? data.filter(item => item.status !== 'Cleared Custom') 
+        ? data.filter(item => item.status !== 'Cleared Custom')
         : data.filter(item => item.status === 'Cleared Custom');
     const clearancePendingCount = data.filter(item => item.status !== 'Cleared Custom').length;
     const clearanceCustomsCount = data.filter(item => item.status === 'Cleared Custom').length;
@@ -92,7 +92,13 @@ export default function CustomBrokerPage() {
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <PendingTable data={filterData} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} reload={reload} />
+                            <PendingTable data={filterData}
+                                isSkeleton={isSkeleton}
+                                handleSearchChange={handleSearchChange}
+                                reload={reload}
+                                setQuery={setQuery}
+                                query={query}
+                            />
                         </div>
                     </div>
                 </div>

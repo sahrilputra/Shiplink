@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import React from 'react'
+import React, { useRef } from 'react'
 import {
     Carousel,
     CarouselContent,
@@ -19,14 +19,22 @@ import {
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { useReactToPrint } from 'react-to-print'
+
 export const PackageDialogDetails = ({ open, setOpen, details }) => {
     console.log("Details : ", details)
     const sizeType = details?.package_height_unit || "Ibs"
     const images = details?.images || null
     console.log("Images : ", images)
+
+    // PDF Print
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
+            <DialogContent ref={componentRef}>
                 <DialogDescription>
                     <div className="flex flex-row gap-4 items-center">
                         <div className="imageContainer flex flex-col w-[400px] items-center">
@@ -85,6 +93,8 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                                     variant="destructive"
                                     size="sm"
                                     className="h-[30px]"
+                                    type="button"
+                                    onClick={handlePrint}
                                 >
                                     <p className='text-xs'>Print Package Details</p>
                                 </Button>

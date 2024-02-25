@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -80,7 +81,7 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
                                 src={`https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`}
                                 style={{ height: '80px', width: "100%", objectFit: "contain" }}
                                 alt="" />
-                                <p className="text-center tracking-wider py-2">{trackingID}</p>
+                            <p className="text-center tracking-wider py-2">{trackingID}</p>
                             {/* <Barcode value={`${trackingID}`}
                                 options={{ format: 'code128', width: '3', lineColor: "#2d2d2d", textMargin: 10, fontSize: 16, height: 70 }}
                                 renderer="svg" className="tracking-wider "
@@ -94,6 +95,7 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
                         variant="redOutline"
                         className="w-full"
                         type="submit"
+                        onClick={handlePrint}
                     >
                         Print
                     </Button>

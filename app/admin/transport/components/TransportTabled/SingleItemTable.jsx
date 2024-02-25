@@ -66,7 +66,7 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
     });
 
-    
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -348,7 +348,36 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                 </TableBody>
 
             </Table>
-
+            <div className="flex justify-end w-full items-end py-3">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
 
         </>
     )

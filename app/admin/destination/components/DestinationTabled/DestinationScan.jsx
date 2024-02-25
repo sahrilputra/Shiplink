@@ -47,12 +47,12 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
         keyword: "",
         date_start: "",
         date_end: "",
-        tracking_id: "",
+        lots_id: "",
         status: "",
+        destination: "",
         page: 0,
         limit: 0,
-        index: 0
-
+        index: 0,
     });
     const fetchData = async () => {
         try {
@@ -197,7 +197,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
                     {isSkeleton || !table.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
-                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                [...Array(table?.getRowModel().rows?.length || 5)].map((_, index) => (
                                     <TableRow key={index}>
                                         {columns.map((column, columnIndex) => (
                                             <TableCell
