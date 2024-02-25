@@ -157,12 +157,14 @@ export default function VerificationPages({ params }) {
                                     <p className=' text-myBlue font-base font-bold'>Package Information</p>
                                 </div>
                                 <div className="flex flex-row gap-2">
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                    >
-                                        <p className=' text-xs'>Edit Package</p>
-                                    </Button>
+                                    <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`}>
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                        >
+                                            <p className=' text-xs'>Edit Package</p>
+                                        </Button>
+                                    </NextLink>
                                     <Button
                                         variant="secondary"
                                         size="sm"
