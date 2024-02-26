@@ -218,6 +218,8 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         setOpenNewDialog(true)
     }
     const reloadData = () => {
+        setIsSkeleton(true)
+        setRowSelection({});
         fetchData();
     };
 

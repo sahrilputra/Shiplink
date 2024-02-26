@@ -28,6 +28,16 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import axios from "axios";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+
 
 export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const [isEditDialog, setEditDialog] = useState(false);
@@ -38,10 +48,8 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const [isEdit, setIsEdit] = useState(false);
     const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
     const [lots, setLots] = useState([]);
-    const [deleteID, setDeleteId] = useState(null);
-    const [deleteDialog, setDeleteDialog] = useState(false);
-    const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
+    const [dataLots, setDataLots] = useState({})
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -95,6 +103,25 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         {
             accessorKey: "documents",
             header: "Documents",
+            cell: ({ row }) => {
+                // Memeriksa apakah data documents ada dan tidak kosong
+                if (row.original.documents && row.original.documents.trim() !== "") {
+                    // Memisahkan string berdasarkan tanda koma dan mengambil panjang array
+                    const documentCount = row.original.documents.split(',').length;
+                    return (
+                        <div className="text-xs">
+                            {documentCount}
+                        </div>
+                    )
+                } else {
+                    // Menampilkan pesan jika tidak ada data documents atau kosong
+                    return (
+                        <div className="text-xs">
+                            No documents
+                        </div>
+                    )
+                }
+            }
         },
         {
             accessorKey: "status",
@@ -110,7 +137,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
-                            onClick={() => setEditDialog(true)}
+                            onClick={() => handleEditOpen(row.original)}
                         >
                             <p className="text-[11px]">Edit Lots</p>
                         </Button>
@@ -121,7 +148,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => toggleRow(row.id)}
                         >
-                            <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[row.original] ? 'rotate-180' : ''}`} />
+                            <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[row.id] ? 'rotate-180' : ''}`} />
                         </Button>
                     </div>
                 )
@@ -143,6 +170,14 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
 
     });
 
+    const reloadData = () => {
+        setIsSkeleton(true)
+        fetchData();
+    }
+    const handleEditOpen = (item) => {
+        setEditDialog(true)
+        setDataLots(item)
+    }
     const handleSearchChange = (event) => {
         setQuery({
             ...query,
@@ -166,6 +201,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     }
     return (
         <>
+            <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} data={dataLots} reload={reloadData} />
             <div className="">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center pb-3">
                     <SearchBar />
@@ -266,7 +302,37 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                 </TableBody>
 
             </Table>
-            <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} />
+            <div className="flex justify-end w-full items-end py-3">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
+
         </>
     )
 }

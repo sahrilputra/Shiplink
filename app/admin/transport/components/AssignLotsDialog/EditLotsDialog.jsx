@@ -14,7 +14,12 @@ import { Form } from '@/components/ui/form'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 
-export const EditLotsDialog = ({ open, setOpen, data }) => {
+export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
+    console.log("Lots Data : ", data)
+    const close = () => {
+        setOpen(false)
+        reload()
+    }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -35,7 +40,7 @@ export const EditLotsDialog = ({ open, setOpen, data }) => {
                             <Separator className="w-full h-[1px]" />
                         </div>
                         <div className="flex flex-col gap-2 py-4">
-                            <NewLotsFrom data={data} />
+                            <NewLotsFrom data={data} close={close} />
                         </div>
                     </div>
                 </div>

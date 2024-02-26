@@ -20,7 +20,7 @@ import axios from "axios";
 import data from '../../../../../data/admin/TransportLotsData.json'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export function ExitingLotsDialog({ close, selectedLotsID }) {
+export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [lots, setLots] = useState([]);
@@ -67,9 +67,7 @@ export function ExitingLotsDialog({ close, selectedLotsID }) {
                             aria-expanded={open}
                             className="w-[100%] justify-between"
                         >
-                            {value
-                                ? lots.find((lots) => lots.label === value)?.lots_id
-                                : "Select Lots..."}
+                            {lotsName ? lotsName : "Select Lots..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
@@ -87,7 +85,7 @@ export function ExitingLotsDialog({ close, selectedLotsID }) {
                                                 onSelect={(currentValue) => {
                                                     setValue(currentValue === value ? "" : currentValue)
                                                     setOpen(false)
-                                                    selectedLotsID(lots.lots_id)
+                                                    selectedLotsID(lots.lots_id, lots.label)
                                                 }}
                                             >
                                                 <Check

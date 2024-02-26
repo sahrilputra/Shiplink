@@ -45,16 +45,18 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
     const [select, setSeleceted] = useState("Exiting");
     const [loading, setLoading] = useState(false);
     const [selectedLots, setSelectedLots] = useState(null);
-
+    const [lotsName, setLotsName] = useState(null)
     const handleSelect = (e) => {
         setSeleceted(e)
     }
 
     console.log("Form Watch", form.watch("tracking_id"))
     console.log("Form Watch", form.watch("lots_id"))
-    const handleSelectedLotsID = (e) => {
+
+    const handleSelectedLotsID = (e, name) => {
         setSelectedLots(e)
         form.setValue("lots_id", e)
+        setLotsName(name)
     }
 
     const handleSave = async (formData) => {
@@ -123,7 +125,7 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                                         <Separator className="w-full h-[1px]" />
                                     </div>
                                     <div className="flex flex-col gap-2 pt-3">
-                                        <ExitingLotsDialog close={close} selectedLotsID={handleSelectedLotsID} />
+                                        <ExitingLotsDialog close={close} selectedLotsID={handleSelectedLotsID} lotsID={selectedLots} lotsName={lotsName}/>
                                     </div>
                                 </div>
                             </div>

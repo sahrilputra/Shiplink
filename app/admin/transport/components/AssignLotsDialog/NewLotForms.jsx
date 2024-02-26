@@ -29,30 +29,68 @@ import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
 import Image from 'next/image'
 import axios from 'axios'
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { PopoverClose } from '@radix-ui/react-popover'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { CalendarIcon, CheckIcon } from 'lucide-react'
+import { Calendar } from '@/components/ui/calendar'
+import { format } from 'date-fns'
 
 const formSchema = yup.object().shape({
     LotsId: yup.string().required().max(50, "character is too long"),
     LotsLabel: yup.string().required(),
     Origin: yup.string().required(),
-    Destination: yup.string().required(),
+    Destination_country: yup.string().required(),
     TripNumber: yup.string().required(),
     Status: yup.number().required(),
+    pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string())
 })
 
 export const NewLotsFrom = ({ close, data = null }) => {
     const { toast } = useToast()
+    const [popOverOpen, setPopOverOpen] = useState(false);
+    const [openOrigin, setOpenOrigin] = useState(false);
     const [loading, setLoading] = useState(false);
     const [statusList, setStatusList] = useState([]);
-
+    const [countryList, setCountryList] = useState([])
+    const [selectDestination, setSelectDestination] = useState("");
+    const [selectOrigin, setSelectOrigin] = useState("");
+    const [countryQuery, setCountryQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    })
     const fetchData = async () => {
         try {
             const response = await axios.get(
                 `/api/admin/transport/lots/status/list`,
             );
+            const responseCountry = await axios.post(
+                `/api/admin/config/countries/list`,
+                countryQuery
+            )
             console.log(response)
-            const data = await response.data.data;
+            console.log("Country : ", responseCountry)
+            const countryData = await responseCountry.data;
+            setCountryList(countryData.country)
+
+
+            const data = await response.data;
             setStatusList(data.data);
+
         } catch (error) {
             console.log('Error:', error);
         }
@@ -60,18 +98,19 @@ export const NewLotsFrom = ({ close, data = null }) => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [countryQuery]);
 
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             LotsId: data?.lots_id || "",
             LotsLabel: data?.label || "",
-            Origin: data?.country_name || "",
-            Destination: data?.destination_name || "",
+            Origin: data?.country_origin || "",
+            Destination_country: data?.destination || "",
             TripNumber: data?.trip_number || "",
             Status: data?.status || "",
-            Documents: data?.documents || [],
+            pickDate: data?.pickup_schedule || "",
+            Documents: data?.documents || "",
         },
         mode: "onChange",
     })
@@ -98,6 +137,17 @@ export const NewLotsFrom = ({ close, data = null }) => {
     const handleSave = async (formData) => {
         setLoading(true)
         console.log("dikirim", formData)
+        
+        if (formData.Origin === formData.Destination_country) {
+            setLoading(false);
+            toast({
+                title: 'Error',
+                description: 'Origin and destination cannot be the same.',
+                status: 'error',
+            });
+            return; // Prevent form submission
+        }
+        formData.pickDate = format(new Date(formData.pickDate), "yyyy-MM-dd");
 
         try {
             formData.action = `${data === null ? "add" : "edit"}`;
@@ -106,12 +156,11 @@ export const NewLotsFrom = ({ close, data = null }) => {
                 formData
             );
             toast({
-                title: `New Lots ${formData.LotsLabel} created!`,
+                title: `New Lots ${formData.LotsLabel} ${data ? "Edited!" : "created!"}`,
                 description: response.data.message,
                 status: 'success',
             });
             setLoading(false)
-            reload();
             close();
         } catch (error) {
             console.log('Error', error);
@@ -124,8 +173,14 @@ export const NewLotsFrom = ({ close, data = null }) => {
         }
     };
 
-    console.log("DOCS : ", form.watch("Documents"))
+    console.log("DATE SELLECTED : ", form.watch("pickDate"))
+    const handleSelectDestination = (code, name) => {
+        setSelectedCountry({
+            Destination_country: code,
+        });
+    }
 
+    console.log("origin, destination", form.watch("Origin"), form.watch("Destination_country"))
     return (
         <>
             {loading && <Loaders />}
@@ -177,28 +232,174 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Origin</FormLabel>
-                                        <FormControl >
-                                            <Input type="text" id="Origin" placeholder="Select Origin" {...field} />
-                                        </FormControl>
+                                        <Popover className="w-full" open={openOrigin} onOpenChange={setOpenOrigin}>
+                                            <PopoverTrigger asChild>
+                                                <FormControl className="w-full">
+                                                    <Button
+                                                        onClick={() => setOpenOrigin(true)}
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        type="button"
+                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                    >
+                                                        <span className='text-xs px-2'>
+                                                            {selectOrigin ? selectOrigin : "Select Origin"}
+                                                        </span>
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[250px] p-0">
+                                                <Command className="w-full">
+                                                    <CommandInput
+                                                        placeholder="Search Country..."
+                                                        className="h-9 w-full text-xs"
+                                                    />
+                                                    <CommandEmpty
+                                                        className="w-full text-xs text-center py-2"
+                                                    >
+                                                        No Country found.
+                                                    </CommandEmpty>
+                                                    <CommandGroup className="h-[200]">
+                                                        <ScrollArea className="h-[150px]">
+                                                            {console.log(field.value)}
+                                                            {countryList.map((item) => (
+                                                                <>
+                                                                    <PopoverClose asChild>
+                                                                        <CommandItem
+                                                                            value={item.country_name}
+                                                                            key={item.country_id}
+                                                                            className="text-xs"
+                                                                            onSelect={() => {
+                                                                                setSelectOrigin(item.country_name)
+                                                                                field.onChange(item.country_code); // Perbarui nilai field.value
+                                                                                setOpenOrigin(false)
+                                                                            }}
+                                                                        >
+
+                                                                            {item.country_name}
+                                                                            <CheckIcon
+                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                            />
+                                                                        </CommandItem>
+                                                                    </PopoverClose>
+                                                                </>
+                                                            ))}
+                                                        </ScrollArea>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
 
                                     </FormItem>
                                 </>
                             )}
                         />
                         <FormField
-                            name="Destination"
+                            name="Destination_country"
                             className="w-full"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Destination</FormLabel>
-                                        <FormControl >
-                                            <Input type="text" id="Destination" placeholder="Input Destination" {...field} />
-                                        </FormControl>
+                                        <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
+                                            <PopoverTrigger asChild>
+                                                <FormControl className="w-full">
+                                                    <Button
+                                                        onClick={() => setPopOverOpen(true)}
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        type="button"
+                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                    >
+                                                        <span className='text-xs px-2'>
+                                                            {selectDestination ? selectDestination : "Select Destination"}
+                                                        </span>
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[250px] p-0">
+                                                <Command className="w-full">
+                                                    <CommandInput
+                                                        placeholder="Search Country..."
+                                                        className="h-9 w-full text-xs"
+                                                    />
+                                                    <CommandEmpty
+                                                        className="w-full text-xs text-center py-2"
+                                                    >
+                                                        No Country found.
+                                                    </CommandEmpty>
+                                                    <CommandGroup className="h-[200]">
+                                                        <ScrollArea className="h-[150px]">
+                                                            {console.log(field.value)}
+                                                            {countryList.map((item) => (
+                                                                <>
+                                                                    <PopoverClose asChild>
+                                                                        <CommandItem
+                                                                            value={item.country_code}
+                                                                            key={item.country_id}
+                                                                            className="text-xs"
+                                                                            onSelect={() => {
+                                                                                setSelectDestination(item.country_name)
+
+                                                                                field.onChange(item.country_code); // Perbarui nilai field.value
+                                                                                setPopOverOpen(false)
+                                                                            }}
+                                                                        >
+
+                                                                            {item.country_name}
+                                                                            <CheckIcon
+                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                            />
+                                                                        </CommandItem>
+                                                                    </PopoverClose>
+                                                                </>
+                                                            ))}
+                                                        </ScrollArea>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
 
                                     </FormItem>
                                 </>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="pickDate"
+                            render={({ field }) => (
+                                <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
+                                    <FormLabel className="w-[40%]">Pickup Date</FormLabel>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={`pl-4 w-full text-xs px-4 shadow-none text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                                                >
+                                                    {field.value ? (
+                                                        format(field.value, "yyyy-MM-dd")
+                                                    ) : (
+                                                        <span>Pick a date</span>
+                                                    )}
+                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0" align="start">
+                                            <Calendar
+                                                mode="single"
+                                                selected={field.value}
+                                                onSelect={field.onChange}
+                                                disabled={(date) =>
+                                                    date <= new Date(new Date().setHours(0, 0, 0, 0)) // Disable dates before or equal to today
+                                                }
+                                                initialFocus
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </FormItem>
                             )}
                         />
 
