@@ -11,51 +11,177 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { useEffect, useState } from "react"
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Loaders } from "@/components/ui/loaders"
+import axios from 'axios'
+import { useToast } from "@/components/ui/use-toast"
 
-import StatusForms from "./StatusForms"
 
-export function UpdateDialog({ open, setOpen }) {
+const formSchema = yup.object().shape({
+    status: yup.string(),
+    lots_id: yup.string(),
+})
+export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
+    const { toast } = useToast()
+    const [loading, setLoading] = useState(false)
+    const form = useForm({
+        resolver: yupResolver(formSchema),
+        defaultValues: {
+            status: "",
+            lots_id: dataID,
+        },
+        mode: "onChange",
+    })
+    const [statusList, setStatusList] = useState([]);
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(
+                `/api/admin/transport/lots/status/list`,
+            );
+            console.log(response)
+            const data = await response.data.data;
+            setStatusList(data);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const handleSave = async (formData) => {
+        setLoading(true)
+        console.log("dikirim", formData)
+        try {
+            const response = await axios.post(
+                `/api/admin/custom_clearance/setLotsStatus`,
+                formData
+            );
+            toast({
+                title: `Success New Status For ${formData.customer_name} !`,
+                description: response.data.message,
+                status: 'success',
+            });
+            setLoading(false)
+            close();
+            reload();
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error While Assign Status!',
+                description: `Error : ${error.message}`,
+                status: 'error',
+            });
+        }
+    };
+    const close = () => {
+        setOpen(false)
+    }
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {/* <Button variant="outline">Edit Profile</Button> */}
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>
-                        <div className="flex flex-col gap-2 font-bold">
-                            <p>Update Status</p>
-                            <p>For Pakcage #ID</p>
-                        </div>
+        <>
+            {loading && <Loaders />}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>
+                            <div className="flex flex-col gap-2 font-bold">
+                                <p>Update Status</p>
+                                <p>For Lots #{dataID}</p>
+                            </div>
 
-                    </DialogTitle>
-                </DialogHeader>
-                <div className="flex flex-col gap-2">
-                    <div className="w-[50px] text-myBlue border-b border-myBlue text-sm text-center">
-                        <p>Status</p>
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="flex flex-col gap-2">
+                        <Form {...form}>
+                            <form
+                                onSubmit={form.handleSubmit(handleSave)}
+                                className='flex gap-4 flex-col'
+                                action="">
+
+                                <div className="w-[50px] text-myBlue border-b border-myBlue text-sm text-center">
+                                    <p>Status</p>
+                                </div>
+                                <div className="w-full">
+                                    <Separator className="w-full h-[1px]" />
+                                </div>
+                                <div className="flex flex-col gap-2 py-4">
+                                    <div className="w-[100%]">
+                                        <FormField
+                                            control={form.control}
+                                            name="status"
+                                            render={({ field }) => (
+                                                <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
+                                                    <FormLabel className="w-[40%]">Select Status</FormLabel>
+                                                    <Select
+                                                        onValueChange={(value) => {
+                                                            const selectedStatus = statusList.find(item => item.status === value);
+                                                            field.onChange(selectedStatus ? selectedStatus.status : ''); // Set id_status as value if found, otherwise empty string
+                                                        }}
+                                                        defaultValue={field.value}
+                                                    >
+                                                        <FormControl className='text-xs'>
+                                                            <SelectTrigger>
+                                                                <SelectValue className='text-xs' placeholder="Status" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            {
+                                                                statusList?.map((item, index) => (
+                                                                    <SelectItem className='text-xs' key={index} value={item.status}>
+                                                                        {item.status}
+                                                                    </SelectItem>
+                                                                ))
+                                                            }
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-row justify-between w-full">
+                                    <Button
+                                        type="button"
+                                        variant="redOutline"
+                                        onClick={close}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        variant="destructive"
+                                    >Save changes
+                                    </Button>
+                                </div>
+                            </form>
+                        </Form>
                     </div>
-                    <div className="w-full">
-                        <Separator className="w-full h-[1px]" />
-                    </div>
-                    <div className="flex flex-col gap-2 py-4">
-                        <Label className="font-light">Update Status</Label>
-                        <div className="w-[100%]">
-                            <StatusForms className="w-full" />
-                        </div>
-                    </div>
-                </div>
-                <DialogFooter>
-                    <div className="flex flex-row justify-between w-full">
-                        <Button
-                            variant="redOutline">Cancel</Button>
-                        <Button
-                            variant="destructive"
-                        >Save changes
-                        </Button>
-                    </div>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </DialogContent>
+            </Dialog>
+        </>
     )
 }

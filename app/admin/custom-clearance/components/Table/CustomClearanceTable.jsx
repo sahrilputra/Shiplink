@@ -27,13 +27,15 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import { CustomBrokerDropdownMenus } from "../Menus/DropdownMenus";
+import { UpdateDialog } from "../Menus/UpdateDialog";
 
-export function CustomClearanceTable({ data, isOpen, setOpen }) {
+export function CustomClearanceTable({ data }) {
     const [isEditDialog, setEditDialog] = useState(false);
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
+    const [open, setOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
     const [lots, setLots] = useState([]);
@@ -41,7 +43,7 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
-
+    const [dataID, setDataID] = useState(null)
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -107,7 +109,7 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
                                 variant="secondary"
                                 size="sm"
                                 className="rounded-[3px] h-6 px-2"
-                                onClick={() => toggleOpenChange()}
+                                onClick={() => toggleOpenChange(row.original.lots_id)}
                             >
                                 <p className="text-[11px]">Update</p>
                             </Button>
@@ -151,11 +153,17 @@ export function CustomClearanceTable({ data, isOpen, setOpen }) {
         setExpandedRows(newExpandedRows);
     };
 
-    const toggleOpenChange = () => {
+    const toggleOpenChange = (data) => {
         setOpen(true)
+        setDataID(data)
+    }
+    const reload = () => {
+        setIsSkeleton(true);
+        fetchData();
     }
     return (
         <>
+            <UpdateDialog open={open} setOpen={setOpen} dataID={dataID} reload={reload} />
             <div className="">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center py-2 px-2">
                     <SearchBar />

@@ -45,8 +45,7 @@ export default function VerificationPages() {
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <CustomClearanceTable data={data} isOpen={open} setOpen={setOpen} />
-                            <UpdateDialog open={open} setOpen={setOpen} />
+                            <CustomClearanceTable />
                         </div>
                     </div>
                 </div>

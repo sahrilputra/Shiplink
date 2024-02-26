@@ -1,8 +1,25 @@
 "use client"
 
 import * as React from "react"
-
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import {
     Command,
     CommandEmpty,
@@ -45,45 +62,14 @@ const statuses = [
 
 
 
-export default function StatusForms() {
+export default function StatusForms({ dataID, form }) {
 
     const [open, setOpen] = React.useState(false)
     const [selectedStatus, setSelectedStatus] = React.useState(null)
 
     return (
         <div className="flex items-center space-x-4">
-            <Popover open={open} onOpenChange={setOpen} className="w-full">
-                <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start">
-                        {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="p-0" side="bottom" align="start">
-                    <Command className="w-[100%]">
-                        <CommandInput placeholder="Change status..." />
-                        <CommandList>
-                            <CommandEmpty>No results found.</CommandEmpty>
-                            <CommandGroup>
-                                {statuses.map((status) => (
-                                    <CommandItem
-                                        key={status.value}
-                                        value={status.value}
-                                        onSelect={(value) => {
-                                            setSelectedStatus(
-                                                statuses.find((priority) => priority.value === value) ||
-                                                null
-                                            )
-                                            setOpen(false)
-                                        }}
-                                    >
-                                        {status.label}
-                                    </CommandItem>
-                                ))}
-                            </CommandGroup>
-                        </CommandList>
-                    </Command>
-                </PopoverContent>
-            </Popover>
+     
         </div>
     )
 }
