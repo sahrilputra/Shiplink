@@ -28,6 +28,15 @@ import {
 import axios from "axios";
 import { CustomBrokerDropdownMenus } from "../Menus/DropdownMenus";
 import { UpdateDialog } from "../Menus/UpdateDialog";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 
 export function CustomClearanceTable({ data }) {
     const [isEditDialog, setEditDialog] = useState(false);
@@ -113,7 +122,7 @@ export function CustomClearanceTable({ data }) {
                             >
                                 <p className="text-[11px]">Update</p>
                             </Button>
-                            <CustomBrokerDropdownMenus />
+                            <CustomBrokerDropdownMenus dataID={row.original.lots_id} setIsSkeleton={setIsSkeleton} reload={reload}/>
                         </div>
                     </div>
                 )
@@ -175,7 +184,6 @@ export function CustomClearanceTable({ data }) {
                             className=""
                             fill="#CC0019" />
                     </Button>
-                    <DatePickerWithRange className={"text-black"} />
                 </div>
             </div >
 
@@ -253,6 +261,36 @@ export function CustomClearanceTable({ data }) {
                 </TableBody>
 
             </Table>
+            <div className="flex justify-end w-full items-end py-3">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     )
 }

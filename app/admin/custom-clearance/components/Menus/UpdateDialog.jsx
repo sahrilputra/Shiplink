@@ -39,17 +39,20 @@ import { useToast } from "@/components/ui/use-toast"
 
 
 const formSchema = yup.object().shape({
-    status: yup.string(),
+    status_id: yup.number(),
     lots_id: yup.string(),
 })
+
 export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
+
     const { toast } = useToast()
     const [loading, setLoading] = useState(false)
+    const [isselectedStatus, setSelectedStatus] = useState(null)
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            status: "",
-            lots_id: dataID,
+            status_id: 0,
+            lots_id: dataID || '',
         },
         mode: "onChange",
     })
@@ -73,15 +76,16 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
     }, []);
 
     const handleSave = async (formData) => {
-        setLoading(true)
         console.log("dikirim", formData)
+        setLoading(true)
+        formData.lots_id = dataID;
         try {
             const response = await axios.post(
                 `/api/admin/custom_clearance/setLotsStatus`,
                 formData
             );
             toast({
-                title: `Success New Status For ${formData.customer_name} !`,
+                title: `Success New Status For ${dataID} !`,
                 description: response.data.message,
                 status: 'success',
             });
@@ -101,6 +105,12 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
     const close = () => {
         setOpen(false)
     }
+
+    const handleSelectedStatus = (e) => {
+        setSelectedStatus(e)
+        const statusID = statusList.find(item => item.status === e)?.id_status;
+    }
+    console.log("Status Forms", form.watch())
     return (
         <>
             {loading && <Loaders />}
@@ -121,25 +131,24 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
                                 onSubmit={form.handleSubmit(handleSave)}
                                 className='flex gap-4 flex-col'
                                 action="">
-
                                 <div className="w-[50px] text-myBlue border-b border-myBlue text-sm text-center">
                                     <p>Status</p>
                                 </div>
                                 <div className="w-full">
                                     <Separator className="w-full h-[1px]" />
                                 </div>
-                                <div className="flex flex-col gap-2 py-4">
+                                <div className="flex flex-col gap-2 pt-2 pb-4">
                                     <div className="w-[100%]">
                                         <FormField
                                             control={form.control}
-                                            name="status"
+                                            name="status_id"
                                             render={({ field }) => (
                                                 <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                                     <FormLabel className="w-[40%]">Select Status</FormLabel>
                                                     <Select
                                                         onValueChange={(value) => {
                                                             const selectedStatus = statusList.find(item => item.status === value);
-                                                            field.onChange(selectedStatus ? selectedStatus.status : ''); // Set id_status as value if found, otherwise empty string
+                                                            field.onChange(selectedStatus ? selectedStatus.id_status : ''); // Set id_status as value if found, otherwise empty string
                                                         }}
                                                         defaultValue={field.value}
                                                     >
@@ -161,17 +170,20 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
                                                 </FormItem>
                                             )}
                                         />
+
                                     </div>
                                 </div>
-                                <div className="flex flex-row justify-between w-full">
+                                <div className="flex flex-row justify-between w-full gap-5">
                                     <Button
                                         type="button"
                                         variant="redOutline"
+                                        className="w-full"
                                         onClick={close}
                                     >
                                         Cancel
                                     </Button>
                                     <Button
+                                        className="w-full"
                                         type="submit"
                                         variant="destructive"
                                     >Save changes
