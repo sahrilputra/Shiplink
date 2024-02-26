@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -19,10 +19,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 const formSchema = yup.object().shape({
     name: yup.string().required().max(50, "character is too long"),
-    lastName: yup.string().required(),
     email: yup.string().email().required(),
-    password: yup.string().required().min(8, "min 8 character"),
-    confirmPassword: yup.string().required().oneOf([yup.ref('password'), null], 'Passwords must match'),
     phoneNumber: yup.string().required(),
     address: yup.string().required(),
     city: yup.string().required(),
@@ -34,30 +31,42 @@ const formSchema = yup.object().shape({
 
 
 
-export const UserProfileForms = () => {
+export const UserProfileForms = ({ data, isDisable, setCancel }) => {
 
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            name: "",
-            lastName: "",
-            email: "",
-            password: "",
+            name: data?.customer_name || "",
+            email: data?.email || "",
             confirmPassword: "",
-            phoneNumber: "",
-            address: "",
-            city: "",
-            state: "",
-            zipCode: "",
-            country: "",
+            phoneNumber: data?.phone_number || "",
+            address: data?.address || "",
+            city: data?.city || "",
+            state: data?.state || "",
+            zipCode: data?.zipCode || "",
+            country: data?.country || "",
         },
         mode: "onChange",
+        disabled: isDisable,
     })
+
+    useEffect(() => {
+        form.setValue('name', data?.customer_name)
+        form.setValue('email', data?.email)
+        form.setValue('phoneNumber', data?.phone_number)
+        form.setValue('address', data?.address)
+        form.setValue('city', data?.city)
+        form.setValue('state', data?.province_name)
+        form.setValue('zipCode', data?.postal_code)
+        form.setValue('country', data?.country_name)
+
+    }, [data])
+
     return (
         <>
             <Form {...form}>
                 <form
-                    className='flex gap-2 flex-col'
+                    className={`flex gap-2 flex-col  ${isDisable ? "opacity-85" : " "}`}
                     action="">
                     <div className="bg-white rounded-lg border border-neutral-200 border-opacity-90 w-full px-4 py-3 gap-1 flex flex-col">
                         <FormField
@@ -73,7 +82,7 @@ export const UserProfileForms = () => {
                                                 size="new"
                                                 className="px-1.5" id="name" placeholder="john" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -214,6 +223,23 @@ export const UserProfileForms = () => {
                                     )}
                                 />
                             </div>
+                        </div>
+
+                        <div className={`flex flex-row w-full items-end justify-end gap-5 pt-3 ${isDisable ? "hidden" : ""}`}>
+                            <Button
+                                variant="redOutline"
+                                size="xs"
+                                type="button"
+                                onClick={setCancel}
+                            >
+                                <p className='text-xs'>Cancel</p>
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                size="xs"
+                            >
+                                <p className='text-xs'>Save</p>
+                            </Button>
                         </div>
                     </div>
                 </form>

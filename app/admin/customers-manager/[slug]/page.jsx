@@ -7,13 +7,16 @@ import { UserProfileForms } from './components/userForms'
 import { InvoiceList } from './components/invoiceData/invoiceList'
 import { PaymentCards } from './components/PaymentsCard'
 import { CustomerPackageList } from './components/userPackageData/dataList'
+import { Loaders } from '@/components/ui/loaders'
 import listData from '../../../../data/admin/CustomerPackageDataList.json'
 import { MoreAction } from './components/menus/MoreAction'
+import { Skeleton } from '@/components/ui/skeleton'
 import axios from 'axios'
 
 export default function UserPage({ params }) {
 
     console.log("hello :", params.slug)
+    const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState({
         keyword: `${params.slug}`,
         page: 0,
@@ -31,11 +34,13 @@ export default function UserPage({ params }) {
                 query
             );
             console.log(response)
-            const responseData = await response.data.customer
+            const responseData = await response.data.customer[0]
             setData(responseData)
+            setLoading(false)
             setSkeleton(false)
         } catch (error) {
             setSkeleton(false)
+            setLoading(false)
             console.log("Error", error)
         }
     }
@@ -51,38 +56,52 @@ export default function UserPage({ params }) {
         setMoreOpen(!moreOpen)
     }
 
+    const [disable, setDisable] = useState(true);
+    const setCancel = () => {
+        setDisable(true);
+    }
 
     return (
         <>
+            {loading && <Loaders />}
             <div className="w-full">
 
                 <div className="wrapper w-full flex flex-row justify-between gap-2 h-ful ">
                     <div className="left w-[30%] ">
                         <div className="content border bg-blue-200 border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
                             <div className="rounded-full m-3 mb-2 text-sm">
-                                <img src="https://source.boringavatars.com/beam"
-                                    alt="avatar"
-                                    className='w-[50px] h-[50px] rounded-full object-cover'
-                                />
-                            </div>
+                                {
+                                    skeleton ? (<Skeleton className={'w-[50px] h-[50px] rounded-full object-cover'} />
+                                    ) : (
+                                        <img src="https://source.boringavatars.com/beam"
+                                            alt="avatar"
+                                            className='w-[50px] h-[50px] rounded-full object-cover'
+                                        />
+                                    )
+                                }
 
-                            <p className='font-bold text-sm'>Jemth Smith</p>
-                            <p className=' text-zinc-600 text-sm'>#1234567</p>
+                            </div>
+                            {skeleton
+                                ? (<Skeleton className={'w-[100px] h-[15px]'} />)
+                                : (<p className='font-bold text-sm'>{data?.customer_name}</p>)}
+
+                            <p className=' text-zinc-600 text-sm'>#{data?.customer_id}</p>
                             <div className="text-xs text-zinc-600 text-center">
-                                <p>Jhonsmith@gmail.com</p>
-                                <p>(+1) 781-491-0874</p>
+                                <p>{data?.email}</p>
+                                <p>{data?.phone_number || "undefined"}</p>
                             </div>
 
                             <div className="bg-green-50 border border-green-200 rounded-sm text-xs mt-3">
-                                <p className='px-3 py-2'>Free</p>
+                                <p className='px-3 py-2'>{data?.customer_plans}</p>
                             </div>
 
                             <div className="ButtonGroup flex flex-col gap-2 py-3">
-
                                 <Button
                                     variant="destructive"
                                     size="xs"
                                     className=""
+                                    onClick={() => { setDisable(false) }}
+                                    disable={disable}
                                 >
                                     <p className='text-xs'>Edit Profiles</p>
                                 </Button>
@@ -91,7 +110,7 @@ export default function UserPage({ params }) {
                         </div>
                     </div>
                     <div className="center w-[100%]">
-                        <UserProfileForms />
+                        <UserProfileForms data={data} isDisable={disable} setCancel={setCancel} />
                     </div>
 
                     <div className="right  h-full w-[40%]">
@@ -124,7 +143,7 @@ export default function UserPage({ params }) {
             </div>
 
             <div className="w-full">
-                <CustomerPackageList data={listData} />
+                <CustomerPackageList dataID={params.slug} />
             </div>
         </>
     )
