@@ -10,18 +10,18 @@ export const DestinationLotsDetails = ({ data }) => {
             <div className={`${styles.detailContainerContent} p-2 px-4 bg-sky-50 w-full`}>
                 <div className="header py-3 flex flex-row justify-between items-center">
                     <h1 className='text-base font-bold text-myBlue'>Lots Details</h1>
-                    <p className='text-sm '>{data?.LotsID}</p>
+                    <p className='text-sm '>{data?.lots_id}</p>
                 </div>
 
                 <div className="content py-1 w-[100%] text-sm ">
                     <div className="bg-zinc-100/70 border border-zinc-200 px-2 py-2 w-full text-xs">
-                        <p>Lots Label : {data?.LotsLabel}</p>
-                        <p>Total Package : {data?.TotalPackage}</p>
-                        <p>Trip Number : {data?.TripNumber}</p>
+                        <p>Lots Label : {data?.label}</p>
+                        <p>Total Package : {data?.total_items}</p>
+                        <p>Trip Number : {data?.trip_number}</p>
                     </div>
 
                     <div className="buttonGroup py-3">
-                        <NextLink href={"/admin/destination/lots/undefined"}>
+                        <NextLink href={`/admin/destination/lots/${data?.lots_id}`}>
                             <Button
                                 variant="secondary"
                                 size="sm"
@@ -38,7 +38,7 @@ export const DestinationLotsDetails = ({ data }) => {
                             <p className="w-[60%]">Description</p>
                         </div>
                         <div className="list text-xs  bg-white border-b border-zinc-100 p-2">
-                            {
+                            {/* {
                                 data?.History.map((item, index) => {
                                     return (
                                         <>
@@ -52,7 +52,7 @@ export const DestinationLotsDetails = ({ data }) => {
                                     )
                                 })
 
-                            }
+                            } */}
                         </div>
                     </div>
                 </div>

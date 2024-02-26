@@ -28,7 +28,7 @@ import {
 import axios from "axios";
 import { DestinationMenus } from "../menus/DestinationMenus";
 
-export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelected, setTotalData }) {
+export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, handleData, isSelected, setTotalData }) {
     const [isEditDialog, setEditDialog] = useState(false);
 
     const [rowSelection, setRowSelection] = React.useState({})
@@ -41,7 +41,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
-
+    console.log("SELECT", isSelected)
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -83,15 +83,15 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
         },
         {
             accessorKey: "label",
-            header: "Register Date",
+            header: "Lots Label",
         },
         {
-            accessorKey: "trip_number",
+            accessorKey: "destination_name",
             header: "Destination",
         },
         {
-            accessorKey: "destination",
-            header: "Bin Assign",
+            accessorKey: "trip_number",
+            header: "Trip Number",
         },
         {
             accessorKey: "status",
@@ -164,7 +164,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
                             className=""
                             fill="#CC0019" />
                     </Button>
-                    <DatePickerWithRange className={"text-black"} />
+                    {/* <DatePickerWithRange className={"text-black"} /> */}
                 </div>
             </div >
 
@@ -229,7 +229,7 @@ export function DestinationTabled({ data, isOpen, setOpen, handleData, isSelecte
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
-                                            onClick={() => HandlerGetItemID(row.original.lots_id)}
+                                            onClick={() => handleSelectedRowData(row.original)}
                                             key={cell.id}
                                             className={`cursor-pointer ${isSelected === row.original.lots_id ? "bg-blue-200 " : ""} text-xs`}
                                         >

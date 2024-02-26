@@ -14,8 +14,9 @@ export default function PARSPage() {
 
     const [totalData, setTotalData] = useState(null)
     const [clickedID, setDataID] = useState(null)
-    const [clickedData, setClickedData] = useState(null);
+    const [clickedData, setClickedData] = useState("");
     const [key, setKey] = useState(0);
+    const [rowData, setRowData] = useState(null)
     const handleDataID = (id) => {
         const filterData = data.find((item) => item.LotsID === id)
         setClickedData(filterData);
@@ -36,6 +37,13 @@ export default function PARSPage() {
 
     const getTableData = (data) => {
         setTabledData(data);
+    }
+
+
+    const handleSelectedRowData = (data) => {
+        console.log("Row Data :", data)
+        setRowData(data)
+        setClickedData(data.lots_id)
     }
 
     return (
@@ -64,11 +72,11 @@ export default function PARSPage() {
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={styles.leftTabled}>
-                            <DestinationTabled data={data} handleData={handleDataID} isSelected={clickedID} setTotalData={setTotalData} />
+                            <DestinationTabled handleSelectedRowData={handleSelectedRowData} isSelected={clickedData} setTotalData={setTotalData} />
                         </div>
 
                         <div className={styles.details}>
-                            <DestinationLotsDetails data={clickedData} key={key} />
+                            <DestinationLotsDetails data={rowData} key={key} />
                         </div>
                     </div>
                 </div>
