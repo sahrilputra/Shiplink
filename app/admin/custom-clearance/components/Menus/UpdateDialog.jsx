@@ -110,7 +110,7 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
         setSelectedStatus(e)
         const statusID = statusList.find(item => item.status === e)?.id_status;
     }
-    console.log("Status Forms", form.watch())
+
     return (
         <>
             {loading && <Loaders />}

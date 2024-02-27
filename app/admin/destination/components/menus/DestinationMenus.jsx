@@ -11,24 +11,19 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontalIcon } from "lucide-react"
 import { Dialog } from '@/components/ui/dialog'
-import { AssignLotsToBin } from '../Dialog/AssignLotsToBin'
 import { UpdateStatusDialog } from '../Dialog/UpdateStatusDialog'
 import NextLink from "next/link"
-export const DestinationMenus = ({ getSelectedItem, dataIDhandler, data, dataID }) => {
+import { UpdateDialog } from '@/app/admin/custom-clearance/components/Menus/UpdateDialog'
+import { AssignLotsToBin } from '../Dialog/AssignLotsToBin'
+export const DestinationMenus = ({ dataID, reload }) => {
 
     const [assignOpen, setAssignOpen] = useState(false)
     const [statusOpen, setStatusOpen] = useState(false)
-
-    const render = () => {
-        if (assignOpen) {
-            return <AssignLotsToBin open={assignOpen} setOpen={setAssignOpen} />
-        }
-        if (statusOpen) {
-            return <UpdateStatusDialog open={statusOpen} setOpen={setStatusOpen} />
-        }
-    }
+    const lotsArray = Array.isArray(dataID) ? dataID : [dataID];
     return (
         <>
+            <AssignLotsToBin open={assignOpen} setOpen={setAssignOpen} data={lotsArray} reload={reload} />
+            <UpdateDialog open={statusOpen} setOpen={setStatusOpen} dataID={dataID} reload={reload} />
             <Dialog>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -44,12 +39,16 @@ export const DestinationMenus = ({ getSelectedItem, dataIDhandler, data, dataID 
 
                     <DropdownMenuContent side={"left"} sideOffset={2}>
                         <DropdownMenuItem
-                            onClick={() => setAssignOpen(true)}
+                            onClick={() => {
+                                setAssignOpen(true)
+                            }}
                         >
                             <p className="text-xs text-myBlue">Assign This Lots</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                            onClick={() => setStatusOpen(true)}
+                            onClick={() => {
+                                setStatusOpen(true)
+                            }}
                         >
                             <p className="text-xs">Update Lots Status</p>
                         </DropdownMenuItem>
@@ -61,9 +60,6 @@ export const DestinationMenus = ({ getSelectedItem, dataIDhandler, data, dataID 
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                {
-                    render()
-                }
             </Dialog>
         </>
     );

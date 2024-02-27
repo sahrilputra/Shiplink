@@ -31,7 +31,6 @@ export function UpdateStatusDialog({ open, setOpen }) {
                             <p>Update Status</p>
                             <p>For Lots</p>
                         </div>
-
                     </DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-2">
