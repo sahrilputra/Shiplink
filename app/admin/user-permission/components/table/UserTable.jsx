@@ -19,13 +19,20 @@ import { MoreHorizontalIcon } from 'lucide-react'
 import NextLink from 'next/link'
 import { FilterIcons } from "@/components/icons/iconCollection";
 import { SearchBar } from "@/components/ui/searchBar";
-import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
 import { NewRoleDialog } from "../dialog/NewRoleDialog";
 import { NewUserDialog } from "../dialog/CreateNewUsersDialog";
 import { MoreRoleAction } from "../menus/MoreRoleAction";
 import { MoreTableAction } from "../menus/MoreTableAction";
 import { DeleteUsersDialog } from "../dialog/DeleteUsersDialog";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import axios from "axios";
 import {
     ColumnDef,
@@ -217,7 +224,7 @@ export function UserTable() {
         }
     }
 
-    
+
     const handleSearchChange = (event) => {
         setQuery({
             ...query,
@@ -349,6 +356,36 @@ export function UserTable() {
                 </TableBody>
 
             </Table>
+            <div className="flex justify-end w-full items-end p-4">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     )
 }

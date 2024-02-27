@@ -17,21 +17,18 @@ export default function Profiles({ params }) {
 
     const [user, setUser] = useState({})
     const [query, setQuery] = useState({
-        keyword: "",
-        page: 1,
-        limit: 0,
-        index: 0
+        data: params.slug,
     });
     const fetchData = async () => {
         setSkleton(true)
         try {
             const response = await axios.post(
-                `/api/admin/user/list`,
+                `/api/admin/user/details`,
                 query
             );
-            const user = await response.data.users.find(user => user.user_code === params.slug);
-            console.log(user);
-            console.log(response)
+            const user = await response.data.data
+            console.log("Users :", user);
+            console.log("Response : ", response.data.data)
             setUser(user);
             setSkleton(false);
         } catch (error) {
@@ -52,6 +49,7 @@ export default function Profiles({ params }) {
     }
 
 
+    console.log("User Data", user)
     console.log(params.slug)
     return (
         <>

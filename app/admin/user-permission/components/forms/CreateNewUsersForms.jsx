@@ -38,6 +38,7 @@ const formSchema = yup.object().shape({
     warehouse_id: yup.string().required(),
     warehouse_name: yup.string(),
     role: yup.string(),
+    role_id: yup.string(),
     email: yup.string().required(),
     password: yup.string().required(),
 })
@@ -52,6 +53,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
             warehouse_name: "",
             role: "",
             email: "",
+            role_id: "",
             password: "",
         },
         mode: "onChange",
@@ -59,6 +61,8 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
 
     const [warehouse, setWarehouse] = useState([]);
     const [popOverOpen, setPopOverOpen] = useState(false);
+    const [roleOpen, setRoleOpen] = useState(false);
+    const [roleList, setRoleList] = useState([]);
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -66,14 +70,31 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
         index: 0
     });
 
+    const [resQuery, setResQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
     const fetchData = async () => {
         try {
             const response = await axios.post(
                 `/api/admin/warehouse/list`,
                 query
             );
+            const responseRole = await axios.post(
+                `/api/admin/user/role/list`,
+                resQuery
+            );
+
+            console.log("Warehouse Data", response.data)
+            console.log("Role Data", responseRole.data)
             const data = await response.data;
             setWarehouse(data.warehouse);
+
+            const roleData = await responseRole.data;
+            setRoleList(roleData.roles);
+
         } catch (error) {
             console.log('Error:', error);
         }
@@ -86,6 +107,11 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
     const handleSelectCountry = (code, name) => {
         form.setValue('warehouse_id', code);
         form.setValue('warehouse_name', name);
+    }
+
+    const handleSelectRoles = (code, name) => {
+        form.setValue('role_id', code);
+        form.setValue('role', name);
     }
 
     const handleSave = async (formData) => {
@@ -204,7 +230,6 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                                                                 </PopoverClose>
                                                             </>
 
-
                                                         ))}
                                                     </ScrollArea>
                                                 </CommandGroup>
@@ -216,6 +241,81 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                             )}
                         />
                         <FormField
+                            control={form.control}
+                            name="role"
+                            className="w-full"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col w-full">
+                                    <FormLabel className="text-sm text-neutral-900">Select User Role</FormLabel>
+                                    <Popover className="w-full" open={roleOpen} onOpenChange={setRoleOpen}>
+                                        <PopoverTrigger asChild>
+                                            <FormControl className="w-full">
+                                                <Button
+                                                    onClick={() => setRoleOpen(true)}
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    type="button"
+                                                    className={`text-xs h-9 shadow-none justify-start w-full gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                >
+                                                    <span className='text-sm'>
+                                                        {field.value ? field.value : "Select Role"}
+                                                    </span>
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[300px] p-0">
+                                            <Command className="w-full">
+                                                <CommandInput
+                                                    placeholder="Search Role..."
+                                                    className="h-9 w-full text-xs"
+                                                />
+                                                <CommandEmpty
+                                                    className="w-full text-xs text-center py-2"
+                                                >
+                                                    No List found.
+                                                </CommandEmpty>
+
+                                                <CommandGroup className="h-[150px]">
+                                                    <ScrollArea className="h-[150px]">
+                                                        {console.log(field.value)}
+                                                        {roleList.map((item) => (
+                                                            <>
+                                                                <PopoverClose asChild>
+                                                                    <CommandItem
+                                                                        value={item.role_name}
+                                                                        key={item.id}
+                                                                        className="text-xs"
+                                                                        onSelect={() => {
+                                                                            handleSelectRoles(
+                                                                                item.id,
+                                                                                item.role_name
+                                                                            );
+                                                                            form.setValue('role_id', item.id);
+                                                                            form.setValue('role', item.role_name);
+                                                                            field.onChange(item.role_name);
+                                                                            setRoleOpen(false)
+                                                                        }}
+                                                                    >
+                                                                        {item.role_name}
+                                                                        <CheckIcon
+                                                                            className={`ml-auto h-4 w-4 ${item.role_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                        />
+
+                                                                    </CommandItem>
+                                                                </PopoverClose>
+                                                            </>
+
+                                                        ))}
+                                                    </ScrollArea>
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* <FormField
                             className="w-full"
                             name="role"
                             control={form.control}
@@ -230,7 +330,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                                     </FormItem>
                                 </>
                             )}
-                        />
+                        /> */}
                         <FormField
                             className="w-full"
                             name="email"

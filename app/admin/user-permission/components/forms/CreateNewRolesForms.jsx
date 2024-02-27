@@ -16,33 +16,69 @@ import {
 } from "@/components/ui/form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Loaders } from '@/components/ui/loaders'
+import axios from 'axios'
 
 const formSchema = yup.object().shape({
-    RoleName: yup.string(),
-    RoleColor: yup.string(),
+    RoleName: yup.string().required(),
+    RoleColor: yup.string().required(),
     RolePermission: yup.string(),
-    SelectWarehouse: yup.string(),
+    action: yup.string(),
+
 })
-
-
 
 export const CreateNewRolesForms = ({ close, data = null }) => {
     const { toast } = useToast()
+
+    const [selectedColor, setSelectedColor] = useState('#000000');
+    const [loading, setLoading] = useState(false);
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             RoleName: "",
             RoleColor: "",
             RolePermission: "",
-            SelectWarehouse: "",
+            action: "",
 
         },
         mode: "onChange",
     })
+    const handleColorChange = (event) => {
+        setSelectedColor(event.target.value);
+    };
+
+    const handleSave = async (formData) => {
+        setLoading(true)
+        console.log("dikirim", formData)
+        formData.action = "add";
+        try {
+            const response = await axios.post(
+                `/api/admin/user/role/setData`,
+                formData
+            );
+            toast({
+                title: `New Role ${formData.RoleName} is created!`,
+                description: response.data.message,
+                status: `Status : ${response.data.status}`,
+            });
+            setLoading(false)
+            close()
+        } catch (error) {
+            console.log('Error', error);
+            setLoading(false)
+            toast({
+                title: 'Error creating New Role!',
+                description: `Error : ${error.message}`,
+                status: `Status : ${error.status}`,
+            });
+        }
+    };
     return (
         <>
+            {loading && <Loaders />}
             <Form {...form}>
                 <form
+                    onSubmit={form.handleSubmit(handleSave)}
                     className=''
                     action="">
                     <div className="profile flex flex-col gap-2 w-full text-xs">
@@ -71,14 +107,27 @@ export const CreateNewRolesForms = ({ close, data = null }) => {
                                     <FormItem className="w-full text-neutral-900">
                                         <FormLabel className="text-sm">Role Color Indicator</FormLabel>
                                         <FormControl>
-                                            <Input id="RoleColor" placeholder="Full Name" className="text-sm" {...field} />
+                                            <>
+                                                <div className="flex flex-row gap-3 items-center">
+                                                    <Input
+                                                        type="color"
+                                                        id="RoleColor"
+                                                        placeholder="Full Name"
+                                                        className="text-sm"
+                                                        onValueChange={(e) => handleColorChange(e)}
+                                                        {...field}
+                                                    />
+                                                    <div className='text-sm'>{field.value}</div>
+                                                </div>
+                                            </>
+
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 </>
                             )}
                         />
-                        <FormField
+                        {/* <FormField
                             className="w-full"
                             name="RolePermission"
                             control={form.control}
@@ -93,8 +142,8 @@ export const CreateNewRolesForms = ({ close, data = null }) => {
                                     </FormItem>
                                 </>
                             )}
-                        />
-                        <FormField
+                        /> */}
+                        {/* <FormField
                             className="w-full"
                             name="SelectWarehouse"
                             control={form.control}
@@ -109,12 +158,13 @@ export const CreateNewRolesForms = ({ close, data = null }) => {
                                     </FormItem>
                                 </>
                             )}
-                        />
+                        /> */}
 
                         <div className=" flex flex-row justify-between py-3 gap-3">
                             <Button
                                 variant="redOutline"
                                 size="sm"
+                                type="button"
                                 className="text-xs w-full"
                                 onClick={close}
                             >
@@ -124,6 +174,7 @@ export const CreateNewRolesForms = ({ close, data = null }) => {
                             <Button
                                 variant="destructive"
                                 size="sm"
+                                type="submit"
                                 className="text-xs w-full"
                             >
                                 <p className='text-xs'>Create New Role</p>

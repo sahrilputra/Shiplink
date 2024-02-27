@@ -1,37 +1,28 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers'
 
 const agent = new https.Agent({
-    rejectUnauthorized: false, // Non-production use only! Disables SSL certificate verification
+    rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
         const {
-            user_code ,
-            email,
-            name,
-            password,
-            type,
-            role,
-            role_id,
-            warehouse_id,
-            warehouse_name,
-            action,
+            id = 0,
+            RoleName,
+            RoleColor,
+            action
         } = await request.json();
 
+        // console.log("token from country", token);
+
         const response = await axios.post(
-            `${process.env.API_URL}/Users/Users_setdata`,
+            `${process.env.API_URL}/Users/Roles_setdata`,
             {
-                user_code: user_code,
-                email: email,
-                name: name,
-                password: password,
-                type: type,
-                role: role,
-                role_id: role_id,
-                warehouse_id: warehouse_id,
+                id : id,
+                role_name: RoleName,
+                color: RoleColor,
                 action: action,
             },
             {
@@ -39,9 +30,11 @@ export async function POST(request) {
                 headers: {
                     Authorization:
                         `Bearer ${process.env.BEARER_TOKEN}`
-                },
+                }
             }
         );
+
+        // console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
@@ -50,13 +43,11 @@ export async function POST(request) {
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {
-            return NextResponse.error(
-                { message: response.data.message },
-                { status: 400 }
-            );
+            return NextResponse.error({ message: response.data.message }, { status: 400 });
         }
     } catch (error) {
         console.error(error);
         return new Response("Internal Server Error", { status: 500 });
     }
 }
+
