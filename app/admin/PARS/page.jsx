@@ -45,10 +45,10 @@ export default function PARSPage() {
                     <Separator className="h-[3px]" />
                 </div>
                 <div className={`${styles.listTable} flex flex-col gap-1`}>
-                    <PARSTable data={data} handlerEdit={handleEdit} handlerDelete={handleDelete} />
+                    <PARSTable  handlerEdit={handleEdit} handlerDelete={handleDelete} />
                 </div>
                 <EditSequences open={editOpen} setOpen={setEditOpen} />
-                <DeleteSequences open={deletOpen} setOpen={setDeleteOpen} onClose={handleDeleteClose} />
+              
             </div>
         </>
     )
