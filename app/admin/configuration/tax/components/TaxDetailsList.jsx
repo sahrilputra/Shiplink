@@ -4,7 +4,10 @@ import Image from 'next/image'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { DeleteIcons } from '@/components/icons/iconCollection'
-export const TaxDetailsList = () => {
+import { Select } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+
+export const TaxDetailsList = ({ setChange }) => {
     const [checked, isChecked] = useState(false)
     const handleCheck = () => { isChecked(!checked) }
     return (
@@ -14,7 +17,9 @@ export const TaxDetailsList = () => {
                     ${checked ? 'bg-blue-100' : 'bg-white'}`
                 }>
                 <div className="flex flex-row gap-4 justify-start items-center w-[80%]">
-                    <Checkbox className="w-4 h-4" />
+                    <Switch onCheckedChange={() => {
+                        setChange(true)
+                    }} />
                     <div className="text-black text-[13px] font-semibold ">HST : 13 %</div>
                 </div>
                 <div className="inline-flex gap-3 justify-center items-center">

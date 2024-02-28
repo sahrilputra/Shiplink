@@ -86,7 +86,7 @@ export const NewType = ({ close, data = null, selected }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                      
+
                                     </FormItem>
                                 </>
                             )}
@@ -108,7 +108,7 @@ export const NewType = ({ close, data = null, selected }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                  
+
                                     </FormItem>
                                 </>
                             )}
@@ -131,7 +131,7 @@ export const NewType = ({ close, data = null, selected }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                            
+
                                     </FormItem>
                                 </>
                             )}
@@ -154,7 +154,7 @@ export const NewType = ({ close, data = null, selected }) => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                      
+
                                     </FormItem>
                                 </>
                             )}

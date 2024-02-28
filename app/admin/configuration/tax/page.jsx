@@ -132,10 +132,10 @@ export default function Tax() {
                         </div>
                         {clicked && (
                             <>
-                                <NewType selected={seletedProvince} close={handleClose}/>
+                                <NewType selected={seletedProvince} close={handleClose} />
                             </>
                         )}
-                        <TaxDetails />
+                        <TaxDetails close={handleClose} />
                     </div>
                 </div>
             </div>

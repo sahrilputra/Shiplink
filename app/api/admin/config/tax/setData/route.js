@@ -9,32 +9,22 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            tax_assignment_id = "",
-            TaxName,
-            Abbreviation,
-            TaxNumber,
-            TaxRate,
+            tax_id = "",
+            tax_assignment_id,
+            country_code,
+            province_code,
+            show_inv_status,
             action,
         } = await request.json();
-
-
-        console.log("Data Response : ",
-            tax_assignment_id,
-            TaxName,
-            Abbreviation,
-            TaxNumber,
-            TaxRate,
-            action,
-        )
 
         const response = await axios.post(
             `${process.env.API_URL}/Config/TaxAssignment_setdata`,
             {
+                tax_id: tax_id,
                 tax_assignment_id: tax_assignment_id,
-                tax_assignment_name: TaxName,
-                abbreviation: Abbreviation,
-                tax_number: TaxNumber,
-                tax_rate: TaxRate,
+                country_code: country_code,
+                province_code: province_code,
+                show_inv_status: show_inv_status,
                 action: action,
             },
             {
