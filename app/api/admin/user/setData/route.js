@@ -13,11 +13,11 @@ export async function POST(request) {
             email,
             name,
             password,
-            type,
+            phone_number,
             role,
             role_id,
             warehouse_id,
-            warehouse_name,
+            profile_picture,
             action,
         } = await request.json();
 
@@ -28,10 +28,11 @@ export async function POST(request) {
                 email: email,
                 name: name,
                 password: password,
-                type: type,
+                phone_number: phone_number,
                 role: role,
                 role_id: role_id,
                 warehouse_id: warehouse_id,
+                profile_picture: profile_picture,
                 action: action,
             },
             {

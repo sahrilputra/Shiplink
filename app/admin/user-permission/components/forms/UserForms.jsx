@@ -38,9 +38,9 @@ const formSchema = yup.object().shape({
     name: yup.string().required().max(50, "character is too long"),
     email: yup.string().email().required(),
     password: yup.string().required().min(8, "min 8 character"),
-    phoneNumber: yup.string().required(),
+    phone_number: yup.string().required(),
     role: yup.string().required(),
-    role_id: yup.string(),
+    role_id: yup.number(),
     warehouse: yup.string().required(),
     warehouse_id: yup.string().required(),
 
@@ -55,9 +55,9 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
             name: "",
             email: "",
             password: "",
-            phoneNumber: "",
+            phone_number: "",
             role: data?.role || "",
-            role_id: data?.role_id || "",
+            role_id: data?.role_id || 0,
             warehouse: data?.warehouse_name || "",
             warehouse_id: data?.warehouse_id || "",
         },
@@ -69,7 +69,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
         form.setValue("name", data?.name || "")
         form.setValue("email", data?.email || "")
         form.setValue("password", data?.password || "")
-        form.setValue("phoneNumber", data?.phone_number || "")
+        form.setValue("phone_number", data?.phone_number || "")
         form.setValue("role", data?.role || "")
         form.setValue("warehouse", data?.warehouse_name || "")
         form.setValue("warehouse_id", data?.warehouse_id || "")
@@ -144,13 +144,14 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
         console.log("dikirim", formData)
         formData.action = "edit";
         formData.user_code = data?.user_code;
+        formData.profile_picture = "";
         try {
             const response = await axios.post(
                 `/api/admin/user/setData`,
                 formData
             );
             toast({
-                title: `Success Edit customer ${formData.name}!`,
+                title: `Success Edit User ${formData.name}!`,
                 description: response.data.message,
                 status: `Status : ${response.data.status}`,
             });
@@ -159,7 +160,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
             console.log('Error', error);
             setLoading(false)
             toast({
-                title: 'Error Edit Customer Data!',
+                title: 'Error Edit User Data!',
                 description: `Error : ${error.message}`,
                 status: `Status : ${error.status}`,
             });
@@ -263,7 +264,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                         />
                         <div className="profile flex flex-row gap-2 w-full items-end">
                             <FormField
-                                name="phoneNumber"
+                                name="phone_number"
                                 className="w-full"
                                 control={form.control}
                                 render={({ field }) => (
@@ -279,7 +280,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                                             size="xs"
                                                             className="px-1.5"
                                                             type="number"
-                                                            id="phoneNumber"
+                                                            id="phone_number"
                                                             placeholder="Phone Number"
                                                             {...field} />
                                                     </FormControl>
