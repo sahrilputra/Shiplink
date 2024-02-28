@@ -1,7 +1,7 @@
 
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Select,
     SelectContent,
@@ -10,8 +10,57 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { PermissionTableComponents } from './components/PermissionTableComponents'
-
+import axios from 'axios';
 export default function Permission({ params }) {
+    console.log("params : ", params.slug)
+    const [loading, setLoading] = useState(false)
+    const [skleton, setSkleton] = useState(true)
+    const [permissionList, setPermissionList] = useState([])
+    const [user, setUser] = useState({})
+    const [userPermsission, setUserPermission] = useState(null)
+    const [query, setQuery] = useState({
+        data: params.slug,
+    });
+    const fetchData = async () => {
+        setSkleton(true)
+        try {
+            const response = await axios.post(
+                `/api/admin/user/permission/getUser`,
+                query
+            );
+
+            const permissionResponse = await axios.get(
+                `/api/admin/user/permission/list`,
+                null
+            );
+            const permissionList = await permissionResponse.data.data
+            console.log("Permission List :", permissionList);
+            setPermissionList(permissionList);
+
+
+            const user = await response.data
+            // console.log("Users :", user.data.permissions);
+            // console.log("Response : ", user)
+            setUser(user.data.user);
+            setUserPermission(user.data.permissions);
+            setSkleton(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    // const reloadData = () => {
+    //     fetchData();
+    // }
+    // fetchData();
+
+
+    console.log("User Data", user)
+    console.log("User Pemission", userPermsission)
     return (
         <>
             <div className="flex flex-col gap-4">
@@ -26,15 +75,15 @@ export default function Permission({ params }) {
                             />
                         </div>
                         <div className="info text-sm w-[200px]">
-                            <p className='font-bold'>Jemth Smith</p>
-                            <p className=' text-zinc-600'>#1234567</p>
-                            <p className=' text-zinc-600'>jhon@shiplink.ca</p>
+                            <p className='font-bold'>{user?.name}</p>
+                            <p className=' text-zinc-600'>#{user.user_code ? user.user_code : ""}</p>
+                            <p className=' text-zinc-600'>{user.email ? user.email : ''}</p>
                             <p className=' text-zinc-600'>(+1) 781-491-0874 </p>
-                            <p className=' text-zinc-600'>TR. Warehouse</p>
+                            <p className=' text-zinc-600'>Warehouse : {user.warehouse_name ? user.warehouse_name : ""}</p>
                         </div>
                     </div>
                     <div className="Role flex flex-col gap-4 items-end">
-                        <div className="flex flex-col text-xs gap-2">
+                        {/* <div className="flex flex-col text-xs gap-2">
                             <p className='font-bold text-xs'>Select Role</p>
                             <Select className="text-xs bg-slate-400">
                                 <SelectTrigger className="w-[180px] text-xs h-[40px] bg-slate-300/40">
@@ -46,12 +95,12 @@ export default function Permission({ params }) {
                                     <SelectItem className="text-xs" value="system">System</SelectItem>
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
                 <div className="">
-                    <PermissionTableComponents />
+                    <PermissionTableComponents data={permissionList} userData={userPermsission} userDataID={params.slug} />
                 </div>
             </div>
         </>

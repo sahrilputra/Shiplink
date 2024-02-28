@@ -296,75 +296,85 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                 name="role"
                                 className="w-full"
                                 render={({ field }) => (
-                                    <FormItem className="flex flex-col w-full">
-                                        <FormLabel className=" text-xs font-bold">Select Role</FormLabel>
-                                        <Popover className="w-full" open={roleOpen} onOpenChange={setRoleOpen}>
-                                            <PopoverTrigger asChild>
-                                                <FormControl className="w-full">
-                                                    <Button
-                                                        onClick={() => setRoleOpen(true)}
-                                                        variant="outline"
-                                                        role="combobox"
-                                                        type="button"
-                                                        size="xs"
-                                                        className={`text-xs px-1.5 h-[30px] shadow-none justify-start w-full gap-2 ${!field.value && "text-muted-foreground"}`}
-                                                    >
-                                                        <span className='text-xs px-2'>
-                                                            {field.value ? field.value : "Select Role"}
-                                                        </span>
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-[300px] p-0">
-                                                <Command className="w-full">
-                                                    <CommandInput
-                                                        placeholder="Search Role..."
-                                                        className="h-9 w-full text-xs"
-                                                    />
-                                                    <CommandEmpty
-                                                        className="w-full text-xs text-center py-2"
-                                                    >
-                                                        No List found.
-                                                    </CommandEmpty>
+                                    <>
+                                        {
+                                            isSkleton ? (
+                                                <Skeleton className="w-full h-8 mt-2" />
+                                            ) : (
+                                                <FormItem className="flex flex-col w-full">
+                                                    <FormLabel className=" text-xs font-bold">Select Role</FormLabel>
+                                                    <Popover className="w-full" open={roleOpen} onOpenChange={setRoleOpen}>
+                                                        <PopoverTrigger asChild>
+                                                            <FormControl className="w-full">
+                                                                <Button
+                                                                    onClick={() => setRoleOpen(true)}
+                                                                    variant="outline"
+                                                                    role="combobox"
+                                                                    type="button"
+                                                                    size="xs"
+                                                                    className={`text-xs px-1.5 h-[30px] shadow-none justify-start w-full gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                                    disabled={isDisable}
+                                                                >
+                                                                    <span className='text-xs px-2'>
+                                                                        {field.value ? field.value : "Select Role"}
+                                                                    </span>
+                                                                </Button>
+                                                            </FormControl>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-[300px] p-0">
+                                                            <Command className="w-full">
+                                                                <CommandInput
+                                                                    placeholder="Search Role..."
+                                                                    className="h-9 w-full text-xs"
+                                                                />
+                                                                <CommandEmpty
+                                                                    className="w-full text-xs text-center py-2"
+                                                                >
+                                                                    No List found.
+                                                                </CommandEmpty>
 
-                                                    <CommandGroup className="h-[150px]">
-                                                        <ScrollArea className="h-[150px]">
-                                                            {console.log(field.value)}
-                                                            {roleList.map((item) => (
-                                                                <>
-                                                                    <PopoverClose asChild>
-                                                                        <CommandItem
-                                                                            value={item.role_name}
-                                                                            key={item.id}
-                                                                            className="text-xs"
-                                                                            onSelect={() => {
-                                                                                handleSelectRoles(
-                                                                                    item.id,
-                                                                                    item.role_name
-                                                                                );
-                                                                                form.setValue('role_id', item.id);
-                                                                                form.setValue('role', item.role_name);
-                                                                                field.onChange(item.role_name);
-                                                                                setRoleOpen(false)
-                                                                            }}
-                                                                        >
-                                                                            {item.role_name}
-                                                                            <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.role_name === field.value ? "opacity-100" : "opacity-0"}`}
-                                                                            />
+                                                                <CommandGroup className="h-[150px]">
+                                                                    <ScrollArea className="h-[150px]">
+                                                                        {console.log(field.value)}
+                                                                        {roleList.map((item) => (
+                                                                            <>
+                                                                                <PopoverClose asChild>
+                                                                                    <CommandItem
+                                                                                        value={item.role_name}
+                                                                                        key={item.id}
+                                                                                        className="text-xs"
+                                                                                        onSelect={() => {
+                                                                                            handleSelectRoles(
+                                                                                                item.id,
+                                                                                                item.role_name
+                                                                                            );
+                                                                                            form.setValue('role_id', item.id);
+                                                                                            form.setValue('role', item.role_name);
+                                                                                            field.onChange(item.role_name);
+                                                                                            setRoleOpen(false)
+                                                                                        }}
+                                                                                    >
+                                                                                        {item.role_name}
+                                                                                        <CheckIcon
+                                                                                            className={`ml-auto h-4 w-4 ${item.role_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                                        />
 
-                                                                        </CommandItem>
-                                                                    </PopoverClose>
-                                                                </>
+                                                                                    </CommandItem>
+                                                                                </PopoverClose>
+                                                                            </>
 
-                                                            ))}
-                                                        </ScrollArea>
-                                                    </CommandGroup>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <FormMessage />
-                                    </FormItem>
+                                                                        ))}
+                                                                    </ScrollArea>
+                                                                </CommandGroup>
+                                                            </Command>
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )
+                                        }
+
+                                    </>
                                 )}
                             />
                             {/* <FormField
@@ -398,75 +408,83 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                             control={form.control}
                             name="warehouse"
                             className="w-full mt-2"
+                            disabled={isDisable}
                             render={({ field }) => (
-                                <FormItem className="flex flex-col w-full mt-2">
-                                    <FormLabel className=" text-xs font-bold">Select Warehouse</FormLabel>
-                                    <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
-                                        <PopoverTrigger asChild>
-                                            <FormControl className="w-full">
-                                                <Button
-                                                    onClick={() => setPopOverOpen(true)}
-                                                    variant="outline"
-                                                    role="combobox"
-                                                    type="button"
-                                                    className={`text-xs h-[30px] shadow-none justify-start w-full gap-2 ${!field.value && "text-muted-foreground"}`}
-                                                >
-                                                    <span className='text-xs px-2'>
-                                                        {field.value ? field.value : "Choose Warehouse"}
-                                                    </span>
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-[300px] p-0">
-                                            <Command className="w-full">
-                                                <CommandInput
-                                                    placeholder="Search Warehouses..."
-                                                    className="h-9 w-full text-xs"
-                                                />
-                                                <CommandEmpty
-                                                    className="w-full text-xs text-center py-2"
-                                                >
-                                                    No Warehouses found.
-                                                </CommandEmpty>
+                                <>
+                                    {isSkleton ? (
+                                        <Skeleton className="w-full h-8 mt-2" />
+                                    ) : (
+                                        <FormItem className="flex flex-col w-full mt-2">
+                                            <FormLabel className=" text-xs font-bold">Select Warehouse</FormLabel>
+                                            <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl className="w-full">
+                                                        <Button
+                                                            onClick={() => setPopOverOpen(true)}
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            type="button"
+                                                            className={`text-xs h-[30px] shadow-none justify-start w-full gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                            disabled={isDisable}
+                                                        >
+                                                            <span className='text-xs px-2'>
+                                                                {field.value ? field.value : "Choose Warehouse"}
+                                                            </span>
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[300px] p-0">
+                                                    <Command className="w-full">
+                                                        <CommandInput
+                                                            placeholder="Search Warehouses..."
+                                                            className="h-9 w-full text-xs"
+                                                        />
+                                                        <CommandEmpty
+                                                            className="w-full text-xs text-center py-2"
+                                                        >
+                                                            No Warehouses found.
+                                                        </CommandEmpty>
 
-                                                <CommandGroup className="h-[150px]">
-                                                    <ScrollArea className="h-[150px]">
-                                                        {console.log(field.value)}
-                                                        {warehouse.map((item) => (
-                                                            <>
-                                                                <PopoverClose asChild>
-                                                                    <CommandItem
-                                                                        value={item.warehouse_name}
-                                                                        key={item.warehouse_id}
-                                                                        className="text-xs"
-                                                                        onSelect={() => {
-                                                                            handleSelectCountry(
-                                                                                item.warehouse_id,
-                                                                                item.warehouse_name
-                                                                            );
-                                                                            form.setValue('warehouse_id', item.warehouse_id);
-                                                                            form.setValue('warehouse_name', item.warehouse_name);
-                                                                            field.onChange(item.warehouse_name);
-                                                                            setPopOverOpen(false)
-                                                                        }}
-                                                                    >
-                                                                        {item.warehouse_name}
-                                                                        <CheckIcon
-                                                                            className={`ml-auto h-4 w-4 ${item.warehouse_name === field.value ? "opacity-100" : "opacity-0"}`}
-                                                                        />
+                                                        <CommandGroup className="h-[150px]">
+                                                            <ScrollArea className="h-[150px]">
+                                                                {console.log(field.value)}
+                                                                {warehouse.map((item) => (
+                                                                    <>
+                                                                        <PopoverClose asChild>
+                                                                            <CommandItem
+                                                                                value={item.warehouse_name}
+                                                                                key={item.warehouse_id}
+                                                                                className="text-xs"
+                                                                                onSelect={() => {
+                                                                                    handleSelectCountry(
+                                                                                        item.warehouse_id,
+                                                                                        item.warehouse_name
+                                                                                    );
+                                                                                    form.setValue('warehouse_id', item.warehouse_id);
+                                                                                    form.setValue('warehouse_name', item.warehouse_name);
+                                                                                    field.onChange(item.warehouse_name);
+                                                                                    setPopOverOpen(false)
+                                                                                }}
+                                                                            >
+                                                                                {item.warehouse_name}
+                                                                                <CheckIcon
+                                                                                    className={`ml-auto h-4 w-4 ${item.warehouse_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                                />
 
-                                                                    </CommandItem>
-                                                                </PopoverClose>
-                                                            </>
+                                                                            </CommandItem>
+                                                                        </PopoverClose>
+                                                                    </>
 
-                                                        ))}
-                                                    </ScrollArea>
-                                                </CommandGroup>
-                                            </Command>
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
+                                                                ))}
+                                                            </ScrollArea>
+                                                        </CommandGroup>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                </>
                             )}
                         />
 
