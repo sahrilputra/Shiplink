@@ -42,7 +42,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
-export function PendingTable({ data, isSkeleton, handleSearchChange, reload, setQuery, query }) {
+export function PendingTable({ data, isSkeleton, handleSearchChange, reload, setQuery, query, status }) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [isSortedDesc, setIsSortedDesc] = useState(false);
@@ -299,7 +299,7 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload, set
                                 {expandedRows[row.id] && (
                                     <TableRow>
                                         <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
-                                            <BrokerDeclareContent data={row.original.content} details={row.original} TrackingID={row.original.tracking_id} reload={reload} />
+                                            <BrokerDeclareContent data={row.original.content} details={row.original} TrackingID={row.original.tracking_id} reload={reload} status={row.original.status} />
                                         </TableCell>
                                     </TableRow>
                                 )}

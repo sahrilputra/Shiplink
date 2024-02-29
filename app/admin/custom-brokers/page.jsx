@@ -92,7 +92,8 @@ export default function CustomBrokerPage() {
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <PendingTable data={filterData}
+                            <PendingTable
+                                data={filterData}
                                 isSkeleton={isSkeleton}
                                 handleSearchChange={handleSearchChange}
                                 reload={reload}

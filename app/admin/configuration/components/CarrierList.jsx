@@ -1,12 +1,11 @@
 'use client'
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { ToggleSwitch } from 'flowbite-react'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
-export const CarrierList = () => {
-    const [togled, setTogled] = useState(true);
-
+export const CarrierList = ({ data }) => {
+    const [toggled, setToggled] = useState(data?.status === "active");
 
     return (
         <>
@@ -23,18 +22,21 @@ export const CarrierList = () => {
                     <div className="justify-start items-center gap-[54px] flex">
                         <div className="justify-center items-center gap-[41px] flex">
                             <div className="h-[21px] justify-start items-end gap-[120px] flex">
-                                <div className="text-zinc-600 text-xs font-medium font-poppins text-bold">FedEx</div>
+                                <div className="text-zinc-600 text-xs font-medium font-poppins text-bold">{data?.carrier_name || "undefined"}</div>
                             </div>
                         </div>
                         <div className="justify-center items-center gap-[41px] flex">
                             <div className="h-[21px] justify-start items-end gap-[120px] flex">
-                                <div className="text-zinc-600 text-xs font-normal font-poppins">U.S Domestic</div>
+                                <div className="text-zinc-600 text-xs font-normal font-poppins">{data?.country_code || "undefined"}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className=" justify-between items-center flex flex-row gap-5">
-                    <Switch />
+                    <Switch
+                        checked={toggled}
+                        onChange={() => setToggled(!toggled)}
+                    />
                     <Button
                         variant="tableBlue"
                         size="xs"

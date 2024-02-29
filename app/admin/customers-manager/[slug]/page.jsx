@@ -39,9 +39,9 @@ export default function UserPage({ params }) {
         setMoreOpen(!moreOpen);
     };
 
-    const setCancel = () => {
-        setDisable(true);
-    };
+    const handleDisable = () => {
+        setDisable(!disable)
+    }
 
     return (
         <>
@@ -75,7 +75,13 @@ export default function UserPage({ params }) {
                                 <p className="px-3 py-2">{data?.customer_plans}</p>
                             </div>
                             <div className="ButtonGroup flex flex-col gap-2 py-3">
-                                <Button variant="destructive" size="xs" className="" type="button">
+                                <Button
+                                    variant="destructive"
+                                    size="xs"
+                                    className=""
+                                    type="button"
+                                    onClick={handleDisable}
+                                >
                                     <p className="text-xs">Edit Profiles</p>
                                 </Button>
                                 <MoreAction />
@@ -83,7 +89,12 @@ export default function UserPage({ params }) {
                         </div>
                     </div>
                     <div className="center w-[100%]">
-                        <UserProfileForms data={data} isDisable={disable} setCancel={setCancel} />
+                        <UserProfileForms
+                            data={data}
+                            isDisable={disable}
+                            handleDisable={handleDisable}
+                            customerID={data?.customer_id}
+                        />
                     </div>
                     <div className="right h-full w-[40%]">
                         <div className="flex flex-col gap-1">
