@@ -37,7 +37,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
-export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNewDialog, isSelected, isReloadData, setBinTotal }) {
+export function BinTableList({ data, isBinSelect, handleSelect, setCreateNewDialog, isSelected, isReloadData, setBinTotal }) {
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -120,6 +120,7 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         }
                         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                         aria-label="Select all"
+                        disabled={!isBinSelect}
                     />
                 )
             },
@@ -129,6 +130,7 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         checked={row.getIsSelected()}
                         onCheckedChange={(value) => row.toggleSelected(!!value)}
                         aria-label="Select row"
+                        
                     />
                 )
             },
@@ -297,9 +299,9 @@ export function BinTableList({ data, isOpen, setOpen, handleSelect, setCreateNew
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
-                                onClick={() => handleSelect(row.id)}
+                                onClick={() => handleSelect(row.original.bins_id)}
                                 data-state={row.getIsSelected() && "selected"}
-                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""} ${isSelected === row.id ? " bg-blue-200" : ""} cursor-pointer`}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""} ${isSelected === row.original.bins_id ? " bg-blue-200" : ""} cursor-pointer ${isBinSelect ? "" : "hidden"}`}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell

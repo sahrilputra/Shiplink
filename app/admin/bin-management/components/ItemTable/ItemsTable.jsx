@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -10,6 +10,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getPaginationRowModel,
+    SortingState,
+    getSortedRowModel,
+} from "@tanstack/react-table";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
 import { ExternalLink, MoreHorizontalIcon, Plus } from "lucide-react";
@@ -17,13 +35,29 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import NextLink from 'next/link';
 import { MovePackageDialog } from "../dialog/MovePackageDialog";
+import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
+export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) {
 
-export function ItemTable({ data, isOpen, setOpen }) {
-
+    console.log("SELECETED BIN ID : ", selectedBinID)
+    const [rowSelection, setRowSelection] = React.useState({})
+    const [sorting, setSorting] = React.useState([]);
     const [expandedRows, setExpandedRows] = useState([]);
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
     const [openMoveDialog, setOpenMoveDialog] = useState(false);
-
+    const [data, setData] = useState([])
+    const [itemTotal, setItemTotal] = useState(0)
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        bins_id: `${selectedBinID}`,
+        page: 0,
+        limit: 0,
+        index: 0,
+    });
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -36,89 +70,245 @@ export function ItemTable({ data, isOpen, setOpen }) {
         setExpandedRows(newExpandedRows);
     };
 
+    const handleRowSelectionChange = (selectedRows) => {
+        setRowSelection(selectedRows);
+    };
+
     const toggleOpenChange = () => {
         setOpen(true)
     }
+
+    const fetchData = async () => {
+        setIsSkeleton(true)
+        try {
+            const response = await axios.post(
+                `/api/admin/bin_manager/packageList`,
+                query
+            );
+            const data = await response.data;
+
+            console.log("response from api : ", data); // Log the response data
+
+            setData(data.package_info);
+            setPackageTotal(data.package_info.length)
+            setIsSkeleton(false);
+            setItemTotal(data.total);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        setQuery(prevQuery => ({
+            ...prevQuery,
+            bins_id: selectedBinID // Mengupdate bins_id ketika selectedBinID berubah
+        }));
+    }, [selectedBinID]);
+
+    useEffect(() => {
+        fetchData(); // Memanggil fetchData setelah query diperbarui
+    }, [query]); // Panggil fetchData() setiap kali query berubah
+
+    const columns = [
+        {
+            accessorKey: "select",
+            id: "select",
+            header: ({ table }) => {
+                return (
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() ||
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
+                )
+            },
+            cell: ({ row }) => {
+                return (
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                    />
+                )
+            },
+        },
+        {
+            accessorKey: "barcode_tracking",
+            header: "Tracking ID",
+            className: "text-xs",
+        },
+        {
+            accessorKey: "customer_name",
+            header: "Customer",
+        },
+        {
+            accessorKey: "status",
+            header: "Status",
+        },
+        {
+            accessorKey: "dimension",
+            header: "Dimension",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex flex-row gap-1">
+                        <p className="text-xs">{row?.original.package_witdth} </p> x
+                        <p className="text-xs">{row?.original.package_height} </p> x
+                        <p className="text-xs">{row?.original.package_length}</p>
+                        <p className="text-xs">{row?.original.package_height_unit}</p>
+                    </div>
+                )
+            }
+        },
+    ]
+
+    const table = useReactTable({
+        data: data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onRowSelectionChange: handleRowSelectionChange,
+        state: {
+            sorting,
+            rowSelection,
+        },
+
+    });
     return (
         <>
             <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} />
-            <Table>
-                <TableHeader className="text-sm bg-transparent py-2">
-                    <TableHead colSpan={5} className="px-2 py-3 " >
-                        <div className="flex flex-row justify-between">
-                            <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                                <SearchBar />
-                                <Button
-                                    variant="filter"
-                                    size="filter"
-                                    className='border border-zinc-300 flex items-center rounded'>
-                                    <FilterIcons
-                                        className=""
-                                        fill="#CC0019" />
-                                </Button>
-                            </div>
-                            <div className="">
-                                <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    className="px-[20px]"
-                                    onClick={() => setOpenMoveDialog(true)}
-                                >
-                                    <p className=" text-xs">Move Package</p>
-                                </Button>
-                            </div>
+            <div className="text-sm bg-transparent py-2">
+                <div className="px-2 py-3 " >
+                    <div className="flex flex-row justify-between">
+                        <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
+                            <SearchBar />
+                            <Button
+                                variant="filter"
+                                size="filter"
+                                className='border border-zinc-300 flex items-center rounded'>
+                                <FilterIcons
+                                    className=""
+                                    fill="#CC0019" />
+                            </Button>
                         </div>
-                    </TableHead>
-                </TableHeader>
+                        <div className="">
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                className="px-[20px]"
+                                onClick={() => setOpenMoveDialog(true)}
+                            >
+                                <p className=" text-xs">Move Package</p>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Table>
                 <TableHeader className="text-sm">
-                    <TableHead className=" text-xs w-[50px]">
-                        <Checkbox />
-                    </TableHead>
-                    <TableHead className=" text-xs ">ID</TableHead>
-                    <TableHead className=" text-xs ">Customer</TableHead>
-                    <TableHead className=" text-xs ">Date</TableHead>
-                    <TableHead className=" text-xs w-[100px]"></TableHead>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <>
+                            {headerGroup.headers.map((header, index) => {
+                                const isLastHeader = index === headerGroup.headers.length - 1;
+                                const isFirstHeader = index === 0;
+                                return (
+                                    <TableHead
+                                        key={header.id}
+                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                    >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                );
+                            })}
+                        </>
+                    ))}
                 </TableHeader>
-                <TableBody className="text-xs">
-                    {
-                        data.map((item, index) => (
-                            <>
-                                <TableRow
-                                    key={item.PackageID} >
-                                    <TableCell className="py-2 text-xs w-[50px]"> <Checkbox /></TableCell>
-                                    <TableCell className="py-2 text-xs ">{item.PackageID}</TableCell>
-                                    <TableCell className="py-2 text-xs ">{item.Customer}</TableCell>
-                                    <TableCell className="py-2 text-xs ">{item.Date}</TableCell>
-                                    <TableCell className="py-2 text-xs w-[100px]">
-                                        <div className="flex flex-row gap-2">
-                                            <NextLink
-                                                href={"/admin/package-details/2"}
+                <TableBody>
+
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
                                             >
-                                                <Button
-                                                    variant="ghost"
-                                                    className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                                    <p>Details</p>
-                                                    <ExternalLink width={10} height={10} />
-                                                </Button>
-                                            </NextLink>
-                                            <Button
-                                                variant="tableBlue"
-                                                size="tableIcon"
-                                                className={`w-max px-[10px] h-[25px]`}
-                                                onClick={() => setOpenMoveDialog(true)}
-                                            >
-                                                <p className="text-[11px]">Move</p>
-                                            </Button>
-                                        </div>
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
                                     </TableCell>
-
                                 </TableRow>
-                            </>
+                            )}
+                        </>
+                    ) : (
+                        // Jika data telah dimuat, render data aktual
+                        table.getRowModel().rows.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                data-state={row.getIsSelected() && "selected"}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}`}
+                            >
+                                {row.getVisibleCells().map((cell) => (
+                                    <TableCell
+                                        key={cell.id}
+                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                    >
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
                         ))
-                    }
+                    )}
                 </TableBody>
-
             </Table>
+            <div className="flex justify-end w-full items-end py-3">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     )
 }
