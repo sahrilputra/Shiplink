@@ -48,6 +48,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
     const [openMoveDialog, setOpenMoveDialog] = useState(false);
     const [data, setData] = useState([])
     const [itemTotal, setItemTotal] = useState(0)
+    const [selectedItemsID, setSelectedItemsID] = useState([])
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",
@@ -61,9 +62,11 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
-    const toggleCancel = () => {
-        setIsEdit(false)
+    const toggleOpenChange = (data) => {
+        setOpenMoveDialog(true)
+        setSelectedItemsID(data)
     }
+
     const toggleRow = (index) => {
         const newExpandedRows = [...expandedRows];
         newExpandedRows[index] = !newExpandedRows[index];
@@ -74,9 +77,6 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
         setRowSelection(selectedRows);
     };
 
-    const toggleOpenChange = () => {
-        setOpen(true)
-    }
 
     const fetchData = async () => {
         setIsSkeleton(true)
@@ -178,9 +178,15 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
         },
 
     });
+
+    const reload = () => {
+        fetchData();
+    }
+    const selectedItemsId = table?.getSelectedRowModel().rows.map(row => row.original.tracking_id);
+
     return (
         <>
-            <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} />
+            <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} data={selectedItemsID} setRowSelection={setRowSelection} reload={reload}/>
             <div className="text-sm bg-transparent py-2">
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
@@ -200,7 +206,8 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
                                 variant="destructive"
                                 size="sm"
                                 className="px-[20px]"
-                                onClick={() => setOpenMoveDialog(true)}
+                                disabled={Object.keys(rowSelection).length === 0}
+                                onClick={() => toggleOpenChange(selectedItemsId)}
                             >
                                 <p className=" text-xs">Move Package</p>
                             </Button>
