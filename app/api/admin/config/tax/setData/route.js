@@ -9,32 +9,33 @@ export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
         const {
-            tax_id = "",
-            tax_assignment_id,
-            country_code,
-            province_code,
-            show_inv_status,
+            tax_assignment_id = "",
+            tax_assignment_name,
+            abbreviation,
+            tax_number,
+            tax_rate,
             action,
         } = await request.json();
 
         const response = await axios.post(
             `${process.env.API_URL}/Config/TaxAssignment_setdata`,
             {
-                tax_id: tax_id,
                 tax_assignment_id: tax_assignment_id,
-                country_code: country_code,
-                province_code: province_code,
-                show_inv_status: show_inv_status,
-                action: action,
+                tax_assignment_name: tax_assignment_name,
+                abbreviation: abbreviation,
+                tax_number: tax_number,
+                tax_rate: tax_rate,
+                action: action
             },
             {
                 httpsAgent: agent,
                 headers: {
                     Authorization: `Bearer ${tokenAccess}`,
-                    "Content-Type": "text/plain",
                 },
             }
         );
+
+        console.log("response from api : ", response.message); // Log the response data
 
         if (response.status === 200) {
             const responseData = {

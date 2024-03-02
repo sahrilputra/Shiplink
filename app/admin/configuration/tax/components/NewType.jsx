@@ -16,53 +16,70 @@ import {
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from 'axios'
+import { Loaders } from "@/components/ui/loaders";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = yup.object().shape({
-    TaxName: yup.string(),
-    Abbreviation: yup.string().required(),
-    TaxNumber: yup.string().required(),
-    TaxRate: yup.number(),
+    tax_assignment_name: yup.string(),
+    abbreviation: yup.string().required(),
+    tax_number: yup.string().required(),
+    tax_rate: yup.string().required(),
 });
 
 export const NewType = ({ close, data = null, selected }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [clicked, isClicked] = useState(false);
+    const [loading, setLoading] = useState(false);
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     };
+    const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            TaxName: "",
-            Abbreviation: "",
-            TaxNumber: "",
-            TaxRate: "",
+            tax_assignment_name: "",
+            abbreviation: "",
+            tax_number: "",
+            tax_rate: "",
         },
         mode: "onChange",
     });
 
-    const handleSave = async (data) => {
-        console.log("data", data)
+    const handleSave = async (formData) => {
+        console.log("data", formData)
+        setLoading(true)
+        formData.action = "add"
+        formData.tax_assignment_id = ""
         try {
             const response = await axios.post(
                 `/api/admin/config/tax/setData`,
-                {
-                    tax_assignment_id: "",
-                    TaxName: data.TaxName,
-                    Abbreviation: data.Abbreviation,
-                    TaxNumber: data.TaxNumber,
-                    TaxRate: data.TaxRate,
-                    action: "add",
-                }
+                formData
             );
+
+            setLoading(false)
             const responseData = await response.data;
             console.log("responseData", responseData)
+            form.reset()
+            toast({
+                title: "Success",
+                description: responseData.message,
+                status: "success",
+            })
         } catch (error) {
+            setLoading(false)
+            toast({
+                title: "Error",
+                description: error.message,
+                status: "error",
+            })
             console.log('Error:', error);
         }
     }
+    console.log('Error:', form.formState.errors)
     return (
         <>
+            {loading && <Loaders />
+            }
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleSave)}
@@ -71,7 +88,7 @@ export const NewType = ({ close, data = null, selected }) => {
                     <div className="profile flex flex-row flex-wrap gap-2 w-full items-end text-xs justify-start">
                         <FormField
                             className="w-[300px]"
-                            name="TaxName"
+                            name="tax_assignment_name"
                             control={form.control}
                             render={({ field }) => (
                                 <>
@@ -92,12 +109,12 @@ export const NewType = ({ close, data = null, selected }) => {
                             )}
                         />
                         <FormField
-                            name="Abbreviation"
+                            name="abbreviation"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-[150px]">
-                                        <FormLabel className="font-bold ">Abbreviation</FormLabel>
+                                        <FormLabel className="font-bold ">abbreviation</FormLabel>
                                         <FormControl>
                                             <Input
                                                 size="sm"
@@ -114,7 +131,7 @@ export const NewType = ({ close, data = null, selected }) => {
                             )}
                         />
                         <FormField
-                            name="TaxNumber"
+                            name="tax_number"
                             className=""
                             control={form.control}
                             render={({ field }) => (
@@ -137,7 +154,7 @@ export const NewType = ({ close, data = null, selected }) => {
                             )}
                         />
                         <FormField
-                            name="TaxRate"
+                            name="tax_rate"
                             className=""
                             control={form.control}
                             render={({ field }) => (
