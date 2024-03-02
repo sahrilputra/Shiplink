@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import https from "https";
-import { cookies } from "next/headers";
+import { getAccessToken } from "@/helpers/getAccessToken";
 
 const agent = new https.Agent({
     rejectUnauthorized: false, // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
+        const tokenAccess = await getAccessToken(request)
         const {
             id_role,
             permission_id,
@@ -23,7 +24,7 @@ export async function POST(request) {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                        `Bearer ${process.env.BEARER_TOKEN}`
+                        `Bearer ${tokenAccess}`
                 },
             }
         );

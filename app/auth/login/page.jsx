@@ -56,6 +56,9 @@ export default function Home() {
 
     return (
         <>
+            {
+                loading && <Loaders />
+            }
             <div className="flex flex-col text-center pt-[90px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE] ">
                 <div className="flex flex-col gap-5 py-10">
                     <div className="text-myBlue text-lg font-bold">Welcome Back</div>

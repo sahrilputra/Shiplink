@@ -6,17 +6,12 @@ import { SearchIcon } from '@/components/icons/iconCollection';
 import { ForwadPakage } from './components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
 import ItemsPackage from './components/items/itemsPackage';
-import { PaymentModals } from './components/dashboardMenus/payments/paymentModals';
 import { ModalContext } from '@/context/ModalContext';
 import data from '../../../data/dashboardData.json'
-import { DetailsModals } from './components/DialogDetails/Details';
-import { ScrollArea } from '@/components/ui/scroll-area';
 export default function Dashboard() {
 
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
     const [selectedTab, setSelectedTab] = useState("all");
-
-
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);

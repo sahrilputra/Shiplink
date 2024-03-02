@@ -2,14 +2,14 @@ import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
 import { cookies } from 'next/headers'
-
+import { getAccessToken } from "@/helpers/getAccessToken";
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
         const { action = "", bins_id = "", level, row, section, } = await request.json();
-
+        const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
             `${process.env.API_URL}/Bins/Bins_setdata`,
             {
@@ -23,7 +23,7 @@ export async function POST(request) {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                        `Bearer ${process.env.BEARER_TOKEN}`
+                        `Bearer ${tokenAccess}`
                 }
             }
         );

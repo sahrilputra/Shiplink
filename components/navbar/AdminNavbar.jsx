@@ -18,11 +18,18 @@ import Link from 'next/link'
 import { BellIcon, LogOut, Settings } from 'lucide-react'
 import { Skeleton } from '../ui/skeleton'
 import { Separator } from '../ui/separator'
-
+import { useRouter } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 export const AdminNavbars = () => {
-
+    const { data: session } = useSession()
+    const router = useRouter()
+    console.log("session", session)
     const [loading, setLoading] = useState(true);
 
+    const hanldeLogout = () => {
+        signOut()
+        router.push('/auth/admin')
+    }
     // Contoh penggunaan useEffect untuk mensimulasikan proses loading
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -120,11 +127,13 @@ export const AdminNavbars = () => {
                     </NavigationMenu>
 
 
-                    <NavigationMenu>
+                    <NavigationMenu
+                        className="flex flex-row gap-3 items-center"
+                    >
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>
-                                    <div className="justify-start items-center gap-3 flex p-2">
+                                    <div className="justify-start items-center gap-3 flex p-2 w-[150px]">
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
                                         ) : (
@@ -143,15 +152,15 @@ export const AdminNavbars = () => {
                                             ) : (
                                                 <>
                                                     <div className=" text-black text-sm font-semiBold">
-                                                        superadmin
+                                                        {session ? session.user?.name : "User"}
                                                     </div>
-                                                    <div className=" text-black text-sm font-normal ">Premium</div>
+                                                    <div className=" text-black text-sm font-normal ">{session ? session.user?.role : "role"}</div>
                                                 </>
                                             )}
                                         </div>
                                     </div>
                                 </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
+                                <NavigationMenuContent className="flex justify-between flex-col ">
                                     <Link href="/#" legacyBehavior passHref>
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
                                             <div className="flex flex-row justify-between gap-2 w-[170px]">
@@ -160,14 +169,17 @@ export const AdminNavbars = () => {
                                             </div>
                                         </NavigationMenuLink>
                                     </Link>
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
-                                            <div className="flex flex-row justify-between gap-2 w-[170px]">
-                                                <p>Logout</p>
-                                                <LogOut width={20} height={20} />
-                                            </div>
-                                        </NavigationMenuLink>
-                                    </Link>
+                                    <NavigationMenuLink
+                                        onClick={() => hanldeLogout()}
+                                        className={`${navigationMenuTriggerStyle()} gap-9`}>
+                                        <div
+                                            className="flex flex-row justify-between gap-2 w-[170px]"
+                                        >
+                                            <p>Logout</p>
+                                            <LogOut width={20} height={20} />
+                                        </div>
+                                    </NavigationMenuLink>
+
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         </NavigationMenuList>

@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
-import { cookies } from 'next/headers'
+import { getAccessToken } from "@/helpers/getAccessToken";
 
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
+        const tokenAccess = await getAccessToken(request)
         const { keyword, date_start, date_end, tracking_id, status, page, limit, index, token } = await request.json();
 
         const response = await axios.post(
@@ -26,7 +27,7 @@ export async function POST(request) {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                        `Bearer ${process.env.BEARER_TOKEN}`
+                        `Bearer ${tokenAccess}`
                 }
             }
         );

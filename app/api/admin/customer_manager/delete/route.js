@@ -2,13 +2,14 @@ import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
 import { cookies } from 'next/headers'
-
+import { getAccessToken } from "@/helpers/getAccessToken";
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
         const { data } = await request.json();
+        const tokenAccess = await getAccessToken(request)
         console.log("code : ", { data })
         const response = await axios.get(
             `${process.env.API_URL}/Customers/Customer_delete?customer_id=${data}`,
@@ -16,7 +17,7 @@ export async function POST(request) {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                        `Bearer ${process.env.BEARER_TOKEN}`
+                        `Bearer ${tokenAccess}`
                 }
             }
         );

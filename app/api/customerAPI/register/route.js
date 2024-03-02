@@ -1,33 +1,36 @@
 import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
-import { getAccessToken } from "@/helpers/getAccessToken";
+import { cookies } from 'next/headers'
 
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
-        const { province_id = "", country_code, province_name, province_code, action } = await request.json();
-        const tokenAccess = await getAccessToken(request)
+        const {
+            name,
+            email,
+            country_code,
+            password,
+            user_plan,
+        } = await request.json();
+
+
         const response = await axios.post(
-            `${process.env.API_URL}/Config/Province_setdata`,
+            `${process.env.API_URL}/Auth/Register`,
             {
-                province_id: province_id,
+                name: name,
+                email: email,
                 country_code: country_code,
-                province_name: province_name,
-                province_code: province_code,
-                action: action,
+                password: password,
+                user_plan: user_plan,
             },
             {
-                httpsAgent: agent,
-                headers: {
-                    Authorization:
-                    `Bearer ${tokenAccess}`
-                }
+                httpsAgent: agent
             }
         );
-
+        console.log("Response from API", response.data.message)
         if (response.status === 200) {
             const responseData = {
                 status: true,
@@ -35,7 +38,10 @@ export async function POST(request) {
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {
-            return NextResponse.error({ message: response.data.message }, { status: 400 });
+            return NextResponse.error(
+                { message: response.data.message },
+                { status: 400 }
+            );
         }
     } catch (error) {
         console.error(error);

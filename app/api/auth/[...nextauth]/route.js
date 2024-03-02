@@ -83,10 +83,10 @@ export const authOption = {
         }
     },
     pages: {
-        signIn: ['/auth/signin', '/auth/login', '/auth/admin'],
-        signOut: '/auth/signout',
-        error: '/login',
-        verifyRequest: '/auth/verify-request',
+        signIn: ['/auth/login', '/auth/admin'],
+        signOut: '/auth/login',
+        error: '/auth/login',
+        // verifyRequest: '/auth/',
         newUser: null
     },
     session: {

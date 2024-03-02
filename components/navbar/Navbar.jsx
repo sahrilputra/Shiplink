@@ -14,11 +14,14 @@ import {
 } from "@/components/ui/navigation-menu"
 import { ShippingLabelIcon, ShippingCalculatorIcon } from '../icons/navbarIcons'
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
+import { LogOutIcon, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { Skeleton } from '../ui/skeleton'
-export const Navbar = async () => {
+import { useSession, signOut } from 'next-auth/react'
+export const Navbar = () => {
 
     const [loading, setLoading] = useState(true);
+    const { data: session } = useSession()
 
     // Contoh penggunaan useEffect untuk mensimulasikan proses loading
     useEffect(() => {
@@ -27,6 +30,10 @@ export const Navbar = async () => {
         }, 1000);
         return () => clearTimeout(timer);
     }, []);
+
+    const handleSingOut = () => {
+        signOut()
+    }
 
     return (
         <>
@@ -178,7 +185,7 @@ export const Navbar = async () => {
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>
-                                    <div className="justify-start items-center gap-3 flex p-2">
+                                    <div className="justify-start items-center gap-3 flex p-2 w-[150px]">
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
                                         ) : (
@@ -196,8 +203,8 @@ export const Navbar = async () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <div className=" text-black text-sm font-semiBold">User, </div>
-                                                    <div className=" text-black text-sm font-normal ">Premium</div>
+                                                    <div className=" text-black text-sm font-semiBold">{session ? session.user.name : ""}  </div>
+                                                    <div className=" text-black text-sm font-normal ">{session ? session.user.type : ""}</div>
                                                 </>
                                             )}
                                         </div>
@@ -208,7 +215,7 @@ export const Navbar = async () => {
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
                                             <div className="flex flex-row justify-between gap-2 w-[170px]">
                                                 <p>Account Setting</p>
-                                                <ShippingLabelIcon width={20} height={20} />
+                                                <Settings width={20} height={20} />
                                             </div>
                                         </NavigationMenuLink>
                                     </Link>
@@ -221,10 +228,12 @@ export const Navbar = async () => {
                                         </NavigationMenuLink>
                                     </Link>
                                     <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
+                                        <NavigationMenuLink
+                                            onClick={() => handleSingOut()}
+                                            className={`${navigationMenuTriggerStyle()} gap-9`}>
                                             <div className="flex flex-row justify-between gap-2 w-[170px]">
                                                 <p>Logout</p>
-                                                <ShippingLabelIcon width={20} height={20} />
+                                                <LogOutIcon width={20} height={20} />
                                             </div>
                                         </NavigationMenuLink>
                                     </Link>

@@ -14,9 +14,12 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { useMediaQuery } from 'react-responsive'
+import { useSession, signOut } from 'next-auth/react'
 export const HomeNavbar = () => {
     const [isSolidBackground, setIsSolidBackground] = useState(false);
     const [open, setOpen] = useState(false)
+    const { data: session } = useSession()
+
 
     const isTable = useMediaQuery({ query: "(min-width: 900px)" });
     useEffect(() => {
@@ -52,25 +55,50 @@ export const HomeNavbar = () => {
                             <p className={`text-base font-extralight ${styles.listItem}`}>About Us</p>
                         </NextLink>
                         <p className={`text-base font-extralight ${styles.listItem}`}>EN</p>
-                        <div className="flex flex-row gap-[24px]">
-                            <NextLink href={'/login/customer/signup'} >
-                                <Button
-                                    variant='outline'
-                                    className="w-[126px] text-white bg-transparent border border-white"
-                                >
-                                    <p className='text-base'>Sign Up</p>
-                                </Button>
-                            </NextLink>
+                        {
+                            session ? (
+                                <div className="flex flex-row gap-[24px]">
+                                    <NextLink href={'/dashboard'} >
+                                        <Button
+                                            variant='outline'
+                                            className="w-[126px] text-white bg-transparent border border-white"
+                                        >
+                                            <p className='text-base'>Dashboard</p>
+                                        </Button>
+                                    </NextLink>
 
-                            <NextLink href={'/login/customer'} >
-                                <Button
-                                    variant='destructive'
-                                    className="w-[126px]"
-                                >
-                                    <p className='text-base'>Login</p>
-                                </Button>
-                            </NextLink>
-                        </div>
+                                    <NextLink href={'/auth/login'} >
+                                        <Button
+                                            variant='destructive'
+                                            className="w-[126px]"
+                                            onClick={() => { signOut() }}
+                                        >
+                                            <p className='text-base'>Logout</p>
+                                        </Button>
+                                    </NextLink>
+                                </div>
+                            ) : (
+                                <div className="flex flex-row gap-[24px]">
+                                    <NextLink href={'/auth/signup'} >
+                                        <Button
+                                            variant='outline'
+                                            className="w-[126px] text-white bg-transparent border border-white"
+                                        >
+                                            <p className='text-base'>Sign Up</p>
+                                        </Button>
+                                    </NextLink>
+
+                                    <NextLink href={'/auth/login'} >
+                                        <Button
+                                            variant='destructive'
+                                            className="w-[126px]"
+                                        >
+                                            <p className='text-base'>Login</p>
+                                        </Button>
+                                    </NextLink>
+                                </div>
+                            )
+                        }
                     </div>
 
                 ) : (
@@ -130,23 +158,50 @@ export const HomeNavbar = () => {
                             <p className={`text-sm text-left font-extralight`}>EN</p>
                         </Button>
                         <div className="flex flex-col gap-[10px] py-5 justify-center items-center w-full">
-                            <NextLink href={'/login/customer/signup'} passHref className='w-full'>
-                                <Button
-                                    variant='redOutline'
-                                    className="w-[100%]"
-                                >
-                                    <p className='text-sm'>Sign Up</p>
-                                </Button>
-                            </NextLink>
+                            {
+                                session ? (
+                                    <div className="flex flex-col gap-[10px] py-5 justify-center items-center w-full">
+                                        <NextLink href={'/dashboard'} passHref className='w-full'>
+                                            <Button
+                                                variant='destructive'
+                                                className="w-[100%]"
+                                            >
+                                                <p className='text-sm'>Dashboard</p>
+                                            </Button>
+                                        </NextLink>
+                                        <NextLink href={'/auth/login'} passHref className='w-full'>
+                                            <Button
+                                                variant='destructive'
+                                                className="w-[100%]"
+                                                onClick={() => { signOut() }}
+                                            >
+                                                <p className='text-sm'>Logout</p>
+                                            </Button>
+                                        </NextLink>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-[10px] py-5 justify-center items-center w-full">
+                                        <NextLink href={'/auth/signup'} passHref className='w-full'>
+                                            <Button
+                                                variant='redOutline'
+                                                className="w-[100%]"
+                                            >
+                                                <p className='text-sm'>Sign Up</p>
+                                            </Button>
+                                        </NextLink>
 
-                            <NextLink href={'/login/customer'} passHref className='w-full'>
-                                <Button
-                                    variant='destructive'
-                                    className="w-[100%]"
-                                >
-                                    <p className='text-sm'>Login</p>
-                                </Button>
-                            </NextLink>
+                                        <NextLink href={'/auth/login'} passHref className='w-full'>
+                                            <Button
+                                                variant='destructive'
+                                                className="w-[100%]"
+                                            >
+                                                <p className='text-sm'>Login</p>
+                                            </Button>
+                                        </NextLink>
+                                    </div>
+                                )
+                            }
+
                         </div>
                     </div>
                 </SheetContent>
