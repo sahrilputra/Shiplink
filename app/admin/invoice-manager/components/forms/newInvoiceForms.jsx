@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import styles from '../../styles.module.scss'
+import InputMask from 'react-input-mask';
 import {
     Form,
     FormControl,
@@ -44,15 +45,22 @@ const formSchema = yup.object().shape({
     ShippedToCountry: yup.string(),
     note: yup.string(),
     userName: yup.string(),
+    userPhone: yup.string(),
     userEmails: yup.string().email(),
-    itemDescription: yup.string(),
-    itemQty: yup.string(),
-    itemPrice: yup.string(),
-    itemAmount: yup.string(),
+    items: yup.array().of(
+        yup.object().shape({
+            itemDescription: yup.string(),
+            itemQty: yup.string(),
+            itemPrice: yup.string(),
+            itemAmount: yup.string(),
+            itemID: yup.string(),
+        })
+    ),
     itemTax: yup.string(),
     itemTotal: yup.string(),
     itemDiscount: yup.string(),
-    itemID: yup.string(),
+
+
 })
 
 
@@ -76,18 +84,31 @@ export const InvoiceForms = () => {
             ShippedToCountry: " ",
             note: "",
             userName: "",
+            userPhone: "",
             userEmails: "",
-            itemDescription: "",
-            itemQty: "",
-            itemPrice: "",
-            itemAmount: "",
+            items: [
+                {
+                    itemDescription: "",
+                    itemQty: "",
+                    itemPrice: "",
+                    itemAmount: "",
+                    itemID: "",
+                }
+            ],
             itemTax: "",
             itemTotal: "",
             itemDiscount: "",
-            itemID: "",
+
         },
         mode: "onChange",
     })
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "items",
+    });
+
+
     return (
         <>
             <Form {...form}>
@@ -139,25 +160,40 @@ export const InvoiceForms = () => {
                                 </div>
                                 <div className="nameWrapper flex flex-row gap-2 w-[100%] text-xs ">
                                     <FormField
-                                        className="w-[40%] text-xs"
-                                        name="InvoiceCurrency"
+                                        className="w-[40%] "
+                                        name="userPhone"
                                         control={form.control}
-                                        render={({ field }) => (
+                                        render={({ field, formState }) => (
                                             <>
-                                                <FormItem className="w-[50%] space-y-1 text-xs">
-                                                    <FormLabel className="text-xs font-bold">Phone Number</FormLabel>
+                                                <FormItem className="space-y-1 w-[40%] text-xs">
+                                                    <FormLabel className=" font-bold">Phone Number</FormLabel>
                                                     <FormControl>
-                                                        <Input
-                                                            size="new"
-                                                            id="InvoiceCurrency" type="number" className="text-xs" placeholder="Currency" {...field} />
+                                                        <InputMask
+                                                            mask="+999 999 999 9999"
+                                                            maskChar={null}
+                                                            maskPlaceholder="0000.00.0000"
+                                                            className={`text-xs h-[30px] pl-2`}
+
+                                                            {...field}
+                                                        >
+                                                            {(inputProps) => (
+                                                                <Input
+                                                                    className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                                                    id="customer_phone"
+                                                                    type="text"
+                                                                    placeholder="+1.000.000.0000"
+                                                                    {...inputProps}
+
+                                                                />
+                                                            )}
+                                                        </InputMask>
                                                     </FormControl>
-                                                    <FormMessage />
                                                 </FormItem>
                                             </>
                                         )}
                                     />
                                     <FormField
-                                        name="InvoiceTerms"
+                                        name="userEmails"
                                         className="w-full text-xs"
                                         control={form.control}
                                         render={({ field }) => (
@@ -167,7 +203,10 @@ export const InvoiceForms = () => {
                                                     <FormControl>
                                                         <Input
                                                             size="new"
-                                                            id="InvoiceTerms" type="text" className="text-xs" placeholder="Select Currency" {...field} />
+                                                            id="userEmails"
+                                                            type="text"
+                                                            className="text-xs"
+                                                            placeholder="Emails" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -424,7 +463,7 @@ export const InvoiceForms = () => {
                                             type="button"
                                             className=" h-[30px] w-full rounded-sm px-4 py-0"
                                             size="sm"
-                                       
+
                                         >
                                             <p className='text-xs'>Preview</p>
                                         </Button>
@@ -464,112 +503,121 @@ export const InvoiceForms = () => {
                                 <TableHead className="text-center"></TableHead>
                             </TableHeader>
                             <TableBody>
-                                <TableRow>
-                                    <TableCell className="font-medium">
-                                        <FormField
-                                            className="w-full"
-                                            name="itemID"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs">
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="itemID" className="text-xs" placeholder="1" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <FormField
-                                            className="w-full"
-                                            name="itemDescription"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs">
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="itemDescription" className="text-xs" placeholder="Description" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <FormField
-                                            className="w-[100px]"
-                                            name="itemQty"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs">
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="itemQty" type="number" className="text-xs" placeholder="1" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <FormField
-                                            className="w-[10%]"
-                                            name="itemPrice"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs">
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="itemPrice" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <FormField
-                                            className="w-[10%]"
-                                            name="itemAmount"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs">
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="itemAmount" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </TableCell>
-                                    <TableCell className="w-[50px]">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="xs"
-                                            type='button'
-                                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                            <Delete width={15} height={15} />
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
+                                {
+                                    fields.map((field, index) => (
+                                        <TableRow
+                                            key={field.id}
+                                            index={index}
+                                        >
+                                            <TableCell className="font-medium">
+                                                <FormField
+                                                    className="w-full"
+                                                    name="itemID"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <>
+                                                            <FormItem className="text-xs">
+                                                                <FormControl>
+                                                                    <Input
+                                                                        size="new"
+                                                                        id="itemID" className="text-xs" placeholder="1" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        </>
+                                                    )}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <FormField
+                                                    className="w-full"
+                                                    name="itemDescription"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <>
+                                                            <FormItem className="text-xs">
+                                                                <FormControl>
+                                                                    <Input
+                                                                        size="new"
+                                                                        id="itemDescription" className="text-xs" placeholder="Description" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        </>
+                                                    )}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <FormField
+                                                    className="w-[100px]"
+                                                    name="itemQty"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <>
+                                                            <FormItem className="text-xs">
+                                                                <FormControl>
+                                                                    <Input
+                                                                        size="new"
+                                                                        id="itemQty" type="number" className="text-xs" placeholder="1" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        </>
+                                                    )}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <FormField
+                                                    className="w-[10%]"
+                                                    name="itemPrice"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <>
+                                                            <FormItem className="text-xs">
+                                                                <FormControl>
+                                                                    <Input
+                                                                        size="new"
+                                                                        id="itemPrice" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        </>
+                                                    )}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <FormField
+                                                    className="w-[10%]"
+                                                    name="itemAmount"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <>
+                                                            <FormItem className="text-xs">
+                                                                <FormControl>
+                                                                    <Input
+                                                                        size="new"
+                                                                        id="itemAmount" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        </>
+                                                    )}
+                                                />
+                                            </TableCell>
+                                            <TableCell className="w-[50px]">
+                                                <Button
+                                                    onClick={() => remove(index)}
+                                                    variant="tableBlue"
+                                                    size="xs"
+                                                    type='button'
+                                                    className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
+                                                    <Delete width={15} height={15} />
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+
                                 <TableRow colSpan={8}>
                                     <TableCell colSpan={8}>
                                         <Button
@@ -577,6 +625,10 @@ export const InvoiceForms = () => {
                                             size="sm"
                                             type="button"
                                             className="px-4 h-7 py-3"
+                                            onClick={() => {
+                                                append({
+                                                })
+                                            }}
                                         >
                                             <p className='text-xs'>Add Other Content</p>
                                         </Button>
