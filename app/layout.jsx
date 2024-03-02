@@ -4,6 +4,7 @@ import { Poppins } from 'next/font/google'
 import './globals.scss'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
+import Provider from '@/components/providers/Provider'
 // const poppins = localFont({
 //   src: [
 //     {
@@ -40,10 +41,12 @@ export default function RootLayout({ children }) {
           poppins.variable
         )}
       >
-        <main>
-          {children}
-        </main>
-        <Toaster />
+        <Provider>
+          <main>
+            {children}
+          </main>
+          <Toaster />
+        </Provider>
       </body>
     </html>
   )

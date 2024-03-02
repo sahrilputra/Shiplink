@@ -46,6 +46,7 @@
     "formik": "^2.4.5",
     "lucide-react": "^0.309.0",
     "next": "14.0.4",
+    "next-auth": "^4.24.6",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
     "react-day-picker": "^8.10.0",

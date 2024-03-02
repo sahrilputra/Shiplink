@@ -118,6 +118,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
         setLoading(true)
         console.log("dikirim", formData)
         formData.action = "add";
+        formData.phone_number = null;
         try {
             const response = await axios.post(
                 `/api/admin/user/setData`,

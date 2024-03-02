@@ -9,7 +9,7 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            user_code ,
+            user_code,
             email,
             name,
             password,
@@ -20,7 +20,6 @@ export async function POST(request) {
             profile_picture,
             action,
         } = await request.json();
-
         const response = await axios.post(
             `${process.env.API_URL}/Users/Users_setdata`,
             {
@@ -43,6 +42,8 @@ export async function POST(request) {
                 },
             }
         );
+
+        console.log("Response From API :", response.data); 
 
         if (response.status === 200) {
             const responseData = {
