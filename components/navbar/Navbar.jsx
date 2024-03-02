@@ -16,7 +16,7 @@ import { ShippingLabelIcon, ShippingCalculatorIcon } from '../icons/navbarIcons'
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
 import { Skeleton } from '../ui/skeleton'
-export const Navbar = () => {
+export const Navbar = async () => {
 
     const [loading, setLoading] = useState(true);
 
@@ -24,7 +24,7 @@ export const Navbar = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 1000); 
+        }, 1000);
         return () => clearTimeout(timer);
     }, []);
 

@@ -7,10 +7,9 @@ const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 
-const handler = NextAuth({
+export const authOption = {
     providers: [
         CredentialsProvider({
-            // The name to display on the sign-in form (e.g. 'Sign in with...')
             name: "Credentials",
             credentials: {
                 username: { label: "Username", type: "text" },
@@ -18,7 +17,6 @@ const handler = NextAuth({
             },
             authorize: async (credentials) => {
                 try {
-                    // your backend authentication logic here
                     console.log("Credentials", credentials)
                     const response = await axios.post('https://sla.webelectron.com/api/Auth/GetToken', {
                         username: credentials.username,
@@ -26,18 +24,25 @@ const handler = NextAuth({
                     }, {
                         httpsAgent: agent
                     });
-                    console.log("Response", response.data.users)
-                    const user = response.data.users; // adjust this based on your backend response
-                    const token = response.data.token;
-                    if (user) {
-                        // Any object returned will be saved in the JSON Web Token
-                        return Promise.resolve({ user, token });
+                    console.log("Response", response.data)
+                    console.log("Response Token ", response.data.token)
+                    const token = response.data.token
+                    // Extract token and user objects from response data
+                    const { users } = response.data;
+
+                    // Check if token and user objects are valid
+                    if (!token || !users) {
+                        throw new Error('Invalid response data');
+                    }
+
+                    if (users) {
+                        users.accessToken = token;
+                        console.log("Users", users.accessToken)
+                        return Promise.resolve(users);
                     } else {
-                        // If you return null or false then the credentials will be rejected
-                        return Promise.resolve(null);
+                        return null
                     }
                 } catch (error) {
-                    // Return null or throw an error to reject the login
                     console.log("Error", error)
                     return Promise.resolve(null);
                 }
@@ -45,39 +50,50 @@ const handler = NextAuth({
         })
     ],
     callbacks: {
-        async jwt(token, user) {
-            // Menyesuaikan token JWT
+        async jwt({ token, account, profile, user }) {
             if (user) {
-                console.log("User", user)
                 token.id = user.user_id;
-                console.log("token", token)
-                token.bearer = user.bearer;
-                console.log("Bearer", token.bearer)
-                token.token = user.token; // Menambahkan token ke token JWT
+                token.name = user.username;
+                token.type = user.type;
+                token.role = user.role;
+                token.accessToken = user.accessToken;
+                console.log('JWT callback:', token);
+                // Delete the token property to avoid overwriting the JWT token
+                delete token.token;
             }
             return token;
         },
-        async session(session, token) {
-            // Memastikan token tidak undefined sebelum mengakses properti id
-            if (token && token.id) {
-                session.user.id = token.id;
-            }
-            return session;
-        },
-        async signIn(user, account, profile) {
-            // Eksekusi setelah pengguna berhasil login
-            console.log("Login successful", user);
-            // Tambahkan tindakan lanjutan di sini jika diperlukan
-        },
-    },
 
+        async session({ session, token, user }) {
+            if (token) {
+                session.user = {
+                    id: token.id,
+                    name: token.name,
+                    type: token.type,
+                    role: token.role,
+                    accessToken: token.accessToken,
+                    // You can add other user properties here if needed
+                };
+                console.log('Session callback:', session);
+
+            }
+
+            console.log('Session callback:', session);
+            return session;
+        }
+    },
     pages: {
         signIn: ['/auth/signin', '/auth/login', '/auth/admin'],
         signOut: '/auth/signout',
-        error: '/auth/error', // Error code passed in query parameter as ?error=
-        verifyRequest: '/auth/verify-request', // (used for check email message)
-        newUser: null // If set, new users will be directed here on first sign in
-    }
-});
+        error: '/login',
+        verifyRequest: '/auth/verify-request',
+        newUser: null
+    },
+    session: {
+        strategy: 'jwt',
+    },
+    secret: process.env.JWT_SECRET,
+}
 
+const handler = NextAuth(authOption);
 export { handler as GET, handler as POST }

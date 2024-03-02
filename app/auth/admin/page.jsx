@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-import { signIn } from "next-auth/react";
+import { signIn, useSession, signOut } from "next-auth/react";
 import {
     Form,
     FormControl,
@@ -19,12 +19,21 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Loaders } from "@/components/ui/loaders";
+
+
 const formSchema = yup.object().shape({
     username: yup.string().required('Username is required'),
     password: yup.string().required('Password is required'),
     remember: yup.boolean(),
 })
+
+
+
 export default function Home() {
+
+    const { data: session, status } = useSession();
+    console.log('Session:', session);
+    console.log('status:', status);
     const router = useRouter();
     const [loading, setLoading] = useState(false)
     const form = useForm({
@@ -45,8 +54,8 @@ export default function Home() {
                 username: form.watch('username'),
                 password: form.watch('password'),
             });
-            console.log('Login success');
             setLoading(false);
+            // router.push('/admin/arrival-scan')
         } catch (error) {
             setLoading(false)
             console.log('Error:', error);
@@ -139,12 +148,12 @@ export default function Home() {
 
                                 </div>
                             </div>
-                            <div className="w-full py-3">
+                            <div className="w-full py-3 flex flex-col gap-2">
                                 <Button
                                     variant="secondary"
-                                    type="submit"
+                                    type="sumbit"
                                     className="w-full">
-                                    <p className="text-base">Login</p>
+                                    <p className="text-base">login</p>
                                 </Button>
                             </div>
                         </form>
