@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import NextLink from 'next/link';
+import { DeleteInvoiceDialog } from "./dialog/DeleteInvoiceDialog";
 import {
     Pagination,
     PaginationContent,
@@ -46,6 +47,9 @@ export function InvoiceTable({ isOpen, setOpen }) {
 
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false);
+    const [invoiceID, setInvoiceID] = useState([]);
+    const [openDelete, setOpenDelete] = useState(false);
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -127,10 +131,10 @@ export function InvoiceTable({ isOpen, setOpen }) {
         {
             id: "Action",
             header: "Action",
-            cell: ({ value }) => {
+            cell: ({ row }) => {
                 return (
                     <div className="flex flex-row gap-2">
-                        <NextLink href={'/view/invoice'}>
+                        <NextLink href={`/view/invoice/${row.original.invoice_id}`}>
                             <Button
                                 variant="secondary"
                                 className=" px-[5px] h-[25px] text-[11px] flex flex-row justify-center gap-1 items-center">
@@ -147,7 +151,9 @@ export function InvoiceTable({ isOpen, setOpen }) {
 
                         <Button
                             variant="tableBlue"
-                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
+                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center"
+                            onClick={() => handlerDelete(row.original.invoice_id)}
+                        >
                             <Delete width={15} height={15} />
                         </Button>
 
@@ -195,9 +201,26 @@ export function InvoiceTable({ isOpen, setOpen }) {
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+    const handlerDelete = (data) => {
+        setOpenDelete(true)
+        setInvoiceID(Array.isArray(data) ? data : [data]);
+    }
+    const reloadData = async () => {
+        try {
+            await fetchData();
+            setRowSelection({}); // Menetapkan kembali objek rowSelection menjadi kosong
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 
+    const handlerSearch = (e) => {
+        setQuery({ ...query, keyword: e.target.value })
+    }
+    const selectedRows = table.getSelectedRowModel().rows.map(row => row.original.invoice_id);
     return (
         <>
+            <DeleteInvoiceDialog open={openDelete} setOpen={setOpenDelete} deleteID={invoiceID} reloadData={reloadData} />
             <div className="">
                 <Table className=" rounded-md">
                     <TableHeader className="text-sm bg-white text-black rounded-md ">
@@ -208,9 +231,9 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                         <Input type="text"
                                             placeholder="Search..."
                                             className="pr-8 pl-4 text-xs"
-                                            value={(table.getColumn("InvoiceId")?.getFilterValue()) ?? ""}
+                                            value={(table.getColumn("invoice_id")?.getFilterValue()) ?? ""}
                                             onChange={(event) =>
-                                                table.getColumn("InvoiceId")?.setFilterValue(event.target.value)
+                                                table.getColumn("invoice_id")?.setFilterValue(event.target.value)
                                             }
                                         />
                                         <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
@@ -248,6 +271,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                                 variant="destructive"
                                                 size="sm"
                                                 className="w-[100px]"
+                                                onClick={() => handlerDelete(selectedRows)}
                                             >
                                                 <p className=" text-xs">Delete</p>
                                             </Button>
@@ -403,5 +427,5 @@ export function InvoiceTable({ isOpen, setOpen }) {
             </div>
         </>
     )
-}
 
+}

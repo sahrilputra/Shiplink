@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -28,15 +28,30 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/tableDashboard'
-import { Delete } from 'lucide-react'
+import { CheckIcon, Delete } from 'lucide-react'
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import axios from 'axios';
+import { Loaders } from '@/components/ui/loaders'
 
 const formSchema = yup.object().shape({
     InvoiceNo: yup.string(),
     InvoiceDate: yup.string(),
     InvoiceCurrency: yup.string(),
     InvoiceTerms: yup.string(),
-    BilledToName: yup.string().email(),
-    BilledToAddress: yup.string().email(),
+    BilledToName: yup.string(),
+    BilledToAddress: yup.string(),
     BilledToZip: yup.string(),
     BilledToCountry: yup.string(),
     ShippedToName: yup.string(),
@@ -45,22 +60,21 @@ const formSchema = yup.object().shape({
     ShippedToCountry: yup.string(),
     note: yup.string(),
     userName: yup.string(),
+    userID: yup.string(),
     userPhone: yup.string(),
     userEmails: yup.string().email(),
     items: yup.array().of(
         yup.object().shape({
             itemDescription: yup.string(),
-            itemQty: yup.string(),
-            itemPrice: yup.string(),
-            itemAmount: yup.string(),
+            itemQty: yup.number(),
+            itemPrice: yup.number(),
+            itemAmount: yup.number(),
             itemID: yup.string(),
         })
     ),
-    itemTax: yup.string(),
-    itemTotal: yup.string(),
-    itemDiscount: yup.string(),
-
-
+    itemTax: yup.number(),
+    itemTotal: yup.number(),
+    itemDiscount: yup.number(),
 })
 
 
@@ -84,37 +98,94 @@ export const InvoiceForms = () => {
             ShippedToCountry: " ",
             note: "",
             userName: "",
+            userID: "",
+            userCode: "",
             userPhone: "",
             userEmails: "",
             items: [
                 {
                     itemDescription: "",
-                    itemQty: "",
-                    itemPrice: "",
-                    itemAmount: "",
+                    itemQty: 0,
+                    itemPrice: 0,
+                    itemAmount: 0,
                     itemID: "",
                 }
             ],
-            itemTax: "",
-            itemTotal: "",
-            itemDiscount: "",
+            itemTax: 0,
+            itemTotal: 0,
+            itemDiscount: 0,
 
         },
         mode: "onChange",
     })
+
+    const [customerData, setCustomerData] = useState([])
+    const [loading, setLoading] = useState(false);
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 0,
+        index: 0
+    });
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/customer_manager/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setCustomerData(data.customer);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+
+    }, [query]);
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "items",
     });
 
+    const onError = (error) => {
+        console.log("Form Errors", error)
+    }
 
+    const handleSave = async (formData) => {
+        console.log(formData)
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `/api/admin/invoice/setData`,
+                formData
+            );
+            console.log("response from invoice manager : ", response.data)
+            if (response.status === 200) {
+                setLoading(false);
+                console.log("Data has been saved")
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log('Error:', error);
+        }
+    }
     return (
         <>
+            {
+                loading && <Loaders />
+            }
             <Form {...form}>
                 <form
+
                     className='flex w-full gap-3 flex-col text-zinc-600'
-                    action="">
+                    action=""
+                    onSubmit={form.handleSubmit(handleSave, onError)}
+                >
 
                     <div className="flex w-full gap-3 flex-row">
                         {/* Left Form */}
@@ -232,11 +303,14 @@ export const InvoiceForms = () => {
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="text-xs space-y-1 w-full">
-                                                        <FormLabel className="text-xs font-bold text-zinc-600">Barcode / Tracking</FormLabel>
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Name</FormLabel>
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="BilledToName" className="text-xs" placeholder="Name" {...field} />
+                                                                id="BilledToName"
+                                                                className="text-xs"
+                                                                placeholder="Name"
+                                                                {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -314,13 +388,16 @@ export const InvoiceForms = () => {
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="text-xs space-y-1 w-full">
-                                                        <FormLabel className="text-xs font-bold text-zinc-600">Barcode / Tracking</FormLabel>
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Name</FormLabel>
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="ShippedToName" className="text-xs" placeholder="Name" {...field} />
+                                                                id="ShippedToName"
+                                                                className="text-xs"
+                                                                placeholder="Name"
+                                                                {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -420,21 +497,61 @@ export const InvoiceForms = () => {
 
                             <div className="flex flex-col w-full gap-2 px-3">
                                 <FormField
-                                    className="w-full"
-                                    name="userName"
                                     control={form.control}
+                                    name="userName"
                                     render={({ field }) => (
-                                        <>
-                                            <FormItem className="text-xs space-y-1">
-                                                <FormLabel className="text-xs font-bold text-zinc-600">User Name</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        size="new"
-                                                        id="userName" className="text-xs" placeholder="UserName" {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        </>
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Customer </FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            size="new"
+                                                            className={`w-[full] text-xs h-[30px] rounded-sm px-2 py-0 text-left justify-start ${!field.value && "text-muted-foreground"}`}
+                                                        >
+                                                            {field.value ? field.value : "Customer"}
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[300px] p-0">
+                                                    <Command>
+                                                        <CommandInput
+                                                            placeholder="Search Customer..."
+                                                            className="h-9 text-xs w-full"
+                                                        />
+                                                        <CommandEmpty className="text-xs text-center">No Customer found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {customerData.map((item) => (
+                                                                <CommandItem
+                                                                    value={item.customer_name}
+                                                                    key={item.customer_id}
+                                                                    onSelect={() => {
+                                                                        form.setValue("userName", item.customer_name)
+                                                                        form.setValue("userID", item.customer_id)
+                                                                        form.setValue("userEmails", item.email)
+                                                                    }}
+                                                                >
+                                                                    <div className='text-xs w-full justify-between flex flex-row'>
+                                                                        <p>{item.customer_id} | </p>
+                                                                        <p>{item.customer_name}</p>
+                                                                    </div>
+                                                                    <CheckIcon
+                                                                        className={cn(
+                                                                            "ml-auto h-4 w-4",
+                                                                            item.customer_name === field.value
+                                                                                ? "opacity-100"
+                                                                                : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </FormItem>
                                     )}
                                 />
                                 <FormField
@@ -478,7 +595,7 @@ export const InvoiceForms = () => {
                                     </div>
                                     <Button
                                         variant="destructive"
-                                        type="button"
+                                        type="submit"
                                         className=" h-[30px] rounded-sm px-4 py-0"
                                         size="sm"
                                     >
@@ -493,7 +610,6 @@ export const InvoiceForms = () => {
                     {/* Table */}
                     <div className="w-full">
                         <Table>
-                            <TableCaption>A list of your recent invoices.</TableCaption>
                             <TableHeader>
                                 <TableHead className="w-[100px]">#</TableHead>
                                 <TableHead>Item Name</TableHead>
@@ -512,8 +628,9 @@ export const InvoiceForms = () => {
                                             <TableCell className="font-medium">
                                                 <FormField
                                                     className="w-full"
-                                                    name="itemID"
+                                                    name={`items[${index}].itemID`}
                                                     control={form.control}
+                                                    disabled={true}
                                                     render={({ field }) => (
                                                         <>
                                                             <FormItem className="text-xs">
@@ -531,7 +648,7 @@ export const InvoiceForms = () => {
                                             <TableCell>
                                                 <FormField
                                                     className="w-full"
-                                                    name="itemDescription"
+                                                    name={`items[${index}].itemDescription`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <>
@@ -550,7 +667,7 @@ export const InvoiceForms = () => {
                                             <TableCell>
                                                 <FormField
                                                     className="w-[100px]"
-                                                    name="itemQty"
+                                                    name={`items[${index}].itemQty`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <>
@@ -569,7 +686,7 @@ export const InvoiceForms = () => {
                                             <TableCell>
                                                 <FormField
                                                     className="w-[10%]"
-                                                    name="itemPrice"
+                                                    name={`items[${index}].itemPrice`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <>
@@ -588,7 +705,7 @@ export const InvoiceForms = () => {
                                             <TableCell>
                                                 <FormField
                                                     className="w-[10%]"
-                                                    name="itemAmount"
+                                                    name={`items[${index}].itemAmount`}
                                                     control={form.control}
                                                     render={({ field }) => (
                                                         <>
@@ -627,6 +744,7 @@ export const InvoiceForms = () => {
                                             className="px-4 h-7 py-3"
                                             onClick={() => {
                                                 append({
+                                                    itemID: fields.length + 1,
                                                 })
                                             }}
                                         >

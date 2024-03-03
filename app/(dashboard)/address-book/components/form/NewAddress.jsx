@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -13,8 +13,24 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import axios from 'axios'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Loaders } from '@/components/ui/loaders'
+import { useToast } from '@/components/ui/use-toast'
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { CheckIcon } from 'lucide-react'
 
 const formSchema = yup.object().shape({
     fullName: yup.string().required().max(50, "character is too long"),
@@ -22,6 +38,7 @@ const formSchema = yup.object().shape({
     city: yup.string().required(),
     state: yup.string().required(),
     country: yup.string().required(),
+    contry_code: yup.string().required(),
     zipCode: yup.string().required(),
     email: yup.string().email().required(),
     phoneNumber: yup.string().required(),
@@ -31,7 +48,11 @@ const formSchema = yup.object().shape({
 
 
 export const NewAddress = ({ close, data = null }) => {
+    const [loading, setLoading] = useState(false);
+    const [country, setCountry] = useState([]);
+    const [province, setProvince] = useState([]);
 
+    const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -40,6 +61,7 @@ export const NewAddress = ({ close, data = null }) => {
             city: data?.city || "",
             state: data?.state || "",
             country: data?.country || "",
+            contry_code: "",
             zipCode: data?.postalCode || "",
             email: data?.email || "",
             phoneNumber: data?.phone || "",
@@ -47,6 +69,60 @@ export const NewAddress = ({ close, data = null }) => {
         },
         mode: "onChange",
     })
+
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    })
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = axios.post(
+                `api/admin/config/countries/list`,
+                query
+            )
+            const reponseProvince = axios.post(
+                `api/admin/config/province`,
+                query
+            )
+            const responseCountry = await response.data;
+            const responseProvince = await reponseProvince.data;
+            setCountry(responseCountry)
+            setProvince(responseProvince)
+        }
+
+        fetchData();
+    }, [query])
+
+    const handleSave = (formData) => {
+        setLoading(true)
+        try {
+            const response = axios.post(
+                `api/customerAPI/adress/setData`,
+                formData,
+            )
+            setLoading(false);
+            toast({
+                title: "Success",
+                message: "Address has been saved",
+                type: "success",
+            })
+            console.log(response)
+        } catch (error) {
+            toast({
+                title: "Error",
+                message: "Address failed to save",
+                type: "error",
+            })
+            setLoading(false);
+            console.log(error)
+        }
+    }
+
+
     return (
         <>
             <Form {...form}>
@@ -115,9 +191,45 @@ export const NewAddress = ({ close, data = null }) => {
                                     <>
                                         <FormItem className="w-full">
                                             <FormLabel>State / Province</FormLabel>
-                                            <FormControl >
-                                                <Input type="text" id="state" placeholder="State / Province"  {...field} />
-                                            </FormControl>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl >
+                                                        <Button
+                                                            type="button"
+                                                            className="shadow-none w-full text-xs h-9 text-left justify-start"
+                                                            variant="outline"
+                                                            id="state"
+                                                        >
+                                                            {field.value ? field.value : "State / Province"}
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[200px] p-0">
+                                                    <Command>
+                                                        <CommandInput
+                                                            placeholder="Search Province..."
+                                                            className="h-9 text-xs"
+                                                        />
+                                                        <CommandEmpty className="text-xs text-center">The Province Unavailable.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {province?.map((item) => (
+                                                                <CommandItem
+                                                                    value={item.label}
+                                                                    key={item.value}
+                                                                    onSelect={() => {
+                                                                        form.setValue("language", item.value)
+                                                                    }}
+                                                                >
+                                                                    {item.label}
+                                                                    <CheckIcon
+                                                                        className={`ml-auto h-4 w-4 text-xs ${item.value === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                    />
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
                                             <FormMessage />
                                         </FormItem>
                                     </>
@@ -133,9 +245,45 @@ export const NewAddress = ({ close, data = null }) => {
                                     <>
                                         <FormItem className="w-full">
                                             <FormLabel>Country</FormLabel>
-                                            <FormControl >
-                                                <Input type="text" id="country" placeholder="Country" {...field} />
-                                            </FormControl>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl >
+                                                        <Button
+                                                            type="button"
+                                                            className="shadow-none w-full text-xs h-9 text-left justify-start"
+                                                            variant="outline"
+                                                            id="state"
+                                                        >
+                                                            {field.value ? field.value : "Country"}
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[200px] p-0">
+                                                    <Command>
+                                                        <CommandInput
+                                                            placeholder="Search Country..."
+                                                            className="h-9 text-xs"
+                                                        />
+                                                        <CommandEmpty className="text-xs text-center">The Country Unavailable.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {country?.map((item) => (
+                                                                <CommandItem
+                                                                    value={item.label}
+                                                                    key={item.value}
+                                                                    onSelect={() => {
+                                                                        form.setValue("language", item.value)
+                                                                    }}
+                                                                >
+                                                                    {item.label}
+                                                                    <CheckIcon
+                                                                        className={`ml-auto h-4 w-4 text-xs ${item.value === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                    />
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
                                             <FormMessage />
                                         </FormItem>
                                     </>
