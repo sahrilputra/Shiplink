@@ -31,12 +31,14 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { CheckIcon } from 'lucide-react'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const formSchema = yup.object().shape({
     fullName: yup.string().required().max(50, "character is too long"),
     address: yup.string().required(),
     city: yup.string().required(),
     state: yup.string().required(),
+    province_code: yup.string().required(),
     country: yup.string().required(),
     contry_code: yup.string().required(),
     zipCode: yup.string().required(),
@@ -60,6 +62,7 @@ export const NewAddress = ({ close, data = null }) => {
             address: data?.address || "",
             city: data?.city || "",
             state: data?.state || "",
+            province_code: data?.province_code || "",
             country: data?.country || "",
             contry_code: "",
             zipCode: data?.postalCode || "",
@@ -76,26 +79,64 @@ export const NewAddress = ({ close, data = null }) => {
         limit: 0,
         index: 0,
     })
+    const [queryProvince, setQueryProvince] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    })
+    // const fetchDataCountry = async () => {
+    //     const response = axios.post(
+    //         `api/admin/config/countries/list`,
+    //         query
+    //     )
+    //     const reponseProvince = axios.post(
+    //         `api/admin/config/province`,
+    //         query
+    //     )
+    //     const countryData = await response.data
+    //     const provinceData = await reponseProvince.data
+    //     console.log("🚀 ~ fetchData ~ countryData:", countryData)
+    //     console.log("🚀 ~ fetchData ~ provinceData:", provinceData)
+    //     setCountry(countryData)
+    //     setProvince(provinceData)
+    // }
 
+
+    const [popCountry, setPopCountry] = useState(false)
+    const [popProvince, setPopProvince] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = axios.post(
-                `api/admin/config/countries/list`,
-                query
-            )
-            const reponseProvince = axios.post(
-                `api/admin/config/province`,
-                query
-            )
-            const responseCountry = await response.data;
-            const responseProvince = await reponseProvince.data;
-            setCountry(responseCountry)
-            setProvince(responseProvince)
-        }
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    query
+                );
+                const data = await response.data;
+                console.log("🚀 ~ fetchData ~ data:", data)
+                setCountry(data.country);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
 
+        const fetchDataProvince = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/province`,
+                    queryProvince
+                );
+                const data = await response.data;
+                console.log("🚀 ~ fetchData ~ data:", data)
+                setProvince(data.province);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
         fetchData();
-    }, [query])
+        fetchDataProvince();
+    }, [query, queryProvince]);
 
     const handleSave = (formData) => {
         setLoading(true)
@@ -138,7 +179,7 @@ export const NewAddress = ({ close, data = null }) => {
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full">
-                                        <FormLabel>First Name</FormLabel>
+                                        <FormLabel>Full Name</FormLabel>
                                         <FormControl>
                                             <Input id="fullName" placeholder="John Doe" {...field} />
                                         </FormControl>
@@ -191,10 +232,11 @@ export const NewAddress = ({ close, data = null }) => {
                                     <>
                                         <FormItem className="w-full">
                                             <FormLabel>State / Province</FormLabel>
-                                            <Popover>
+                                            <Popover oppen={popProvince} onOpenChange={setPopProvince}>
                                                 <PopoverTrigger asChild>
                                                     <FormControl >
                                                         <Button
+                                                            onClick={() => setPopProvince(!popProvince)}
                                                             type="button"
                                                             className="shadow-none w-full text-xs h-9 text-left justify-start"
                                                             variant="outline"
@@ -210,23 +252,28 @@ export const NewAddress = ({ close, data = null }) => {
                                                             placeholder="Search Province..."
                                                             className="h-9 text-xs"
                                                         />
-                                                        <CommandEmpty className="text-xs text-center">The Province Unavailable.</CommandEmpty>
-                                                        <CommandGroup>
-                                                            {province?.map((item) => (
-                                                                <CommandItem
-                                                                    value={item.label}
-                                                                    key={item.value}
-                                                                    onSelect={() => {
-                                                                        form.setValue("language", item.value)
-                                                                    }}
-                                                                >
-                                                                    {item.label}
-                                                                    <CheckIcon
-                                                                        className={`ml-auto h-4 w-4 text-xs ${item.value === field.value ? "opacity-100" : "opacity-0"}`}
-                                                                    />
-                                                                </CommandItem>
-                                                            ))}
-                                                        </CommandGroup>
+                                                        <CommandEmpty className="text-xs text-center">The Province Unavailable</CommandEmpty>
+                                                        <ScrollArea className="h-[150px]" >
+                                                            <CommandGroup>
+                                                                {province?.map((item) => (
+                                                                    <CommandItem
+                                                                        value={item.province_name}
+                                                                        key={item.province_id}
+                                                                        className="text-xs "
+                                                                        onSelect={() => {
+                                                                            form.setValue("state", item.province_name)
+                                                                            form.setValue("province_code", item.province_code)
+                                                                            setPopProvince(false)
+                                                                        }}
+                                                                    >
+                                                                        {item.province_name}
+                                                                        <CheckIcon
+                                                                            className={`ml-auto h-4 w-4 text-xs ${item.province_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                        />
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </CommandGroup>
+                                                        </ScrollArea>
                                                     </Command>
                                                 </PopoverContent>
                                             </Popover>
@@ -245,7 +292,7 @@ export const NewAddress = ({ close, data = null }) => {
                                     <>
                                         <FormItem className="w-full">
                                             <FormLabel>Country</FormLabel>
-                                            <Popover>
+                                            <Popover open={popCountry} onOpenChange={setPopCountry}>
                                                 <PopoverTrigger asChild>
                                                     <FormControl >
                                                         <Button
@@ -253,6 +300,7 @@ export const NewAddress = ({ close, data = null }) => {
                                                             className="shadow-none w-full text-xs h-9 text-left justify-start"
                                                             variant="outline"
                                                             id="state"
+                                                            onClick={() => setPopCountry(!popCountry)}
                                                         >
                                                             {field.value ? field.value : "Country"}
                                                         </Button>
@@ -265,22 +313,27 @@ export const NewAddress = ({ close, data = null }) => {
                                                             className="h-9 text-xs"
                                                         />
                                                         <CommandEmpty className="text-xs text-center">The Country Unavailable.</CommandEmpty>
-                                                        <CommandGroup>
-                                                            {country?.map((item) => (
-                                                                <CommandItem
-                                                                    value={item.label}
-                                                                    key={item.value}
-                                                                    onSelect={() => {
-                                                                        form.setValue("language", item.value)
-                                                                    }}
-                                                                >
-                                                                    {item.label}
-                                                                    <CheckIcon
-                                                                        className={`ml-auto h-4 w-4 text-xs ${item.value === field.value ? "opacity-100" : "opacity-0"}`}
-                                                                    />
-                                                                </CommandItem>
-                                                            ))}
-                                                        </CommandGroup>
+                                                        <ScrollArea className="h-[150px]" >
+                                                            <CommandGroup>
+                                                                {country?.map((item) => (
+                                                                    <CommandItem
+                                                                        value={item.country_name}
+                                                                        key={item.country_id}
+                                                                        className="text-xs "
+                                                                        onSelect={() => {
+                                                                            setPopCountry(false)
+                                                                            form.setValue("country", item.country_name)
+                                                                            form.setValue("country_code", item.country_code)
+                                                                        }}
+                                                                    >
+                                                                        {item.country_name}
+                                                                        <CheckIcon
+                                                                            className={`ml-auto h-4 w-4 text-xs ${item.country_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                        />
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </CommandGroup>
+                                                        </ScrollArea>
                                                     </Command>
                                                 </PopoverContent>
                                             </Popover>
@@ -356,25 +409,26 @@ export const NewAddress = ({ close, data = null }) => {
                                                 />
                                             </FormControl>
                                             <FormLabel>Make this as primary address</FormLabel>
-                                            <FormMessage />
                                         </FormItem>
                                     </>
                                 )}
                             />
                         </div>
 
-                        <div className=" flex justify-between items-end mt-[20px]">
+                        <div className=" flex justify-between items-end mt-[20px] gap-4">
                             <Button
                                 variant="redOutline"
                                 type="submit"
                                 onClick={close}
+                                className='w-full '
                             >
                                 <p className=' font-normal '>Cancel</p>
                             </Button>
                             <Button
+
                                 variant="destructive"
                                 type="submit"
-
+                                className='w-full '
                             >
                                 <p className=' font-normal '>Save</p>
                             </Button>

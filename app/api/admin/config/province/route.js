@@ -9,7 +9,7 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const { keyword, page, limit, index, token } = await request.json();
-        const tokenAccess = await getAccessToken(request)
+        // const tokenAccess = await getAccessToken(request)
         // console.log("token from country", token);
 
         const response = await axios.post(
@@ -24,7 +24,7 @@ export async function POST(request) {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                        `Bearer ${tokenAccess}`
+                        `Bearer ${process.env.BEARER_TOKEN}`
                 }
             }
         );
