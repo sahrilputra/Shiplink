@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import axios from "axios";
 import { useRouter } from 'next/navigation';
 import { signIn, useSession, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import {
     Form,
     FormControl,
@@ -54,13 +55,24 @@ export default function Home() {
                 username: form.watch('username'),
                 password: form.watch('password'),
             });
+            const session = await getSession();
             setLoading(false);
-            // router.push('/admin/arrival-scan')
+            if (session) {
+                router.push('/admin/arrival-scan');
+            } else {
+                console.log('Session not found after login.');
+            }
         } catch (error) {
             setLoading(false)
             console.log('Error:', error);
         }
     }
+
+    useEffect(() => {
+        if (session) {
+            router.push('/admin/arrival-scan');
+        }
+    }, [session, router])
     return (
         <>
             {loading && <Loaders />}

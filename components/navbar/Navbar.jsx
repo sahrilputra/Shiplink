@@ -211,7 +211,7 @@ export const Navbar = () => {
                                     </div>
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent className="flex justify-between flex-col">
-                                    <Link href="/#" legacyBehavior passHref>
+                                    <Link href="/account" legacyBehavior passHref>
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
                                             <div className="flex flex-row justify-between gap-2 w-[170px]">
                                                 <p>Account Setting</p>
@@ -219,7 +219,7 @@ export const Navbar = () => {
                                             </div>
                                         </NavigationMenuLink>
                                     </Link>
-                                    <Link href="/#" legacyBehavior passHref>
+                                    <Link href="/membership" legacyBehavior passHref>
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
                                             <div className="flex flex-row justify-between gap-2 w-[170px]">
                                                 <p>Membership Plan</p>

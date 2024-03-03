@@ -24,7 +24,6 @@ export const authOption = {
                     }, {
                         httpsAgent: agent
                     });
-                    console.log("Response", response.data)
                     console.log("Response Token ", response.data.token)
                     const token = response.data.token
                     // Extract token and user objects from response data
@@ -57,7 +56,7 @@ export const authOption = {
                 token.type = user.type;
                 token.role = user.role;
                 token.accessToken = user.accessToken;
-                console.log('JWT callback:', token);
+                // console.log('JWT callback:', token);
                 // Delete the token property to avoid overwriting the JWT token
                 delete token.token;
             }
@@ -74,11 +73,11 @@ export const authOption = {
                     accessToken: token.accessToken,
                     // You can add other user properties here if needed
                 };
-                console.log('Session callback:', session);
+                // console.log('Session callback:', session);
 
             }
 
-            console.log('Session callback:', session);
+            // console.log('Session callback:', session);
             return session;
         }
     },

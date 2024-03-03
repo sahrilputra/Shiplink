@@ -1,26 +1,32 @@
 import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
+import { cookies } from 'next/headers'
 import { getAccessToken } from "@/helpers/getAccessToken";
-
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
+        const {
+            cardType,
+            cardNumber,
+            cardHolderName,
+            expiryDate,
+            cvv,
+            action,
+        } = await request.json();
         const tokenAccess = await getAccessToken(request)
-        const { keyword, page, limit, index, invoice_id, token } = await request.json();
-
-        // console.log("token from country", token);
-
         const response = await axios.post(
-            `${process.env.API_URL}/InvoiceManager/Invoice_list`,
+            `${process.env.API_URL}/Customers/Add_Billing`,
             {
-                keyword: keyword,
-                invoice_id: invoice_id,
-                page: page,
-                limit: limit,
-                index: index
+                "credit_card_id": "",
+                "name_on_card": cardHolderName,
+                "card_number": cardNumber,
+                "valid_through": expiryDate,
+                "cvv_code": cvv,
+                "card_type": cardType,
+                "action": action
             },
             {
                 httpsAgent: agent,
@@ -30,17 +36,12 @@ export async function POST(request) {
                 }
             }
         );
-
-        // console.log("response from api : ", response.data); // Log the response data
+        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                total: response.data.total,
-                page_total: response.data.page_total,
-                page_limit: response.data.page_limit,
-                invoice: response.data.invoice
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

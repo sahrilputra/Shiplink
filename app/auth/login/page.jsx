@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,9 @@ const formSchema = yup.object().shape({
     remember: yup.boolean(),
 })
 export default function Home() {
+    const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false)
+    const router = useRouter();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -46,6 +48,7 @@ export default function Home() {
                 password: form.watch('password'),
             });
             console.log('Login success');
+            router.push('/dashboard')
             setLoading(false);
         } catch (error) {
             setLoading(false)
@@ -54,6 +57,11 @@ export default function Home() {
     }
     const [inputEmail, setInputEmail] = useState('')
 
+    useEffect(() => {
+        if (session) {
+            router.push('/dashboard');
+        }
+    }, [session, router])
     return (
         <>
             {

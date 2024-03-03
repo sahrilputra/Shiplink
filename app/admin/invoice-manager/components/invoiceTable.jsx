@@ -52,6 +52,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
     const [openDelete, setOpenDelete] = useState(false);
     const [query, setQuery] = useState({
         keyword: "",
+        invoice_id: "",
         page: 1,
         limit: 0,
         index: 0
