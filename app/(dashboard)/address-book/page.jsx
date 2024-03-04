@@ -7,7 +7,7 @@ import { PlusIcon } from 'lucide-react'
 import { PromoOne } from '@/components/ads/promoOne'
 import styles from './styles.module.scss'
 import { SavedAddressCard } from './components/SavedAddressCard'
-import data from '../../../data/countryData.json'
+import { DeleteAddress } from './components/DeleteAddress'
 import { NewAdressMenus } from './components/NewAdressMenus'
 import { useToast } from '@/components/ui/use-toast'
 import { EditAddressMenu } from './components/EditedAddressMenu'
@@ -19,14 +19,12 @@ export default function AssitedPurchase() {
     const [newAddress, setIsNew] = useState(false);
     const [editAddress, setIsEdit] = useState(false);
     const [selectedData, setSelectedData] = useState("");
-    const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
-    const [isCheck, setIsCheck] = useState(false);
+    const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0);
     const [isPicked, setIsPicked] = useState(false);
-
-    const [selectedItemId, setSelectedItemId] = useState(null); // State untuk ID item yang dipilih
+    const [openDelete, setOpenDelete] = useState(false);
+    const [deleteID, setDeleteID] = useState([]);
+    const [selectedItemId, setSelectedItemId] = useState(null); 
     const [isDeleteButtonActive, setIsDeleteButtonActive] = useState(false);
-    console.log("selectedItemId", selectedItemId)
-    // List grid view
 
     const [clicked, isClicked] = useState(true);
 
@@ -34,11 +32,8 @@ export default function AssitedPurchase() {
         isClicked(clickedButtons);
     }
 
-    // end list grid view
-
-    const toggleCheck = () => {
-        setIsCheck(!isCheck);
-
+    const handleSelectedIdDelete = (id) => {
+        setDeleteID(id);
     }
 
     const toggleSelectNewAddress = () => {
@@ -59,20 +54,6 @@ export default function AssitedPurchase() {
         setIsPicked(false)
     }
 
-
-    const handleCardSelected = (id) => {
-        const selectedAddress = data.find(item => item.id === id);
-        setSelectedData(selectedAddress);
-        setIsPicked(true)
-        if (selectedItemId === id) {
-            setSelectedItemId(null);
-            setIsDeleteButtonActive(false);
-        } else {
-            setSelectedItemId(id);
-            setIsDeleteButtonActive(true);
-        }
-    }
-
     const [savedAddress, setSavedAddress] = useState([]);
     const [query, setQuery] = useState({
         keyword: "",
@@ -84,13 +65,16 @@ export default function AssitedPurchase() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.post(
+                axios.post(
                     `/api/customerAPI/address/list`,
                     query
-                );
-                const data = await response.data;
-                console.log("🚀 ~ fetchData ~ data:", data)
-                setSavedAddress(data.my_address);
+                ).then((response) => {
+                    const data = response.data;
+                    // console.log("🚀 ~ ).then ~ data:", data)
+                    setSavedAddress(data.my_address);
+                }).catch((error) => {
+                    console.log('Error:', error);
+                });
             } catch (error) {
                 console.log('Error:', error);
             }
@@ -98,13 +82,29 @@ export default function AssitedPurchase() {
         fetchData();
     }, [query]);
 
+    const reloadData = () => {
+        setQuery({ ...query, page: 0, limit: 0, index: 0, shortby: "" });
+    }
+
+    const handleCardSelected = (id) => {
+        const selectedAddress = savedAddress.find(item => item.my_address_id === id);
+        setSelectedData(selectedAddress);
+        setIsPicked(true)
+        if (selectedItemId === id) {
+            setSelectedItemId(null);
+            setIsDeleteButtonActive(false);
+        } else {
+            setSelectedItemId(id);
+            setIsDeleteButtonActive(true);
+        }
+    }
 
     const renderMenus = () => {
         switch (true) {
             case newAddress:
-                return <NewAdressMenus close={toggleClose} />;
+                return <NewAdressMenus close={toggleClose} reload={reloadData} />;
             case editAddress:
-                return <EditAddressMenu keyProp={keyForEditAddressMenu} close={toggleClose} data={selectedData} />;
+                return <EditAddressMenu keyProp={keyForEditAddressMenu} close={toggleClose} data={selectedData} reload={reloadData} />;
             default:
                 return <PromoOne />;
         }
@@ -113,6 +113,7 @@ export default function AssitedPurchase() {
     return (
         <>
             <>
+                <DeleteAddress open={openDelete} setOpen={setOpenDelete} reloadData={reloadData} deleteID={deleteID} />
                 <div className={styles.main}>
                     <div className={styles.header}>
 
@@ -130,7 +131,7 @@ export default function AssitedPurchase() {
                                     <button
                                         id='newAddress'
                                         className={`font-normal px-2.5 py-[8px] justify-center items-center gap-2.5 flex rounded hover:bg-red-100
-                            ${clicked ? 'bg-red-700 text-white font-semiBold hover:bg-red-800' : 'bg-none'}`}
+                                        ${clicked ? 'bg-red-700 text-white font-semiBold hover:bg-red-800' : 'bg-none'}`}
                                         onClick={() => toggleClicked(true)}
                                     >
                                         <IconList width={15} height={15} className={`${clicked ? ' fill-white font-semiBold hover:bg-red-800' : 'bg-none'}`} />
@@ -182,6 +183,8 @@ export default function AssitedPurchase() {
                                         onClick={handleCardSelected}
                                         isSelected={isPicked && selectedData === item.my_address_id}
                                         variant={clicked ? 'list' : ""}
+                                        setDeleteID={handleSelectedIdDelete}
+                                        deleteID={item.my_address_id}
                                     />
                                 ))
                             }

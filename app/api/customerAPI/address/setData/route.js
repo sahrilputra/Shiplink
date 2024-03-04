@@ -10,6 +10,7 @@ export async function POST(request) {
     try {
         const {
             streat_address,
+            my_address_id,
             city,
             province_code,
             country_code,
@@ -17,13 +18,15 @@ export async function POST(request) {
             email,
             phoneNumber,
             isPrimary,
+            fullName,
             action
         } = await request.json();
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
             `${process.env.API_URL}/MyAddress/My_Address_setdata`,
             {
-                "my_address_id": "",
+                "my_address_id": my_address_id,
+                "full_name": fullName,
                 "streat_address": streat_address,
                 "city": city,
                 "province_code": province_code,

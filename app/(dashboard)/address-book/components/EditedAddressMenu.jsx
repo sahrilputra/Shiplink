@@ -1,6 +1,6 @@
 import React from 'react'
 import { NewAddress } from './form/NewAddress'
-export const EditAddressMenu = ({ close, data, keyProp }) => {
+export const EditAddressMenu = ({ close, data, keyProp, reload }) => {
     console.log("edit address menu", data)
     return (
         <>
@@ -8,7 +8,7 @@ export const EditAddressMenu = ({ close, data, keyProp }) => {
                 <div className="container w-[378px] min-w-full py-[20px] rounded-[6px] h-screen bg-white">
                     <h1 className=' text-xl font-bold'>Edit Address</h1>
                     <div className="px-[5px] py-[10px]">
-                        <NewAddress close={close} data={data} />
+                        <NewAddress close={close} data={data} reload={reload} />
                     </div>
                 </div>
             </div>

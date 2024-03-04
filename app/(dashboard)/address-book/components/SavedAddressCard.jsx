@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
-export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSelected }) => {
+export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSelected, setDeleteID, deleteID }) => {
     const [checkItem, setCheckItem] = useState(false);
     const [clickedCard, setClickedCard] = useState(null);
 
@@ -12,13 +12,17 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
         setClickedCard(id);
         onClick(id);
     }
-    const handleCheck = () => {
-        setCheckItem(!checkItem);
+
+    const [selectedDelete, setSelectedDelete] = useState([]);
+    console.log("🚀 ~ SavedAddressCard ~ selectedDelete:", selectedDelete)
+
+    const handleCheck = (id) => {
+        setSelectedDelete([...selectedDelete, id])
     }
     const {
         my_address_id,
         country,
-        fullName,
+        full_name,
         country_name,
         streat_address,
         city,
@@ -49,11 +53,11 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                         >
                             <div className="Country w-[100px] flex flex-col justify-center items-center gap-2 py-[10px] text-center">
                                 <div className="rounded-full border border-gray-300 w-[30px] h-[30px] object-cover">
-                                    {/* <img
-                                        src={`https://flagcdn.com/${countryCode.toLowerCase()}.svg`}
+                                    <img
+                                        src={`https://flagcdn.com/w640/ca.png`}
                                         alt=""
                                         className='rounded-full  border border-gray-300  w-[30px] h-[30px] object-cover'
-                                    /> */}
+                                    />
                                 </div>
                                 <p className=' text-sm font-semibold'>{country_name}</p>
                             </div>
@@ -61,7 +65,7 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                                 <Separator orientation="vertical" className="px-[1px]" />
                             </div>
                             <div className="content flex flex-col ">
-                                <p className='text-sm font-bold'> {fullName} | <span className='font-normal text-zinc-600'>{streat_address}</span></p>
+                                <p className='text-sm font-bold'> {full_name} | <span className='font-normal text-zinc-600'>{streat_address}</span></p>
                                 <p className='text-sm font-medium text-zinc-600'>{province_name}, {postal_code}</p>
                                 <p className='text-sm font-medium'>{phone_number}</p>
                                 <p className='text-sm font-light underline text-zinc-600'>{email}</p>
@@ -101,7 +105,7 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                             </div>
 
                             <div className="content flex flex-col text-sm text-zinc-600 ">
-                                <p className='text-sm font-bold'>{fullName}</p>
+                                <p className='text-sm font-bold'>{full_name}</p>
                                 <p className='text-sm text-zinc-600'>{streat_address}</p>
                                 <p>{province_name}, {postal_code}</p>
                                 <p className='font-bold text-zinc-900'>{phone_number}</p>
@@ -113,11 +117,11 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                                         <p className='font-light text-xs text-red-700'>Primary</p>
                                     </div>
                                 ) : (
-                                    <>
-                                        <div className="absolute top-[10px] right-[10px]">
-                                            <Checkbox />
-                                        </div>
-                                    </>
+                                    <div className="absolute top-[10px] right-[10px]">
+                                        <Checkbox
+                                            onCheckedChange={() => handleCheck(my_address_id)}
+                                        />
+                                    </div>
                                 )
                             }
 

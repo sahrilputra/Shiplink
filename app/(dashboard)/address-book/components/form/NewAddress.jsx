@@ -34,6 +34,7 @@ import { CheckIcon } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 const formSchema = yup.object().shape({
+    my_address_id: yup.string(),
     fullName: yup.string().required().max(50, "character is too long"),
     streat_address: yup.string().required(),
     city: yup.string().required(),
@@ -49,7 +50,7 @@ const formSchema = yup.object().shape({
 
 
 
-export const NewAddress = ({ close, data = null }) => {
+export const NewAddress = ({ close, data = null, reload }) => {
     const [loading, setLoading] = useState(false)
     const [country, setCountry] = useState([]);
     const [province, setProvince] = useState([]);
@@ -58,17 +59,18 @@ export const NewAddress = ({ close, data = null }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            fullName: data?.fullName || "",
+            my_address_id: data?.my_address_id || "",
+            fullName: data?.full_name || "",
             streat_address: data?.streat_address || "",
             city: data?.city || "",
             state: data?.state || "",
-            province_code: data?.province_code || "",
-            country: data?.country || "",
-            contry_code: "",
-            zipCode: data?.postalCode || "",
+            province_code: data?.province_code || data?.province_name || "",
+            country: data?.country_name || data?.country_code || "",
+            contry_code: data?.country_name || data?.country_code || "",
+            zipCode: data?.postal_code || "",
             email: data?.email || "",
-            phoneNumber: data?.phone || "",
-            isPrimary: data?.isPrimary || "",
+            phoneNumber: data?.phone_number || "",
+            isPrimary: data?.primary_address || "",
         },
         mode: "onChange",
     })
@@ -86,55 +88,43 @@ export const NewAddress = ({ close, data = null }) => {
         index: 0,
     })
 
-    // const fetchDataCountry = async () => {
-    //     const response = axios.post(
-    //         `api/admin/config/countries/list`,
-    //         query
-    //     )
-    //     const reponseProvince = axios.post(
-    //         `api/admin/config/province`,
-    //         query
-    //     )
-    //     const countryData = await response.data
-    //     const provinceData = await reponseProvince.data
-    //     console.log("🚀 ~ fetchData ~ countryData:", countryData)
-    //     console.log("🚀 ~ fetchData ~ provinceData:", provinceData)
-    //     setCountry(countryData)
-    //     setProvince(provinceData)
-    // }
-
-
     const [popCountry, setPopCountry] = useState(false)
     const [popProvince, setPopProvince] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.post(
+                axios.post(
                     `/api/admin/config/countries/list`,
                     query
-                );
-                const data = await response.data;
-                console.log("🚀 ~ fetchData ~ data:", data)
-                setCountry(data.country);
+                ).then((response) => {
+                    const data = response.data;
+                    // console.log("🚀 ~ fetchData ~ data:", data)
+                    setCountry(data.country);
+                }).catch((error) => {
+                    console.log('Error:', error);
+                })
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
+        const fetchDataProvince = async () => {
+            try {
+                axios.post(
+                    `/api/admin/config/province`,
+                    queryProvince
+                ).then((response) => {
+                    const data = response.data;
+                    // console.log("🚀 ~ fetchData ~ data:", data)
+                    setProvince(data.province);
+                }).catch((error) => {
+                    console.log('Error:', error);
+                })
             } catch (error) {
                 console.log('Error:', error);
             }
         };
 
-        const fetchDataProvince = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/config/province`,
-                    queryProvince
-                );
-                const data = await response.data;
-                console.log("🚀 ~ fetchData ~ data:", data)
-                setProvince(data.province);
-            } catch (error) {
-                console.log('Error:', error);
-            }
-        };
         fetchData();
         fetchDataProvince();
     }, [query, queryProvince]);
@@ -142,30 +132,35 @@ export const NewAddress = ({ close, data = null }) => {
     const handleSave = (formData) => {
         console.log("Data:", formData)
         setLoading(true)
-        formData.action = "add"
+        formData.action = `${data ? "edit" : "add"}`
         try {
-            const response = axios.post(
+            axios.post(
                 `api/customerAPI/address/setData`,
                 formData,
-            )
-            setLoading(false);
-            toast({
-                title: "Success",
-                description: "Address has been saved",
-                type: "success",
+            ).then((response) => {
+                setLoading(false);
+                toast({
+                    title: "New Adress Saved Successfully",
+                    description: `${response.data.message}`,
+                    type: "success",
+                })
+                form.reset()
+                reload()
+                console.log(response)
+            }).catch((error) => {
+                setLoading(false);
+                toast({
+                    title: "Error Occured While Saving Address",
+                    description: `${error}`,
+                    type: "error",
+                })
+                console.log(error)
             })
-            console.log(response)
         } catch (error) {
-            toast({
-                title: "Error",
-                description: "Address failed to save",
-                type: "error",
-            })
             setLoading(false);
             console.log(error)
         }
     }
-
 
     return (
         <>
