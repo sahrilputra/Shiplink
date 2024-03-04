@@ -8,25 +8,18 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const {
-            cardType,
-            cardNumber,
-            cardHolderName,
-            expiryDate,
-            cvv,
-            action,
-        } = await request.json();
+        const { keyword, page, customer_id, limit, index } = await request.json();
+
+        // console.log("token from country", token);
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
-            `${process.env.API_URL}/Customers/SetCredit_Card`,
+            `${process.env.API_URL}/Customers/CreditCard_list`,
             {
-                "credit_card_id": "",
-                "name_on_card": cardHolderName,
-                "card_number": cardNumber,
-                "valid_through": expiryDate,
-                "cvv_code": cvv,
-                "card_type": cardType,
-                "action": action
+                keyword: keyword,
+                page: page,
+                customer_id: customer_id,
+                limit: limit,
+                index: index,
             },
             {
                 httpsAgent: agent,
@@ -36,12 +29,16 @@ export async function POST(request) {
                 }
             }
         );
-        console.log("🚀 ~ POST ~ response:", response)
+
+        // console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
+                total: response.data.total,
+                page_total: response.data.page_total,
+                credit_card: response.data.credit_card
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

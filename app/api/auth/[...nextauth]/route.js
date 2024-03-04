@@ -23,6 +23,7 @@ export const authOption = {
                     }, {
                         httpsAgent: agent
                     });
+                    console.log("Response AUTH", response)
                     console.log("Response Token ", response.data.token)
                     const token = response.data.token
                     const { users } = response.data;

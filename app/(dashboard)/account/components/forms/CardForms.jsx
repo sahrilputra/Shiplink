@@ -51,26 +51,30 @@ export const CardForms = () => {
     const handleSave = (formData) => {
         console.log("🚀 ~ handleSave ~ formData:", formData)
         setLoading(true)
+        formData.action = 'add';
         try {
-            formData.action = 'add';
-            const response = axios.post(
+            axios.post(
                 `/api/customerAPI/payments/addCard`,
                 formData
-            )
-            console.log("🚀 ~ handleSave ~ response:", response)
-            setLoading(false)
-            toast({
-                title: "Success",
-                description: `${response.data.message}`,
-                status: "success",
+            ).then((response) => {
+                console.log("🚀 ~ handleSave ~ response:", response)
+                setLoading(false)
+                toast({
+                    title: "Success",
+                    description: `${response.data.message}`,
+                    status: "success",
+                })
+            }).catch((error) => {
+                setLoading(false)
+                toast({
+                    title: "Failed",
+                    description: `Failed ${error.response.data.message}`,
+                    status: "error",
+                })
             })
         } catch (error) {
             setLoading(false)
-            toast({
-                title: "Failed",
-                description: "Failed to Saved new Credit Card",
-                status: "error",
-            })
+            console.log("Error", error)
         }
     }
 

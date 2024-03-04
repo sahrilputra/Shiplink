@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styles from './styles.module.scss';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
@@ -10,7 +10,33 @@ import { PaymentModals } from '../dashboard/components/dashboardMenus/payments/p
 import { ModalContext } from '@/context/ModalContext';
 import data from '../../../data/dashboardData.json'
 import NextLink from 'next/link'
+import axios from 'axios'
 export default function ShippingLebel() {
+
+    const { isOpen, openModal, closeModal } = useContext(ModalContext);
+    const [selectedTab, setSelectedTab] = useState("all");
+
+    const [data, setData] = useState([])
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    })
+    useEffect(() => {
+        axios.post(`/api/admin/packages/list`, query)
+            .then(response => {
+                // console.log(response.data)
+                setData(response.data.package_info)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    })
 
     const [expandedItemId, setExpandedItemId] = useState(null);
 
@@ -23,9 +49,7 @@ export default function ShippingLebel() {
             setExpandedItemId(itemId);
         }
     };
-    const { isOpen, openModal, closeModal } = useContext(ModalContext);
 
-    const [selectedTab, setSelectedTab] = useState("outgoing");
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     }
@@ -41,7 +65,7 @@ export default function ShippingLebel() {
         setSelectedButton(buttonName);
         console.log(selectedButton)
     }
-    const filterData = data.filter(item => item.package.orderType === selectedTab);
+    // const filterData = data.filter(item => item.package.orderType === selectedTab);
     return (
         <>
 
@@ -61,7 +85,7 @@ export default function ShippingLebel() {
                                 <input type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
                                 <SearchIcon className="w-4 h-4" />
                             </div>
-                            <NextLink href={"/new-labels"} >
+                            <NextLink href={"/shipping-lebels/new-labels"} >
                                 <Button
                                     variant="destructive"
                                     className="h-10 px-10 text-xs"
@@ -75,13 +99,13 @@ export default function ShippingLebel() {
                 <div className={styles.item_container}>
                     <div className={styles.items}>
                         {
-                            filterData.map((item, i) => (
+                            data.map((item, i) => (
                                 <ItemsPackage
                                     key={i}
                                     onClickButton={handleButtonClick}
                                     item={item}
                                     onExpand={toggleExpand}
-                                    isExpand={expandedItemId === item.package.id}
+                                    isExpand={expandedItemId === item.tracking_id}
                                 />
                             ))
                         }

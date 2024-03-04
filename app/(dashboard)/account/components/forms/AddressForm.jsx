@@ -46,11 +46,11 @@ const formSchema = yup.object().shape({
 
 export const AddressForms = () => {
     const { toast } = useToast()
+    const [disable, setDisable] = useState(true);
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             fullName: "",
-            lastName: "",
             email: "",
             phone_number: "",
             street_address: "",
@@ -62,6 +62,7 @@ export const AddressForms = () => {
             province: "",
         },
         mode: "onChange",
+        disabled: disable,
     })
     const [query, setQuery] = useState({
         keyword: "",
@@ -88,7 +89,6 @@ export const AddressForms = () => {
                     query
                 );
                 const data = await response.data;
-                console.log("🚀 ~ fetchData ~ data:", data)
                 setCountry(data.country);
             } catch (error) {
                 console.log('Error:', error);
@@ -102,7 +102,6 @@ export const AddressForms = () => {
                     queryProvince
                 );
                 const data = await response.data;
-                console.log("🚀 ~ fetchData ~ data:", data)
                 setProvince(data.province);
             } catch (error) {
                 console.log('Error:', error);
@@ -114,26 +113,33 @@ export const AddressForms = () => {
 
 
     const handleSave = (formData) => {
+        console.log("🚀 ~ handleSave ~ formData:", formData)
         setLoading(true)
+        formData.action = "add"
         try {
-            formData.action = 'add';
-            const response = axios.post(
+            axios.post(
                 `/api/customerAPI/payments/addBilling`,
                 formData
-            )
-            console.log("🚀 ~ handleSave ~ response:", response)
-            setLoading(false)
-            toast({
-                title: "Success",
-                message: `${response.data.message}`,
-                type: "success",
+            ).then((response) => {
+                console.log("🚀 ~ handleSave ~ response:", response)
+                setLoading(false)
+                toast({
+                    title: "Success",
+                    description: `${response.data.message}`,
+                    type: "success",
+                })
+                setDisable(true)
+            }).catch((error) => {
+                console.log("🚀 ~ handleSave ~ error:", error)
+                setLoading(false)
+                toast({
+                    title: "Failed",
+                    description: `${error}`,
+                    type: "error",
+                })
             })
         } catch (error) {
-            toast({
-                title: "Failed",
-                message: "Failed to Saved new Billing Address",
-                type: "error",
-            })
+            console.log("error", error)
         }
     }
 
@@ -368,13 +374,37 @@ export const AddressForms = () => {
                                 )}
                             />
                         </div>
-                        <div className="w-full flex justify-end">
-                            <Button
-                                variant="destructive"
-                                type="submit"
-                            >
-                                Save
-                            </Button>
+                        <div className="w-full flex justify-end gap-5">
+                            {
+                                disable ?
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="xs"
+                                        onClick={() => setDisable(false)}
+                                    >
+                                        Edit
+                                    </Button>
+                                    : (
+                                        <>
+                                            <Button
+                                                variant="redOutline"
+                                                type="button"
+                                                size="xs"
+                                                onClick={() => setDisable(true)}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                type="submit"
+                                                size="xs"
+                                            >
+                                                Save
+                                            </Button>
+                                        </>
+                                    )
+                            }
                         </div>
                     </div>
                 </form>

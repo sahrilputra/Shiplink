@@ -9,23 +9,26 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            customer_id,
             name,
             email,
+            country_code,
             password,
-            phoneNumber,
-            image,
+            user_plan,
         } = await request.json();
 
         const response = await axios.post(
             `${process.env.API_URL}/Customers/Customer_setdata_update`,
             {
-                "customer_id": customer_id,
-                "name": name,
-                "email": email,
-                "password": password,
-                "phone_number": phoneNumber,
-                "image": image,
+                "customer_id": "string",
+                "customer_name": "string",
+                "address": "string",
+                "phone_number": "string",
+                "email": "string",
+                "country_code": "string",
+                "province_code": "string",
+                "city": "string",
+                "postal_code": "string"
+
             },
             {
                 httpsAgent: agent

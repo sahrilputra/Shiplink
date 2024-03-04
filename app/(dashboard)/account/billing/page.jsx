@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles.module.scss'
 import { AddressForms } from '../components/forms/AddressForm'
 import { Separator } from '@/components/ui/separator'
@@ -8,18 +8,43 @@ import { PaymentCards } from '../components/payments/PaymentCards'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import axios from 'axios'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 
 export default function Page() {
+
+    const { data: session } = useSession()
+
+    const [cardList, setCardList] = useState([]);
+
+    const [skeleton, setSkeleton] = useState(true);
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 0,
+        customer_id: `${session?.user.id}`,
+        limit: 0,
+        index: 0
+    });
+
+    useEffect(() => {
+        const fetchCardList = async () => {
+            axios.post(
+                `/api/customerAPI/payments/cardList`,
+                query
+            ).then((response) => {
+                console.log("🚀 ~ fetchCardList ~ response", response)
+                setCardList(response.data.credit_card)
+                setSkeleton(false)
+            }).catch((error) => {
+                console.log("🚀 ~ fetchCardList ~ error", error)
+            })
+        }
+
+        fetchCardList();
+    }, [query])
+    console.log("🚀 ~ Page ~ cardList:", cardList)
     return (
         <>
             <div className={styles.content}>
@@ -27,7 +52,7 @@ export default function Page() {
                     <h1 className='text-zinc-900 text-base font-bold'>Billing Details</h1>
                 </div>
                 <div className="tableWrapper w-[90%] mx-auto">
-                    <AddressForms  />
+                    <AddressForms />
                 </div>
                 <div className="separator py-3 px-5">
                     <Separator className="py-[1px]" />
@@ -35,7 +60,7 @@ export default function Page() {
                 <div className="creditDetails p-5 flex flex-row gap-5 w-full justify-between">
                     <div className="w-full p-3">
                         <h1 className='text-zinc-900 text-base font-bold py-2'>New Credit Cards</h1>
-                        <CardForms  />
+                        <CardForms />
                     </div>
                     <div className="separator">
                         <Separator orientation="vertical" className="px-[1px]" />
@@ -44,8 +69,11 @@ export default function Page() {
                     <div className="w-full p-3">
                         <h1 className='text-zinc-900 text-base font-bold py-2'>Saved Credit Cards</h1>
                         <div className="flex flex-col gap-3">
-                            <PaymentCards />
-                            <PaymentCards />
+                            {
+                                cardList?.map((item, index) => (
+                                    <PaymentCards item={item} key={index} />
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

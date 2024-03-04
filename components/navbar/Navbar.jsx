@@ -54,7 +54,7 @@ export const Navbar = () => {
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>Ship</NavigationMenuTrigger>
                                 <NavigationMenuContent className="flex justify-between flex-col">
-                                    <Link href="/#" legacyBehavior passHref>
+                                    <Link href="/shipping-lebels/new-labels" legacyBehavior passHref>
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-10 flex justify-between `}>
                                             <p>Shipping Labels</p>
                                             <ShippingLabelIcon width={20} height={20} />
