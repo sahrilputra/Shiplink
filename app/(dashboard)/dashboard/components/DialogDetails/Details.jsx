@@ -1,4 +1,6 @@
-import React from 'react'
+'use-client'
+/* eslint-disable @next/next/no-img-element */
+import React, { useState } from 'react'
 import {
     Dialog,
     DialogClose,
@@ -18,8 +20,28 @@ import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { CopyIcons } from '@/components/icons/iconCollection'
+import { Card } from '@/components/ui/card'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
 
-export const DetailsModals = () => {
+export const DetailsModals = ({ item, date }) => {
+    const images = item?.images || null
+
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+            })
+            .catch((err) => console.error('Error copying text: ', err));
+    };
     return (
         <>
             <Dialog>
@@ -34,34 +56,51 @@ export const DetailsModals = () => {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="w-max">
-                  
+
                     <DialogDescription className="font-normal text-black flex flex-row flex-wrap justify-between gap-5 w-[700px]">
-                        <div className="imageContainer w-[380px]">
-                            <Image
-                                src={"/assets/packageImage/packagePicture.png"}
-                                width={500}
-                                height={500}
-                                alt='package Images'
-                                className=' object-cover w-full h-full rounded-md'
-                            />
+                        <div className="imageContainer flex flex-col w-[400px] items-center">
+                            <Carousel className="w-full ">
+                                <CarouselContent className=" ">
+                                    {Array.from({ length: images?.length }).map((_, index) => (
+                                        <CarouselItem key={index} className=" w-full h-full grow-1">
+                                            <div className="w-full">
+                                                <Card>
+                                                    <img
+                                                        style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
+                                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
+                                                        alt="images"
+                                                    />
+                                                </Card>
+                                            </div>
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="left-[10px]" />
+                                <CarouselNext className="right-[10px]" />
+                            </Carousel>
                         </div>
                         <div className="Details w-[40%]">
                             <div className="wrap">
-                                <h3 className=' text-[14px] text-lg'>Consolidate Package Request</h3>
-                                <p className=' text-[14px]'>#2312-232131</p>
+                                <h3 className=' text-[14px] text-lg'>Previewing Package</h3>
+                                <p className=' text-[14px]'>#{item?.tracking_id}</p>
                                 <p className='text-myBlue text-sm'>Shipping Mailbox</p>
-                                <p className='text-red-700 flex flex-row gap-2 items-center justify-start'>832131231321 <CopyIcons className="cursor-pointer" width={12} height={12} /></p>
+                                <p className='text-red-700 flex flex-row gap-2 items-center justify-start'>{item?.carrier_code} {item?.barcode_tracking}
+                                    <CopyIcons
+                                        onClick={() => handleCopy(item?.barcode_tracking)}
+                                        className="cursor-pointer" width={12} height={12}
+                                    />
+                                </p>
                             </div>
 
                             <div className="Information">
                                 <h3 className=' text-[14px]'>Package Name</h3>
-                                <p className=' text-[14px]'>12mm x 10mm x 10mm</p>
-                                <p className='text-myBlue text-sm'>12 ibs</p>
+                                <p className=' text-[14px]'>{item?.package_length} x {item?.package_witdth} x {item?.package_height} {item?.package_height_unit}</p>
+                                <p className='text-myBlue text-sm'>{item?.package_weight} {item?.package_weight_unit}</p>
                                 <div className="wrap">
                                     <p className='text-xs text-zinc-500'>Shipped Date :</p>
-                                    <p className='text-sm'>12 Jun, 2023</p>
+                                    <p className='text-sm'>{date}</p>
                                     <p className='text-xs text-zinc-500'>Status :</p>
-                                    <p className='text-sm'>Ready To Pickup</p>
+                                    <p className='text-sm'>{item?.status}</p>
                                     <p className='text-xs text-zinc-500'>Destination :</p>
                                     <p className='text-sm'>Boston, USA</p>
                                 </div>

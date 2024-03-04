@@ -17,28 +17,42 @@ import { PackageIndicator } from '@/components/PackageItemsUI/PackageIndicator';
 import { CopyIcons } from '@/components/icons/iconCollection';
 import { useToast } from '@/components/ui/use-toast';
 import { PaymentsDialog } from '../dashboardMenus/PaymentsV2/Payments';
+import format from 'date-fns/format';
 
 export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }) {
+    console.log("🚀 ~ ItemsPackage ~ isExpand:", isExpand)
     const { toast } = useToast();
 
     const {
-        id,
-        orderType,
-        shippingId,
-        shippingType,
+        barcode_tracking,
+        bin_location,
+        carrier_code,
+        content,
         carrierType,
-        carrierTrackingNumber,
-        from,
-        to,
-        variant,
-        dimension,
-        weight,
+        customer_email,
+        customer_id,
+        customer_name,
+        customer_phone,
+        entry_number,
+        images,
+        lots_id,
+        manifiest_number,
+        package_height,
+        package_height_unit,
+        package_length,
+        package_weight,
+        package_witdth,
+        package_weight_unit,
+        total_price,
+        tracking_id,
+        updated_at,
         status,
         date,
         time,
-        isShipped,
-    } = item.package;
+    } = item;
 
+
+    const formattedDate = format(new Date(updated_at), 'dd MMM yyyy');
     const [isExpanded, setIsExpanded] = useState(false);
 
     // button Control 
@@ -46,9 +60,19 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
     const [buttonEnabled, setButtonEnabled] = useState(true);
     const [clicked, setIsClicked] = useState(false);
 
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+            })
+            .catch((err) => console.error('Error copying text: ', err));
+    };
 
     const toggleExpanded = () => {
-        onExpand(id); // Call onExpand to toggle expanded state in the parent component
+        onExpand(tracking_id); // Call onExpand to toggle expanded state in the parent component
         setIsExpanded(!isExpanded);
         onClickButton(null);
         if (isExpand === false) {
@@ -75,7 +99,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
         <div
             onClick={() => {
                 if (!isExpand) {
-                    toggleClicked(id)
+                    toggleClicked(tracking_id)
                 }
             }}
             className={`
@@ -86,14 +110,14 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
             <div className="flex flex-row justify-between items-center gap-5 relative">
                 <div className="justify-start items-center gap-[15px] flex">
 
-                    <PackageType variant={variant} notif={"notif"} />
+                    <PackageType variant={status} notif={"notif"} />
                     <div className="flex-col justify-start items-start inline-flex w-[200px]">
-                        <div className="text-black text-sm font-semiBold">{shippingId}</div>
+                        <div className="text-black text-sm font-semiBold">{tracking_id}</div>
                         <div className="text-sky-700 text-xs font-semiBold">Shipping Mailbox</div>
                         <div className="justify-start items-start inline-flex">
                             <div className="justify-start items-center gap-2.5 flex">
-                                <div className="text-zinc-600 text-sm font-semiBold">{shippingType}</div>
-                                <p className='text-red-700 text-opacity-80 text-sm font-bold'>{carrierTrackingNumber}</p>
+                                <div className="text-zinc-600 text-sm font-semiBold">{carrier_code}</div>
+                                <p className='text-red-700 text-opacity-80 text-sm font-bold'>{barcode_tracking}</p>
                             </div>
                         </div>
                     </div>
@@ -104,9 +128,10 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                         className="w-[30px] h-[30px]"
                         size="icon"
                         onClick={() => {
+                            handleCopy(barcode_tracking)
                             toast({
                                 title: "Copied!",
-                                description: "Your tracking number has been copied to your clipboard.",
+                                description: `Copy Tracking Number ${barcode_tracking}.`,
                             })
                         }}
                     >
@@ -120,7 +145,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                     </div>
                     <div className="flex flex-row items-center gap-3">
                         <div className="w-[36.14px] h-[23.55px] relative">
-                            {
+                            {/* {
                                 from === "USA" ? (
                                     <>
                                         <Image
@@ -129,7 +154,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             height={70}
                                             className='left-[-10.19px] top-[-23.55px]'
                                             alt='USA icon'
-                                            style={{ width: '25px', height: '15px', objectFit: 'cover'}}
+                                            style={{ width: '25px', height: '15px', objectFit: 'cover' }}
                                         />
                                     </>
                                 ) : from === "Canada" ? (
@@ -140,7 +165,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             height={70}
                                             className='left-[-10.19px] top-[-23.55px]'
                                             alt='USA icon'
-                                            style={{ width: '25px', height: '15px', objectFit: 'cover'}}
+                                            style={{ width: '25px', height: '15px', objectFit: 'cover' }}
                                         />
                                     </>
                                 ) : (
@@ -151,15 +176,24 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             height={70}
                                             className='left-[-10.19px] top-[-23.55px]'
                                             alt='USA icon'
-                                            style={{ width: '25px', height: '15px', objectFit: 'cover'}}
+                                            style={{ width: '25px', height: '15px', objectFit: 'cover' }}
                                         />
                                     </>
                                 )
-                            }
+                            } */}
+
+                            <Image
+                                src={"/assets/country/USA-flag.png"}
+                                width={66}
+                                height={70}
+                                className='left-[-10.19px] top-[-23.55px]'
+                                alt='USA icon'
+                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
+                            />
                         </div>
                         <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
                             <PackageIndicator status={status} />
-                            <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {date}</span></div>
+                            <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {formattedDate}</span></div>
                         </div>
                     </div>
                 </div>
@@ -168,7 +202,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                     <div className="flex flex-col justify-end items-end ">
                         <PackageStatus variant={status} />
                         <div className="h-[30px]  justify-end items-center gap-2.5 flex">
-                            <div className="text-right text-zinc-600 text-xs ">{to}</div>
+                            <div className="text-right text-zinc-600 text-xs ">{"destination"}</div>
                         </div>
                     </div>
                     <div className="flex flex-col justify-end items-center ">
@@ -183,7 +217,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                 variant="ghost"
                                 size='small'
                                 className={`w-[30px] h-[30px] ${isExpand ? 'rotate-180' : ''}`}
-                                onClick={(e) => { e.stopPropagation(); toggleExpanded(); toggleExpanded(); }}
+                                onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}
                             >
                                 <ArrowDownIcon />
                             </Button>
@@ -198,11 +232,11 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                     <div className="expanded transition-transform ease-in-out ">
                         <div className="flex flex-row justify-between items-center gap-5 relative">
                             <div className="justify-start items-center gap-[15px] flex">
-                                <DetailsModals />
+                                <DetailsModals item={item} date={formattedDate} />
                                 <div className="flex-col justify-start items-start gap-px inline-flex">
                                     <div className="text-black text-xs font-semiBold ">Name Or Something</div>
-                                    <div className="text-zinc-600 text-xs ">{dimension}</div>
-                                    <div className="text-zinc-600 text-xs ">{weight}</div>
+                                    <div className="text-zinc-600 text-xs ">{package_length} x {package_witdth} x {package_height} {package_height_unit}</div>
+                                    <div className="text-zinc-600 text-xs ">{package_weight} {package_weight_unit}</div>
                                 </div>
                             </div>
                             <div className="flex-col justify-start items-start gap-2.5 inline-flex">

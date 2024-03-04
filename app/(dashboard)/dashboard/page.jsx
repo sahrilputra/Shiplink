@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styles from './styles.module.scss';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
@@ -7,17 +7,40 @@ import { ForwadPakage } from './components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
 import ItemsPackage from './components/items/itemsPackage';
 import { ModalContext } from '@/context/ModalContext';
-import data from '../../../data/dashboardData.json'
+// import data from '../../../data/dashboardData.json'
+import axios from 'axios';
 export default function Dashboard() {
 
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
     const [selectedTab, setSelectedTab] = useState("all");
+    const [data, setData] = useState([])
+    const [query, setQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        tracking_id: "",
+        status: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    })
+    useEffect(() => {
+        axios.post(`/api/admin/packages/list`, query)
+            .then(response => {
+                // console.log(response.data)
+                setData(response.data.package_info)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    })
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     }
     const [expandedItemId, setExpandedItemId] = useState(null);
-
+    console.log("🚀 ~ Dashboard ~ expandedItemId:", expandedItemId)
+    
     const toggleExpand = (itemId) => {
         if (expandedItemId === itemId) {
             // If the clicked item is already expanded, close it
@@ -35,7 +58,7 @@ export default function Dashboard() {
         setSelectedButton(buttonName);
     }
 
-    const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
+    // const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
 
 
     return (
@@ -104,13 +127,13 @@ export default function Dashboard() {
                 <div className={styles.item_container}>
                     <div className={styles.items}>
                         {
-                            filterData.map((item, i) => (
+                            data.map((item, i) => (
                                 <ItemsPackage
                                     key={i}
                                     onClickButton={handleButtonClick}
                                     item={item}
                                     onExpand={toggleExpand}
-                                    isExpand={expandedItemId === item.package.id}
+                                    isExpand={expandedItemId === item.tracking_id}
                                 />
                             ))
                         }
