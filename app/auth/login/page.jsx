@@ -20,6 +20,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Loaders } from "@/components/ui/loaders";
+import { useToast } from "@/components/ui/use-toast";
 const formSchema = yup.object().shape({
     username: yup.string().required('Email/Username is required'),
     password: yup.string().required('Password is required'),
@@ -27,6 +28,7 @@ const formSchema = yup.object().shape({
 })
 export default function Home() {
     const { data: session, status } = useSession();
+    const { toast } = useToast();
     const [loading, setLoading] = useState(false)
     const router = useRouter();
     const form = useForm({
@@ -39,7 +41,6 @@ export default function Home() {
         mode: "onChange",
     })
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -51,9 +52,17 @@ export default function Home() {
             const session = await getSession();
             setLoading(false);
             if (session) {
-                router.push('/admin/arrival-scan');
+                toast({
+                    title: 'Login Success',
+                    description: 'You have successfully logged in',
+                    type: 'success',
+                })
             } else {
-                console.log('Session not found after login.');
+                toast({
+                    title: 'Login Failed',
+                    description: 'Invalid Email/Username or Password',
+                    type: 'error',
+                })
             }
         } catch (error) {
             setLoading(false)

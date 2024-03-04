@@ -9,7 +9,7 @@ export async function middleware(request) {
         secret: process.env.JWT_SECRET
     });
     const url = request.nextUrl.clone()
-    console.log('role', session?.type)
+    // console.log('role', session)
     if (!session) {
         return NextResponse.redirect(`${url.origin}/auth/login`)
     }

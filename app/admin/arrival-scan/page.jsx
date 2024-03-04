@@ -126,29 +126,41 @@ export default function ArrivalScanPage() {
     const handleSave = async (formData) => {
         setLoading(true);
         console.log("dikirim", formData)
+        formData.manifiest_number = ""
+        formData.lots_id = ""
+        formData.documents = ""
+        formData.entry_number = ""
+        formData.action = "add"
+        formData.status = "Received"
+        formData.tracking_id = ""
         try {
-            const response = await axios.post(
+            axios.post(
                 `/api/admin/arrival_scan/register`,
                 formData
-            );
-            setTrackingId(response.data.tracking_id);
-            setLoading(false);
-            setOpen(true);
-            setUserID(formData.customer_id)
-            setUserName(formData.customer_name)
-            toast({
-                title: `New Package Has Register to ${formData.customer_name}!`,
-                description: response.data.message,
-                status: 'success',
-            });
+            ).then((response) => {
+                setTrackingId(response.data.tracking_id);
+                setLoading(false);
+                setOpen(true);
+                setUserID(formData.customer_id)
+                setUserName(formData.customer_name)
+                toast({
+                    title: `New Package Has Register to ${formData.customer_name}!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            }).catch((error) => {
+                console.log('Error', error);
+                setLoading(false);
+                toast({
+                    title: 'Error Register New Package',
+                    description: `An error occurred while creating the Package. ${error}`,
+                    status: 'error',
+                });
+            })
+
         } catch (error) {
             console.log('Error', error);
             setLoading(false);
-            toast({
-                title: 'Error Register New Package',
-                description: 'An error occurred while creating the Package.',
-                status: 'error',
-            });
         }
     };
 

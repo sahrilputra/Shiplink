@@ -6,7 +6,6 @@ import https from "https";
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
-
 export const authOption = {
     providers: [
         CredentialsProvider({
@@ -26,20 +25,18 @@ export const authOption = {
                     });
                     console.log("Response Token ", response.data.token)
                     const token = response.data.token
-                    // Extract token and user objects from response data
                     const { users } = response.data;
 
                     // Check if token and user objects are valid
                     if (!token || !users) {
                         throw new Error('Invalid response data');
                     }
-
                     if (users) {
                         users.accessToken = token;
                         console.log("Users", users.accessToken)
                         return Promise.resolve(users);
                     } else {
-                        return null
+                        return Promise.resolve(null);
                     }
                 } catch (error) {
                     console.log("Error", error)
@@ -84,7 +81,7 @@ export const authOption = {
     pages: {
         signIn: ['/auth/login', '/auth/admin'],
         signOut: '/auth/login',
-        error: '/auth/login',
+        error: '/auth/error',
         verifyRequest: '/auth/verification/1',
         newUser: '/auth/verification/1'
     },
