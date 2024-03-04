@@ -46,6 +46,8 @@ import { cn } from "@/lib/utils"
 import axios from 'axios';
 import { Loaders } from '@/components/ui/loaders'
 import { format } from "date-fns"
+
+
 const formSchema = yup.object().shape({
     InvoiceNo: yup.string(),
     InvoiceDate: yup.string(),
@@ -73,6 +75,7 @@ const formSchema = yup.object().shape({
             itemID: yup.string(),
         })
     ),
+    subtotal: yup.number(),
     itemTax: yup.number(),
     itemTotal: yup.number(),
     itemDiscount: yup.number(),
@@ -106,12 +109,13 @@ export const InvoiceForms = () => {
             items: [
                 {
                     itemDescription: "",
-                    itemQty: null,
-                    itemPrice: null,
-                    itemAmount: null,
+                    itemQty: 0,
+                    itemPrice: 0,
+                    itemAmount: 0,
                     itemID: "",
                 }
             ],
+            subtotal: 0,
             itemTax: 0,
             itemTotal: 0,
             itemDiscount: 0,
@@ -137,7 +141,6 @@ export const InvoiceForms = () => {
         index: 0
     });
     useEffect(() => {
-
         const fetchData = async () => {
             try {
                 const response = await axios.post(
@@ -164,7 +167,7 @@ export const InvoiceForms = () => {
                 );
                 console.log("🚀 ~ fetchData ~ response:", response)
                 const data = await response.data;
-                setTaxList(data.taxassignment);
+                setTaxList(data.tax);
             } catch (error) {
                 console.log('Error:', error);
             }
@@ -172,10 +175,37 @@ export const InvoiceForms = () => {
         fetchData();
     }, [taxQuery])
 
+    const { watch, getValues, setValue } = form;
+
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "items",
     });
+
+    const items = watch('items');
+    const itemTax = parseFloat(watch('itemTax') || 0);
+    const itemDiscount = parseFloat(watch('itemDiscount') || 0);
+    const [subTotal, setSubTotal] = useState(0);
+    console.log("🚀 ~ InvoiceForms ~ subTotal:", subTotal)
+    useEffect(() => {
+        const calculateSubTotal = (items) => {
+            let subTotal = 0;
+            items.forEach(item => {
+                if (typeof item.itemQty === 'number' && typeof item.itemPrice === 'number') {
+                    subTotal += (item.itemQty * item.itemPrice);
+                }
+            });
+            return subTotal;
+        };
+        const subtotal = calculateSubTotal(form.getValues('items'));
+        console.log("🚀 ~ useEffect ~ subtotal:", subtotal)
+        if (!isNaN(subtotal)) {
+            setValue('subtotal', subtotal);
+        } else {
+            setValue('subtotal', 0);
+        }
+        setSubTotal(subtotal);
+    }, [form.getValues('items'), setValue]);
 
     const onError = (error) => {
         console.log("Form Errors", error)
@@ -199,6 +229,8 @@ export const InvoiceForms = () => {
             console.log('Error:', error);
         }
     }
+
+
     return (
         <>
             {
@@ -238,7 +270,7 @@ export const InvoiceForms = () => {
                                     />
                                     <FormField
                                         className="w-full text-xs"
-                                        name="currency"
+                                        name="InvoiceCurrency"
                                         control={form.control}
                                         render={({ field }) => (
                                             <>
@@ -247,7 +279,7 @@ export const InvoiceForms = () => {
                                                     <Select
                                                         className="w-full text-xs h-[30px]"
                                                         onValueChange={field.onChange}
-                                                        defaultValue={field.value}
+                                                        defaultValue={"CAD"}
                                                     >
                                                         <FormControl>
                                                             <SelectTrigger className="text-xs h-[30px] rounded-sm">
@@ -268,7 +300,7 @@ export const InvoiceForms = () => {
                                     />
                                     <FormField
                                         className="w-full text-xs"
-                                        name="terms"
+                                        name="InvoiceTerms"
                                         control={form.control}
                                         render={({ field }) => (
                                             <>
@@ -311,7 +343,7 @@ export const InvoiceForms = () => {
                                                                 className={`w-[100%] pl-3 text-left text-xs shadow-none h-[30px] font-normal ${!field.value && "text-muted-foreground"}`}
                                                             >
                                                                 {field.value ? (
-                                                                    format(field.value, "PPP")
+                                                                    format(field.value, "yyyy-MM-dd")
                                                                 ) : (
                                                                     <span>Pick a date</span>
                                                                 )}
@@ -846,6 +878,10 @@ export const InvoiceForms = () => {
                                             onClick={() => {
                                                 append({
                                                     itemID: fields.length + 1,
+                                                    itemQty: 0,
+                                                    itemPrice: 0,
+                                                    itemAmount: 0,
+                                                    itemDescription: "",
                                                 })
                                             }}
                                         >
@@ -861,14 +897,14 @@ export const InvoiceForms = () => {
                             <div className="w-[30%] flex justify-end flex-col gap-2 px-5">
                                 <div className="flex flex-row justify-between items-center ">
                                     <p className='font-bold text-myBlue'>Subtotal</p>
-                                    <p className='font-bold text-myBlue'>$ 123</p>
+                                    <p className='font-bold text-myBlue'>$ {subTotal}</p>
                                 </div>
                                 <Separator className="w-full" />
                                 <div className="flex flex-row justify-between items-center ">
                                     <p className='font-bold w-full text-myBlue'>Discount</p>
                                     <div className="w-[50%]">
                                         <FormField
-                                            name="discount"
+                                            name="itemDiscount"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
@@ -877,7 +913,7 @@ export const InvoiceForms = () => {
                                                         <FormControl className='flex flex-row items-center w-full'>
                                                             <Input
                                                                 size="new"
-                                                                id="discount"
+                                                                id="itemDiscount"
                                                                 className="text-xs "
                                                                 type="number"
                                                                 min="0"
@@ -897,7 +933,7 @@ export const InvoiceForms = () => {
                                     <div className="w-[50%]">
                                         <FormField
                                             className="w-full text-xs"
-                                            name="tax"
+                                            name="itemTax"
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
@@ -916,9 +952,17 @@ export const InvoiceForms = () => {
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
-
-                                                                <SelectItem className="text-xs" value="Next 30 Days">Next 30 Days</SelectItem>
-                                                                <SelectItem className="text-xs" value="End of the month">End Of The Month</SelectItem>
+                                                                {
+                                                                    taxList?.map((item, index) => (
+                                                                        <SelectItem
+                                                                            key={item.tax_id}
+                                                                            value={item?.tax_rate}
+                                                                            className="text-xs"
+                                                                        >
+                                                                            {item?.tax_rate}
+                                                                        </SelectItem>
+                                                                    ))
+                                                                }
                                                             </SelectContent>
                                                         </Select>
                                                     </FormItem>
@@ -930,7 +974,7 @@ export const InvoiceForms = () => {
                                 <Separator className="w-full" />
                                 <div className="flex flex-row justify-between items-center ">
                                     <p className='font-bold w-full text-myBlue'>Total Due</p>
-                                    <p className='font-bold text-myBlue text-sm px-2 w-[50%]'>12.00</p>
+                                    <p className='font-bold text-myBlue text-sm px-2 w-[50%]'>$ {form.getValues('itemTotal')}</p>
                                 </div>
                             </div>
 

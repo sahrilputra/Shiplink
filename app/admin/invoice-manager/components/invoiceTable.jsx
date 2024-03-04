@@ -8,6 +8,7 @@ import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import NextLink from 'next/link';
 import { DeleteInvoiceDialog } from "./dialog/DeleteInvoiceDialog";
+
 import {
     Pagination,
     PaginationContent,
@@ -42,6 +43,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from 'axios'
+import { InvoiceMenus } from "./dialog/InvoiceMenus";
+import { UpdateInvoiceStatus } from "./dialog/UpdateInvoiceStatus";
 
 export function InvoiceTable({ isOpen, setOpen }) {
 
@@ -50,6 +53,8 @@ export function InvoiceTable({ isOpen, setOpen }) {
     const [loading, setLoading] = useState(false);
     const [invoiceID, setInvoiceID] = useState([]);
     const [openDelete, setOpenDelete] = useState(false);
+    const [openStatus, setOpenStatus] = useState(false);
+    const [invStatusID, setInvStatusID] = useState(false)
     const [query, setQuery] = useState({
         keyword: "",
         invoice_id: "",
@@ -142,14 +147,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                 <p>View</p>
                             </Button>
                         </NextLink>
-                        <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                        >
-                            <MoreHorizontalIcon width={15} height={15} />
-                        </Button>
-
+                        <InvoiceMenus handler={handlerStatus} invID={row.original.invoice_id} />
                         <Button
                             variant="tableBlue"
                             className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center"
@@ -215,12 +213,18 @@ export function InvoiceTable({ isOpen, setOpen }) {
         }
     }
 
+    const handlerStatus = (data) => {
+        setOpenStatus(true)
+        setInvStatusID(data)
+    }
+
     const handlerSearch = (e) => {
         setQuery({ ...query, keyword: e.target.value })
     }
     const selectedRows = table.getSelectedRowModel().rows.map(row => row.original.invoice_id);
     return (
         <>
+            <UpdateInvoiceStatus open={openStatus} setOpen={setOpenStatus} dataID={invStatusID} reload={reloadData} />
             <DeleteInvoiceDialog open={openDelete} setOpen={setOpenDelete} deleteID={invoiceID} reloadData={reloadData} />
             <div className="">
                 <Table className=" rounded-md">
@@ -371,7 +375,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                     disabled={!table.getCanPreviousPage()}
                                 />
                             </PaginationItem>
-                            <PaginationItem>
+                            {/* <PaginationItem>
                                 <div className="flex flex-row">
                                     {table.getPageOptions().map((page) => (
                                         <PaginationLink
@@ -385,12 +389,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                         </PaginationLink>
                                     ))}
                                 </div>
-                                {/* <PaginationLink
-                                href="#"
-                            >
-                            1
-                            </PaginationLink> */}
-                            </PaginationItem>
+                            </PaginationItem> */}
                             <PaginationItem>
                                 <PaginationEllipsis />
                             </PaginationItem>

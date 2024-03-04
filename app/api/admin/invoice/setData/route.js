@@ -10,10 +10,10 @@ export async function POST(request) {
     try {
         // const tokenAccess = await getAccessToken(request)
         const {
-            date = "",
+            date,
             InvoiceNo,
             InvoiceDate,
-            InvoiceCurrency = "USD",
+            InvoiceCurrency,
             InvoiceTerms,
             BilledToName,
             BilledToAddress,
@@ -41,9 +41,9 @@ export async function POST(request) {
         const response = await axios.post(
             `${process.env.API_URL}/InvoiceManager/Invoice_setdata`,
             {
-                date: null,
-                currency: "USD",
-                terms: "terms",
+                date: date,
+                currency: InvoiceCurrency,
+                terms: InvoiceTerms,
                 billed_name: BilledToName,
                 billed_zip: BilledToZip,
                 billed_address: BilledToAddress,

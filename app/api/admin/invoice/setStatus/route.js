@@ -8,32 +8,10 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const {
-            streat_address,
-            city,
-            province_code,
-            country_code,
-            zipCode,
-            email,
-            phoneNumber,
-            isPrimary,
-            action
-        } = await request.json();
         const tokenAccess = await getAccessToken(request)
-        const response = await axios.post(
-            `${process.env.API_URL}/MyAddress/My_Address_setdata`,
-            {
-                "my_address_id": "",
-                "streat_address": streat_address,
-                "city": city,
-                "province_code": province_code,
-                "country_code": country_code,
-                "postal_code": zipCode,
-                "email": email,
-                "phone_number": phoneNumber,
-                "primary_address": isPrimary,
-                "action": action
-            },
+        const { status, invoiceID } = await request.json();
+        const response = await axios.get(
+            `${process.env.API_URL}/InvoiceManager/Invoice_UpdateStatus?invoice_id=${invoiceID}&status=${status}`,
             {
                 httpsAgent: agent,
                 headers: {
@@ -42,7 +20,6 @@ export async function POST(request) {
                 }
             }
         );
-        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {

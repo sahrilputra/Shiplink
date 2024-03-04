@@ -20,13 +20,13 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-
+import { Loaders } from '@/components/ui/loaders'
 import { DialogFooter, DialogClose } from '@/components/ui/dialog'
 
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useToast } from '@/components/ui/use-toast'
-
+import axios from 'axios'
 const formSchema = yup.object().shape({
     cardType: yup.string().required(),
     cardNumber: yup.string().required(),
@@ -39,8 +39,8 @@ const formSchema = yup.object().shape({
 
 export const NewPaymentsCard = () => {
 
+    const [loading, setLoading] = useState(false)
     const { toast } = useToast()
-
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -52,13 +52,44 @@ export const NewPaymentsCard = () => {
         },
         mode: "onChange",
     })
+
+    const handleSave = (formData) => {
+        console.log("formData", formData);
+        setLoading(true);
+        try {
+            axios.post('/api/customerAPI/payments/addCard', formData)
+                .then((response) => {
+                    setLoading(false);
+                    console.log("response", response);
+                    toast({
+                        variant: "success",
+                        title: "Payment Confirmed",
+                        description: "Payment has been processed",
+                    })
+                })
+                .catch((error) => {
+                    setLoading(false);
+                    console.error("error", error);
+                    toast({
+                        variant: "destructive",
+                        title: "Payment Canceled",
+                        description: "Try again",
+                    })
+                })
+        } catch (error) {
+            console.error("error", error);
+        }
+    }
     return (
         <>
+            {loading && <Loaders />}
             <div className="w-full flex flex-col">
                 <Form {...form}>
                     <form
                         className='flex gap-4 flex-col w-full '
-                        action="">
+                        action=""
+                        onSubmit={form.handleSubmit(handleSave, (errors) => console.log(errors))}
+                    >
 
                         <div className="profile flex flex-col gap-4 w-full">
                             <FormField
@@ -87,7 +118,7 @@ export const NewPaymentsCard = () => {
                                         <>
                                             <FormItem className="w-full">
                                                 <FormControl>
-                                                    <Select>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                         <SelectTrigger className="w-[100%]">
                                                             <SelectValue placeholder="Select Card Type" />
                                                         </SelectTrigger>
@@ -193,24 +224,19 @@ export const NewPaymentsCard = () => {
                                 <DialogClose asChild>
                                     <Button
                                         variant="redOutline"
-                                        onClick={() => {
-                                            toast({
-                                                variant: "destructive",
-                                                title: "Payment Canceled",
-                                                description: "Try again later",
-                                            })
-                                        }}
+                                        type="button"
                                     >
                                         <p className=' font-normal '>Cancel</p>
                                     </Button>
                                 </DialogClose>
-                                <Button
-                                    variant="destructive"
-                                    type="submit"
-
-                                >
-                                    <p className=' font-normal '>Process</p>
-                                </Button>
+                                <DialogClose asChild>
+                                    <Button
+                                        variant="destructive"
+                                        type="submit"
+                                    >
+                                        <p className=' font-normal '>Process</p>
+                                    </Button>
+                                </DialogClose>
                             </div>
                         </DialogFooter>
                     </form>

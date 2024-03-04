@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SearchBar } from '@/components/ui/searchBar'
 import { Button } from '@/components/ui/button'
 import { GridIcons, FilterIcons, IconList, DeleteIcons } from '@/components/icons/iconCollection'
@@ -11,13 +11,14 @@ import data from '../../../data/countryData.json'
 import { NewAdressMenus } from './components/NewAdressMenus'
 import { useToast } from '@/components/ui/use-toast'
 import { EditAddressMenu } from './components/EditedAddressMenu'
+import axios from 'axios'
 export default function AssitedPurchase() {
 
     const { toast } = useToast();
 
     const [newAddress, setIsNew] = useState(false);
     const [editAddress, setIsEdit] = useState(false);
-    const [selectedData, setSelectedData] = useState(null);
+    const [selectedData, setSelectedData] = useState("");
     const [keyForEditAddressMenu, setKeyForEditAddressMenu] = useState(0); // State untuk key unik
     const [isCheck, setIsCheck] = useState(false);
     const [isPicked, setIsPicked] = useState(false);
@@ -71,6 +72,31 @@ export default function AssitedPurchase() {
             setIsDeleteButtonActive(true);
         }
     }
+
+    const [savedAddress, setSavedAddress] = useState([]);
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+        shortby: "",
+    })
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/customerAPI/address/list`,
+                    query
+                );
+                const data = await response.data;
+                console.log("🚀 ~ fetchData ~ data:", data)
+                setSavedAddress(data.my_address);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
+        fetchData();
+    }, [query]);
 
 
     const renderMenus = () => {
@@ -148,13 +174,13 @@ export default function AssitedPurchase() {
                     <div className={styles.item_container}>
                         <div className={`${styles.items} w-full flex flex-row gap-5 justify-center items-center`}>
                             {
-                                data.map((item, i) => (
+                                savedAddress.map((item, i) => (
                                     <SavedAddressCard
                                         key={i}
                                         addressBook={item}
                                         select={toggleEditedAddress}
                                         onClick={handleCardSelected}
-                                        isSelected={isPicked && selectedData.id === item.id}
+                                        isSelected={isPicked && selectedData === item.my_address_id}
                                         variant={clicked ? 'list' : ""}
                                     />
                                 ))

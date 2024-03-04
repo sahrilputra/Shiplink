@@ -34,7 +34,6 @@ const formSchema = yup.object().shape({
 
 
 export const UserForms = () => {
-
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {

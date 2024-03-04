@@ -35,22 +35,22 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 const formSchema = yup.object().shape({
     fullName: yup.string().required().max(50, "character is too long"),
-    address: yup.string().required(),
+    streat_address: yup.string().required(),
     city: yup.string().required(),
     state: yup.string().required(),
-    province_code: yup.string().required(),
+    province_code: yup.string(),
     country: yup.string().required(),
-    contry_code: yup.string().required(),
+    contry_code: yup.string(),
     zipCode: yup.string().required(),
     email: yup.string().email().required(),
     phoneNumber: yup.string().required(),
-    isPrimary: yup.boolean(),
+    isPrimary: yup.string(),
 })
 
 
 
 export const NewAddress = ({ close, data = null }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false)
     const [country, setCountry] = useState([]);
     const [province, setProvince] = useState([]);
 
@@ -59,7 +59,7 @@ export const NewAddress = ({ close, data = null }) => {
         resolver: yupResolver(formSchema),
         defaultValues: {
             fullName: data?.fullName || "",
-            address: data?.address || "",
+            streat_address: data?.streat_address || "",
             city: data?.city || "",
             state: data?.state || "",
             province_code: data?.province_code || "",
@@ -85,6 +85,7 @@ export const NewAddress = ({ close, data = null }) => {
         limit: 0,
         index: 0,
     })
+
     // const fetchDataCountry = async () => {
     //     const response = axios.post(
     //         `api/admin/config/countries/list`,
@@ -139,23 +140,25 @@ export const NewAddress = ({ close, data = null }) => {
     }, [query, queryProvince]);
 
     const handleSave = (formData) => {
+        console.log("Data:", formData)
         setLoading(true)
+        formData.action = "add"
         try {
             const response = axios.post(
-                `api/customerAPI/adress/setData`,
+                `api/customerAPI/address/setData`,
                 formData,
             )
             setLoading(false);
             toast({
                 title: "Success",
-                message: "Address has been saved",
+                description: "Address has been saved",
                 type: "success",
             })
             console.log(response)
         } catch (error) {
             toast({
                 title: "Error",
-                message: "Address failed to save",
+                description: "Address failed to save",
                 type: "error",
             })
             setLoading(false);
@@ -166,10 +169,13 @@ export const NewAddress = ({ close, data = null }) => {
 
     return (
         <>
+            {loading && <Loaders />}
             <Form {...form}>
                 <form
                     className='flex gap-4 flex-col'
-                    action="">
+                    action=""
+                    onSubmit={form.handleSubmit(handleSave)}
+                >
 
                     <div className="profile flex flex-col gap-4 w-full">
                         <FormField
@@ -189,7 +195,7 @@ export const NewAddress = ({ close, data = null }) => {
                             )}
                         />
                         <FormField
-                            name="address"
+                            name="streat_address"
                             className="w-full"
                             control={form.control}
                             render={({ field }) => (
@@ -197,7 +203,7 @@ export const NewAddress = ({ close, data = null }) => {
                                     <FormItem className="w-full">
                                         <FormLabel>Street Address</FormLabel>
                                         <FormControl >
-                                            <Input type="text" id="address" placeholder="Street Address"  {...field} />
+                                            <Input type="text" id="streat_address" placeholder="Street Address"  {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -206,7 +212,7 @@ export const NewAddress = ({ close, data = null }) => {
                         />
 
                     </div>
-                    <div className="address flex flex-col w-full gap-4">
+                    <div className="streat_address flex flex-col w-full gap-4">
                         <div className="wrap flex flex-row items-center gap-4">
                             <FormField
                                 name="city"
@@ -361,7 +367,7 @@ export const NewAddress = ({ close, data = null }) => {
                         </div>
                         <div className="wrap flex flex-col items-center gap-4">
                             <FormField
-                                name="phone"
+                                name="phoneNumber"
                                 className="w-full"
                                 control={form.control}
                                 render={({ field }) => (
@@ -369,7 +375,7 @@ export const NewAddress = ({ close, data = null }) => {
                                         <FormItem className="w-full">
                                             <FormLabel>Phone Number</FormLabel>
                                             <FormControl>
-                                                <Input type="number" id="phone" placeholder="Phone Number" {...field} />
+                                                <Input type="number" id="phoneNumber" placeholder="Phone Number" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -418,14 +424,13 @@ export const NewAddress = ({ close, data = null }) => {
                         <div className=" flex justify-between items-end mt-[20px] gap-4">
                             <Button
                                 variant="redOutline"
-                                type="submit"
+                                type="button"
                                 onClick={close}
                                 className='w-full '
                             >
                                 <p className=' font-normal '>Cancel</p>
                             </Button>
                             <Button
-
                                 variant="destructive"
                                 type="submit"
                                 className='w-full '
