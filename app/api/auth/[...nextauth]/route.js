@@ -11,48 +11,57 @@ export const authOption = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { label: "Username", type: "text" },
-                password: { label: "Password", type: "password" }
+                id: { label: "id", type: "text" },
+                token: { label: "token", type: "text" },
+                code: { label: "code", type: "text" },
+                email: { label: "Username", type: "text" },
+                password: { label: "Password", type: "text" },
+                type: { label: "type", type: "text" },
+                role: { label: "role", type: "text" },
+                role_id: { label: "role_id", type: "text" },
+                warehouse_id: { label: "warehouse_id", type: "text" },
+                warehouse_name: { label: "warehouse_name", type: "text" },
+                img: { label: "img", type: "text" },
+                name: { label: "name", type: "text" },
             },
-            authorize: async (credentials) => {
-                try {
-                    console.log("Credentials", credentials)
-                    const response = await axios.post('https://sla.webelectron.com/api/Auth/GetToken', {
-                        username: credentials.username,
-                        password: credentials.password
-                    }, {
-                        httpsAgent: agent
-                    });
-                    console.log("Response AUTH", response)
-                    console.log("Response Token ", response.data.token)
-                    const token = response.data.token
-                    const { users } = response.data;
 
-                    // Check if token and user objects are valid
-                    if (!token || !users) {
-                        throw new Error('Invalid response data');
-                    }
-                    if (users) {
-                        users.accessToken = token;
-                        console.log("Users", users.accessToken)
-                        return Promise.resolve(users);
-                    } else {
-                        return Promise.resolve(null);
-                    }
-                } catch (error) {
-                    console.log("Error", error)
-                    return Promise.resolve(null);
+            authorize: async (credentials) => {
+                const user = {
+                    id: credentials.id,
+                    code: credentials.code,
+                    email: credentials.email,
+                    password: credentials.password,
+                    type: credentials.type,
+                    role: credentials.role,
+                    role_id: credentials.role_id,
+                    warehouse_id: credentials.warehouse_id,
+                    warehouse_name: credentials.warehouse_name,
+                    img: credentials.img,
+                    name: credentials.name,
+                    accessToken: credentials.token,
+                };
+                if (user) {
+                    return Promise.resolve(user);
                 }
-            }
+                return Promise.resolve(null);
+            },
+            redirect: '/auth/login',
         })
     ],
     callbacks: {
         async jwt({ token, account, profile, user }) {
             if (user) {
-                token.id = user.user_id;
-                token.name = user.username;
+                token.id = user.id;
+                token.code = user.code;
+                token.email = user.email;
+                token.password = user.password;
                 token.type = user.type;
                 token.role = user.role;
+                token.role_id = user.role_id;
+                token.warehouse_id = user.warehouse_id;
+                token.warehouse_name = user.warehouse_name;
+                token.img = user.img;
+                token.name = user.name;
                 token.accessToken = user.accessToken;
                 // console.log('JWT callback:', token);
                 // Delete the token property to avoid overwriting the JWT token
@@ -62,27 +71,33 @@ export const authOption = {
         },
 
         async session({ session, token, user }) {
+            console.log("🚀 ~ session ~ token:", token)
             if (token) {
                 session.user = {
                     id: token.id,
-                    name: token.name,
+                    code: token.code,
+                    email: token.email,
+                    password: token.password,
                     type: token.type,
                     role: token.role,
+                    role_id: token.role_id,
+                    warehouse_id: token.warehouse_id,
+                    warehouse_name: token.warehouse_name,
+                    img: token.img,
+                    name: token.name,
                     accessToken: token.accessToken,
                     // You can add other user properties here if needed
                 };
-                // console.log('Session callback:', session);
-
+                console.log('Session callback:', session);
             }
-
-            // console.log('Session callback:', session);
+            console.log('Session callback:', session);
             return session;
         }
     },
     pages: {
-        signIn: ['/auth/login', '/auth/admin'],
+        signIn: '/auth/login',
         signOut: '/auth/login',
-        error: '/auth/error',
+        error: '/auth/login',
         verifyRequest: '/auth/verification/1',
         newUser: '/auth/verification/1'
     },
@@ -94,3 +109,4 @@ export const authOption = {
 
 const handler = NextAuth(authOption);
 export { handler as GET, handler as POST }
+

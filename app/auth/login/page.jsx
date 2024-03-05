@@ -21,6 +21,10 @@ import {
 } from "@/components/ui/form"
 import { Loaders } from "@/components/ui/loaders";
 import { useToast } from "@/components/ui/use-toast";
+import https from "https";
+const agent = new https.Agent({
+    rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
+});
 const formSchema = yup.object().shape({
     username: yup.string().required('Email/Username is required'),
     password: yup.string().required('Password is required'),
@@ -29,6 +33,7 @@ const formSchema = yup.object().shape({
 export default function Home() {
     const { data: session, status } = useSession();
     const { toast } = useToast();
+    const [isError, setIsError] = useState(false)
     const [loading, setLoading] = useState(false)
     const router = useRouter();
     const form = useForm({
@@ -45,30 +50,177 @@ export default function Home() {
         e.preventDefault();
         setLoading(true);
         try {
-            await signIn('credentials', {
-                username: form.watch('username'),
-                password: form.watch('password'),
-            });
-            const session = await getSession();
-            setLoading(false);
-            if (session) {
-                toast({
-                    title: 'Login Success',
-                    description: 'You have successfully logged in',
-                    type: 'success',
-                })
-            } else {
-                toast({
-                    title: 'Login Failed',
-                    description: 'Invalid Email/Username or Password',
-                    type: 'error',
-                })
-            }
+            await axios.post(
+                '/api/admin/getToken',
+                {
+                    username: form.watch('username'),
+                    password: form.watch('password')
+                },
+                {
+                    httpsAgent: agent,
+                }
+            ).then((response) => {
+                console.log("🚀 ~ ).then ~ response:", response)
+                setLoading(false)
+                const responseMessage = response.data.message;
+                console.log("🚀 ~ ).then ~ responseMessage:", responseMessage)
+                try {
+                    if (responseMessage === "success") {
+                        const token = response.data.token
+                        console.log("🚀 ~ ).then ~ token:", token)
+                        const { users } = response.data
+                        const { permission } = response.data
+                        const id = users.user_id
+                        const user = permission.user
+                        const code = user.user_code
+                        const email = user.email
+                        const password = user.password
+                        const type = user.type
+                        const role = user.role
+                        const role_id = user.role_id
+                        const warehouse_id = user.warehouse_id
+                        const name = user.name
+                        const warehouse_name = user.warehouse_name
+                        const img = user.profile_picture
+                        signIn('credentials', {
+                            id: id,
+                            token: token,
+                            code: code,
+                            email: email,
+                            password: password,
+                            type: type,
+                            role: role,
+                            role_id: role_id,
+                            warehouse_id: warehouse_id,
+                            warehouse_name: warehouse_name,
+                            img: img,
+                            name: name,
+                        });
+                        toast({
+                            title: 'Login Success',
+                            description: 'Redirecting to dashboard',
+                            type: 'success',
+                        })
+                        router.push('/dashboard');
+                    }
+                    if (responseMessage === "Unverified") {
+                        console.log("UNVERIFID EMAIL")
+                        toast({
+                            title: 'Redirecting to verify your email',
+                            description: 'Redirecting to verify your email',
+                            type: 'error',
+                        })
+                        router.push('/auth/verification');
+                    }
+                    if (responseMessage === "Incorrect") {
+                        console.log("🚀 ~ ).then ~ Incorrect username and password:")
+                        setIsError(true)
+                        toast({
+                            title: 'Login Failed',
+                            description: 'Invalid Email/Username or Password',
+                            type: 'error',
+                        })
+                    }
+                } catch (error) {
+                    console.log("Error", error)
+                }
+            })
+
         } catch (error) {
             setLoading(false)
+            setIsError(true)
             console.log('Error:', error);
         }
     }
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setLoading(true);
+    //     try {
+    //         await axios.post(
+    //             '/api/admin/getToken',
+    //             {
+    //                 username: form.watch('username'),
+    //                 password: form.watch('password')
+    //             },
+    //             {
+    //                 httpsAgent: agent,
+    //             }
+    //         ).then((response) => {
+    //             setLoading(false)
+    //             const responseData = response.data;
+    //             console.log("🚀 ~ ).then ~ responseData:", responseData)
+    //             const message = responseData.data.message;
+    //             const status = responseData.data.status;
+    //             console.log("🚀 ~ ).then ~ status:", status)
+    //             if (!status) {
+    //                 if (message === "Unverified") {
+    //                     console.log("UNVERIFID EMAIL")
+    //                     toast({
+    //                         title: 'Redirecting to verify your email',
+    //                         description: 'Redirecting to verify your email',
+    //                         type: 'error',
+    //                     })
+    //                     router.push('/auth/verification');
+    //                 } else {
+    //                     console.log("🚀 ~ ).then ~ Incorrect username and password:")
+    //                     setIsError(true)
+    //                     toast({
+    //                         title: 'Login Failed',
+    //                         description: 'Invalid Email/Username or Password',
+    //                         type: 'error',
+    //                     })
+    //                 }
+    //             } else {
+    //                 console.log("🚀 ~ ).then ~ response: Logged IN")
+    //                 const token = response.data
+    //                 console.log("🚀 ~ ).then ~ token:", token)
+    //                 if (token) {
+    //                     console.log("LogedIn By Token")
+    //                     const id = response.data.users.user_id
+    //                     const user = response.data.permission.user
+    //                     const code = user.user_code
+    //                     const email = user.email
+    //                     const password = user.password
+    //                     const type = user.type
+    //                     const role = user.role
+    //                     const role_id = user.role_id
+    //                     const warehouse_id = user.warehouse_id
+    //                     const name = user.name
+    //                     const warehouse_name = user.warehouse_name
+    //                     const img = user.profile_picture
+    //                     signIn('credentials', {
+    //                         id: id,
+    //                         token: token,
+    //                         code: code,
+    //                         email: email,
+    //                         password: password,
+    //                         type: type,
+    //                         role: role,
+    //                         role_id: role_id,
+    //                         warehouse_id: warehouse_id,
+    //                         warehouse_name: warehouse_name,
+    //                         img: img,
+    //                         name: name,
+    //                     });
+    //                     toast({
+    //                         title: 'Login Success',
+    //                         description: 'Redirecting to dashboard',
+    //                         type: 'success',
+    //                     })
+    //                     router.push('/dashboard');
+    //                 } else {
+    //                     console.log("something went wrong")
+    //                 }
+
+    //             }
+    //         })
+    //     } catch (error) {
+    //         setLoading(false)
+    //         setIsError(true)
+    //         console.log('Error:', error);
+    //     }
+    // }
     const [inputEmail, setInputEmail] = useState('')
 
     useEffect(() => {
@@ -93,6 +245,9 @@ export default function Home() {
                             action=""
                             onSubmit={handleSubmit}
                         >
+                            {
+                                isError && <div className="text-red-500 ">Invalid Email/Username or Password</div>
+                            }
                             <FormField
                                 className="w-full"
                                 name="username"

@@ -104,27 +104,30 @@ export default function Home() {
         setLoading(true)
         console.log("dikirim", formData)
         try {
-            const response = await axios.post(
+            axios.post(
                 `/api/customerAPI/register`,
                 formData
-            );
-            console.log(response)
-            if (response.status !== 200) {
-                toast({
-                    title: 'Error while sing up!',
-                    description: `Error : ${response.data.message}`,
-                    status: 'error',
-                });
-
-            } else {
-                toast({
-                    title: `${response.status === 200 ? "Sucess" : "Failed"}! ${response.message === "undefined" ? formData.name : response.message}`,
-                    description: 'Your Will be redirect to login page',
-                    status: 'success',
-                });
-            }
-            router.push('/auth/login')
+            ).then((response) => {
+                console.log(response.data.status)
+                setLoading(false)
+                if (response.status === 200 && response.data.status === "true") {
+                    toast({
+                        title: 'Sucess!',
+                        description: `Please Verified Your Email`,
+                        status: 'success',
+                    });
+                    router.push('/auth/verification')
+                } else {
+                    toast({
+                        title: 'Error while sing up!',
+                        description: `Error : ${response.data.message
+                            }`,
+                        status: 'error',
+                    });
+                }
+            })
         } catch (error) {
+            setLoading(false)
             console.log('Error', error);
         }
     }
@@ -264,7 +267,7 @@ export default function Home() {
 
                                                                             {item.country_name}
                                                                             <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.country_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                                className={`ml - auto h - 4 w - 4 ${item.country_name === field.value ? "opacity-100" : "opacity-0"} `}
                                                                             />
 
                                                                         </CommandItem>
