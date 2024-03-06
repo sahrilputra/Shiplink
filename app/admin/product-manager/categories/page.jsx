@@ -5,8 +5,9 @@ import { FilterIcons } from '@/components/icons/iconCollection'
 import { Button } from '@/components/ui/button'
 import { SearchBar } from '@/components/ui/searchBar'
 import { Input } from '@/components/ui/input'
-import { CategoryList } from './components/categoryList'
+import { CategoryList } from './components/CategoryList'
 import { CategoriesTable } from './components/Tabled/CategoriesTable'
+import { CatergoryList } from '../../configuration/services/components/CatergoryList'
 
 export default function ProductCategoriesPage() {
 
