@@ -11,7 +11,19 @@ import { Input } from '@/components/ui/input'
 import { ReviewCard } from './components/ReviewCard'
 import { ProductListData } from './components/table/productList'
 import data from '../../../data/admin/productData.json'
-export default function configuration() {
+export default function Configuration() {
+    const [choosenImage, setChoosenImage] = useState('');
+    const [formsData, setFormsData] = useState({
+        productID: '',
+        item: '',
+        brand: '',
+        model: '',
+        description: '',
+        price: '',
+        image: '',
+    })
+
+    // console.log("🚀 ~ Configuration ~ formsData:", formsData)
 
     return (
         <>
@@ -21,7 +33,7 @@ export default function configuration() {
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
                         <h1 className=' text-sm font-bold'>Product Details</h1>
                         <div className="px-[5px] py-[5px]">
-                            <NewProductForms />
+                            <NewProductForms setFormsData={setFormsData} />
                         </div>
                     </div>
                 </div>
@@ -29,7 +41,7 @@ export default function configuration() {
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
                         <h1 className=' text-sm font-bold'>Product Review</h1>
                         <div className="px-[5px] py-[5px]">
-                            <ReviewCard />
+                            <ReviewCard formsData={formsData} />
                         </div>
                     </div>
                 </div>

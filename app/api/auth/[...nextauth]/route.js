@@ -71,7 +71,7 @@ export const authOption = {
         },
 
         async session({ session, token, user }) {
-            console.log("🚀 ~ session ~ token:", token)
+            // console.log("🚀 ~ session ~ token:", token)
             if (token) {
                 session.user = {
                     id: token.id,
@@ -88,9 +88,9 @@ export const authOption = {
                     accessToken: token.accessToken,
                     // You can add other user properties here if needed
                 };
-                console.log('Session callback:', session);
+                // console.log('Session callback:', session);
             }
-            console.log('Session callback:', session);
+            // console.log('Session callback:', session);
             return session;
         }
     },

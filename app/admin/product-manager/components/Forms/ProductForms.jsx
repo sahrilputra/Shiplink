@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -13,9 +13,11 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { useToast } from '@/components/ui/use-toast'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-
+import { Loaders } from '@/components/ui/loaders'
+import axios from 'axios'
 const formSchema = yup.object().shape({
     productID: yup.string(),
     item: yup.number().required(),
@@ -27,10 +29,9 @@ const formSchema = yup.object().shape({
     image: yup.string().required(),
 })
 
+export const NewProductForms = ({ close, data = null, setFormsData }) => {
 
-
-export const NewProductForms = ({ close, data = null }) => {
-
+    const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -45,10 +46,75 @@ export const NewProductForms = ({ close, data = null }) => {
         },
         mode: "onChange",
     })
+
+    const watchedForm = form.watch();
+    useEffect(() => {
+        setFormsData({
+            productID: watchedForm.productID,
+            item: watchedForm.item,
+            brand: watchedForm.brand,
+            model: watchedForm.model,
+            category: watchedForm.category,
+            description: watchedForm.description,
+            price: watchedForm.price,
+            image: watchedForm.image,
+        });
+    }, [watchedForm]);
+
+    const handleImageUpload = (event, field) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader;
+            field.onChange(base64String);
+        };
+        reader.readAsDataURL(file);
+    };
+    const [loading, setLoading] = useState(false)
+    const handleSave = async (formData) => {
+        setLoading(true)
+        try {
+            axios.post(
+                `/api/admin/product/setProduct`,
+                {
+                    product_id: formData.productID,
+                    item: formData.item,
+                    brand: formData.brand,
+                    model: formData.model,
+                    category_id: formData.category,
+                    description: formData.description,
+                    price: formData.price,
+                    image: formData.image,
+                    action: "add"
+                }
+            ).then((response) => {
+                console.log("🚀 ~ ).then ~ response:", response)
+                toast({
+                    title: "Product Added",
+                    desription: "Product has been added successfully",
+                    type: "success",
+                })
+            }).catch((error) => {
+                console.log("Error", error)
+                toast({
+                    title: "Error",
+                    desription: `${error.message}`,
+                    type: "error",
+                })
+            })
+
+        } catch (error) {
+            console.log("error", error)
+        }
+    }
     return (
         <>
+            {loading && <Loaders />}
             <Form {...form}>
                 <form
+                    onSubmit={form.handleSubmit(handleSave)}
                     className='flex gap-2 flex-col'
                     action="">
                     <div className="profile flex flex-row gap-2 w-full">
@@ -65,7 +131,6 @@ export const NewProductForms = ({ close, data = null }) => {
                                                 size="new"
                                                 id="productID" className="text-xs" placeholder="#1231" {...field} />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -81,9 +146,8 @@ export const NewProductForms = ({ close, data = null }) => {
                                         <FormControl >
                                             <Input
                                                 size="new"
-                                                type="text" id="item" className="text-xs" placeholder="#2321"  {...field} />
+                                                type="number" id="item" className="text-xs" placeholder="#2321"  {...field} />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -103,7 +167,6 @@ export const NewProductForms = ({ close, data = null }) => {
                                                 size="new"
                                                 type="text" id="brand" className="text-xs" placeholder="Select Brand" {...field} />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -121,7 +184,6 @@ export const NewProductForms = ({ close, data = null }) => {
                                                 size="new"
                                                 type="text" id="brand" className="text-xs" placeholder="Model" {...field} />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -139,7 +201,6 @@ export const NewProductForms = ({ close, data = null }) => {
                                                 size="new"
                                                 type="text" id="category" className="text-xs" placeholder="Model" {...field} />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -159,7 +220,6 @@ export const NewProductForms = ({ close, data = null }) => {
                                                 size="new"
                                                 type="text" id="country" className="text-xs" placeholder="Set a description for better visibility." {...field} />
                                         </FormControl>
-                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -173,12 +233,20 @@ export const NewProductForms = ({ close, data = null }) => {
                                     <>
                                         <FormItem className="text-xs w-full">
                                             <FormLabel className="font-bold">Price *</FormLabel>
+
                                             <FormControl >
-                                                <Input
-                                                    size="new"
-                                                    type="text" id="price" className="text-xs" placeholder="$ 12.99"  {...field} />
+                                                <>
+                                                    <div className="flex flex-row">
+                                                        <div className="py-2 px-3  h-[30px] bg-zinc-300  items-center rounded-tl-sm rounded-bl-sm">
+                                                            $
+                                                        </div>
+                                                        <Input
+                                                            size="new"
+                                                            type="number" id="price" className="text-xs rounded-tl-none rounded-bl-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-slate-950" placeholder="$ 12.99"  {...field} />
+                                                    </div>
+                                                </>
+
                                             </FormControl>
-                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -194,15 +262,23 @@ export const NewProductForms = ({ close, data = null }) => {
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-200 p-0'>
                                                     <Input
-                                                        id="wholeBox"
+                                                        id="image"
                                                         type="file"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0  file:bg-myBlue file:text-white  file:h-full file:px-3 file:text-xs "
                                                         placeholder="Upload Image"
-                                                        {...field}
+                                                        accept="image/*"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            const reader = new FileReader();
+                                                            reader.onload = (event) => {
+                                                                const base64String = event.target.result;
+                                                                field.onChange(base64String);
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        }}
                                                     />
                                                 </div>
                                             </FormControl>
-                                            <FormMessage />
                                         </FormItem>
                                     </>
                                 )}

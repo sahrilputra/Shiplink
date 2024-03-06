@@ -51,22 +51,112 @@ export default function Home() {
         e.preventDefault();
         setLoading(true);
         try {
-            await signIn('credentials', {
-                username: form.watch('username'),
-                password: form.watch('password'),
-            });
-            const session = await getSession();
-            setLoading(false);
-            if (session) {
-                router.push('/admin/arrival-scan');
-            } else {
-                console.log('Session not found after login.');
-            }
+            await axios.post(
+                '/api/admin/getToken',
+                {
+                    username: form.watch('username'),
+                    password: form.watch('password')
+                },
+            ).then((response) => {
+                console.log("🚀 ~ ).then ~ response:", response)
+                setLoading(false)
+                const responseMessage = response.data.message;
+                console.log("🚀 ~ ).then ~ responseMessage:", responseMessage)
+                try {
+                    if (responseMessage === "success") {
+                        const token = response.data.token
+                        console.log("🚀 ~ ).then ~ token:", token)
+                        const { users } = response.data
+                        const { permission } = response.data
+                        const id = users.user_id
+                        const user = permission.user
+                        const code = users.user_code
+                        const email = users.email
+                        const password = users.password
+                        const type = users.type
+                        const role = users.role
+                        const role_id = users.role_id
+                        const warehouse_id = users.warehouse_id
+                        const name = users.username
+                        const warehouse_name = users.warehouse_name
+                        const img = users.profile_picture
+                        signIn('credentials', {
+                            id: id,
+                            token: token,
+                            code: code,
+                            email: email,
+                            password: password,
+                            type: type,
+                            role: role,
+                            role_id: role_id,
+                            warehouse_id: warehouse_id,
+                            warehouse_name: warehouse_name,
+                            img: img,
+                            name: name,
+                        });
+                        toast({
+                            title: 'Login Success',
+                            description: 'Redirecting to dashboard',
+                            type: 'success',
+                        })
+                        router.push('/admin/arrival-scan');
+                    }
+                    if (responseMessage === "Unverified") {
+                        console.log("UNVERIFID EMAIL")
+                        toast({
+                            title: 'Redirecting to verify your email',
+                            description: 'Redirecting to verify your email',
+                            type: 'error',
+                        })
+                        router.push('/auth/verification');
+                    }
+                    if (responseMessage === "Incorrect") {
+                        console.log("🚀 ~ ).then ~ Incorrect username and password:")
+                        toast({
+                            title: 'Login Failed',
+                            description: 'Invalid Email/Username or Password',
+                            type: 'error',
+                        })
+                    }
+                } catch (error) {
+                    console.log("Error", error)
+                }
+            })
+
         } catch (error) {
             setLoading(false)
             console.log('Error:', error);
         }
     }
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setLoading(true);
+    //     try {
+
+    //         if (responseMessage === "Unverified") {
+    //             console.log("UNVERIFID EMAIL")
+    //             toast({
+    //                 title: 'Redirecting to verify your email',
+    //                 description: 'Redirecting to verify your email',
+    //                 type: 'error',
+    //             })
+    //             router.push('/auth/verification');
+    //         }
+    //         if (responseMessage === "Incorrect") {
+    //             console.log("🚀 ~ ).then ~ Incorrect username and password:")
+    //             setIsError(true)
+    //             toast({
+    //                 title: 'Login Failed',
+    //                 description: 'Invalid Email/Username or Password',
+    //                 type: 'error',
+    //             })
+    //         }
+    //     } catch (error) {
+    //         setLoading(false)
+    //         console.log('Error:', error);
+    //     }
+    // }
 
     useEffect(() => {
         if (session) {
