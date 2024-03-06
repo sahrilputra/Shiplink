@@ -73,7 +73,7 @@ export default function Mailbox() {
                 </div>
                 <div className={styles.item_container}>
                     <div className={styles.items}>
-                        {
+                        {/* {
                             filterData.map((item, i) => (
                                 <ItemsPackage
                                     key={i}
@@ -83,7 +83,7 @@ export default function Mailbox() {
                                     isExpand={expandedItemId === item.package.id}
                                 />
                             ))
-                        }
+                        } */}
                         {/* <ItemsPackage />
                         <ItemsPackage /> */}
                     </div>
