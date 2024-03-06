@@ -5,22 +5,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
-import axios from "axios";
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
 import { Loaders } from "@/components/ui/loaders";
 import { MailOpen } from "lucide-react";
+import { EmailDiallog } from "./components/EmailDialog";
 const formSchema = yup.object().shape({
     username: yup.string().required('Email/Username is required'),
     password: yup.string().required('Password is required'),
@@ -30,38 +20,7 @@ export default function Home() {
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false)
     const router = useRouter();
-    const form = useForm({
-        resolver: yupResolver(formSchema),
-        defaultValues: {
-            username: "",
-            password: "",
-            remember: false
-        },
-        mode: "onChange",
-    })
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            await signIn('credentials', {
-                username: form.watch('username'),
-                password: form.watch('password'),
-            });
-            const session = await getSession();
-            setLoading(false);
-            if (session) {
-                router.push('/admin/arrival-scan');
-            } else {
-                console.log('Session not found after login.');
-            }
-        } catch (error) {
-            setLoading(false)
-            console.log('Error:', error);
-        }
-    }
-    const [inputEmail, setInputEmail] = useState('')
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         if (session) {
@@ -73,6 +32,7 @@ export default function Home() {
             {
                 loading && <Loaders />
             }
+            <EmailDiallog open={open} setOpen={setOpen} />
             <div className="flex flex-col text-center pt-[90px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE] ">
                 <div className="flex flex-col gap-5 py-10">
                     <div className="text-myBlue text-lg font-bold">Please Check Your Email</div>
@@ -88,7 +48,7 @@ export default function Home() {
                             <p>Please Follow the link in your email to confimation your email</p>
                         </div>
                         <div className="py-3">
-                            <p>Didnt get email yet ? <span className="text-red-600 cursor-pointer">Resend Email</span></p>
+                            <p>Didnt get email yet ? <div onClick={() => setOpen(true)} className="text-red-600 cursor-pointer">Resend Email</div></p>
                         </div>
                     </div>
                 </div>
