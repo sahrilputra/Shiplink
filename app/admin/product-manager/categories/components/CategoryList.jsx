@@ -5,9 +5,9 @@ import { ListData } from './ListData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
+import { TableOfCategories } from './Categories/TableOfCategories';
 export const CategoryList = () => {
     const [category, setCategory] = useState([]);
-
     const [skeleton, setSkeleton] = useState(true)
     const [query, setQuery] = useState({
         keyword: '',
@@ -33,32 +33,39 @@ export const CategoryList = () => {
     console.log("🚀 ~ CategoryList ~ setCategory:", category)
     return (
         <>
-            <div className="w-[300px] px-[15px] pt-5 pb-5 bg-white rounded border border-neutral-200 flex-col justify-start items-start inline-flex gap-[10px]">
-                <div className="flex flex-col gap-2">
-                    <p className='text-sm font-bold'>List Category</p>
-                    <SearchBar className="w-full" />
-                    <Button
-                        className="bg-black"
-                        variant="outline"
-                    >
-                        <PlusIcon className="w-4 h-4" />
-                    </Button>
+            <div className="w-[400px] px-[15px] pt-2 pb-5 bg-white rounded border border-neutral-200 flex-col justify-start items-start inline-flex gap-[10px]">
+                <div className={` flex flex-row gap-[15px]`}>
+                    <div className="">
+                        <button
+                            className={` text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                        >
+                            Product
+                        </button>
+                    </div>
+                    <div className="">
+                        <button
+                            className={` text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                        >
+                            Services
+                        </button>
+                    </div>
                 </div>
-                <div className="w-full border bg-white flex flex-col px-2 py-3 gap-3 rounded h-max">
-                    {
-                        skeleton ?
-                            (
-                                <Skeleton className={'h-4 w-full rounded'} />
-                            ) : (
-                                category.map((item, index) => {
-                                    return (
-                                        <ListData key={index} data={item} />
-                                    )
-                                })
-                            )
-                    }
+                <div className="flex flex-col gap-2 w-full justify-between">
+                    <div className="w-full flex flex-wrap gap-3">
+                        <SearchBar className="w-full" />
+                        <Button
+                            className="w-9 h-[35px] p-1"
+                            variant="secondary"
+                        >
+                            <PlusIcon className="text-white" width={20} height={20} />
+                        </Button>
+                    </div>
+                </div>
+                <div className="w-full ">
+                    <TableOfCategories data={category} />
                 </div>
             </div>
         </>
     )
 }
+// <ListData key={index} data={item} />
