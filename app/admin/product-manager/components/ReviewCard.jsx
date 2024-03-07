@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 export const ReviewCard = ({ formsData }) => {
 
     const img = formsData?.image
-    console.log("🚀 ~ ReviewCard ~ img:", img)
+    console.log("🚀 ~ ReviewCard ~ img:")
     return (
         <div className="content  border border-neutral-200 rounded-tl-lg rounded-tr-lg shadow-sm">
             <div className="image w-[100%] h-[130px] rounded-md">
@@ -46,7 +46,7 @@ export const ReviewCard = ({ formsData }) => {
                     <p className="text-xs">{formsData?.description}</p>
                 </div>
                 <div className="flex flex-row justify-between py-4">
-                    <Badge className={"rounded-sm"} variant="outline">Category</Badge>
+                    <Badge className={"rounded-sm"} variant="outline">{formsData?.category ? formsData?.category : "Category"}</Badge>
                     <p className='text-sm'>$ {formsData?.price}</p>
                 </div>
             </div>

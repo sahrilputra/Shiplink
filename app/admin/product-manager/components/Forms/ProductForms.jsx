@@ -47,20 +47,24 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
         mode: "onChange",
     })
 
-    const watchedForm = form.watch();
-    useEffect(() => {
-        setFormsData({
-            productID: watchedForm.productID,
-            item: watchedForm.item,
-            brand: watchedForm.brand,
-            model: watchedForm.model,
-            category: watchedForm.category,
-            description: watchedForm.description,
-            price: watchedForm.price,
-            image: watchedForm.image,
-        });
-    }, [watchedForm]);
+    // const watchedForm = form.getValues();
+    // useEffect(() => {
+    //     setFormsData({
+    //         productID: watchedForm.productID,
+    //         item: watchedForm.item,
+    //         brand: watchedForm.brand,
+    //         model: watchedForm.model,
+    //         category: watchedForm.category,
+    //         description: watchedForm.description,
+    //         price: watchedForm.price,
+    //         image: watchedForm.image,
+    //     });
+    // }, [watchedForm]);
 
+    useEffect(() => {
+        // Simpan nilai awal formulir ke state induk
+        setFormsData(form.getValues());
+    }, []);
     const handleImageUpload = (event, field) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -129,7 +133,12 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                         <FormControl>
                                             <Input
                                                 size="new"
-                                                id="productID" className="text-xs" placeholder="#1231" {...field} />
+                                                id="productID" className="text-xs" placeholder="#1231" {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                    setFormsData({ ...form.getValues(), productID: e.target.value });
+                                                }}
+                                            />
                                         </FormControl>
                                     </FormItem>
                                 </>
@@ -146,7 +155,12 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                         <FormControl >
                                             <Input
                                                 size="new"
-                                                type="number" id="item" className="text-xs" placeholder="#2321"  {...field} />
+                                                type="number" id="item" className="text-xs" placeholder="#2321"  {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                    setFormsData({ ...form.getValues(), item: e.target.value });
+                                                }}
+                                            />
                                         </FormControl>
                                     </FormItem>
                                 </>
@@ -165,7 +179,12 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                         <FormControl >
                                             <Input
                                                 size="new"
-                                                type="text" id="brand" className="text-xs" placeholder="Select Brand" {...field} />
+                                                type="text" id="brand" className="text-xs" placeholder="Select Brand" {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                    setFormsData({ ...form.getValues(), brand: e.target.value });
+                                                }}
+                                            />
                                         </FormControl>
                                     </FormItem>
                                 </>
@@ -182,7 +201,13 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                         <FormControl >
                                             <Input
                                                 size="new"
-                                                type="text" id="brand" className="text-xs" placeholder="Model" {...field} />
+                                                type="text" id="brand" className="text-xs" placeholder="Model"
+                                                {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                    setFormsData({ ...form.getValues(), model: e.target.value });
+                                                }}
+                                            />
                                         </FormControl>
                                     </FormItem>
                                 </>
@@ -199,7 +224,13 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                         <FormControl >
                                             <Input
                                                 size="new"
-                                                type="text" id="category" className="text-xs" placeholder="Model" {...field} />
+                                                type="text" id="category" className="text-xs" placeholder="Model"
+                                                {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                    setFormsData({ ...form.getValues(), category: e.target.value });
+                                                }}
+                                            />
                                         </FormControl>
                                     </FormItem>
                                 </>
@@ -218,7 +249,13 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                         <FormControl >
                                             <Input
                                                 size="new"
-                                                type="text" id="country" className="text-xs" placeholder="Set a description for better visibility." {...field} />
+                                                type="text" id="country" className="text-xs" placeholder="Set a description for better visibility."
+                                                {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e.target.value);
+                                                    setFormsData({ ...form.getValues(), description: e.target.value });
+                                                }}
+                                            />
                                         </FormControl>
                                     </FormItem>
                                 </>
@@ -242,7 +279,13 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                                         </div>
                                                         <Input
                                                             size="new"
-                                                            type="number" id="price" className="text-xs rounded-tl-none rounded-bl-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-slate-950" placeholder="$ 12.99"  {...field} />
+                                                            type="number" id="price" className="text-xs rounded-tl-none rounded-bl-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-slate-950" placeholder="$ 12.99"
+                                                            {...field}
+                                                            onChange={(e) => {
+                                                                field.onChange(e.target.value);
+                                                                setFormsData({ ...form.getValues(), price: e.target.value });
+                                                            }}
+                                                        />
                                                     </div>
                                                 </>
 
@@ -274,6 +317,7 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                                                 const base64String = event.target.result;
                                                                 field.onChange(base64String);
                                                             };
+                                                            setFormsData({ ...form.getValues(), image: e.target.value });
                                                             reader.readAsDataURL(file);
                                                         }}
                                                     />

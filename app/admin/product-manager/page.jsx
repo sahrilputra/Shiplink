@@ -20,6 +20,7 @@ export default function Configuration() {
         model: '',
         description: '',
         price: '',
+        category: '',
         image: '',
     })
 
