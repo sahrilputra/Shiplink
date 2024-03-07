@@ -6,20 +6,21 @@ import { getAccessToken } from "@/helpers/getAccessToken";
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
-export async function GET(request) {
+export async function POST(request) {
     try {
-        const tokenAccess = await getAccessToken(request)
+        const { data } = await request.json();
+        // const tokenAccess = await getAccessToken(request)
+        console.log("code : ", { data })
         const response = await axios.get(
-            `${process.env.API_URL}/Customers/Account_detail`,
+            `${process.env.API_URL}/MyAddress/My_Address_delete?my_address_id=${data}`,
             {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                        `Bearer ${tokenAccess}`
+                        `Bearer ${process.env.BEARER_TOKEN}`
                 }
             }
         );
-        console.log("🚀 ~ GET ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {

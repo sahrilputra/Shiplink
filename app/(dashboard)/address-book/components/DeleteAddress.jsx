@@ -30,11 +30,11 @@ export const DeleteAddress = ({ open, setOpen, deleteID, reloadData }) => {
         try {
             for (const deleteID of deleteIDs) {
                 const response = await axios.post(
-                    `/api/admin/invoice/delete`,
+                    `/api/customerAPI/address/delete`,
                     { data: deleteID }
                 );
                 toast({
-                    title: `Removing ${dataLength} Invoice Sucess!`,
+                    title: `Removing ${dataLength} Addres Sucess!`,
                     description: response.data.message,
                     status: 'success',
                 });
@@ -45,8 +45,8 @@ export const DeleteAddress = ({ open, setOpen, deleteID, reloadData }) => {
         } catch (error) {
             setLoading(false);
             toast({
-                title: 'Error Deleting Invoice!',
-                description: 'An error occurred while deleting Invoice.',
+                title: 'Error Deleting Addres!',
+                description: 'An error occurred while deleting Addres.',
                 status: 'error',
             });
             console.log('Error:', error);

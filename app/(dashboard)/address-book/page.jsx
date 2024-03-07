@@ -23,18 +23,16 @@ export default function AssitedPurchase() {
     const [isPicked, setIsPicked] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [deleteID, setDeleteID] = useState([]);
-    const [selectedItemId, setSelectedItemId] = useState(null); 
+    const [selectedItemId, setSelectedItemId] = useState(null);
     const [isDeleteButtonActive, setIsDeleteButtonActive] = useState(false);
-
     const [clicked, isClicked] = useState(true);
+
+    console.log("🚀 ~ AssitedPurchase ~ deleteID:", deleteID)
 
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
     }
 
-    const handleSelectedIdDelete = (id) => {
-        setDeleteID(id);
-    }
 
     const toggleSelectNewAddress = () => {
         setIsNew(true);
@@ -62,6 +60,8 @@ export default function AssitedPurchase() {
         index: 0,
         shortby: "",
     })
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -151,14 +151,15 @@ export default function AssitedPurchase() {
 
                             <div className="left flex flex-row justify-center items-center gap-5">
                                 <Button
-                                    variant={isDeleteButtonActive ? "destructive" : "disable"}
+                                    variant={deleteID.length > 0 ? "destructive" : "disable"}
                                     size="icon"
-                                    onClick={() => toast({ title: 'Address Removed', description: 'Success Remove Address', type: 'success' })}
-                                    className={`px-2 py-2 cursor-not-allowed ${isDeleteButtonActive ? 'cursor-pointer' : ''}`}
-
+                                    onClick={() => setOpenDelete(true)}
+                                    className={`px-2 py-2`}
+                                    disabled={deleteID.length === 0}
                                 >
                                     <DeleteIcons width={20} height={20} fill="#ffff" />
                                 </Button>
+
                                 <Button
                                     variant="destructive"
                                     className="h-10 px-10 text-xs flex flex-row justify-around items-center gap-2"
@@ -181,10 +182,10 @@ export default function AssitedPurchase() {
                                         addressBook={item}
                                         select={toggleEditedAddress}
                                         onClick={handleCardSelected}
-                                        isSelected={isPicked && selectedData === item.my_address_id}
+                                        isSelected={isPicked && selectedData?.my_address_id === item.my_address_id}
                                         variant={clicked ? 'list' : ""}
-                                        setDeleteID={handleSelectedIdDelete}
-                                        deleteID={item.my_address_id}
+                                        setDeleteID={setDeleteID}
+                                        deleteID={deleteID}
                                     />
                                 ))
                             }

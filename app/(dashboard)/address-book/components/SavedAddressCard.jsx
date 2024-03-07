@@ -5,20 +5,22 @@ import Image from 'next/image'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
 export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSelected, setDeleteID, deleteID }) => {
-    const [checkItem, setCheckItem] = useState(false);
-    const [clickedCard, setClickedCard] = useState(null);
+
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleDataID = (id) => {
         setClickedCard(id);
         onClick(id);
     }
-
     const [selectedDelete, setSelectedDelete] = useState([]);
-    console.log("🚀 ~ SavedAddressCard ~ selectedDelete:", selectedDelete)
 
     const handleCheck = (id) => {
+        console.log("🚀 ~ handleCheck ~ id:", id)
         setSelectedDelete([...selectedDelete, id])
     }
+
+
+    const [isClicked, setIsClicked] = useState(false);
     const {
         my_address_id,
         country,
@@ -78,7 +80,11 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                                 ) : (
                                     <div className="status absolute top-[10px] right-[10px]">
                                         <Checkbox
-                                            onCheckedChange={handleCheck}
+                                            onCheckedChange={(value) => {
+                                                return value
+                                                    ? setDeleteID([...deleteID, my_address_id])
+                                                    : setDeleteID(deleteID.filter((id) => id !== my_address_id))
+                                            }}
                                         />
                                     </div>
                                 )
@@ -119,7 +125,11 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                                 ) : (
                                     <div className="absolute top-[10px] right-[10px]">
                                         <Checkbox
-                                            onCheckedChange={() => handleCheck(my_address_id)}
+                                            onCheckedChange={(value) => {
+                                                return value
+                                                    ? setDeleteID([...deleteID, my_address_id])
+                                                    : setDeleteID(deleteID.filter((id) => id !== my_address_id))
+                                            }}
                                         />
                                     </div>
                                 )

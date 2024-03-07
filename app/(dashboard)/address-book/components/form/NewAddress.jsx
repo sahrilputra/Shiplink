@@ -70,7 +70,7 @@ export const NewAddress = ({ close, data = null, reload }) => {
             zipCode: data?.postal_code || "",
             email: data?.email || "",
             phoneNumber: data?.phone_number || "",
-            isPrimary: data?.primary_address || "",
+            isPrimary: data?.primary_address || false,
         },
         mode: "onChange",
     })

@@ -32,15 +32,15 @@ const formSchema = yup.object().shape({
     customer_id: yup.string(),
 })
 
-export const UserForms = () => {
+export const UserForms = ({ data = null }) => {
     const [disable, setDisable] = useState(true);
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            name: "",
-            email: "",
+            name: data?.user.name || "",
+            email: data?.user.email || "",
             password: "",
             confirmPassword: "",
             phoneNumber: "",
@@ -83,7 +83,7 @@ export const UserForms = () => {
         }
     }
 
-    
+
     return (
         <>
             {loading && <Loaders />}
@@ -92,7 +92,7 @@ export const UserForms = () => {
                     className='flex gap-3 flex-col'
                     action=""
                     onSubmit={form.handleSubmit(handleSave, error => console.log(error))}
-                    >
+                >
                     <div className="Image w-full flex justify-center py-[20px]">
                         <FormField
                             className="w-full"

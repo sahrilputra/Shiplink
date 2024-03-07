@@ -6,9 +6,10 @@ import { PersonIcons } from '@/components/icons/iconCollection';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
-
+import { useSession } from 'next-auth/react'
 
 export default function AccountLayout({ children }) {
+    const { data: session } = useSession()
     return (
         <div className={styles.container}>
             <div className={styles.menus}>
@@ -20,7 +21,7 @@ export default function AccountLayout({ children }) {
                     <div className="info py-5 flex flex-col justify-center items-center gap-[5px]">
                         <div className=" flex flex-row gap-3 items-center text-sm">
                             <PersonIcons width={15} height={15} />
-                            <p className='font-medium '>Name</p>
+                            <p className='font-medium '>{session ? session.user.name : ""}</p>
                         </div>
                         <div className=" flex flex-row gap-3 items-center text-sm">
                             <Image
