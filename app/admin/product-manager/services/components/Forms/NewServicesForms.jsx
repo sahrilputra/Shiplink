@@ -70,7 +70,7 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
                     "page": 0,
                     "limit": 0,
                     "index": 0,
-                    "category_type": ""
+                    "category_type": "Services"
                 });
                 setCategory(response.data.product_categories);
             } catch (error) {

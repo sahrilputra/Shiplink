@@ -74,7 +74,7 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                     "page": 0,
                     "limit": 0,
                     "index": 0,
-                    "category_type": ""
+                    "category_type": "Product"
                 });
                 setCategory(response.data.product_categories);
             } catch (error) {
