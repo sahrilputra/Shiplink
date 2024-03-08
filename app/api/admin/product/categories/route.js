@@ -13,7 +13,8 @@ export async function POST(request) {
             keyword,
             page,
             limit,
-            index
+            index,
+            category_type,
         } = await request.json();
 
         const response = await axios.post(
@@ -22,8 +23,9 @@ export async function POST(request) {
                 "keyword": keyword,
                 "page": page,
                 "limit": limit,
-                "index": index
-                
+                "index": index,
+                "category_type": category_type,
+
             },
             {
                 httpsAgent: agent,

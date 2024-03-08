@@ -12,7 +12,7 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { PlusIcon, Trash2, Trash2Icon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import {
@@ -30,7 +30,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { NewCategory } from "../dialog/NewCategory";
 
-export function TableOfCategories({ data }) {
+export function TableOfCategories({ data, reload }) {
 
     console.log("🚀 ~ TableOfCategories ~ data:", data)
 
@@ -74,9 +74,23 @@ export function TableOfCategories({ data }) {
         },
         {
             accessorKey: "action",
-            header: "Other",
+            header: "",
             className: "text-xs w-[100px]",
-            isSortable: true,
+            cell: ({ row }) => {
+                return (
+                    <div className="flex flex-row gap-2">
+                        <Button
+                            variant="tableBlue"
+                            size="tableIcon"
+                            className={`rounded-[3px] w-max px-[5px] h-[25px]`}
+                            onClick={() => { toggleOpenChange([row.original.category_code]) }}
+                        >
+                            <Trash2 width={15} height={15} className={` text-myBlue rounded-sm  `} />
+                        </Button>
+
+                    </div>
+                )
+            }
         }
     ]
 
@@ -100,9 +114,6 @@ export function TableOfCategories({ data }) {
         fetchData(); // Memuat kembali data untuk mereset urutan ke aslinya
     };
 
-    const reload = () => {
-
-    }
     // const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.bins_id);
 
     return (

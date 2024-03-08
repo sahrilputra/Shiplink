@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SearchBar } from '@/components/ui/searchBar'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
@@ -6,14 +7,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { TableOfCategories } from './Categories/TableOfCategories';
-export const CategoryList = () => {
+export const CategoryList = ({ setSelected, selected }) => {
+    console.log("🚀 ~ CategoryList ~ selected:", selected)
     const [category, setCategory] = useState([]);
     const [skeleton, setSkeleton] = useState(true)
     const [query, setQuery] = useState({
         keyword: '',
         page: 0,
         limit: 0,
-        index: 0
+        index: 0,
+        category_type: selected,
     })
 
     useEffect(() => {
@@ -30,7 +33,18 @@ export const CategoryList = () => {
         fetchData();
     }, [query]);
 
-    const [selected, setSelected] = useState("product")
+    const reload = () => {
+        setSkeleton(true)
+        setQuery(prevQuery => ({
+            ...prevQuery,
+            category_type: selected,
+        }))
+    }
+    useEffect(() => {
+        setSkeleton(true)
+        reload();
+    }, [selected]);
+
     console.log("🚀 ~ CategoryList ~ setCategory:", category)
     return (
         <>
@@ -38,16 +52,25 @@ export const CategoryList = () => {
                 <div className={` flex flex-row gap-[15px]`}>
                     <div className="">
                         <button
-                            className={`${selected === "product" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-                            onClick={() => setSelected('product')}
+                            className={`${selected === "Product" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            onClick={() => {
+                                setSelected('Product')
+                                reload()
+                            }
+                            }
                         >
                             Product
                         </button>
                     </div>
                     <div className="">
                         <button
-                            className={`${selected === "services" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-                            onClick={() => setSelected('services')}
+                            className={`${selected === "Services" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            onClick={() => {
+                                setSelected('Services')
+                                reload()
+                            }
+                            }
+
                         >
                             Services
                         </button>

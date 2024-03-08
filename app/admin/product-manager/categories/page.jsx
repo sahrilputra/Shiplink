@@ -6,19 +6,23 @@ import { Button } from '@/components/ui/button'
 import { SearchBar } from '@/components/ui/searchBar'
 import { Input } from '@/components/ui/input'
 import { CategoryList } from './components/CategoryList'
-import { CategoriesTable } from './components/Tabled/CategoriesTable'
-import { CatergoryList } from '../../configuration/services/components/CatergoryList'
-
+import { ProductItemTable } from './components/Tabled/ProductItemTable'
+import { ServiceItemTable } from './components/Tabled/ServiceItemTable'
 export default function ProductCategoriesPage() {
-
+    const [selected, setSelected] = useState("Product")
+    const [categoryId, setCategoryId] = useState("")
     return (
         <>
             <div className={styles.container}>
                 <div className={styles.category}>
-                    <CategoryList />
+                    <CategoryList selected={selected} setSelected={setSelected} />
                 </div>
                 <div className={" px-[15px] bg-white rounded border border-neutral-200"}>
-                    <CategoriesTable />
+                    {
+                        selected === 'Product'
+                            ? <ProductItemTable />
+                            : <ServiceItemTable category_id={categoryId} />
+                    }
                 </div>
             </div>
         </>
