@@ -9,11 +9,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { CreateNewBinForms } from '../forms/CreateNewBinForms'
 import { Loaders } from '@/components/ui/loaders'
+import { NewCategoryForms } from './NewCategoryForms'
 
-
-export const CreateNewBinDialog = ({ open, setOpen, setReloadData }) => {
+export const NewCategory = ({ open, setOpen, setReloadData }) => {
     const onClose = () => {
         setOpen(false)
     }
@@ -31,11 +30,11 @@ export const CreateNewBinDialog = ({ open, setOpen, setReloadData }) => {
                         <DialogContent className="sm:max-w-md">
                             <DialogHeader>
                                 <DialogTitle className="font-bold">
-                                    <p>Create New Bin</p>
+                                    <p>Create New Category</p>
                                 </DialogTitle>
                             </DialogHeader>
                             <div className="">
-                                <CreateNewBinForms close={onClose} setLoading={setLoading} reloadData={setReloadData} />
+                                <NewCategoryForms close={onClose} setLoading={setLoading} reloadData={setReloadData} />
                             </div>
                         </DialogContent>
                     </Dialog>

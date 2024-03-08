@@ -1,9 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'
+import InputMask from 'react-input-mask';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { PopoverClose } from '@radix-ui/react-popover'
 import {
     Form,
     FormControl,
@@ -18,66 +33,80 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loaders } from '@/components/ui/loaders'
 import axios from 'axios'
+import { CheckIcon } from 'lucide-react'
 const formSchema = yup.object().shape({
     productID: yup.string(),
-    item: yup.number().required(),
+    item: yup.string().required(),
     brand: yup.string().required(),
     model: yup.string().required(),
     category: yup.string().required(),
+    category_id: yup.string(),
     description: yup.string().required(),
     price: yup.number().required(),
     image: yup.string().required(),
 })
 
-export const NewProductForms = ({ close, data = null, setFormsData }) => {
+export const NewProductForms = ({ close, data = null, setFormsData, reload }) => {
 
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            productID: data?.fullName || "",
-            item: data?.address || "",
-            brand: data?.city || "",
-            model: data?.state || "",
-            category: data?.country || "",
-            description: data?.postalCode || "",
-            price: data?.email || "",
-            image: data?.phone || "",
+            product_id: data?.fullName || "",
+            item: data?.item || "",
+            brand: data?.brand || "",
+            model: data?.model || "",
+            category: data?.categories || "",
+            category_id: data?.category_id || "",
+            description: data?.description || "",
+            price: data?.price || "",
+            image: "",
         },
         mode: "onChange",
     })
 
-    // const watchedForm = form.getValues();
-    // useEffect(() => {
-    //     setFormsData({
-    //         productID: watchedForm.productID,
-    //         item: watchedForm.item,
-    //         brand: watchedForm.brand,
-    //         model: watchedForm.model,
-    //         category: watchedForm.category,
-    //         description: watchedForm.description,
-    //         price: watchedForm.price,
-    //         image: watchedForm.image,
-    //     });
-    // }, [watchedForm]);
+    const [category, setCategory] = useState([])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`/api/admin/category/list`, {
+                    "keyword": "",
+                    "page": 0,
+                    "limit": 0,
+                    "index": 0,
+                    "category_type": ""
+                });
+                setCategory(response.data.product_categories);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+        const intervalId = setInterval(fetchData, 5000);
+
+        // Membersihkan interval saat komponen unmount
+        return () => clearInterval(intervalId);
+    })
+
+    useEffect(() => {
+        form.setValue("productID", data?.product_id || "")
+        form.setValue("item", data?.item || "")
+        form.setValue("brand", data?.brand || "")
+        form.setValue("model", data?.model || "")
+        form.setValue("category", data?.categories || "")
+        form.setValue("category_id", data?.category_id || "")
+        form.setValue("description", data?.description || "")
+        form.setValue("price", data?.price || "")
+    }, [data])
 
     useEffect(() => {
         // Simpan nilai awal formulir ke state induk
         setFormsData(form.getValues());
     }, []);
-    const handleImageUpload = (event, field) => {
-        const file = event.target.files[0];
-        if (!file) return;
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64String = reader;
-            field.onChange(base64String);
-        };
-        reader.readAsDataURL(file);
-    };
     const [loading, setLoading] = useState(false)
     const handleSave = async (formData) => {
+        console.log("🚀 ~ handleSave ~ SENT:", formData)
         setLoading(true)
         try {
             axios.post(
@@ -87,20 +116,24 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                     item: formData.item,
                     brand: formData.brand,
                     model: formData.model,
-                    category_id: formData.category,
+                    category_id: formData.category_id,
                     description: formData.description,
                     price: formData.price,
                     image: formData.image,
-                    action: "add"
+                    action: `${data ? "edit" : "add"}`
                 }
             ).then((response) => {
                 console.log("🚀 ~ ).then ~ response:", response)
+                setLoading(false)
+                reload()
+                form.reset()
                 toast({
                     title: "Product Added",
                     desription: "Product has been added successfully",
                     type: "success",
                 })
             }).catch((error) => {
+                setLoading(false)
                 console.log("Error", error)
                 toast({
                     title: "Error",
@@ -113,6 +146,7 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
             console.log("error", error)
         }
     }
+
     return (
         <>
             {loading && <Loaders />}
@@ -219,19 +253,60 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="text-xs w-full">
+                                    <FormItem className="flex flex-col">
                                         <FormLabel className="font-bold">Category *</FormLabel>
-                                        <FormControl >
-                                            <Input
-                                                size="new"
-                                                type="text" id="category" className="text-xs" placeholder="Model"
-                                                {...field}
-                                                onChange={(e) => {
-                                                    field.onChange(e.target.value);
-                                                    setFormsData({ ...form.getValues(), category: e.target.value });
-                                                }}
-                                            />
-                                        </FormControl>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        className={`w-[200px] justify-between text-xs h-[30px] shadow-none border-slate-300 px-1
+                                                        ${!field.value && "text-muted-foreground"}`
+                                                        }
+                                                    >
+                                                        {field.value || "Select Category"}
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[200px] p-0">
+                                                <Command>
+                                                    <CommandInput
+                                                        placeholder="Search Category..."
+                                                        className="h-9 text-xs"
+                                                    />
+                                                    <CommandEmpty className="text-xs text-center py-1">No Category Found</CommandEmpty>
+                                                    <PopoverClose >
+                                                        <CommandGroup>
+                                                            {category?.map((item) => (
+                                                                <>
+                                                                    <CommandItem
+                                                                        value={item.categories}
+                                                                        key={item.category_code}
+                                                                        className="text-xs w-full"
+                                                                        onSelect={() => {
+                                                                            form.setValue("category", item.categories)
+                                                                            form.setValue("category_id", item.category_code)
+                                                                        }}
+                                                                    >
+
+                                                                        {item.categories}
+                                                                        <CheckIcon
+                                                                            className={`ml-auto h-4 w-4 text-xs
+                                                                    ${category.categories === field.value
+                                                                                    ? "opacity-100"
+                                                                                    : "opacity-0"
+                                                                                }
+                                                                `}
+                                                                        />
+                                                                    </CommandItem>
+                                                                </>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </PopoverClose>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
                                     </FormItem>
                                 </>
                             )}
@@ -270,25 +345,20 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                     <>
                                         <FormItem className="text-xs w-full">
                                             <FormLabel className="font-bold">Price *</FormLabel>
-
-                                            <FormControl >
-                                                <>
-                                                    <div className="flex flex-row">
-                                                        <div className="py-2 px-3  h-[30px] bg-zinc-300  items-center rounded-tl-sm rounded-bl-sm">
-                                                            $
-                                                        </div>
-                                                        <Input
-                                                            size="new"
-                                                            type="number" id="price" className="text-xs rounded-tl-none rounded-bl-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-slate-950" placeholder="$ 12.99"
-                                                            {...field}
-                                                            onChange={(e) => {
-                                                                field.onChange(e.target.value);
-                                                                setFormsData({ ...form.getValues(), price: e.target.value });
-                                                            }}
-                                                        />
+                                            <FormControl>
+                                                <div className="flex flex-row">
+                                                    <div className="py-2 px-3 h-[30px] bg-zinc-300 items-center rounded-tl-sm rounded-bl-sm">
+                                                        $
                                                     </div>
-                                                </>
-
+                                                    <Input
+                                                        className="text-xs h-[30px] rounded-tl-none rounded-bl-none focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-slate-950"
+                                                        id="price"
+                                                        type="number"
+                                                        min="0"
+                                                        placeholder="$ 12.00"
+                                                        {...field}
+                                                    />
+                                                </div>
                                             </FormControl>
                                         </FormItem>
                                     </>
@@ -316,8 +386,8 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                                                             reader.onload = (event) => {
                                                                 const base64String = event.target.result;
                                                                 field.onChange(base64String);
+                                                                setFormsData({ ...form.getValues(), image: base64String });
                                                             };
-                                                            setFormsData({ ...form.getValues(), image: e.target.value });
                                                             reader.readAsDataURL(file);
                                                         }}
                                                     />
@@ -330,7 +400,18 @@ export const NewProductForms = ({ close, data = null, setFormsData }) => {
                         </div>
                     </div>
 
-                    <div className=" flex justify-end items-end  w-full">
+                    <div className=" flex justify-end items-end  w-full gap-4">
+                        <Button
+                            variant="redOutline"
+                            type="button"
+                            className={` px-10 `}
+                            onClick={() => {
+                                form.reset()
+                            }}
+                            size="xs"
+                        >
+                            <p className=' font-normal text-xs'>Cancel</p>
+                        </Button>
                         <Button
                             variant="destructive"
                             type="submit"

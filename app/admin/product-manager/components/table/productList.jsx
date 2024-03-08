@@ -15,81 +15,254 @@ import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { MoreHorizontalIcon } from "lucide-react";
+import { MoreHorizontalIcon, Trash2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+    getPaginationRowModel,
+    SortingState,
+    getSortedRowModel,
+} from "@tanstack/react-table";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+import { DialogDeleteProduct } from "../menus/DialogDeleteProduct";
 
 
-export function ProductListData({ data, isOpen, setOpen }) {
+export function ProductList({ data, isSkeleton, setSelectedData, reload }) {
 
+    const columns = [
+        {
+            accessorKey: "select",
+            id: "select",
+            header: ({ table }) => {
+                return (
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() ||
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
+                )
+            },
+            cell: ({ row }) => {
+                return (
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                    />
+                )
+            },
+        },
+        {
+            accessorKey: "product_id",
+            header: "#",
+            className: "text-xs",
+        },
+        {
+            accessorKey: "item",
+            header: "Item",
+        },
+        {
+            accessorKey: "description",
+            header: "Description",
+        },
+        {
+            accessorKey: "price",
+            header: "Price",
+        },
+        {
+            accessorKey: "categories",
+            header: "Categories",
+        },
+        {
+            id: "Action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex flex-row gap-2">
+                        <Button
+                            variant="tableBlue"
+                            size="tableIcon"
+                            className={`rounded-[3px] w-max px-[5px] h-[25px]`}
+                            onClick={() => { toggleOpenChange([row.original.product_id])}}
+                        >
+                            <Trash2 width={15} height={15} className={` text-myBlue rounded-sm  `} />
+                        </Button>
+
+                    </div>
+                )
+            },
+        }
+    ]
+
+    const [rowSelection, setRowSelection] = useState({})
+    const [sorting, setSorting] = useState([])
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [selectedDelete, setSelectedDelete] = useState([])
 
-    const toggleEdit = () => {
-        setIsEdit(!isEdit)
+    const table = useReactTable({
+        data: data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            sorting,
+            rowSelection,
+        },
+
+    })
+
+    const toggleOpenChange = (deleteID) => {
+        setOpenDelete(true);
+        setSelectedDelete(deleteID);
     }
-    const toggleCancel = () => {
-        setIsEdit(false)
-    }
-    const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
-        newExpandedRows[index] = !newExpandedRows[index];
-        setExpandedRows(newExpandedRows);
-    };
+
+    const selectedProductIds = table.getSelectedRowModel().rows.map(row => row.original.product_id);
+
     return (
-        <Table className="border border-zinc-300 rounded-sm">
-            <TableHeader className="text-sm bg-white text-black">
-                <TableHead colSpan={7} className="p-4 " >
+        <>
+            <DialogDeleteProduct deleteID={selectedDelete} open={openDelete} setOpen={setOpenDelete} reloadData={reload} />
+            <div className="text-sm bg-transparent py-2">
+                <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                             <SearchBar />
+                        </div>
+                        <div className="">
                             <Button
-                                variant="filter"
-                                size="filter"
-                                className='border border-zinc-300 flex items-center rounded'>
-                                <FilterIcons
-                                    className=""
-                                    fill="#CC0019" />
+                                variant="destructive"
+                                size="sm"
+                                className="px-[20px]"
+                                disabled={Object.keys(rowSelection).length === 0}
+                                onClick={() => toggleOpenChange(selectedProductIds)}
+                            >
+                                <p className=" text-xs">Remove Product</p>
                             </Button>
-                            <DatePickerWithRange className={"text-black"} />
                         </div>
                     </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-xs">
-                <TableHead className="text-xs w-[200px]">ID</TableHead>
-                <TableHead className="text-xs w-[200px] ">Item #</TableHead>
-                <TableHead className="text-xs w-[400px]">Description</TableHead>
-                <TableHead className="text-xs w-[200px]">Price</TableHead>
-                <TableHead className="text-xs w-[100px]">Category</TableHead>
-                <TableHead className="text-xs w-[50px]"></TableHead>
-            </TableHeader>
-            <TableBody className="text-xs">
-                {
-                    data.map((item, index) => (
+                </div>
+            </div>
+            <Table>
+                <TableHeader className="text-sm">
+                    {table.getHeaderGroups().map((headerGroup) => (
                         <>
-                            <TableRow key={item?.id} className={`${expandedRows[index] && "bg-blue-200 hover:bg-blue-200"} h-50px`} >
-                                <TableCell className="font-medium">{item?.id}</TableCell>
-                                <TableCell className="font-medium">{item?.Item}</TableCell>
-                                <TableCell className="font-medium">{item?.Description}</TableCell>
-                                <TableCell className="font-medium">{item?.Price}</TableCell>
-                                <TableCell className="font-medium">{item?.Category}</TableCell>
-                                <TableCell className="w-[50px] ">
-                                    <div className="flex flex-row gap-2">
-                                        <Button
-                                            variant="tableBlue"
-                                            size="tableIcon"
-                                            className={`rounded-sm w-max px-[5px] h-[25px]`}
-                                            onClick={() => toggleOpenChange()}
-                                        >
-                                            <MoreHorizontalIcon width={15} height={15} />
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
+                            {headerGroup.headers.map((header, index) => {
+                                const isLastHeader = index === headerGroup.headers.length - 1;
+                                const isFirstHeader = index === 0;
+                                return (
+                                    <TableHead
+                                        key={header.id}
+                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                    >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                );
+                            })}
                         </>
-                    ))
-                }
-            </TableBody>
+                    ))}
+                </TableHeader>
+                <TableBody>
 
-        </Table>
+                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                        <>
+                            {isSkeleton &&
+                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                    <TableRow key={index}>
+                                        {columns.map((column, columnIndex) => (
+                                            <TableCell
+                                                key={columnIndex}
+                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                            >
+                                                <Skeleton className={"w-full rounded h-[30px]"} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+
+                            {!isSkeleton && !table.getRowModel().rows?.length && (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </>
+                    ) : (
+                        // Jika data telah dimuat, render data aktual
+                        table.getRowModel().rows.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                data-state={row.getIsSelected() && "selected"}
+                                onClick={() => { setSelectedData(row.original) }}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}`}
+                            >
+                                {row.getVisibleCells().map((cell) => (
+                                    <TableCell
+                                        key={cell.id}
+                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                    >
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))
+                    )}
+                </TableBody>
+            </Table>
+            <div className="flex justify-end w-full items-end p-4">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
+        </>
     )
 }
+

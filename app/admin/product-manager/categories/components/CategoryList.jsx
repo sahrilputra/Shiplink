@@ -30,6 +30,7 @@ export const CategoryList = () => {
         fetchData();
     }, [query]);
 
+    const [selected, setSelected] = useState("product")
     console.log("🚀 ~ CategoryList ~ setCategory:", category)
     return (
         <>
@@ -37,30 +38,27 @@ export const CategoryList = () => {
                 <div className={` flex flex-row gap-[15px]`}>
                     <div className="">
                         <button
-                            className={` text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            className={`${selected === "product" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            onClick={() => setSelected('product')}
                         >
                             Product
                         </button>
                     </div>
                     <div className="">
                         <button
-                            className={` text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            className={`${selected === "services" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            onClick={() => setSelected('services')}
                         >
                             Services
                         </button>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 w-full justify-between">
+                {/* <div className="flex flex-col gap-2 w-full justify-between">
                     <div className="w-full flex flex-wrap gap-3">
                         <SearchBar className="w-full" />
-                        <Button
-                            className="w-9 h-[35px] p-1"
-                            variant="secondary"
-                        >
-                            <PlusIcon className="text-white" width={20} height={20} />
-                        </Button>
+                 
                     </div>
-                </div>
+                </div> */}
                 <div className="w-full ">
                     <TableOfCategories data={category} />
                 </div>

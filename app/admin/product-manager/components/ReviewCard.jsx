@@ -6,24 +6,24 @@ import { Badge } from '@/components/ui/badge'
 export const ReviewCard = ({ formsData }) => {
 
     const img = formsData?.image
-    console.log("🚀 ~ ReviewCard ~ img:")
+    console.log("🚀 ~ ReviewCard ~ img:", img)
     return (
         <div className="content  border border-neutral-200 rounded-tl-lg rounded-tr-lg shadow-sm">
             <div className="image w-[100%] h-[130px] rounded-md">
-                {/* <img
-                    src={`${img}`}
+                <img
+                    src={`${img ? img : '/assets/img_placeholder.png'}`}
                     alt=""
                     className=' object-cover rounded-tl-lg rounded-tr-lg'
                     style={{ objectFit: 'cover', height: '130px', width: '100%' }}
-                /> */}
-                <Image
-                    src={`${img}`}
+                />
+                {/* <Image
+                    src={`${img ? img : '/assets/img_placeholder.png'}`}
                     alt='label'
                     width={300}
                     height={200}
                     style={{ objectFit: 'cover', height: '130px', width: '100%' }}
                     className=' object-cover rounded-tl-lg rounded-tr-lg'
-                />
+                /> */}
             </div>
 
             <div className="product flex flex-col text-sm px-3 py-1">

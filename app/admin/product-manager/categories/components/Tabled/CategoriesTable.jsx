@@ -38,6 +38,7 @@ export function CategoriesTable({ }) {
         page: 0,
         limit: 0,
         index: 0,
+        category_id: '',
     })
 
     useEffect(() => {

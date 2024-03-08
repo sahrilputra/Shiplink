@@ -1,39 +1,18 @@
 import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
+import { cookies } from 'next/headers'
 import { getAccessToken } from "@/helpers/getAccessToken";
-
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
-        const {
-            product_id = "",
-            item,
-            brand,
-            model,
-            category_id,
-            description,
-            price,
-            image,
-            action
-        } = await request.json();
-
-        const response = await axios.post(
-            `${process.env.API_URL}/Products/Products_setdata`,
-            {
-                product_id: product_id,
-                item: item,
-                brand: brand,
-                model: model,
-                category_id: category_id,
-                description: description,
-                price: price,
-                image: image,
-                action: action
-            },
+        const { data } = await request.json();
+        console.log("code : ", { data })
+        const response = await axios.get(
+            `${process.env.API_URL}/Products/Products_delete?product_id=${data}`,
             {
                 httpsAgent: agent,
                 headers: {
@@ -42,7 +21,6 @@ export async function POST(request) {
                 }
             }
         );
-        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {

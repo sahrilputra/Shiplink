@@ -12,8 +12,7 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
-import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
-import { MoreHorizontalIcon, Plus, Trash2Icon } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import {
@@ -27,15 +26,9 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
+import { NewCategory } from "../dialog/NewCategory";
 
 export function TableOfCategories({ data }) {
 
@@ -43,6 +36,7 @@ export function TableOfCategories({ data }) {
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([]);
+    const [openNew, setOpenNew] = useState(false)
 
     const columns = [
         {
@@ -51,28 +45,24 @@ export function TableOfCategories({ data }) {
             className: "text-xs w-[30px]",
             header: ({ table }) => {
                 return (
-                    <div className="w-[30px]">
-                        <Checkbox
-                            checked={
-                                table.getIsAllPageRowsSelected() ||
-                                (table.getIsSomePageRowsSelected() && "indeterminate")
-                            }
-                            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                            aria-label="Select all"
-                        />
-                    </div>
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() ||
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
                 )
             },
             cell: ({ row }) => {
                 return (
-                    <div className="w-[30px]">
-                        <Checkbox
-                            checked={row.getIsSelected()}
-                            onCheckedChange={(value) => row.toggleSelected(!!value)}
-                            aria-label="Select row"
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
 
-                        />
-                    </div>
+                    />
                 )
             },
         },
@@ -97,6 +87,7 @@ export function TableOfCategories({ data }) {
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         onSortingChange: setSorting,
+        onRowSelectionChange: setRowSelection,
         state: {
             sorting,
             rowSelection,
@@ -109,57 +100,108 @@ export function TableOfCategories({ data }) {
         fetchData(); // Memuat kembali data untuk mereset urutan ke aslinya
     };
 
+    const reload = () => {
+
+    }
     // const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.bins_id);
 
     return (
         <>
-            <Table>
-                <TableHeader className="text-sm">
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <>
-                            {headerGroup.headers.map((header, index) => {
-                                const isLastHeader = index === headerGroup.headers.length - 1;
-                                const isFirstHeader = index === 0;
-                                return (
-                                    <TableHead
-                                        key={header.id}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
-                                    >
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </TableHead>
-                                );
-                            })}
-                        </>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                    {
-                        table.getRowModel().rows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                // onClick={() => handleSelect(row.original.bins_id)}
-                                data-state={row.getIsSelected() && "selected"}
-                                className={`${row.isFirst && "w-[30px]"} text-xs `}
+            <NewCategory setOpen={setOpenNew} open={openNew} setReloadData={reload} />
+            <div className="">
+                <div className=" flex w-full flex-row justify-between gap-1 items-center py-2">
+                    <SearchBar />
+
+                    <div className=" flex justify-end  ">
+                        {Object.keys(rowSelection).length === 0 ? (
+                            <Button
+                                className="w-9 h-[35px] p-1"
+                                variant="secondary"
+                                onClick={() => setOpenNew(true)}
                             >
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell
-                                        key={cell.id}
-                                        className={`${row.isFirst && "w-[30px]"} text-xs `}
-                                    // className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
-                                    >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))
-                    }
-                </TableBody>
-            </Table>
+                                <PlusIcon className="text-white" width={20} height={20} />
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="destructive"
+                                size="icon"
+                                className="w-9 h-[35px] p-1"
+                            >
+                                <Trash2Icon className="text-white" width={20} height={20} />
+                            </Button>
+                        )}
+                    </div>
+
+                </div>
+                {/* <div className="w-[40%] flex justify-end  ">
+                    {Object.keys(rowSelection).length === 0 ? (
+                        <Button
+                            onClick={() => setCreateNewDialog(true)}
+                            variant="filter"
+                            size="icon"
+                            className="w-[34px] h-[34px] border border-neutral-200 flex items-center"
+                        >
+                            <Plus fill="#CC0019" />
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => setDeleteMuchDialog(true)}
+                            className="w-[34px] h-[34px] border border-neutral-200 flex items-center"
+                        >
+                            <Trash2Icon fill="#CC0019" />
+                        </Button>
+                    )}
+                </div> */}
+                <Table>
+                    <TableHeader className="text-sm">
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <>
+                                {headerGroup.headers.map((header, index) => {
+                                    const isLastHeader = index === headerGroup.headers.length - 1;
+                                    const isFirstHeader = index === 0;
+                                    return (
+                                        <TableHead
+                                            key={header.id}
+                                            className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        >
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )}
+                                        </TableHead>
+                                    );
+                                })}
+                            </>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    // onClick={() => handleSelect(row.original.bins_id)}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className={`${row.isFirst && "w-[30px]"} text-xs `}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${row.isFirst && "w-[30px]"} text-xs `}
+                                        // className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        }
+                    </TableBody>
+                </Table>
+            </div>
         </>
     )
 }

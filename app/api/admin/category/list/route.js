@@ -10,29 +10,21 @@ export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
         const {
-            product_id = "",
-            item,
-            brand,
-            model,
-            category_id,
-            description,
-            price,
-            image,
-            action
+            keyword,
+            page,
+            limit,
+            index,
+            category_type
         } = await request.json();
 
         const response = await axios.post(
-            `${process.env.API_URL}/Products/Products_setdata`,
+            `${process.env.API_URL}/Products/ProductCategories_list`,
             {
-                product_id: product_id,
-                item: item,
-                brand: brand,
-                model: model,
-                category_id: category_id,
-                description: description,
-                price: price,
-                image: image,
-                action: action
+                "keyword": keyword,
+                "page": page,
+                "limit": limit,
+                "index": index,
+                "category_type": category_type,
             },
             {
                 httpsAgent: agent,
@@ -42,12 +34,12 @@ export async function POST(request) {
                 }
             }
         );
-        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
+                product_categories: response.data.product_categories
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

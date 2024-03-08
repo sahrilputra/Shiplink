@@ -13,16 +13,17 @@ export async function POST(request) {
             keyword,
             page,
             limit,
-            index
+            index,
+            category_id
         } = await request.json();
-
         const response = await axios.post(
-            `https://sla.webelectron.com/Products/Products_list`,
+            `${process.env.API_URL}/Products/Products_list`,
             {
                 "keyword": keyword,
                 "page": page,
                 "limit": limit,
-                "index": index
+                "index": index,
+                "category_id": category_id,
             },
             {
                 httpsAgent: agent,
@@ -32,13 +33,12 @@ export async function POST(request) {
                 }
             }
         );
-        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                product_categories : response.data.product_categories
+                products: response.data.products
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {
