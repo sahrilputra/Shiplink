@@ -160,6 +160,7 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                             className="w-full text-xs"
                             name="productID"
                             control={form.control}
+                            disabled={true}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full text-xs">

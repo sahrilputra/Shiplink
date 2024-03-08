@@ -7,7 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { TableOfCategories } from './Categories/TableOfCategories';
-export const CategoryList = ({ setSelected, selected }) => {
+
+export const CategoryList = ({ setSelected, selected, setItemID, itemID }) => {
     console.log("🚀 ~ CategoryList ~ selected:", selected)
     const [category, setCategory] = useState([]);
     const [skeleton, setSkeleton] = useState(true)
@@ -35,10 +36,9 @@ export const CategoryList = ({ setSelected, selected }) => {
 
     const reload = () => {
         setSkeleton(true)
-        setQuery(prevQuery => ({
-            ...prevQuery,
+        setQuery({
             category_type: selected,
-        }))
+        })
     }
     useEffect(() => {
         setSkeleton(true)
@@ -83,7 +83,7 @@ export const CategoryList = ({ setSelected, selected }) => {
                     </div>
                 </div> */}
                 <div className="w-full ">
-                    <TableOfCategories data={category} />
+                    <TableOfCategories data={category} setItemID={setItemID} itemID={itemID} reload={reload} />
                 </div>
             </div>
         </>

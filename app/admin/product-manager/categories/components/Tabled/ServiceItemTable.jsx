@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import React, { useState, useEffect } from "react";
 import {
@@ -30,7 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 
 export function ServiceItemTable({ category_id }) {
-console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
+    console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
 
     const [isSkeleton, setIsSkeleton] = useState(false)
     const [data, setData] = useState([])
@@ -39,7 +40,7 @@ console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
         page: 0,
         limit: 0,
         index: 0,
-        category_id: category_id || "",
+        category_id: category_id,
     })
 
     useEffect(() => {
@@ -50,12 +51,26 @@ console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
                 query
             )
             const responseData = await response.data.services;
-            console.log("🚀 ~ fetchData ~ responseData:", responseData)
-            setData(responseData)
+            const filteredData = responseData.filter(item => item.category_id === category_id);
+            console.log("🚀 ~ fetchData ~ filteredData:", filteredData)
+            setData(filteredData)
             setIsSkeleton(false)
         }
         fetchData();
     }, [query, category_id])
+
+    const reload = () => {
+        setIsSkeleton(true)
+        setQuery({
+            ...query,
+            category_id: category_id,
+        })
+
+    }
+
+    useEffect(() => {
+        reload();
+    }, [category_id]);
 
     const columns = [
         {
@@ -102,7 +117,6 @@ console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
         },
     ]
 
-
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
@@ -123,7 +137,6 @@ console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
 
     })
 
-
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -135,20 +148,33 @@ console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
+
+
     return (
         <>
             <div className="text-sm bg-transparent py-2">
+                <div className="px-2">
+                    <p>{category_id}</p>
+                </div>
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
+                            <SearchBar handleSearch={handleSearchChange} />
                         </div>
                         <div className="">
                             <Button
                                 variant="destructive"
                                 size="sm"
                                 className="px-[20px]"
-                                disabled={Object.keys(rowSelection).length === 0}
+                                disabled={true}
+                                // disabled={Object.keys(rowSelection).length === 0}
                                 onClick={() => toggleOpenChange(selectedItemsId)}
                             >
                                 <p className=" text-xs">Move Items</p>

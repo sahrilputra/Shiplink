@@ -149,6 +149,7 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
                             className="w-full text-xs"
                             name="service_id"
                             control={form.control}
+                            disabled={true}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full text-xs">

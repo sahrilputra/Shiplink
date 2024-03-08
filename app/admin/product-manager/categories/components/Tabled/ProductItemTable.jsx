@@ -29,7 +29,7 @@ import axios from "axios";
 import { MoreHorizontalIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ProductItemTable({ }) {
+export function ProductItemTable({ category_id }) {
 
     const [isSkeleton, setIsSkeleton] = useState(false)
     const [data, setData] = useState([])
@@ -38,13 +38,13 @@ export function ProductItemTable({ }) {
         page: 0,
         limit: 0,
         index: 0,
-        category_id: '',
+        category_id: category_id,
     })
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.post(
-                '/api/admin/product/list',
+                '/api/admin/product/listProduct',
                 query
             )
             const responseData = await response.data.product_categories;
@@ -83,21 +83,21 @@ export function ProductItemTable({ }) {
             },
         },
         {
-            accessorKey: "description",
-            header: "Description",
+            accessorKey: "product_id",
+            header: "#",
             className: "text-xs",
         },
         {
-            accessorKey: "status",
-            header: "status",
+            accessorKey: "item",
+            header: "Item",
         },
         {
-            accessorKey: "fee",
-            header: "fee",
+            accessorKey: "description",
+            header: "Description",
         },
         {
-            accessorKey: "date",
-            header: "Last Change",
+            accessorKey: "price",
+            header: "Price",
         },
         {
             id: "Action",

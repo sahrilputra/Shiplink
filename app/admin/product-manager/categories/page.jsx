@@ -15,12 +15,12 @@ export default function ProductCategoriesPage() {
         <>
             <div className={styles.container}>
                 <div className={styles.category}>
-                    <CategoryList selected={selected} setSelected={setSelected} />
+                    <CategoryList selected={selected} setSelected={setSelected} setItemID={setCategoryId} itemID={categoryId}/>
                 </div>
                 <div className={" px-[15px] bg-white rounded border border-neutral-200"}>
                     {
                         selected === 'Product'
-                            ? <ProductItemTable />
+                            ? <ProductItemTable category_id={categoryId} />
                             : <ServiceItemTable category_id={categoryId} />
                     }
                 </div>

@@ -26,17 +26,19 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
-
-import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { NewCategory } from "../dialog/NewCategory";
+import { DeleteCategory } from "../dialog/DeleteCategory";
 
-export function TableOfCategories({ data, reload }) {
+export function TableOfCategories({ data, reload, setItemID, itemID }) {
 
     console.log("🚀 ~ TableOfCategories ~ data:", data)
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([]);
     const [openNew, setOpenNew] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false)
+    const [categoryID, setCategoryID] = useState([])
+
 
     const columns = [
         {
@@ -109,15 +111,22 @@ export function TableOfCategories({ data, reload }) {
 
     });
 
-    const removeSorting = () => {
-        setSorting([]);
-        fetchData(); // Memuat kembali data untuk mereset urutan ke aslinya
-    };
+    const toggleOpenChange = (id) => {
+        setDeleteOpen(true)
+        setCategoryID(id)
+    }
 
-    // const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.bins_id);
+
+    // const removeSorting = () => {
+    //     setSorting([]);
+    //     fetchData();
+    // };
+
+    const selectedCategoryId = table.getSelectedRowModel().rows.map(row => row.original.category_code);
 
     return (
         <>
+            <DeleteCategory open={deleteOpen} setOpen={setDeleteOpen} reloadData={reload} deleteID={categoryID} />
             <NewCategory setOpen={setOpenNew} open={openNew} setReloadData={reload} />
             <div className="">
                 <div className=" flex w-full flex-row justify-between gap-1 items-center py-2">
@@ -137,6 +146,7 @@ export function TableOfCategories({ data, reload }) {
                                 variant="destructive"
                                 size="icon"
                                 className="w-9 h-[35px] p-1"
+                                onClick={() => toggleOpenChange(selectedCategoryId)}
                             >
                                 <Trash2Icon className="text-white" width={20} height={20} />
                             </Button>
@@ -196,7 +206,8 @@ export function TableOfCategories({ data, reload }) {
                                     key={row.id}
                                     // onClick={() => handleSelect(row.original.bins_id)}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={`${row.isFirst && "w-[30px]"} text-xs `}
+                                    className={`${row.isFirst && "w-[30px]"} text-xs ${itemID === row.original.category_code ? "bg-blue-100" : "bg-white"} `}
+                                    onClick={() => setItemID(row.original.category_code)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
