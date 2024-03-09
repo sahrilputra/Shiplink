@@ -11,9 +11,11 @@ import {
 import { MoreHorizontalIcon } from "lucide-react"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
-
 export const InvoiceMenus = ({ handler, invID, handlerDelete }) => {
     const [isDetailsOpen, setDetailsOpen] = useState(false);
+    const downloadInvoice = () => {
+        window.open(`https://sla.webelectron.com/api/InvoiceManager/download_invoicepdf?invoice_id=${invID}`, '_blank');
+    };
 
     return (
         <>
@@ -29,7 +31,9 @@ export const InvoiceMenus = ({ handler, invID, handlerDelete }) => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent side={"left"} sideOffset={2}>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={downloadInvoice}
+                        >
                             <p className="text-xs text-myBlue">Download Invoice</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem

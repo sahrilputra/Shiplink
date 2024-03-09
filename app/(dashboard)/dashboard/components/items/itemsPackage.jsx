@@ -20,7 +20,6 @@ import { PaymentsDialog } from '../dashboardMenus/PaymentsV2/Payments';
 import format from 'date-fns/format';
 
 export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }) {
-    console.log("🚀 ~ ItemsPackage ~ isExpand:", isExpand)
     const { toast } = useToast();
 
     const {
@@ -59,7 +58,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
     const [selectedButton, setSelectedButton] = useState(null);
     const [buttonEnabled, setButtonEnabled] = useState(true);
     const [clicked, setIsClicked] = useState(false);
-
+    const [openHoldPickup, setOpenHoldPickup] = useState(false);
     const [copied, setCopied] = useState(false);
 
     const handleCopy = (text) => {
@@ -264,10 +263,21 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                                 </div>
                                             </div>
                                         </>
-                                    ) : (
+                                    ) : (   
                                         <>
                                             <div className="justify-start items-start gap-1 inline-flex flex-wrap">
-                                                <PaymentsDialog variant="confirm" click={handleButtonClick} isSelectedButton={selectedButton} isButtonEnabled={buttonEnabled} />
+                                                <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} />
+                                                <Button
+                                                    variant={`${selectedButton === "Hold Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
+                                                    className="w-[140px] px-3 py-[5px] justify-center items-center gap-2.5 flex"
+                                                    size="sm"
+                                                    onClick={() => {
+                                                        setOpenHoldPickup(true)
+                                                        handleButtonClick("Hold Pickup")
+                                                    }}
+                                                >
+                                                    <div className="text-justify text-white text-xs font-semiBold ">Hold for Pickup</div>
+                                                </Button>
                                                 <Button
                                                     variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
                                                     className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"

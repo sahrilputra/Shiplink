@@ -7,7 +7,6 @@ import { ForwadPakage } from './components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
 import ItemsPackage from './components/items/itemsPackage';
 import { ModalContext } from '@/context/ModalContext';
-// import data from '../../../data/dashboardData.json'
 import axios from 'axios';
 export default function Dashboard() {
 
@@ -27,7 +26,6 @@ export default function Dashboard() {
     useEffect(() => {
         axios.post(`/api/admin/packages/list`, query)
             .then(response => {
-                // console.log(response.data)
                 setData(response.data.package_info)
             })
             .catch(error => {
@@ -39,14 +37,11 @@ export default function Dashboard() {
         setSelectedTab(tabName);
     }
     const [expandedItemId, setExpandedItemId] = useState(null);
-    console.log("🚀 ~ Dashboard ~ expandedItemId:", expandedItemId)
     
     const toggleExpand = (itemId) => {
         if (expandedItemId === itemId) {
-            // If the clicked item is already expanded, close it
             setExpandedItemId(null);
         } else {
-            // If another item is expanded, close it and expand the clicked item
             setExpandedItemId(itemId);
         }
     };
@@ -57,6 +52,7 @@ export default function Dashboard() {
     const handleButtonClick = (buttonName) => {
         setSelectedButton(buttonName);
     }
+
 
     // const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
 
