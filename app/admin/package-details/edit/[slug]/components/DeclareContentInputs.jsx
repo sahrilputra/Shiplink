@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { sub } from 'date-fns'
 export const DeclareContentInputs = ({
     forms,
     fields,
@@ -29,7 +30,10 @@ export const DeclareContentInputs = ({
     binData
 }) => {
 
-
+    useEffect(() => {
+        const subTotal = forms.watch('package_content.subTotal')
+        console.log('subTotal', subTotal)
+    }, [forms])
     return (
         <>
             <Table>
@@ -49,7 +53,6 @@ export const DeclareContentInputs = ({
                             index={index}
                             forms={forms}
                             handleRemoveContent={() => remove(index)}
-                            itemID={field.itemID}
                         />
                     ))}
                 </TableBody>
@@ -63,7 +66,16 @@ export const DeclareContentInputs = ({
                                 size="sm"
                                 type="button"
                                 className="px-4 h-7 py-3"
-                                onClick={() => append({})}
+                                onClick={() => append({
+                                    itemID: '',
+                                    qty: 1,
+                                    value: 0,
+                                    desc: '',
+                                    hs_desc: '',
+                                    hs_code: '',
+                                    made_in: '',
+                                    subTotal: 0,
+                                })}
                             >
                                 <p className='text-xs'>Add Other Content</p>
                             </Button>
@@ -73,7 +85,7 @@ export const DeclareContentInputs = ({
                         <TableCell className="font-medium flex flex-row justify-between w-full items-center p-0 px-5 py-2  ">
                             <div className="flex flex-row gap-4">
                                 <p className=' text-sm font-bold text-myBlue'>Totals : </p>
-                                <p className=' text-sm font-semibold'>$ {total}</p>
+                                <p className=' text-sm font-semibold'>${forms.getValues('total_price')}</p>
 
                             </div>
                             <div className="flex flex-row justify-center gap-4">

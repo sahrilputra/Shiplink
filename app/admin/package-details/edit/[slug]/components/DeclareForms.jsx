@@ -8,22 +8,22 @@ import { CheckIcon, XIcon } from 'lucide-react'
 import React, { useEffect } from 'react'
 import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid'
+import CurrencyFormat from 'react-currency-format'
 
 export const DeclareForms = ({
     forms,
     index,
     handleRemoveContent,
-    itemID,
 }) => {
 
-    const countingSubtotal = ({ qty = 0, value = 0 }) => {
-        const parseQty = parseInt(qty, 10)
-        const parseValue = parseInt(value, 10)
-        forms.setValue(`package_content[${index}].qty`, parseQty)
-        forms.setValue(`package_content[${index}].value`, parseValue)
-        forms.setValue(`package_content[${index}].subtotal`, parseQty * parseValue)
+    const setSubTotal = (value) => {
+        // const qty = forms.getValues(`package_content[${index}].qty`);
+        // console.log("🚀 ~ setSubTotal ~ qty:", qty)
+        // const subTotal = qty * value;
+        // console.log("🚀 ~ setSubTotal ~ subTotal:", subTotal)
+        forms.setValue(`package_content[${index}].subTotal`, subTotal);
     }
-
+    console.log("Subtotal: ", forms.getValues(`package_content[${index}].subTotal`))
     return (
         <>
             <TableRow className="text-xs px-2">
@@ -37,14 +37,10 @@ export const DeclareForms = ({
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
-                                            min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="width"
+                                            id="qty"
                                             type="number"
                                             placeholder="1"
-                                            onChange={() =>
-                                                countingSubtotal({ qty: field })
-                                            }
                                             {...field}
                                         />
                                     </FormControl>
@@ -53,6 +49,7 @@ export const DeclareForms = ({
                         )}
                     />
                 </TableCell>
+
                 <TableCell className="p-0 h-8 px-2 py-2 ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
@@ -62,15 +59,21 @@ export const DeclareForms = ({
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <Input
-                                            min="0"
+                                        <CurrencyFormat
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="value"
-                                            type="number"
-                                            onChange={() =>
-                                                countingSubtotal({ value: field })
-                                            }
-                                            placeholder="0" {...field} />
+                                            placeholder="$0.00"
+                                            thousandSeparator={true}
+                                            prefix="$"
+                                            customInput={Input}
+                                            onValueChange={(values) => {
+                                                const { value } = values;
+                                                const numericValue = parseFloat(value.replace(/\D/g, ''));
+                                                field.onChange(numericValue);
+                                                setSubTotal(values.floatValue);
+                                            }}
+                                            {...field}
+                                        />
                                     </FormControl>
                                 </FormItem>
                             </>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import React, { useEffect, useState } from 'react';
 import styles from './styles.module.scss'
@@ -22,6 +23,7 @@ import axios from 'axios';
 import { DeclareContentInputs } from './components/DeclareContentInputs';
 import { DataForms } from './components/DataForms';
 import { OtherField } from './components/OtherField';
+import { Loaders } from '@/components/ui/loaders';
 
 
 
@@ -50,7 +52,7 @@ export const formSchema = yup.object().shape({
             hs_desc: yup.string(),
             hs_code: yup.string(),
             made_in: yup.string(),
-            subtotal: yup.number()
+            subTotal: yup.number()
         })
     ),
     box_images: yup.array(),
@@ -96,7 +98,7 @@ export const FormValidate = ({ data }) => {
                     hs_desc: "",
                     hs_code: "",
                     made_in: "",
-                    subtotal: 0,
+                    subTotal: 0,
                 }
             ],
             box_images: [
@@ -192,7 +194,7 @@ export default function PackageDetails({ params }) {
                 `/api/admin/bin_manager/list`,
                 binQuery
             );
-            console.log("response from bin manager : ", response.data)
+            // console.log("response from bin manager : ", response.data)
             const data = await response.data;
             setBinData(data.bins);
         } catch (error) {
@@ -214,8 +216,79 @@ export default function PackageDetails({ params }) {
         control: form.control,
         name: 'package_content'
     })
+
+
+    // useEffect(() => {
+    //     const calculateTotal = () => {
+    //         let total = 0;
+    //         form.watch('package_content').forEach(item => {
+    //             total += item.subTotal;
+    //         });
+    //         form.setValue('total_price', total);
+    //     };
+    //     calculateTotal();
+    // }, [form.watch('package_content')]);
+
+    const [loading, setLoading] = useState(false);
+    console.log("🚀 ~ calculateTotal ~ total_price:", form.getValues('total_price'))
+    const handleSubmit = async (formData) => {
+        console.log("ACEPETED", formData)
+        setLoading(true)
+        try {
+            const response = await axios.post(
+                `/api/admin/packages/edit`,
+                {
+                    customer_id: formData.customer_id,
+                    customer_name: formData.customer_name,
+                    customer_phone: formData.customer_phone,
+                    customer_email: formData.customer_email,
+                    barcode_tracking: formData.barcode_tracking,
+                    carrier_code: formData.carrier_code,
+                    package_length: formData.package_length,
+                    package_witdth: formData.package_witdth,
+                    package_height: formData.package_height,
+                    package_height_unit: formData.package_height_unit,
+                    package_weight: formData.package_weight,
+                    package_weight_unit: formData.package_weight_unit,
+                    bin_location: formData.bin_location,
+                    total_price: formData.total_price,
+                    package_content: formData.package_content,
+                    box_images: formData.box_images,
+                    label_images: formData.label_images,
+                    content_images: formData.content_images,
+                    manifiest_number: formData.manifest,
+                    lots_id: formData.lots_id,
+                    documents: formData.documents,
+                    entry_number: formData.entry_number,
+                    action: "edit",
+                    status: formData.status,
+                    tracking_id: formData.tracking_id,
+                },
+            )
+            setLoading(false)
+            console.log("🚀 ~ POST ~ response:", response)
+            if (response.status === 200) {
+                setLoading(false)
+                const responseData = {
+                    status: true,
+                    message: response.data.message,
+                    tracking_id: response.data.tracking_id,
+                };
+                console.log("🚀 ~ handleSubmit ~ responseData:", responseData)
+            } else {
+                setLoading(false)
+                console.log('erorr', response.data.message)
+            }
+        } catch (error) {
+            console.log('Erorr', error)
+        }
+    }
+
+    console.log("ERRORS : ", form.formState.errors)
     return (
         <>
+
+            {loading && <Loaders />}
             <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <div className={styles.configHeader}>
@@ -239,6 +312,7 @@ export default function PackageDetails({ params }) {
                             <form
                                 className='flex gap-2 flex-col text-zinc-600'
                                 action=""
+                                onSubmit={form.handleSubmit(handleSubmit)}
                             >
                                 <DataForms
                                     emptyMessage="No resulsts."
@@ -250,7 +324,6 @@ export default function PackageDetails({ params }) {
                                     forms={form}
                                     binData={binData}
                                 />
-
 
                                 <DeclareContentInputs
                                     fields={fields}

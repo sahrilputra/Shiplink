@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     FormControl,
     FormField,
@@ -15,11 +15,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { ScrollArea } from '@/components/ui/scroll-area'
+import axios from 'axios'
 
 export const OtherField = ({
     forms,
     binData,
 }) => {
+
+
+
     return (
         <>
             <div className="flex flex-row gap-3 w-[100%]">
@@ -68,7 +72,6 @@ export const OtherField = ({
                             </FormItem>
                         )}
                     />
-
                 </div>
                 <div className="flex flex-col gap-3 w-full">
                     <FormField
