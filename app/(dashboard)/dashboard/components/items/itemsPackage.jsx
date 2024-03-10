@@ -17,9 +17,11 @@ import { PackageIndicator } from '@/components/PackageItemsUI/PackageIndicator';
 import { CopyIcons } from '@/components/icons/iconCollection';
 import { useToast } from '@/components/ui/use-toast';
 import { PaymentsDialog } from '../dashboardMenus/PaymentsV2/Payments';
+import { ExpandItems } from './ExpandItems';
 import format from 'date-fns/format';
 
-export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }) {
+
+export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand }) => {
     const { toast } = useToast();
 
     const {
@@ -51,10 +53,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
         country_name_arrival,
         country_code_arrival,
         warehouse_name_arrival,
-
-
     } = item;
-
 
     const formattedDate = format(new Date(updated_at), 'dd MMM yyyy');
     const [isExpanded, setIsExpanded] = useState(false);
@@ -100,247 +99,161 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
     };
 
     return (
-        <div
-            onClick={() => {
-                if (!isExpand) {
-                    toggleClicked(tracking_id)
-                }
-            }}
-            className={`
+        <>
+            <div
+                onClick={() => {
+                    if (!isExpand) {
+                        toggleClicked(tracking_id)
+                    }
+                }}
+                className={`
             container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 
             ${isExpand ? 'hover:bg-white cursor-default' : 'hover:bg-gray-300/10 cursor-pointer'}
             `}
-        >
-            <div className="flex flex-row justify-between items-center gap-5 relative">
-                <div className="justify-start items-center gap-[15px] flex">
-
-                    <PackageType variant={status} notif={"notif"} />
-                    <div className="flex-col justify-start items-start inline-flex w-[200px]">
-                        <div className="text-black text-sm font-semiBold">{tracking_id}</div>
-                        <div className="text-sky-700 text-xs font-semiBold">Shipping Mailbox</div>
-                        <div className="justify-start items-start inline-flex">
-                            <div className="justify-start items-center gap-2.5 flex">
-                                <div className="text-zinc-600 text-sm font-semiBold">{carrier_code}</div>
-                                <p className='text-red-700 text-opacity-80 text-sm font-bold'>{barcode_tracking}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="p-1 h-100% flex items-end justify-center flex-col">
-                    <Button
-                        variant="ghost"
-                        className="w-[30px] h-[30px]"
-                        size="icon"
-                        onClick={() => {
-                            handleCopy(barcode_tracking)
-                            toast({
-                                title: "Copied!",
-                                description: `Copy Tracking Number ${barcode_tracking}.`,
-                            })
-                        }}
-                    >
-                        <CopyIcons width={15} height={15} />
-                    </Button>
-
-                </div>
-                <div className=" w-2/3 justify-start items-center gap-[10px] flex">
-                    <div className="w-[36.14px] h-[50px]">
-                        <Separator orientation="vertical" className="px-[1px] h-[100%] bg-zinc-600/50 " />
-                    </div>
-                    <div className="flex flex-row items-center gap-3">
-                        <div className="w-[36.14px] h-[23.55px] relative">
-                            {
-                                country_code_arrival === "USA" ? (
-                                    <>
-                                        <Image
-                                            src={"/assets/country/USA-flag.png"}
-                                            width={66}
-                                            height={70}
-                                            className='left-[-10.19px] top-[-23.55px]'
-                                            alt='USA icon'
-                                            style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                                        />
-                                    </>
-                                ) : country_code_arrival === "CAN" ? (
-                                    <>
-                                        <Image
-                                            src={"/assets/country/cad-flag.png"}
-                                            width={66}
-                                            height={70}
-                                            className='left-[-10.19px] top-[-23.55px]'
-                                            alt='USA icon'
-                                            style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                                        />
-                                    </>
-                                ) : (
-                                    <>
-                                        <Image
-                                            src={"/assets/country/USA-flag.png"}
-                                            width={66}
-                                            height={70}
-                                            className='left-[-10.19px] top-[-23.55px]'
-                                            alt='USA icon'
-                                            style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                                        />
-                                    </>
-                                )
-                            }
-
-                        </div>
-                        <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
-                            <PackageIndicator status={status} />
-                            <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {formattedDate}</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="rightItems gap-5 flex flex-row  w-2/3 justify-end relative">
-                    <div className="flex flex-col justify-end items-end ">
-                        <PackageStatus variant={status} />
-                        <div className="h-[30px]  justify-end items-center gap-2.5 flex">
-                            <div className="text-right text-zinc-600 text-xs ">{warehouse_name_arrival} WR, {country_code_arrival}</div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-end items-center ">
-                        <div className="">
-                            <Checkbox />
-                        </div>
-                        <div className="w-[30px] h-[30px]">
-                            {/* <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
-                             */}
-                            <Button
-                                aria-label="arrow"
-                                variant="ghost"
-                                size='small'
-                                className={`w-[30px] h-[30px] ${isExpand ? 'rotate-180' : ''}`}
-                                onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}
-                            >
-                                <ArrowDownIcon />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            {
-                isExpand ? (
-                    <div className="expanded transition-transform ease-in-out ">
-                        <div className="flex flex-row justify-between items-center gap-5 relative">
-                            <div className="justify-start items-center gap-[15px] flex">
-                                <DetailsModals item={item} date={formattedDate} />
-                                <div className="flex-col justify-start items-start gap-px inline-flex">
-                                    <div className="text-black text-xs font-semiBold ">{customer_name}</div>
-                                    <div className="text-zinc-600 text-xs ">{package_length} x {package_witdth} x {package_height} {package_height_unit}</div>
-                                    <div className="text-zinc-600 text-xs ">{package_weight} {package_weight_unit}</div>
+            >
+                <div className="flex flex-row justify-between items-center gap-5 relative">
+                    <div className="justify-start items-center gap-[15px] flex">
+                        <PackageType variant={status} notif={"notif"} />
+                        <div className="flex-col justify-start items-start inline-flex w-[200px]">
+                            <div className="text-black text-sm font-semiBold">{tracking_id}</div>
+                            <div className="text-sky-700 text-xs font-semiBold">Shipping Mailbox</div>
+                            <div className="justify-start items-start inline-flex">
+                                <div className="justify-start items-center gap-2.5 flex">
+                                    <div className="text-zinc-600 text-sm font-semiBold">{carrier_code}</div>
+                                    <p className='text-red-700 text-opacity-80 text-sm font-bold'>{barcode_tracking}</p>
                                 </div>
                             </div>
-                            <div className="flex-col justify-start items-start gap-2.5 inline-flex">
-                                <div className="justify-between items-start inline-flex ">
-                                    <div className="text-zinc-900 text-sm font-semiBold ">Confirm Your Order</div>
-                                </div>
+                        </div>
+                    </div>
+                    <div className="p-1 h-100% flex items-end justify-center flex-col">
+                        <Button
+                            variant="ghost"
+                            className="w-[30px] h-[30px]"
+                            size="icon"
+                            onClick={() => {
+                                handleCopy(tracking_id)
+                                toast({
+                                    title: "Copied!",
+                                    description: `Copy Tracking Number ${tracking_id}.`,
+                                })
+                            }}
+                        >
+                            <CopyIcons width={15} height={15} />
+                        </Button>
+
+                    </div>
+                    <div className=" w-2/3 justify-start items-center gap-[10px] flex">
+                        <div className="w-[36.14px] h-[50px]">
+                            <Separator orientation="vertical" className="px-[1px] h-[100%] bg-zinc-600/50 " />
+                        </div>
+                        <div className="flex flex-row items-center gap-3">
+                            <div className="w-[36.14px] h-[23.55px] relative">
                                 {
-                                    status === 'in transit' ? (
+                                    country_code_arrival === "USA" ? (
                                         <>
-                                            <div className="justify-between items-center gap-5 flex rounded-sm flex-row flex-wrap border border-zinc-400/30 px-[10px] py-[10px] w-full">
-                                                <div className="flex-row flex justify-start items-center gap-2 w-max pr-6 ">
-                                                    <div className="w-[30px] h-[30px]">
-                                                        <Image
-                                                            src={'/assets/courrier/canadian.png'}
-                                                            width={100}
-                                                            height={100}
-                                                            alt='canadian icon'
-                                                        />
-                                                    </div>
-                                                    <p className='text-xs'>Canada Post Regular Parcel</p>
-                                                </div>
-                                                <div className=" w-max px-2 text-xs text-zinc-500 flex flex-col">
-                                                    <p className='w-max'>Estimate 14-16 Apr</p>
-                                                    <p className='w-max'>Tracking ID #1231231231</p>
-                                                </div>
-                                            </div>
+                                            <Image
+                                                src={"/assets/country/USA-flag.png"}
+                                                width={66}
+                                                height={70}
+                                                className='left-[-10.19px] top-[-23.55px]'
+                                                alt='USA icon'
+                                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
+                                            />
+                                        </>
+                                    ) : country_code_arrival === "CAN" ? (
+                                        <>
+                                            <Image
+                                                src={"/assets/country/cad-flag.png"}
+                                                width={66}
+                                                height={70}
+                                                className='left-[-10.19px] top-[-23.55px]'
+                                                alt='USA icon'
+                                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
+                                            />
                                         </>
                                     ) : (
                                         <>
-                                            <div className="justify-start items-start gap-1 inline-flex flex-wrap">
-                                                <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} />
-                                                <Button
-                                                    variant={`${selectedButton === "Hold Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                    className="w-[140px] px-3 py-[5px] justify-center items-center gap-2.5 flex"
-                                                    size="xs"
-                                                    onClick={() => {
-                                                        setOpenHoldPickup(true)
-                                                        handleButtonClick("Hold Pickup")
-                                                    }}
-                                                >
-                                                    <div className="text-justify text-white text-xs font-semiBold ">Hold for Pickup</div>
-                                                </Button>
-                                                <Button
-                                                    variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                    className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                                    onClick={() => handleButtonClick("Cross Border Pickup")}
-                                                    size="xs"
-                                                >
-                                                    <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
-                                                </Button>
-                                                <Button
-                                                    disabled={true}
-                                                    variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                    className="w-[140px]  justify-center items-center gap-2.5 flex"
-                                                    size="xs"
-                                                    onClick={() => handleButtonClick("Forward Package")}
-                                                >
-                                                    <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
-                                                </Button>
-                                                <Button
-                                                    disabled={true}
-                                                    variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
-                                                    className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                                    size="xs"
-                                                    onClick={() => handleButtonClick("Cross Border Forward")}
-                                                >
-                                                    <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>
-                                                </Button>
-                                            </div>
-                                            <div className="w-[100%]">
-                                                <Separator className="py-[1.5px]" />
-                                            </div>
+                                            <Image
+                                                src={"/assets/country/USA-flag.png"}
+                                                width={66}
+                                                height={70}
+                                                className='left-[-10.19px] top-[-23.55px]'
+                                                alt='USA icon'
+                                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
+                                            />
                                         </>
                                     )
                                 }
 
+                            </div>
+                            <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
+                                <PackageIndicator status={status} />
+                                <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {formattedDate}</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="rightItems gap-5 flex flex-row  w-2/3 justify-end relative">
+                        <div className="flex flex-col justify-end items-end ">
+                            <PackageStatus variant={status} />
+                            <div className="h-[30px]  justify-end items-center gap-2.5 flex">
+                                <div className="text-right text-zinc-600 text-xs ">{warehouse_name_arrival} WR, {country_code_arrival}</div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col justify-end items-center ">
+                            <div className="">
+                                <Checkbox />
+                            </div>
+                            <div className="w-[30px] h-[30px]">
+                                {/* <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
+                             */}
+                                <Button
+                                    aria-label="arrow"
+                                    variant="ghost"
+                                    size='small'
+                                    className={`w-[30px] h-[30px] ${isExpand ? 'rotate-180' : ''}`}
+                                    onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}
+                                >
+                                    <ArrowDownIcon />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {
+                    isExpand ? (
+                        <div className="expanded transition-transform ease-in-out ">
+                            <ExpandItems handleButtonClick={handleButtonClick} item={item} selectedButton={selectedButton} buttonEnabled={buttonEnabled} />
+
+                            <div className="w-[100%] flex justify-center align-middle mx-auto ">
+                                {
+                                    selectedButton === "Cross Border Forward" ? (
+                                        <CrossBorderTable toggleExpanded={toggleExpanded} />
+                                    ) : selectedButton === "Cross Border Pickup" ? (
+                                        <>
+                                            <CrossBorderTable toggleExpanded={toggleExpanded} />
+                                        </>
+                                    ) : selectedButton === "Forward Package" ? (
+                                        <>
+                                            <CrossBorderTable toggleExpanded={toggleExpanded} />
+                                        </>
+                                    ) : (
+                                        <>
+                                        </>
+                                    )
+                                }
 
                             </div>
                         </div>
 
-
-                        <div className="w-[100%] flex justify-center align-middle mx-auto ">
-                            {
-                                selectedButton === "Cross Border Forward" ? (
-                                    <CrossBorderTable />
-                                ) : selectedButton === "Cross Border Pickup" ? (
-                                    <>
-                                        <CrossBorderTable />
-                                    </>
-                                ) : selectedButton === "Forward Package" ? (
-                                    <>
-                                        <CrossBorderTable />
-                                    </>
-                                ) : (
-                                    <>
-                                    </>
-                                )
-                            }
-
-                        </div>
-                    </div>
-
-                ) : (
-                    <></>
-                )
-            }
+                    ) : (
+                        <></>
+                    )
+                }
 
 
-        </div >
+            </div >
+        </>
     )
 }

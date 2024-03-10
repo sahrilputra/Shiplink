@@ -16,13 +16,16 @@ import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios'
 import CheckoutForm from './CheckoutForm'
 
-const stripePromise = loadStripe('pk_test_51OsLjTIGSvEkqmVc4z0PqiZRyN6K6KGUZxcEOFo6HqZoMHf7koqsE9DBQ3RuwZnLhz4T2MXdGSzrEZuhs2dUZ2Vv00mnKFQR4G');
+const stripePromise = loadStripe(`pk_test_51OsLjTIGSvEkqmVc4z0PqiZRyN6K6KGUZxcEOFo6HqZoMHf7koqsE9DBQ3RuwZnLhz4T2MXdGSzrEZuhs2dUZ2Vv00mnKFQR4G`);
 
-export const PaymentsDialog = ({ open, setOpen }) => {
+export const PaymentsDialog = ({ open, setOpen, trackingId }) => {
+    console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId)
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
-
     const [clientSecret, setClientSecret] = useState("");
     const [totalAmount, setTotalAmount] = useState(0);
+    const [services, setServices] = useState([]);
+
+    
     useEffect(() => {
         axios.post("/api/admin/payments/create-payments", {
             data: { amount: 89 },
@@ -32,6 +35,26 @@ export const PaymentsDialog = ({ open, setOpen }) => {
         });
 
     }, [])
+
+    // useEffect(() => {
+    //     try {
+    //         axios.post(
+    //             '/api/admin/actions/holdPickup',
+    //             {
+    //                 tracking_id: trackingId
+    //             },
+    //         ).then((response) => {
+    //             console.log("🚀 ~ ).then ~ response:", response)
+    //             setClientSecret(response.data.clientSecret);
+    //             setTotalAmount(response.data.total);
+    //             setServices(response.data.services);
+    //         })
+    //     } catch (error) {
+    //         console.log("🚀 ~ ).catch ~ error:", error)
+    //     }
+    // }, [trackingId]);
+
+
     const appearance = {
         theme: 'stripe',
     };
@@ -39,17 +62,23 @@ export const PaymentsDialog = ({ open, setOpen }) => {
         clientSecret,
         appearance,
     };
+
+    const close = () => {
+        setOpen(false);
+    }
+
+    
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent>
+                <DialogContent className="sm:max-w-md">
                     <DialogHeader>
                         <p>Confirm Payments</p>
                     </DialogHeader>
                     <div className="App">
                         {clientSecret && (
                             <Elements options={options} stripe={stripePromise}>
-                                <CheckoutForm />
+                                <CheckoutForm close={close} totalAmount={totalAmount} services={services} setOpen={setOpen} />
                             </Elements>
                         )}
                     </div>

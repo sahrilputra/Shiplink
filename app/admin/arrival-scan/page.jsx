@@ -28,6 +28,7 @@ import Image from 'next/image'
 import { Loaders } from '@/components/ui/loaders'
 
 const formSchema = yup.object().shape({
+    test: yup.string(),
     customer_id: yup.string(),
     customer_name: yup.string(),
     customer_phone: yup.string(),
@@ -68,6 +69,7 @@ export default function ArrivalScanPage() {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
+            test:"",
             customer_id: "",
             customer_name: "",
             customer_phone: "",

@@ -112,7 +112,7 @@ export const UserForms = ({ data = null }) => {
                                                     type="file"
                                                     disabled={disable}
                                                     accept="image/*"
-                                                    className="absolute inset-0 opacity-0  w-full h-full cursor-pointer"
+                                                    className={`absolute inset-0 opacity-0  w-full h-full cursor-pointer  ${disable ? "hidden" : ""}`}
                                                     onChange={(e) => {
                                                         const file = e.target.files[0];
                                                         const reader = new FileReader();

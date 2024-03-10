@@ -19,6 +19,7 @@ import { useForm, useFieldArray } from "react-hook-form"
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DeclareForms } from '../DeclareForms'
+import { PaymentsDialog } from '../../dashboardMenus/PaymentsV2/Payments'
 const formSchema = yup.object().shape({
     package_content: yup.array().of(
         yup.object().shape({
@@ -40,7 +41,7 @@ const formSchema = yup.object().shape({
     warehouse: yup.string(),
 })
 
-export const TableDashboard = ({ header, body, columns }) => {
+export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -87,20 +88,11 @@ export const TableDashboard = ({ header, body, columns }) => {
         setTableBody(updatedBodies);
     };
 
-    // useEffect(() => {
-    //     const totalsItem = () => {
-    //         let total = 0;
-    //         fields.map((field) =>
-    //             total += field.subtotal
-    //         )
-    //         form.setValue('total', total)
-    //     }
-    //     totalsItem();
-    // }, [fields])
-
+    const [openPayments, setOpenPayments] = useState(false);
 
     return (
         <>
+            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={"213"}/>
             <div className="">
                 <Form {...form}>
                     <form
@@ -202,13 +194,22 @@ export const TableDashboard = ({ header, body, columns }) => {
                                                 <Button
                                                     variant="redOutline"
                                                     className="h-[35px] w-[100px] px-4 shadow"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        toggleExpanded();
+                                                        form.reset();
+                                                    }}
                                                 >
                                                     <div className="text-red-700 text-sm  font-normal ">Cancel</div>
                                                 </Button>
 
                                                 <Button
                                                     variant="destructive"
-                                                    className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
+                                                    className="h-[35px] w-[100px] px-4 bg-red-700 shadow"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setOpenPayments(true);
+                                                    }}
                                                 >
                                                     <div className="text-white text-sm font-normal">Save</div>
                                                 </Button>

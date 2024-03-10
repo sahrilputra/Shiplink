@@ -5,10 +5,11 @@ import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
 import { ForwadPakage } from './components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
-import ItemsPackage from './components/items/itemsPackage';
 import { ModalContext } from '@/context/ModalContext';
 import { SkeletonItems } from './components/Skeleton/SkeletonItems';
 import axios from 'axios';
+import { ItemsPackage } from './components/items/itemsPackage';
+
 export default function Dashboard() {
 
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
@@ -25,6 +26,8 @@ export default function Dashboard() {
         limit: 0,
         index: 0,
     })
+
+    
     useEffect(() => {
         axios.post(`/api/admin/packages/list`, query)
             .then(response => {
@@ -34,7 +37,7 @@ export default function Dashboard() {
             .catch(error => {
                 console.log(error)
             })
-    })
+    }, [query])
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
@@ -56,7 +59,7 @@ export default function Dashboard() {
         setSelectedButton(buttonName);
     }
 
-
+    const dataLength = data?.length;
     // const filterData = selectedTab === 'all' ? data : data.filter(item => item.package.orderType === selectedTab);
 
 
@@ -72,7 +75,7 @@ export default function Dashboard() {
                                     className="justify-start items-start gap-[5px] inline-flex cursor-pointer"
                                 >
                                     <div className="text-zinc-900 text-base font-semibold ">All</div>
-                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">0</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">{dataLength || 0}</div>
                                 </div>
                                 <div className={`${selectedTab === 'all' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
                                     <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
@@ -85,7 +88,7 @@ export default function Dashboard() {
                                     onClick={() => handleTabClick("incoming")}
                                 >
                                     <div className="text-zinc-900 text-base font-semibold ">Incoming</div>
-                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">0</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">{dataLength || 0}</div>
                                 </div>
                                 <div className={`${selectedTab === 'incoming' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
                                     <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
@@ -117,6 +120,7 @@ export default function Dashboard() {
                             <Button
                                 variant="secondary"
                                 className="h-10 px-10 text-xs"
+                                disabled={true}
                             >
                                 <p>Consolidate</p>
                             </Button>

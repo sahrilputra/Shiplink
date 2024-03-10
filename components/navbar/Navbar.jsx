@@ -227,7 +227,7 @@ export const Navbar = () => {
                                             </div>
                                         </NavigationMenuLink>
                                     </Link>
-                                    <Link href="/#" legacyBehavior passHref>
+                                    <Link href="/" legacyBehavior passHref>
                                         <NavigationMenuLink
                                             onClick={() => handleSingOut()}
                                             className={`${navigationMenuTriggerStyle()} gap-9`}>

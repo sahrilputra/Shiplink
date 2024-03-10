@@ -73,7 +73,7 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                                 <p className='text-sm font-light underline text-zinc-600'>{email}</p>
                             </div>
                             {
-                                primary_address === "True" ? (
+                                primary_address === "true" ? (
                                     <div className="px-[10px] py-[5px] border border-red-700 rounded-sm status absolute bottom-[10px] right-[10px]">
                                         <p className='font-light text-xs text-red-700'>Primary</p>
                                     </div>
@@ -101,6 +101,11 @@ export const SavedAddressCard = ({ variant, addressBook, select, onClick, isSele
                             <div className="Country flex flex-row justify-start items-center gap-2 py-[10px]">
 
                                 <div className="rounded-full border border-gray-300 w-[30px] h-[30px] object-cover">
+                                    <img
+                                        src={`https://flagcdn.com/w640/ca.png`}
+                                        alt=""
+                                        className='rounded-full  border border-gray-300  w-[30px] h-[30px] object-cover'
+                                    />
                                     {/* <img
                                         src={`https://flagcdn.com/${countryCode.toLowerCase()}.svg`}
                                         alt=""

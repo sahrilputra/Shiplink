@@ -12,6 +12,7 @@ import { NewAdressMenus } from './components/NewAdressMenus'
 import { useToast } from '@/components/ui/use-toast'
 import { EditAddressMenu } from './components/EditedAddressMenu'
 import axios from 'axios'
+import { SkeletonAddressBook } from './components/SkeletonsAddress/SkeletonAddressBook'
 export default function AssitedPurchase() {
 
     const { toast } = useToast();
@@ -52,6 +53,7 @@ export default function AssitedPurchase() {
         setIsPicked(false)
     }
 
+    const [isSkeleton, setIsSkeleton] = useState(true)
     const [savedAddress, setSavedAddress] = useState([]);
     const [query, setQuery] = useState({
         keyword: "",
@@ -71,8 +73,10 @@ export default function AssitedPurchase() {
                 ).then((response) => {
                     const data = response.data;
                     // console.log("🚀 ~ ).then ~ data:", data)
+                    setIsSkeleton(false)
                     setSavedAddress(data.my_address);
                 }).catch((error) => {
+                    setIsSkeleton(false)
                     console.log('Error:', error);
                 });
             } catch (error) {
@@ -176,18 +180,26 @@ export default function AssitedPurchase() {
                     <div className={styles.item_container}>
                         <div className={`${styles.items} w-full flex flex-row gap-5 justify-center items-center`}>
                             {
-                                savedAddress.map((item, i) => (
-                                    <SavedAddressCard
-                                        key={i}
-                                        addressBook={item}
-                                        select={toggleEditedAddress}
-                                        onClick={handleCardSelected}
-                                        isSelected={isPicked && selectedData?.my_address_id === item.my_address_id}
-                                        variant={clicked ? 'list' : ""}
-                                        setDeleteID={setDeleteID}
-                                        deleteID={deleteID}
-                                    />
-                                ))
+                                isSkeleton ? (
+                                    <>
+                                        <SkeletonAddressBook />
+                                        <SkeletonAddressBook />
+                                        <SkeletonAddressBook />
+                                    </>
+                                ) : (
+                                    savedAddress.map((item, i) => (
+                                        <SavedAddressCard
+                                            key={i}
+                                            addressBook={item}
+                                            select={toggleEditedAddress}
+                                            onClick={handleCardSelected}
+                                            isSelected={isPicked && selectedData?.my_address_id === item.my_address_id}
+                                            variant={clicked ? 'list' : ""}
+                                            setDeleteID={setDeleteID}
+                                            deleteID={deleteID}
+                                        />
+                                    ))
+                                )
                             }
 
                         </div>

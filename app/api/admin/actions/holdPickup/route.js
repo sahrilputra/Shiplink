@@ -25,11 +25,16 @@ export async function POST(request) {
                 }
             }
         );
+        
+        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
+                total: response.data.total,
+                services: response.data.services,
+                clientSecret: response.data.clientSecret
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

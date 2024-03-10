@@ -227,7 +227,7 @@ export const ArrivalForms = ({
                     <div className="flex flex-col justify-start gap-2 w-[40%]">
                         <FormField
                             className="w-full text-sm"
-                            name="customer_id"
+                            name="test"
                             control={forms.control}
                             render={({ field, formState }) => (
                                 <>
@@ -239,10 +239,10 @@ export const ArrivalForms = ({
                                                     <CommandArrival
                                                         ref={inputRef}
                                                         value={inputValue}
-                                                        setValue={isLoading ? undefined : setInputValue}
+                                                        setValue={isLoading || setInputValue}
                                                         onBlur={handleBlur}
                                                         onFocus={() => setOpen(true)}
-                                                        placeholder={`${field.value ? customerData.find((item) => item.customer_id === field.value)?.id : "Customer"}`}
+                                                        placeholder={`${field.value ? customerData.find((item) => item.customer_name === field.value)?.id : "Customer"}`}
                                                         className="text-xs border border-neutral-300 px-2"
                                                         disableSearchIcon={true}
                                                     />
@@ -257,7 +257,7 @@ export const ArrivalForms = ({
                                                                             const isSelected = selected?.value === item.customer_id
                                                                             return (
                                                                                 <CommandItem
-                                                                                    value={item.customer_id}
+                                                                                    value={item.customer_name}
                                                                                     setValue={field.onChange}
                                                                                     key={item.customer_id}
                                                                                     className={cn(
@@ -269,6 +269,7 @@ export const ArrivalForms = ({
                                                                                         event.stopPropagation()
                                                                                     }}
                                                                                     onSelect={() => {
+                                                                                        forms.setValue("test", item.customer_name)
                                                                                         forms.setValue("customer_id", item.customer_id)
                                                                                         handleDataChange({ target: { value: item.customer_id } })
                                                                                         setOpen(false)
@@ -281,7 +282,7 @@ export const ArrivalForms = ({
                                                                                     <CheckIcon
                                                                                         className={cn(
                                                                                             "ml-auto h-4 w-4",
-                                                                                            item.customer_id === field.value
+                                                                                            item.customer_name === field.value
                                                                                                 ? "opacity-100"
                                                                                                 : "opacity-0"
                                                                                         )}

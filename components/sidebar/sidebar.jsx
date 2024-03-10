@@ -22,6 +22,7 @@ import {
     ReferFriendsIcon,
     SupportIcons,
 } from "./icon/clientIcon";
+import { DashboardPackageIcon } from "../icons/iconCollection";
 import { Separator } from "../ui/separator";
 import { useMediaQuery } from "react-responsive";
 export const Sidebar = () => {
@@ -71,11 +72,9 @@ export const Sidebar = () => {
                                     isActive={router === "/dashboard"}
                                     title="Dashboard"
                                     icon={
-                                        <DashboardIcon
+                                        <DashboardPackageIcon
                                             width={20}
                                             height={20}
-                                            fill="#00000"
-                                            stroke="#00000"
                                         />
                                     }
                                     href="/dashboard"

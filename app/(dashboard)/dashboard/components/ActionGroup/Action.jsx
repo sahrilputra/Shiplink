@@ -77,10 +77,10 @@ export const UploadInvoice = ({ forms }) => {
                                                 <div className="text-white text-xs leading-tight">Invoice</div>
                                             </div>
                                             <Input
-                                                className="w-[150px] file:hidden  h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
+                                                className="w-[150px] file:hidden  h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400 cursor-pointer hover:bg-stone-50/20"
                                                 type="file"
                                                 id="myFile"
-                                                accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                                                accept=".pdf, .doc, .docx"
                                                 placeholder="My File"
                                                 {...field}
                                             />
