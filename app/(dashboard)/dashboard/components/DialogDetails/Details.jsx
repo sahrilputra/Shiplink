@@ -29,6 +29,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 
+
 export const DetailsModals = ({ item, date }) => {
     const images = item?.images || null
 
@@ -61,19 +62,36 @@ export const DetailsModals = ({ item, date }) => {
                         <div className="imageContainer flex flex-col w-[400px] items-center">
                             <Carousel className="w-full ">
                                 <CarouselContent className=" ">
-                                    {Array.from({ length: images?.length }).map((_, index) => (
-                                        <CarouselItem key={index} className=" w-full h-full grow-1">
-                                            <div className="w-full">
+                                 
+                                    {
+                                        images?.length > 0 ? (
+                                            Array.from({ length: images?.length }).map((_, index) => (
+                                                <CarouselItem key={index} className=" w-full h-full grow-1">
+                                                    <div className="w-full">
+                                                        <Card>
+                                                            <img
+                                                                style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
+                                                                src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
+                                                                alt="images"
+                                                            />
+                                                        </Card>
+                                                    </div>
+                                                </CarouselItem>
+                                            ))
+                                        ) : (
+                                            <CarouselItem className=" w-full h-full grow-1">
                                                 <Card>
-                                                    <img
+                                                    <Image
+                                                        src={'/assets/img-placeholder.svg'}
+                                                        alt="placeholder"
+                                                        width={400}
+                                                        height={250}
                                                         style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
-                                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
-                                                        alt="images"
                                                     />
                                                 </Card>
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
+                                            </CarouselItem>
+                                        )
+                                    }
                                 </CarouselContent>
                                 <CarouselPrevious className="left-[10px]" />
                                 <CarouselNext className="right-[10px]" />
@@ -93,7 +111,7 @@ export const DetailsModals = ({ item, date }) => {
                             </div>
 
                             <div className="Information">
-                                <h3 className=' text-[14px]'>Package Name</h3>
+                                <h3 className=' text-[14px]'>{item?.customer_name}</h3>
                                 <p className=' text-[14px]'>{item?.package_length} x {item?.package_witdth} x {item?.package_height} {item?.package_height_unit}</p>
                                 <p className='text-myBlue text-sm'>{item?.package_weight} {item?.package_weight_unit}</p>
                                 <div className="wrap">
@@ -101,35 +119,36 @@ export const DetailsModals = ({ item, date }) => {
                                     <p className='text-sm'>{date}</p>
                                     <p className='text-xs text-zinc-500'>Status :</p>
                                     <p className='text-sm'>{item?.status}</p>
-                                    <p className='text-xs text-zinc-500'>Destination :</p>
-                                    <p className='text-sm'>Boston, USA</p>
+                                    <p className='text-xs text-zinc-500'>Location :</p>
+                                    <p className='text-sm'>{item?.warehouse_name_arrival} WR, {item?.country_code_arrival}</p>
                                 </div>
                             </div>
+                            
 
                             <div className="Action flex flex-row gap-3 mt-2">
                                 <div className="flex flex-col justify-center gap-3 items-center">
-                                    <p className='text-sm text-center'>Request More Images</p>
+                                    <p className='text-xs text-center text-nowrap'>Request More Images</p>
                                     <Button
                                         variant="destructive"
-                                        size="sm"
-                                        className="w-[130px]"
+                                        size="xs"
+                                        className="w-[130px] text-xs"
                                     >
                                         Request
                                     </Button>
                                 </div>
-                                <div className=" w-2 h-[60px]">
+                                {/* <div className=" w-2 h-[60px]">
                                     <Separator orientation="vertical" />
                                 </div>
                                 <div className="flex flex-col justify-center gap-3 items-center">
-                                    <p className='text-sm text-center'>Consolidate Package</p>
+                                    <p className='text-xs text-center'>Consolidate Package</p>
                                     <Button
                                         variant="destructive"
-                                        className="w-[130px]"
-                                        size="sm"
+                                        className="w-[130px] text-xs"
+                                        size="xs"
                                     >
                                         Cancel Request
                                     </Button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </DialogDescription>

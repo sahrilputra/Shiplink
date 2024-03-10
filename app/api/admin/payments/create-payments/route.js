@@ -24,6 +24,7 @@ export async function POST(request) {
       },
     });
     console.log("🚀 ~ POST ~ paymentIntent:", paymentIntent)
+    
     return new NextResponse(paymentIntent.client_secret, { status: 200 });
   } catch (error) {
     return new NextResponse(error, {

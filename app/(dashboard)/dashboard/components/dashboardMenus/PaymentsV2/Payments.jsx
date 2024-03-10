@@ -22,7 +22,7 @@ export const PaymentsDialog = ({ open, setOpen }) => {
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
 
     const [clientSecret, setClientSecret] = useState("");
-
+    const [totalAmount, setTotalAmount] = useState(0);
     useEffect(() => {
         axios.post("/api/admin/payments/create-payments", {
             data: { amount: 89 },
@@ -53,6 +53,7 @@ export const PaymentsDialog = ({ open, setOpen }) => {
                             </Elements>
                         )}
                     </div>
+
                 </DialogContent>
             </Dialog>
 

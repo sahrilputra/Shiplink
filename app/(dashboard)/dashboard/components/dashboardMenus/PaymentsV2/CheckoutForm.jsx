@@ -2,7 +2,8 @@ import React from "react";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
 import axios from 'axios'
-export default function CheckoutForm() {
+export default function CheckoutForm({ totalAmount }) {
+    console.log("🚀 ~ CheckoutForm ~ totalAmount:", totalAmount)
     const stripe = useStripe();
     const elements = useElements();
 
@@ -75,6 +76,10 @@ export default function CheckoutForm() {
     return (
         <form id="payment-form" onSubmit={handleSubmit}>
             <PaymentElement id="payment-element" options={paymentElementOptions} />
+            <div className="flex flex-row w-full justify-between text-xs py-3">
+                <p className='font-bold'>Total : </p>
+                <p className='font-bold'>{`$ ${totalAmount}`}</p>
+            </div>
             <div className="w-full flex flex-row gap-3 pt-3">
                 <Button
                     variant="redOutline"

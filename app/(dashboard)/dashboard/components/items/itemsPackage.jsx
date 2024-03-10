@@ -48,6 +48,11 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
         status,
         date,
         time,
+        country_name_arrival,
+        country_code_arrival,
+        warehouse_name_arrival,
+
+
     } = item;
 
 
@@ -144,8 +149,8 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                     </div>
                     <div className="flex flex-row items-center gap-3">
                         <div className="w-[36.14px] h-[23.55px] relative">
-                            {/* {
-                                from === "USA" ? (
+                            {
+                                country_code_arrival === "USA" ? (
                                     <>
                                         <Image
                                             src={"/assets/country/USA-flag.png"}
@@ -156,7 +161,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                             style={{ width: '25px', height: '15px', objectFit: 'cover' }}
                                         />
                                     </>
-                                ) : from === "Canada" ? (
+                                ) : country_code_arrival === "CAN" ? (
                                     <>
                                         <Image
                                             src={"/assets/country/cad-flag.png"}
@@ -179,16 +184,8 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                         />
                                     </>
                                 )
-                            } */}
+                            }
 
-                            <Image
-                                src={"/assets/country/USA-flag.png"}
-                                width={66}
-                                height={70}
-                                className='left-[-10.19px] top-[-23.55px]'
-                                alt='USA icon'
-                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                            />
                         </div>
                         <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
                             <PackageIndicator status={status} />
@@ -201,7 +198,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                     <div className="flex flex-col justify-end items-end ">
                         <PackageStatus variant={status} />
                         <div className="h-[30px]  justify-end items-center gap-2.5 flex">
-                            <div className="text-right text-zinc-600 text-xs ">{"destination"}</div>
+                            <div className="text-right text-zinc-600 text-xs ">{warehouse_name_arrival} WR, {country_code_arrival}</div>
                         </div>
                     </div>
                     <div className="flex flex-col justify-end items-center ">
@@ -233,7 +230,7 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                             <div className="justify-start items-center gap-[15px] flex">
                                 <DetailsModals item={item} date={formattedDate} />
                                 <div className="flex-col justify-start items-start gap-px inline-flex">
-                                    <div className="text-black text-xs font-semiBold ">Name Or Something</div>
+                                    <div className="text-black text-xs font-semiBold ">{customer_name}</div>
                                     <div className="text-zinc-600 text-xs ">{package_length} x {package_witdth} x {package_height} {package_height_unit}</div>
                                     <div className="text-zinc-600 text-xs ">{package_weight} {package_weight_unit}</div>
                                 </div>
@@ -263,14 +260,14 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                                 </div>
                                             </div>
                                         </>
-                                    ) : (   
+                                    ) : (
                                         <>
                                             <div className="justify-start items-start gap-1 inline-flex flex-wrap">
                                                 <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} />
                                                 <Button
                                                     variant={`${selectedButton === "Hold Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
                                                     className="w-[140px] px-3 py-[5px] justify-center items-center gap-2.5 flex"
-                                                    size="sm"
+                                                    size="xs"
                                                     onClick={() => {
                                                         setOpenHoldPickup(true)
                                                         handleButtonClick("Hold Pickup")
@@ -282,22 +279,24 @@ export default function ItemsPackage({ onClickButton, item, onExpand, isExpand }
                                                     variant={`${selectedButton === "Cross Border Pickup" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
                                                     className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
                                                     onClick={() => handleButtonClick("Cross Border Pickup")}
-                                                    size="sm"
+                                                    size="xs"
                                                 >
                                                     <div className="text-justify text-white text-xs font-semiBold ">Cross Border Pickup</div>
                                                 </Button>
                                                 <Button
+                                                    disabled={true}
                                                     variant={`${selectedButton === "Forward Package" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
                                                     className="w-[140px]  justify-center items-center gap-2.5 flex"
-                                                    size="sm"
+                                                    size="xs"
                                                     onClick={() => handleButtonClick("Forward Package")}
                                                 >
                                                     <div className="text-justify text-white text-xs font-semiBold ">Forward Package</div>
                                                 </Button>
                                                 <Button
+                                                    disabled={true}
                                                     variant={`${selectedButton === "Cross Border Forward" ? "destructive" : (buttonEnabled ? "destructive" : "disable")}`}
                                                     className="w-[140px] px-3 py-[5px]  justify-center items-center gap-2.5 flex"
-                                                    size="sm"
+                                                    size="xs"
                                                     onClick={() => handleButtonClick("Cross Border Forward")}
                                                 >
                                                     <div className="text-justify text-white text-xs font-semiBold ">Cross Border Forward</div>

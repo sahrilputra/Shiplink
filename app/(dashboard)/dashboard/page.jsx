@@ -7,11 +7,13 @@ import { ForwadPakage } from './components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
 import ItemsPackage from './components/items/itemsPackage';
 import { ModalContext } from '@/context/ModalContext';
+import { SkeletonItems } from './components/Skeleton/SkeletonItems';
 import axios from 'axios';
 export default function Dashboard() {
 
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
     const [selectedTab, setSelectedTab] = useState("all");
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
     const [query, setQuery] = useState({
         keyword: "",
@@ -27,6 +29,7 @@ export default function Dashboard() {
         axios.post(`/api/admin/packages/list`, query)
             .then(response => {
                 setData(response.data.package_info)
+                setIsSkeleton(false)
             })
             .catch(error => {
                 console.log(error)
@@ -37,7 +40,7 @@ export default function Dashboard() {
         setSelectedTab(tabName);
     }
     const [expandedItemId, setExpandedItemId] = useState(null);
-    
+
     const toggleExpand = (itemId) => {
         if (expandedItemId === itemId) {
             setExpandedItemId(null);
@@ -123,15 +126,25 @@ export default function Dashboard() {
                 <div className={styles.item_container}>
                     <div className={styles.items}>
                         {
-                            data.map((item, i) => (
-                                <ItemsPackage
-                                    key={i}
-                                    onClickButton={handleButtonClick}
-                                    item={item}
-                                    onExpand={toggleExpand}
-                                    isExpand={expandedItemId === item.tracking_id}
-                                />
-                            ))
+                            isSkeleton
+                                ? (
+                                    <div className="flex flex-col gap-2">
+                                        <SkeletonItems />
+                                        <SkeletonItems />
+                                        <SkeletonItems />
+                                    </div>
+                                )
+                                : (
+                                    data.map((item, i) => (
+                                        <ItemsPackage
+                                            key={i}
+                                            onClickButton={handleButtonClick}
+                                            item={item}
+                                            onExpand={toggleExpand}
+                                            isExpand={expandedItemId === item.tracking_id}
+                                        />
+                                    ))
+                                )
                         }
                     </div>
                 </div>

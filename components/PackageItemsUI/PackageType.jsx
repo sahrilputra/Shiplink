@@ -47,6 +47,7 @@ export const PackageType = ({ variant, notif }) => {
                                 width={100}
                                 height={100}
                                 alt='mailbox icon'
+                                className='object-contain p-1'
                             />
                         )
                     }
