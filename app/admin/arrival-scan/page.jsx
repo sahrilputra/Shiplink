@@ -69,7 +69,7 @@ export default function ArrivalScanPage() {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            test:"",
+            test: "",
             customer_id: "",
             customer_name: "",
             customer_phone: "",
@@ -244,13 +244,13 @@ export default function ArrivalScanPage() {
                                         {Array.from({ length: allImages.length }).map((_, index) => (
                                             <CarouselItem key={index} className="basis-1/3">
                                                 <div className="p-1">
-                                                    <Card>
+                                                    <Card className="p-1">
                                                         <Image
                                                             src={allImages[index]}
                                                             width={200}
                                                             height={200}
                                                             alt={`Image ${index}`}
-                                                            style={{ objectFit: "cover", width: '200px', height: '130px' }}
+                                                            style={{ objectFit: "cover", width: '100%', height: '130px' }}
                                                         />
                                                     </Card>
                                                 </div>
