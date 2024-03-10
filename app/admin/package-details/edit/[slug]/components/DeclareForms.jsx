@@ -8,7 +8,6 @@ import { CheckIcon, XIcon } from 'lucide-react'
 import React, { useEffect } from 'react'
 import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid'
-import CurrencyFormat from 'react-currency-format'
 
 export const DeclareForms = ({
     forms,
@@ -59,19 +58,11 @@ export const DeclareForms = ({
                             <>
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
-                                        <CurrencyFormat
+                                        <Input
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="value"
-                                            placeholder="$0.00"
-                                            thousandSeparator={true}
-                                            prefix="$"
-                                            customInput={Input}
-                                            onValueChange={(values) => {
-                                                const { value } = values;
-                                                const numericValue = parseFloat(value.replace(/\D/g, ''));
-                                                field.onChange(numericValue);
-                                                setSubTotal(values.floatValue);
-                                            }}
+                                            type="number"
+                                            placeholder="1"
                                             {...field}
                                         />
                                     </FormControl>
