@@ -231,6 +231,7 @@ export const EntryNumber = ({ forms }) => {
                                                 className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
                                                 type="number"
                                                 placeholder="12313131231"
+                                                {...field}
                                             />
                                         </div >
                                     </>

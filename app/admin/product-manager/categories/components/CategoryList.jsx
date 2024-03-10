@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SearchBar } from '@/components/ui/searchBar'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { ListData } from './ListData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
