@@ -48,7 +48,7 @@ export const HomeFooter = () => {
                     </div>
                 </div>
 
-                <div className="right flex flex-row gap-3 justify-between w-[30%]">
+                <div className="right flex flex-col gap-3 justify-between w-[30%] md:flex-row">
                     <div className="flex flex-col gap-5">
                         <div className="item flex flex-row gap-2 items-center">
                             <ChevronRight className='text-red-700 w-[15px] h-[15px]' />

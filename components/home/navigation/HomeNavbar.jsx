@@ -37,10 +37,11 @@ export const HomeNavbar = () => {
 
     return (
         <div className={`w-full flex flex-row px-10 h-[70px] justify-between items-center transition-colors duration-100 z-50 ${isSolidBackground ? 'bg-gradient-to-r from-red-700 to-red-800' : 'bg-gradient-to-r from-red-700 to-transparent transition-colors duration-100'} fixed`}>
-            <div className="">
-                <p className='text-2xl font-bold text-white'>Shiplink</p>
-            </div>
-
+            <NextLink href={'/'} className='cursor-pointer hover:opacity-70'>
+                <div className="">
+                    <p className='text-2xl font-bold text-white'>Shiplink</p>
+                </div>
+            </NextLink>
             {
                 isTable ? (
                     <div className={`${styles.list} flex text-white flex-row gap-[30px] justify-end items-center`}>

@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 export const CardsComponents = () => {
     return (
-        <div className="wrap flex flex-row gap-[30px]  justify-between w-[100%] h-max">
+        <div className="wrap flex flex-col gap-[30px] justify-between w-[100%] h-max md:flex-row">
             <div className="p-6 bg-white rounded-md shadow-md  w-[90%] ">
                 <div className="flex flex-col gap-[20px]">
                     <div className="imgageContent">

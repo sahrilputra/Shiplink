@@ -70,8 +70,8 @@ export default function Home() {
 
         {/* section */}
         <div className={`${styles.works} py-20 gap-10 bg-gradient-to-br from-blue-50 to-white`} >
-          <div className="flex flex-row gap-5 justify-between items-center mx-auto w-[90%]">
-            <div className="left w-[50%] flex flex-col justify-start gap-5">
+          <div className="flex flex-row gap-5 justify-between items-center mx-auto w-[90%] flex-wrap">
+            <div className="left flex flex-col justify-start gap-5 lg:w-[50%]">
               <h2 className="text-4xl text-myBlue font-bold">
                 Cross-Border Mailboxes
               </h2>
@@ -132,8 +132,8 @@ export default function Home() {
               Shipping Labels
             </h2>
           </div>
-          <div className="flex flex-row gap-8 mx-auto w-[90%]">
-            <div className="left w-[600px] h-max flex flex-col justify-start gap-5">
+          <div className="flex flex-col gap-8 mx-auto w-[90%] lg:flex-row">
+            <div className="left w-[300px] h-max flex flex-col justify-start gap-5 lg:w-[600px]">
               <div className="h-[598px] relative">
                 <Image
                   width={388}
