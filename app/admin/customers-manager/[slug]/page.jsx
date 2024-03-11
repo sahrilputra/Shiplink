@@ -9,6 +9,7 @@ import { Loaders } from '@/components/ui/loaders';
 import { MoreAction } from './components/menus/MoreAction';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PaymentCards } from './components/PaymentsCard';
+import { NewPasswordDialog } from './components/menus/dialog/NewPasswordDialog';
 
 export default function UserPage({ params }) {
     console.log("hello :", params.slug);
@@ -16,6 +17,7 @@ export default function UserPage({ params }) {
     const [data, setData] = useState({});
     const [skeleton, setSkeleton] = useState(true);
     const [disable, setDisable] = useState(true);
+    const [openPassword, setOpenPassword] = useState(false);
 
     const fetchUserData = async () => {
         try {
@@ -43,9 +45,13 @@ export default function UserPage({ params }) {
         setDisable(!disable)
     }
 
+    const reloadData = () => {
+        fetchUserData();
+    }
     return (
         <>
             {loading && <Loaders />}
+            <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
             <div className="w-full">
                 <div className="wrapper w-full flex flex-row justify-between gap-2 h-ful ">
                     <div className="left w-[30%] ">
@@ -84,7 +90,7 @@ export default function UserPage({ params }) {
                                 >
                                     <p className="text-xs">Edit Profiles</p>
                                 </Button>
-                                <MoreAction />
+                                <MoreAction setOpenPassword={setOpenPassword} />
                             </div>
                         </div>
                     </div>
@@ -94,6 +100,7 @@ export default function UserPage({ params }) {
                             isDisable={disable}
                             handleDisable={handleDisable}
                             customerID={data?.customer_id}
+                            reloadData={reloadData}
                         />
                     </div>
                     <div className="right h-full w-[40%]">

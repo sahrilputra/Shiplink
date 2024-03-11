@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 
 
-export const MoreAction = () => {
+export const MoreAction = ({ setOpenPassword }) => {
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
@@ -34,8 +34,10 @@ export const MoreAction = () => {
                 <DropdownMenuItem>
                     <p className='text-xs'>Transaction History</p>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <p className='text-xs'>Reset User Password</p>
+                <DropdownMenuItem
+                    onClick={() => setOpenPassword(true)}
+                >
+                    <p className='text-xs'>Change Password</p>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <p className='text-red-600 text-xs'>Delete This User</p>

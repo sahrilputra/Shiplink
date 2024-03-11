@@ -47,7 +47,7 @@ const formSchema = yup.object().shape({
 })
 
 
-export const UserProfileForms = ({ data = null, isDisable, handleDisable, customerID }) => {
+export const UserProfileForms = ({ data = null, isDisable, handleDisable, customerID, reloadData }) => {
 
     const { toast } = useToast()
     const form = useForm({
@@ -75,8 +75,12 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
         form.setValue('state', data?.province_name)
         form.setValue('zipCode', data?.postal_code)
         form.setValue('country', data?.country_name)
+        setSelectedCountry(data?.country_name)
+        setSelectedProvince(data?.province_name)
+    }, [data, form])
 
-    }, [data])
+    console.log("🚀 ~ UserProfileForms ~ data:", data)
+
 
     const handleCancel = () => {
         handleDisable()
@@ -124,6 +128,9 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
 
     const handleSave = async (formData) => {
         setLoading(true)
+        const setDataCountry = countryList.find((item) => item.country_name === formData.country || item.country_code === formData.country);
+        formData.country = setDataCountry.country_code;
+        console.log("🚀 ~ handleSave ~ setDataCountry:", setDataCountry)
         console.log("dikirim", formData)
         formData.customer_id = customerID;
         try {
@@ -136,11 +143,13 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                 description: response.data.message,
                 status: `Status : ${response.data.status}`,
             });
+            handleCancel();
             setLoading(false)
-            window.location.reload();
+            reloadData();
         } catch (error) {
             console.log('Error', error);
             setLoading(false)
+            handleCancel();
             toast({
                 title: 'Error While Edit Customer Data!',
                 description: `Error : ${error.message}`,
@@ -167,14 +176,13 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
     console.log(form.formState.errors);
     return (
         <>
-            {
-                loading && <Loaders />
-            }
+            {loading && <Loaders />}
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(handleSave)}
                     className={`flex gap-2 flex-col  ${isDisable ? "opacity-85" : " "}`}
-                    action="">
+                    action=""
+                    onSubmit={form.handleSubmit(handleSave)}
+                >
                     <div className="bg-white rounded-lg border border-neutral-200 border-opacity-90 w-full px-4 py-3 gap-1 flex flex-col">
                         <FormField
                             className="w-full"
