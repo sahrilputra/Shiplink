@@ -7,25 +7,27 @@ const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
+    console.log("You are in the passwordVerification route")
     try {
         const {
             reset_token,
             password
         } = await request.json();
 
-        console.log("🚀 ~ GET ~code:", code)
-
-        const response = await axios.get(
-            `${process.env.API_URL}/Auth/ForgetPassword?email`,
+        const response = await axios.post(
+            `${process.env.API_URL}/Auth/SetResetPassword`,
             {
                 reset_token: reset_token,
                 password: password
             },
             {
-                httpsAgent: agent
+                httpsAgent: agent,
             }
         );
+
         console.log("Response from API", response)
+
+        
         if (response.status === 200) {
             const responseData = {
                 status: true,

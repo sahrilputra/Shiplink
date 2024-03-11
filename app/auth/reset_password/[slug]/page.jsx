@@ -44,28 +44,35 @@ export default function ResetPassword({ params }) {
     const [loading, setLoading] = useState(false);
     const [errorHeader, setErrorHeader] = useState("")
 
-    const handleSave = (formDatta) => {
+    const handleSave = async (formDatta) => {
         console.log(formDatta)
         setLoading(true)
-        axios.post('/api/customerAPI/passwordVerification',
-            {
-                password: formDatta.password,
-                reset_token: data
-            })
-            .then((response) => {
+        try {
+            const response = await axios.post(
+                `/api/customerAPI/passwordVerification`,
+                {
+                    password: formDatta.password,
+                    reset_token: data
+                },
+            )
+            console.log("Response from API", response)
+            if (response.status === 200) {
                 console.log(response)
                 setLoading(false)
                 setVerificationStatus(response.data.message)
-                router.push('/auth/login')
-            })
-            .catch((error) => {
+                // router.push('/auth/login')
+            } else {
                 console.log(error)
                 setLoading(false)
                 setErrorHeader("Error Occoured, Please Try Again Later", error)
                 setError(error.response.data.message)
-            })
+            }
+        } catch (error) {
+            setLoading(false)
+            console.log("🚀 ~ handleSave ~ error:", error)
+            setErrorHeader("Error Occoured, Please Try Again Later", error)
+        }
     }
-
     return (
         <>
             {loading && <Loaders />}
