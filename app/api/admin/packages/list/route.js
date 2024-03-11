@@ -8,7 +8,7 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { keyword, date_start, date_end, tracking_id, status, page, limit, index, token } = await request.json();
+        const { keyword, date_start, date_end, tracking_id, status, lots_id, bins_id, page, limit, index, token } = await request.json();
 
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
@@ -18,6 +18,8 @@ export async function POST(request) {
                 date_start: date_start,
                 date_end: date_end,
                 tracking_id: tracking_id,
+                lots_id: lots_id,
+                bins_id: bins_id,
                 status: status,
                 page: page,
                 limit: limit,
@@ -32,7 +34,7 @@ export async function POST(request) {
             }
         );
 
-        // console.log("response from api : ", response.data); // Log the response data
+        console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {

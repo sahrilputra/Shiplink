@@ -22,6 +22,9 @@ export default function Dashboard() {
         date_start: "",
         date_end: "",
         tracking_id: "",
+        lots_id: "",
+        bins_id:"",
+
         status: "",
         page: 0,
         limit: 0,
@@ -29,11 +32,12 @@ export default function Dashboard() {
     })
 
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.post(`/api/admin/packages/list`, query)
-                setData(response.data.data)
+                setData(response.data.package_info)
                 setIsSkeleton(false)
             } catch (error) {
                 console.log("🚀 ~ error", error)
