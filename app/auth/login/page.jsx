@@ -46,6 +46,15 @@ export default function Home() {
         mode: "onChange",
     })
 
+    const sendVerificationCode = async (email) => {
+        axios.post(
+            `/api/customerAPI/resendVerification`,
+            {
+                email: email
+            }
+        )
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -101,6 +110,7 @@ export default function Home() {
                             description: 'Redirecting to dashboard',
                             type: 'success',
                         })
+                        sendVerificationCode(email);
                         router.push('/dashboard');
                     }
                     if (responseMessage === "Unverified") {
@@ -110,6 +120,7 @@ export default function Home() {
                             description: 'Redirecting to verify your email',
                             type: 'error',
                         })
+
                         router.push('/auth/verification');
                     }
                     if (responseMessage === "Incorrect") {
@@ -132,7 +143,7 @@ export default function Home() {
             console.log('Error:', error);
         }
     }
-    
+
     const [inputEmail, setInputEmail] = useState('')
 
     useEffect(() => {
@@ -226,7 +237,7 @@ export default function Home() {
                                 </div>
                                 <div className="flex flex-row gap-2 items-center">
                                     <p className="text-base text-red-700 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        Forget password?
+                                        <a href="/auth/reset_password"> Forget password?</a>
                                     </p>
 
                                 </div>

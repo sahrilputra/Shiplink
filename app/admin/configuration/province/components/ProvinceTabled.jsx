@@ -30,6 +30,7 @@ import { EditProvinceDialog } from "./dialog/EditProvince";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { DeletePronviceDialog } from "./dialog/DeletePronviceDialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog } from "@radix-ui/react-dialog";
 
 export function ProvinceTabled({ }) {
     const [query, setQuery] = useState({
@@ -47,6 +48,7 @@ export function ProvinceTabled({ }) {
     const [deleteID, setDeleteID] = useState([])
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
+    const [selectedFilter, setSelectedFilter] = useState("");
 
     const fetchData = async () => {
         try {
@@ -145,9 +147,9 @@ export function ProvinceTabled({ }) {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="text-xs" side="left" align="left">
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem className="text-xs text-myBlue">
+                                        {/* <DropdownMenuItem className="text-xs text-myBlue">
                                             See this Country In Country Tab
-                                        </DropdownMenuItem>
+                                        </DropdownMenuItem> */}
                                         <DropdownMenuItem
                                             onClick={() => handlerDelete(row.original.province_code)}
                                             className="text-xs text-red-700">
@@ -200,6 +202,23 @@ export function ProvinceTabled({ }) {
         setRowSelection({});
     };
 
+    const sortData = (field, direction) => {
+        const sortedData = [...province];
+        sortedData.sort((a, b) => {
+            if (direction === 'asc') {
+                return a[field] > b[field] ? 1 : -1;
+            } else {
+                return a[field] < b[field] ? 1 : -1;
+            }
+        });
+        setProvince(sortedData);
+    };
+
+    const removeSorting = () => {
+        setSorting([]);
+        fetchData(); // Memuat kembali data untuk mereset urutan ke aslinya
+    };
+
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.province_code);
 
 
@@ -228,14 +247,44 @@ export function ProvinceTabled({ }) {
                                         />
                                     </div>
                                 </div>
-                                <Button
-                                    variant="filter"
-                                    size="filter"
-                                    className='border border-zinc-300 flex items-center rounded'>
-                                    <FilterIcons
-                                        className=""
-                                        fill="#CC0019" />
-                                </Button>
+                                <div className="">
+                                    <Dialog>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="filter"
+                                                    size="filter"
+                                                    className='border border-zinc-300 flex items-center rounded'>
+                                                    <FilterIcons
+                                                        className=""
+                                                        fill="#CC0019" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent side={"bottom"} >
+                                                <DropdownMenuItem onClick={() => {
+                                                    sortData('province_name', 'asc');
+                                                    setSorting([{ id: 'province_name', desc: false }]);
+                                                    setSelectedFilter('asc')
+                                                }}>
+                                                    <p className={`${selectedFilter === "asc" ? "text-myBlue" : ""} text-xs `}>Sort Ascending</p>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => {
+                                                    sortData('province_name', 'desc');
+                                                    setSorting([{ id: 'province_name', desc: true }]);
+                                                    setSelectedFilter('desc')
+                                                }}>
+                                                    <p className={`${selectedFilter === "desc" ? "text-myBlue" : ""} text-xs `}>Sort Descending</p>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => {
+                                                    removeSorting();
+                                                    setSelectedFilter('')
+                                                }}>
+                                                    <p className="text-xs text-red-700">Remove Sort</p>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </Dialog>
+                                </div>
                             </div>
                             <div className="">
                                 {

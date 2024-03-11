@@ -34,6 +34,17 @@ import { DeleteCountryDialog } from "./dialog/DeleteCountry";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { DeleteRowCountryDialog } from "./dialog/DeleteRowCountry";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog } from "@/components/ui/dialog";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+
 
 export function CountriesTabled({ }) {
     const [query, setQuery] = useState({
@@ -52,6 +63,7 @@ export function CountriesTabled({ }) {
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [loading, setLoading] = useState(true)
     const [deleteID, setDeleteID] = useState([])
+    const [selectedFilter, setSelectedFilter] = useState("");
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
     const [rowSelectDelete, setRowSelectDelete] = useState([])
     const [openRowDelete, setOpenRowDelete] = useState(false)
@@ -161,13 +173,13 @@ export function CountriesTabled({ }) {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="text-xs" side="left" align="left">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem className="text-xs text-myBlue">
+                                    {/* <DropdownMenuItem className="text-xs text-myBlue">
                                         See All Province With this coutnry
-                                    </DropdownMenuItem>
+                                    </DropdownMenuItem> */}
                                     <DropdownMenuItem
                                         onClick={() => handlerDelete(row.original.country_code)}
                                         className="text-xs text-red-700">
-                                        Delete This Province
+                                        Delete This Country
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
@@ -225,7 +237,22 @@ export function CountriesTabled({ }) {
         fetchData();
         setRowSelection({});
     };
+    const sortData = (field, direction) => {
+        const sortedData = [...country];
+        sortedData.sort((a, b) => {
+            if (direction === 'asc') {
+                return a[field] > b[field] ? 1 : -1;
+            } else {
+                return a[field] < b[field] ? 1 : -1;
+            }
+        });
+        setCountry(sortedData);
+    };
 
+    const removeSorting = () => {
+        setSorting([]);
+        fetchData(); // Memuat kembali data untuk mereset urutan ke aslinya
+    };
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.country_code);
 
     return (
@@ -253,14 +280,44 @@ export function CountriesTabled({ }) {
                                         />
                                     </div>
                                 </div>
-                                <Button
-                                    variant="filter"
-                                    size="filter"
-                                    className='border border-zinc-300 flex items-center rounded'>
-                                    <FilterIcons
-                                        className=""
-                                        fill="#CC0019" />
-                                </Button>
+                                <div className="">
+                                    <Dialog>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="filter"
+                                                    size="filter"
+                                                    className='border border-zinc-300 flex items-center rounded'>
+                                                    <FilterIcons
+                                                        className=""
+                                                        fill="#CC0019" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent side={"bottom"} >
+                                                <DropdownMenuItem onClick={() => {
+                                                    sortData('country_name', 'asc');
+                                                    setSorting([{ id: 'country_name', desc: false }]);
+                                                    setSelectedFilter('asc')
+                                                }}>
+                                                    <p className={`${selectedFilter === "asc" ? "text-myBlue" : ""} text-xs `}>Sort Ascending</p>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => {
+                                                    sortData('country_name', 'desc');
+                                                    setSorting([{ id: 'country_name', desc: true }]);
+                                                    setSelectedFilter('desc')
+                                                }}>
+                                                    <p className={`${selectedFilter === "desc" ? "text-myBlue" : ""} text-xs `}>Sort Descending</p>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => {
+                                                    removeSorting();
+                                                    setSelectedFilter('')
+                                                }}>
+                                                    <p className="text-xs text-red-700">Remove Sort</p>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </Dialog>
+                                </div>
                             </div>
                             <div className="">
                                 {
@@ -362,6 +419,36 @@ export function CountriesTabled({ }) {
                 </TableBody>
 
             </Table>
+            <div className="flex justify-end w-full items-end py-3">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     )
 }

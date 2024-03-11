@@ -9,13 +9,18 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            code
+            reset_token,
+            password
         } = await request.json();
 
         console.log("🚀 ~ GET ~code:", code)
 
         const response = await axios.get(
-            `${process.env.API_URL}/Auth/ForgetPassword?email=${code}`,
+            `${process.env.API_URL}/Auth/ForgetPassword?email`,
+            {
+                reset_token: reset_token,
+                password: password
+            },
             {
                 httpsAgent: agent
             }

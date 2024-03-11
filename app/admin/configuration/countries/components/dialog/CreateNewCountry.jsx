@@ -183,7 +183,10 @@ export const CreateNewCountry = ({ open, setOpen, reloadData }) => {
                                                     )}
                                                 />
                                             </div>
-                                            <div className="text-xs py-2">We using Alpha-3 code, see all list code in <span className='text-xs text-myBlue underline'>here</span> </div>
+                                            <div className="text-xs py-2">
+                                                We using Alpha-3 code, see all list code in <a className='text-xs text-myBlue underline ' href="https://countrycode.org/"> here </a>
+                                             
+                                            </div>
                                             <div className=" flex flex-row justify-between gap-2 ">
                                                 <Button
                                                     variant="redOutline"

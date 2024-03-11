@@ -147,7 +147,7 @@ export default function Dashboard() {
                                     </div>
                                 )
                                 : (
-                                    data.map((item, i) => (
+                                    data?.map((item, i) => (
                                         <ItemsPackage
                                             key={i}
                                             onClickButton={handleButtonClick}
