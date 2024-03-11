@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import format from 'date-fns/format';
 
-export const ExpandItems = ({ item, handleButtonClick, selectedButton, buttonEnabled }) => {
+export const ExpandItems = ({ item, handleButtonClick, selectedButton, buttonEnabled, reload }) => {
     const [openHoldPickup, setOpenHoldPickup] = useState(false)
     const formattedDate = format(new Date(item?.updated_at), 'dd MMM yyyy');
 

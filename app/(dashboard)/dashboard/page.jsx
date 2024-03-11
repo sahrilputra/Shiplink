@@ -9,6 +9,7 @@ import { ModalContext } from '@/context/ModalContext';
 import { SkeletonItems } from './components/Skeleton/SkeletonItems';
 import axios from 'axios';
 import { ItemsPackage } from './components/items/itemsPackage';
+import { set } from 'date-fns';
 
 export default function Dashboard() {
 
@@ -27,17 +28,24 @@ export default function Dashboard() {
         index: 0,
     })
 
-    
+
     useEffect(() => {
-        axios.post(`/api/admin/packages/list`, query)
-            .then(response => {
-                setData(response.data.package_info)
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`/api/admin/packages/list`, query)
+                setData(response.data.data)
                 setIsSkeleton(false)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+            } catch (error) {
+                console.log("🚀 ~ error", error)
+            }
+        }
+        fetchData()
     }, [query])
+
+    const reloadData = (prevQuery) => {
+        setIsSkeleton(true)
+        setQuery({ ...prevQuery, page: 0, limit: 0, index: 0 })
+    }
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);

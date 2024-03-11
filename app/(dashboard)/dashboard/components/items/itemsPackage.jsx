@@ -21,7 +21,7 @@ import { ExpandItems } from './ExpandItems';
 import format from 'date-fns/format';
 
 
-export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand }) => {
+export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }) => {
     const { toast } = useToast();
 
     const {
@@ -224,7 +224,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand }) => {
                 {
                     isExpand ? (
                         <div className="expanded transition-transform ease-in-out ">
-                            <ExpandItems handleButtonClick={handleButtonClick} item={item} selectedButton={selectedButton} buttonEnabled={buttonEnabled} />
+                            <ExpandItems handleButtonClick={handleButtonClick} item={item} selectedButton={selectedButton} buttonEnabled={buttonEnabled} reload={reload} />
 
                             <div className="w-[100%] flex justify-center align-middle mx-auto ">
                                 {

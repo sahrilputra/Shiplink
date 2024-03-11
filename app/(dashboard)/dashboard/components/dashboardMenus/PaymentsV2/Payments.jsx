@@ -16,43 +16,43 @@ import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios'
 import CheckoutForm from './CheckoutForm'
 
-const stripePromise = loadStripe(`pk_test_51OsLjTIGSvEkqmVc4z0PqiZRyN6K6KGUZxcEOFo6HqZoMHf7koqsE9DBQ3RuwZnLhz4T2MXdGSzrEZuhs2dUZ2Vv00mnKFQR4G`);
+const stripePromise = loadStripe(`pk_test_51OeSr9KoBG6qVutm67f3Sp0NSBReb8UZ9mAeiIseio551KQCV6VlXY7Yq9YpC0grIMUjUr2Y6HzGecCBLZPMhboW00fET9LdVY`);
 
-export const PaymentsDialog = ({ open, setOpen, trackingId }) => {
+export const PaymentsDialog = ({ open, setOpen, trackingId, reload }) => {
     console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId)
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
     const [clientSecret, setClientSecret] = useState("");
     const [totalAmount, setTotalAmount] = useState(0);
     const [services, setServices] = useState([]);
 
-    
-    useEffect(() => {
-        axios.post("/api/admin/payments/create-payments", {
-            data: { amount: 89 },
-        }).then((response) => {
-            console.log("🚀 ~ useEffect ~ response:", response)
-            setClientSecret(response.data);
-        });
-
-    }, [])
 
     // useEffect(() => {
-    //     try {
-    //         axios.post(
-    //             '/api/admin/actions/holdPickup',
-    //             {
-    //                 tracking_id: trackingId
-    //             },
-    //         ).then((response) => {
-    //             console.log("🚀 ~ ).then ~ response:", response)
-    //             setClientSecret(response.data.clientSecret);
-    //             setTotalAmount(response.data.total);
-    //             setServices(response.data.services);
-    //         })
-    //     } catch (error) {
-    //         console.log("🚀 ~ ).catch ~ error:", error)
-    //     }
-    // }, [trackingId]);
+    //     axios.post("/api/admin/payments/create-payments", {
+    //         data: { amount: 89 },
+    //     }).then((response) => {
+    //         console.log("🚀 ~ useEffect ~ response:", response)
+    //         setClientSecret(response.data);
+    //     });
+
+    // }, [])
+
+    useEffect(() => {
+        try {
+            axios.post(
+                '/api/admin/actions/holdPickup',
+                {
+                    tracking_id: trackingId
+                },
+            ).then((response) => {
+                console.log("🚀 ~ ).then ~ response:", response)
+                setClientSecret(response.data.clientSecret);
+                setTotalAmount(response.data.total);
+                setServices(response.data.services);
+            })
+        } catch (error) {
+            console.log("🚀 ~ ).catch ~ error:", error)
+        }
+    }, [trackingId]);
 
 
     const appearance = {
@@ -67,7 +67,7 @@ export const PaymentsDialog = ({ open, setOpen, trackingId }) => {
         setOpen(false);
     }
 
-    
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -78,7 +78,7 @@ export const PaymentsDialog = ({ open, setOpen, trackingId }) => {
                     <div className="App">
                         {clientSecret && (
                             <Elements options={options} stripe={stripePromise}>
-                                <CheckoutForm close={close} totalAmount={totalAmount} services={services} setOpen={setOpen} />
+                                <CheckoutForm close={close} totalAmount={totalAmount} services={services} setOpen={setOpen} trackingId={trackingId} clientSecret={clientSecret} reload={reload} />
                             </Elements>
                         )}
                     </div>
