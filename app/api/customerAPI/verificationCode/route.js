@@ -15,7 +15,7 @@ export async function POST(request) {
         console.log("🚀 ~ GET ~code:", code)
 
         const response = await axios.get(
-            `${process.env.API_URL}/Auth/ForgetPassword?email=${code}`,
+            `${process.env.API_URL}/Auth/VerificationUser?verify_code=${code}`,
             {
                 httpsAgent: agent
             }
