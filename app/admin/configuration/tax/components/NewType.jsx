@@ -52,7 +52,7 @@ export const NewType = ({ close, data = null, selected }) => {
         formData.tax_assignment_id = ""
         try {
             const response = await axios.post(
-                `/api/admin/config/tax/setData`,
+                `/api/admin/config/tax/assign/setData`,
                 formData
             );
 

@@ -2,29 +2,31 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 
-export const ProvinceList = ({ countryName, handleSelect, isSelect }) => {
+export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode, setTaxID }) => {
     const [query, setQuery] = useState({
         keyword: "",
+        country_code: "",
         page: 1,
         limit: 0,
         index: 0
     });
     const [provinceData, setProvinceData] = useState([]);
     const [filteredProvince, setFilteredProvince] = useState([]);
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/province`,
-                query
-            );
-            const data = await response.data;
-            setProvinceData(data.province); // Menyimpan data mentah dari server
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
+
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/tax/list`,
+                    query
+                );
+                const data = await response.data;
+                setProvinceData(data.tax); // Menyimpan data mentah dari server
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
         fetchData();
     }, [query]);
 
@@ -44,7 +46,10 @@ export const ProvinceList = ({ countryName, handleSelect, isSelect }) => {
                     filteredProvince?.map((item, index) => {
                         return (
                             <div key={index}
-                                onClick={() => handleSelect(item.province_name)}
+                                onClick={() => {
+                                    handleSelect(item.province_name)
+                                    setTaxID(item.tax_assignment_id)
+                                }}
                                 className={`w-full px-2.5 py-[10px]  rounded border border-zinc-300 flex-col justify-start items-start gap-3 flex cursor-pointer hover:bg-slate-100
                                 ${isSelect.toLowerCase() === item.province_name.toLowerCase() ? "bg-blue-100" : "bg-white"}`}>
                                 <div className="w-full justify-start items-center gap-2.5 inline-flex text-black text-xs ">

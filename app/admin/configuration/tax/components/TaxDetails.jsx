@@ -3,7 +3,8 @@ import { TaxDetailsList } from './TaxDetailsList'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { DeleteDialog } from './dialog/DeleteDialog'
-export const TaxDetails = ({ close }) => {
+export const TaxDetails = ({ close, taxAssignID }) => {
+
     const [change, setChange] = useState(false)
     const [taxList, setTaxList] = useState([])
     const [openDialog, setOpenDialog] = useState(false)
@@ -51,7 +52,7 @@ export const TaxDetails = ({ close }) => {
                     {
                         taxList.map((item, index) => {
                             return (
-                                <TaxDetailsList key={index} setChange={setChange} data={item} handleClick={handleDeleteClicked}/>
+                                <TaxDetailsList key={index} setChange={setChange} data={item} handleClick={handleDeleteClicked} taxAssignID={taxAssignID} />
                             )
                         })
                     }

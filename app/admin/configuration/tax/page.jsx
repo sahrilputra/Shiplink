@@ -29,8 +29,10 @@ export default function Tax() {
     const [clicked, setClicked] = useState(false);
     const handleClick = (isClicked) => { setClicked(isClicked) }
     const [value, setValue] = useState("")
+    const [countryCode, setCountryCode] = useState("")
     const [open, setOpen] = useState(false)
     const [seletedProvince, setSeletedProvince] = useState("")
+    const [taxAssignID, setTaxAssignID] = useState("")
     const [query, setQuery] = useState({
         keyword: "",
         page: 0,
@@ -39,20 +41,19 @@ export default function Tax() {
     });
     const [country, setCountry] = useState([]);
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/countries/list`,
-                query
-            );
-            const data = await response.data;
-            setCountry(data.country);
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
-
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    query
+                );
+                const data = await response.data;
+                setCountry(data.country);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
         fetchData();
     }, [query]);
 
@@ -95,6 +96,7 @@ export default function Tax() {
                                                         value={item.country_name}
                                                         className="text-xs"
                                                         onSelect={(currentValue) => {
+                                                            setCountryCode(item.country_code)
                                                             setValue(currentValue === value ? "" : currentValue)
                                                             setOpen(false)
                                                         }}
@@ -112,7 +114,7 @@ export default function Tax() {
                             </Popover>
                         </div>
                         <div className="flex-col justify-start items-start gap-0.5 flex w-full">
-                            <ProvinceList countryName={value} handleSelect={setSeletedProvince} isSelect={seletedProvince} />
+                            <ProvinceList countryName={value} handleSelect={setSeletedProvince} isSelect={seletedProvince} countryCode={countryCode} setTaxID={setTaxAssignID} />
                         </div>
                     </div>
                 </div>
@@ -135,7 +137,7 @@ export default function Tax() {
                                 <NewType selected={seletedProvince} close={handleClose} />
                             </>
                         )}
-                        <TaxDetails close={handleClose} />
+                        <TaxDetails close={handleClose} taxAssignID={taxAssignID} />
                     </div>
                 </div>
             </div>
