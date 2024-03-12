@@ -100,6 +100,36 @@ export function CustomerTable({ data, open, setOpen }) {
         });
     };
 
+    const handlerVerified = async (customer_id, status) => {
+        try {
+            const response = await axios.post(
+                `/api/admin/customer_manager/setVerified`,
+                {
+                    customer_id: customer_id,
+                    status: status
+                }
+            );
+            const data = await response.data;
+            if (data.status) {
+                toast({
+                    title: "Customer Verified",
+                    description: data.message,
+                    status: 'success',
+                });
+                fetchData();
+            } else {
+                toast({
+                    title: "Error",
+                    description: data.message,
+                    status: 'error',
+                });
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+
     const columns = [
         {
             accessorKey: "customer_id",
@@ -156,9 +186,13 @@ export function CustomerTable({ data, open, setOpen }) {
                                     >
                                         <p className="text-xs text-myBlue">Copy Customer ID</p>
                                     </DropdownMenuItem>
-                                    {/* <DropdownMenuItem >
-                                        <p className="text-xs">Copy Login URL</p>
-                                    </DropdownMenuItem> */}
+                                    <DropdownMenuItem
+                                        onClick={() => {
+                                            handlerVerified(row.original.customer_id, "active")
+                                        }}
+                                    >
+                                        <p className="text-xs">Verified Customer</p>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem>
                                         <NextLink
                                             className="focus:outline-none focus:ring-0 focus:border-transparent"
