@@ -22,6 +22,18 @@ import {
     SortingState,
     getSortedRowModel,
 } from "@tanstack/react-table";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 import { MoreHorizontalIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -31,6 +43,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { DeletePronviceDialog } from "./dialog/DeletePronviceDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog } from "@radix-ui/react-dialog";
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { CheckIcon } from 'lucide-react'
 
 export function ProvinceTabled({ }) {
     const [query, setQuery] = useState({
@@ -44,21 +58,29 @@ export function ProvinceTabled({ }) {
     const [sorting, setSorting] = React.useState([])
     const [isEditDialog, setIsEditDialog] = useState(false);
     const [createNewDialogOpen, setCreateNewDialogOpen] = useState(false);
+    const [open, setOpen] = useState(false)
+    const [countryCode, setCountryCode] = useState("")
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [deleteID, setDeleteID] = useState([])
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [selectedFilter, setSelectedFilter] = useState("");
+    const [countryList, setCountryList] = useState([]);
+    const [value, setValue] = useState("")
 
     const fetchData = async () => {
         try {
             const response = await axios.post(
-                `/api/admin/config/province`,
+                `/api/admin/config/countries/list`,
                 query
             );
             const data = await response.data;
             setIsSkeleton(false)
-            setProvince(data.province);
+            setCountryList(data.country);
+            if (data === undefined || data === "undefined" || data === null || data === "null") {
+                setCountryList([])
+                fetchData()
+            }
         } catch (error) {
             console.log('Error:', error);
         }
@@ -67,6 +89,45 @@ export function ProvinceTabled({ }) {
     useEffect(() => {
         fetchData();
     }, [query]);
+
+    const reloadData = () => {
+        fetchData();
+        setRowSelection({});
+    };
+
+    useEffect(() => {
+        const fetchProvince = async () => {
+            setIsSkeleton(true)
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/province`,
+                    {
+                        keyword: "",
+                        page: 0,
+                        limit: 0,
+                        index: 0,
+                    }
+                );
+                const data = await response.data;
+                console.log("DATA: ", data)
+                setIsSkeleton(false)
+                if (countryCode !== "") {
+                    const filteredProvince = data.province.filter(prov => prov.country_code === countryCode);
+                    setProvince(filteredProvince);
+                } else {
+                    // Jika tidak ada kode negara yang dipilih, set provinsi tanpa filter
+                    setProvince([]);
+                }
+            } catch (error) {
+                setIsSkeleton(false)
+                console.log('Error:', error);
+            }
+        }
+        fetchProvince();
+    }, [countryCode])
+
+
+    console.log("🚀 ~ ProvinceTabled ~ countryCode:", countryCode)
 
     const handleSearchChange = (event) => {
         setQuery({
@@ -165,6 +226,7 @@ export function ProvinceTabled({ }) {
         }
     ]
 
+
     const table = useReactTable({
         data: province,
         columns,
@@ -197,11 +259,6 @@ export function ProvinceTabled({ }) {
     }
 
 
-    const reloadData = () => {
-        fetchData();
-        setRowSelection({});
-    };
-
     const sortData = (field, direction) => {
         const sortedData = [...province];
         sortedData.sort((a, b) => {
@@ -232,58 +289,48 @@ export function ProvinceTabled({ }) {
                     <TableHead colSpan={7} className="p-4  border border-zinc-300 rounded-md" >
                         <div className="flex flex-row justify-between rounded-md">
                             <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
-                                <div className="relative">
-                                    <Input
-                                        type="text"
-                                        placeholder="Search..."
-                                        className="pr-8 pl-2 text-xs border border-zinc-300"
-                                        onChange={handleSearchChange}
-
-                                    />
-                                    <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
-                                        <SearchIcon
-                                            width={15}
-                                            height={15}
-                                        />
-                                    </div>
-                                </div>
                                 <div className="">
-                                    <Dialog>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button
-                                                    variant="filter"
-                                                    size="filter"
-                                                    className='border border-zinc-300 flex items-center rounded'>
-                                                    <FilterIcons
-                                                        className=""
-                                                        fill="#CC0019" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent side={"bottom"} >
-                                                <DropdownMenuItem onClick={() => {
-                                                    sortData('province_name', 'asc');
-                                                    setSorting([{ id: 'province_name', desc: false }]);
-                                                    setSelectedFilter('asc')
-                                                }}>
-                                                    <p className={`${selectedFilter === "asc" ? "text-myBlue" : ""} text-xs `}>Sort Ascending</p>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => {
-                                                    sortData('province_name', 'desc');
-                                                    setSorting([{ id: 'province_name', desc: true }]);
-                                                    setSelectedFilter('desc')
-                                                }}>
-                                                    <p className={`${selectedFilter === "desc" ? "text-myBlue" : ""} text-xs `}>Sort Descending</p>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => {
-                                                    removeSorting();
-                                                    setSelectedFilter('')
-                                                }}>
-                                                    <p className="text-xs text-red-700">Remove Sort</p>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </Dialog>
+                                    <Popover open={open} onOpenChange={setOpen}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                aria-expanded={open}
+                                                className="w-[200px] justify-between text-xs px-2 h-[35px] shadow-none capitalize"
+                                            >
+                                                {
+                                                    value ? value : "Select Country..."
+                                                }
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[200px] p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Search Country..." className="h-9 text-xs" />
+                                                <CommandEmpty>No Country found.</CommandEmpty>
+                                                <ScrollArea className="h-[200px]">
+                                                    <CommandGroup>
+                                                        {countryList.map((item) => (
+                                                            <CommandItem
+                                                                key={item.country_name}
+                                                                value={item.country_name}
+                                                                className="text-xs"
+                                                                onSelect={(currentValue) => {
+                                                                    setCountryCode(item.country_code)
+                                                                    setValue(currentValue === value ? "" : currentValue)
+                                                                    setOpen(false)
+                                                                }}
+                                                            >
+                                                                {item.country_name}
+                                                                <CheckIcon
+                                                                    className={`ml-auto h-4 w-4 ${value.toLowerCase() === item.country_name.toLowerCase() ? "opacity-100" : "opacity-0"}`}
+                                                                />
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </ScrollArea>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
                             </div>
                             <div className="">

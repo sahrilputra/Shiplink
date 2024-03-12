@@ -249,17 +249,17 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
                                                                     <FormLabel className="text-sm">State Code</FormLabel>
                                                                     <FormControl >
                                                                         <InputMask
-                                                                            mask="999"
-                                                                            maskPlaceholder="000"
+                                                                            mask="aa"
+                                                                            maskPlaceholder="00"
                                                                             {...field}
-                                                                            className='tracking-widest'
+                                                                            className='tracking-widest uppercase'
                                                                         >
                                                                             {(inputProps) => (
                                                                                 <Input
                                                                                     className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest bg-zinc-500 uppercase"
                                                                                     id="province_code"
                                                                                     type="text" // Ubah tipe input menjadi teks
-                                                                                    placeholder="_ _ _" // Placeholder yang sesuai dengan format
+                                                                                    placeholder="_ _" // Placeholder yang sesuai dengan format
                                                                                     {...inputProps}
                                                                                 />
                                                                             )}
