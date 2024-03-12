@@ -2,11 +2,13 @@ import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
 import { cookies } from 'next/headers'
-
+import { getAccessToken } from "@/helpers/getAccessToken";
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
+    console.log("🚀 ~ POST ~ request:", request)
+    const tokenAccess = await getAccessToken(request)
     try {
         const {
             name,
@@ -14,27 +16,31 @@ export async function POST(request) {
             country_code,
             password,
             user_plan,
+            profile_picture,
+            phoneNumber,
+
         } = await request.json();
 
         const response = await axios.post(
-            `${process.env.API_URL}/Customers/Customer_setdata_update`,
+            `${process.env.API_URL}/Customers/Setting_Account`,
             {
-                "customer_id": "string",
-                "customer_name": "string",
-                "address": "string",
-                "phone_number": "string",
-                "email": "string",
-                "country_code": "string",
-                "province_code": "string",
-                "city": "string",
-                "postal_code": "string"
+                "name": name,
+                "email": email,
+                "password": password,
+                "phone_number": phoneNumber,
+                "user_plan": user_plan,
+                "profile_picture": profile_picture,
 
             },
             {
-                httpsAgent: agent
+                httpsAgent: agent,
+                headers: {
+                    Authorization:
+                        `Bearer ${tokenAccess}`
+                }
             }
         );
-        console.log("Response from API", response.data.message)
+        console.log("Response from API", response)
         if (response.status === 200) {
             const responseData = {
                 status: true,

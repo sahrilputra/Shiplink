@@ -134,11 +134,11 @@ export const CreateNewCountry = ({ open, setOpen, reloadData }) => {
                                                                         mask="aaa"
                                                                         maskPlaceholder="000"
                                                                         {...field}
-                                                                        className='tracking-widest'
+                                                                        className='tracking-widest uppercase'
                                                                     >
                                                                         {(inputProps) => (
                                                                             <Input
-                                                                                className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest"
+                                                                                className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest uppercase"
                                                                                 id="country_code"
                                                                                 type="text" // Ubah tipe input menjadi teks
                                                                                 placeholder="_ _ _" // Placeholder yang sesuai dengan format
@@ -161,14 +161,14 @@ export const CreateNewCountry = ({ open, setOpen, reloadData }) => {
                                                                 <FormLabel className="text-sm"  >Country Number</FormLabel>
                                                                 <FormControl >
                                                                     <InputMask
-                                                                        mask="999"
+                                                                        mask="aa"
                                                                         maskPlaceholder=""
-                                                                        className='tracking-widest'
+                                                                        className='tracking-widest uppercase'
                                                                         {...field}
                                                                     >
                                                                         {(inputProps) => (
                                                                             <Input
-                                                                                className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest"
+                                                                                className="text-xs p-0 py-1 px-2 focus:ring-offset-0 tracking-widest uppercase"
                                                                                 id="hsCode"
                                                                                 type="text" // Ubah tipe input menjadi teks
                                                                                 placeholder="_ _ _" // Placeholder yang sesuai dengan format

@@ -51,35 +51,47 @@ export const UserForms = ({ data = null }) => {
         disabled: disable,
     })
 
-    const { data: session } = useSession()
 
-    console.log("Session :", session)
     const handleSave = async (formData) => {
+        console.log("🚀 ~ handleSave ~ formData:", formData)
         setLoading(true)
-        formData.customer_id = session.user.id
         try {
-            axios.post(
-                `/api/customerAPI/account/update`,
-                formData
-            ).then((response) => {
-                console.log(response.data)
-                setLoading(false)
+            const response = await axios.post(
+                `/api/customerAPI/account/seettings`,
+                {
+                    name: formData.name,
+                    email: formData.email,
+                    country_code: "",
+                    password: formData.password,
+                    user_plan: "",
+                    profile_picture: formData.image,
+                    phoneNumber: formData.phoneNumber,
+                }
+            )
+            console.log("🚀 ~ handleSave ~ response:", response)
+            setLoading(false)
+            if (response.status === 200) {
+                setDisable(true)
                 toast({
-                    title: "Success update data",
-                    description: response.data.message,
+                    title: "Success",
+                    message: response.data.message,
                     type: "success",
                 })
-            }).catch((error) => {
-                setLoading(false);
+            } else {
                 toast({
-                    title: "Failed update data",
-                    description: error.message,
+                    title: "Error",
+                    message: response.data.message,
                     type: "error",
                 })
-                console.log(error)
-            })
+            }
         } catch (error) {
-            console.log(error)
+            console.log("🚀 ~ handleSave ~ error:", error)
+            setLoading(false)
+            toast({
+                title: "Error",
+                message: "Internal Server Error",
+                type: "error",
+            })
         }
     }
 

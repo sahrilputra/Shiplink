@@ -35,6 +35,9 @@ export const Navbar = () => {
         signOut()
     }
 
+    const fullName = session ? session.user.name : "";
+    const firstName = fullName.split(" ")[0];
+
     return (
         <>
             {/*  */}
@@ -203,7 +206,7 @@ export const Navbar = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <div className=" text-black text-sm font-semiBold">{session ? session.user.name : ""}  </div>
+                                                    <div className=" text-black text-sm font-semiBold">{firstName || ""}  </div>
                                                     <div className=" text-black text-sm font-normal ">{session ? session.user.type : ""}</div>
                                                 </>
                                             )}
