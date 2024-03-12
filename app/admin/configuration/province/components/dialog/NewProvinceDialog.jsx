@@ -127,6 +127,12 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                 query
             );
             const data = await response.data;
+            if (data === null) {
+                setCountry([]);
+                fetchData();
+            } else {
+                setCountry(data);
+            }
             setCountry(data.country);
         } catch (error) {
             console.log('Error:', error);
@@ -135,6 +141,7 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
 
     useEffect(() => {
         fetchData();
+
     }, [query]);
 
 
