@@ -150,7 +150,7 @@ export default function Home() {
                             <div className="text-myBlue text-lg font-bold">Save money, save time, take control of your deliveries.</div>
                             <div className="text-zinc-600 text-3xl font-bold">Sign up to send and save instantly.</div>
                         </div>
-                        <div className="p-10 mb-10 bg-white rounded-md w-[640px] border shadow-md gap-8  flex flex-col">
+                        <div className="p-10 mb-10 bg-white rounded-md w-[440px] border shadow-md gap-8  flex flex-col md:w-[640px]">
                             <FormField
                                 className="w-full"
                                 name="name"
@@ -342,7 +342,7 @@ export default function Home() {
                                                     />
                                                     <label
                                                         htmlFor="terms"
-                                                        className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                        className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 space-y-1 leading-tight"
                                                     >
                                                         By signing up you agree to our <span className="text-red-700">terms and conditions.</span>
                                                     </label>
