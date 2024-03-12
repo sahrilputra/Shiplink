@@ -131,15 +131,15 @@ export const ArrivalForms = ({
             }
 
             // This is not a default behaviour of the <input /> field
-            if (event.key === "Enter" && input.value !== "") {
-                const optionToSelect = options.find(
-                    option => option.label === input.value
-                )
-                if (optionToSelect) {
-                    setSelected(optionToSelect)
-                    setValue?.(optionToSelect)
-                }
-            }
+            // if (event.key === "Enter" && input.value !== "") {
+            //     const optionToSelect = options.find(
+            //         option => option.label === input.value
+            //     )
+            //     if (optionToSelect) {
+            //         setSelected(optionToSelect)
+            //         setValue?.(optionToSelect)
+            //     }
+            // }
 
             if (event.key === "Escape") {
                 input.blur()
@@ -160,16 +160,16 @@ export const ArrivalForms = ({
                 setCarrierOpen(true)
             }
 
-            // This is not a default behaviour of the <input /> field
-            if (event.key === "Enter" && input.value !== "") {
-                const optionToSelect = options.find(
-                    option => option.label === input.value
-                )
-                if (optionToSelect) {
-                    setCarrierSelected(optionToSelect)
-                    setValueCarrier?.(optionToSelect)
-                }
-            }
+            // // This is not a default behaviour of the <input /> field
+            // if (event.key === "Enter" && input.value !== "") {
+            //     const optionToSelect = options.find(
+            //         option => option.label === input.value
+            //     )
+            //     if (optionToSelect) {
+            //         setCarrierSelected(optionToSelect)
+            //         setValueCarrier?.(optionToSelect)
+            //     }
+            // }
 
             if (event.key === "Escape") {
                 input.blur()
@@ -283,9 +283,11 @@ export const ArrivalForms = ({
                                                                                     }}
                                                                                     autoFocus={false}
                                                                                 >
-                                                                                    <div className='text-xs w-full justify-between flex flex-row'>
-                                                                                        <p>{item.customer_id} | </p>
-                                                                                        <p>{item.customer_name}</p>
+                                                                                    <div className='text-xs w-full justify-between flex flex-row items-center'>
+                                                                                        <p className='w-[100px]'>{item.customer_name}</p>
+                                                                                        <p className='w-[5px]'>|</p>
+                                                                                        <p className='w-[100px]'>{item.customer_id}</p>
+                                                                                        <p className='w-4'></p>
                                                                                     </div>
                                                                                     <CheckIcon
                                                                                         className={cn(
@@ -369,7 +371,7 @@ export const ArrivalForms = ({
                                             <FormLabel className=" font-bold">Phone Number</FormLabel>
                                             <FormControl>
                                                 <InputMask
-                                                    mask="+999 999 999 9999"
+                                                    mask="+9.999.999.9999"
                                                     maskChar={null}
                                                     maskPlaceholder="0000.00.0000"
                                                     className={` ${disabled && "bg-zinc-400/50 cursor-not-allowed"} text-xs h-[30px] pl-2`}
@@ -459,17 +461,6 @@ export const ArrivalForms = ({
                                                             {...field}
                                                             className={`${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
                                                         />
-                                                        {/* <CommandArrival
-                                                            ref={inputCarrierRef}
-                                                            value={inputCarrierValue}
-                                                            setValue={setValueCarrier}
-                                                            onBlur={handlerCarrier}
-                                                            onFocus={() => setCarrierOpen(true)}
-                                                            placeholder={`${field.value || "Carrier"}`}
-                                                            className="text-xs border border-neutral-300 px-2"
-                                                            disableSearchIcon={true}
-                                                            onChange={field.value}
-                                                        /> */}
                                                     </div>
                                                     <div className="mt-1 relative">
                                                         {isCarrierOpen ? (
