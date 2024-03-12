@@ -7,8 +7,10 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react'
-
+import axios from 'axios'
 export default function AccountLayout({ children }) {
+
+    
     const { data: session } = useSession()
     return (
         <div className={styles.container}>
