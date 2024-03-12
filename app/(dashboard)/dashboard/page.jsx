@@ -23,7 +23,7 @@ export default function Dashboard() {
         date_end: "",
         tracking_id: "",
         lots_id: "",
-        bins_id:"",
+        bins_id: "",
 
         status: "",
         page: 0,
@@ -158,6 +158,7 @@ export default function Dashboard() {
                                             item={item}
                                             onExpand={toggleExpand}
                                             isExpand={expandedItemId === item.tracking_id}
+                                            reload={reloadData}
                                         />
                                     ))
                                 )

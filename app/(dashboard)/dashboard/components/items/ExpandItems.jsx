@@ -13,7 +13,7 @@ export const ExpandItems = ({ item, handleButtonClick, selectedButton, buttonEna
     console.log("My Fking ID : ", item?.tracking_id)
     return (
         <>
-            <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} />
+            <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} reload={reload} />
             <div className="flex flex-row justify-between items-center gap-5 relative pt-2 ">
                 <div className="justify-start items-center gap-[15px] flex">
                     <DetailsModals item={item} date={formattedDate} />
