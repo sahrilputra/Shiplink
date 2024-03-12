@@ -143,7 +143,7 @@ export default function Home() {
                   style={{ width: "388px", height: "598px" }}
                 />
 
-                <div className="p-5 w-[390px] absolute bottom-10 left-10 rounded shadow flex flex-col gap-[20px] bg-white">
+                <div className="p-5 w-[280px] absolute bottom-10 left-10 rounded shadow flex flex-col gap-[20px] bg-white md:w-[390px]">
                   <h3 className="text-xl  font-bold text-black">Lorem Ipsum</h3>
                   <p className="text-base text-[#5A5A5A]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit tempora accusamus iste in cum expedita sint optio ipsam laudantium quaerat.</p>
                 </div>
