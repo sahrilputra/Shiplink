@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -25,7 +23,6 @@ import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import axios from "axios";
 import NextLink from "next/link";
-import { CustomerManagerDropDown } from "../menus/CustomerManagerMenus";
 import { Loaders } from "@/components/ui/loaders";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DeleteCustomer } from "../dialog/DeleteCustomer";
@@ -49,8 +46,10 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { useToast } from "@/components/ui/use-toast";
 
 export function CustomerTable({ data, open, setOpen }) {
+    const { toast } = useToast();
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
@@ -89,6 +88,15 @@ export function CustomerTable({ data, open, setOpen }) {
         setQuery({
             ...query,
             keyword: event.target.value
+        });
+    };
+
+    const handleCopyCustomerId = (customerId) => {
+        navigator.clipboard.writeText(customerId)
+        toast({
+            title: `${customerId} copied to clipboard`,
+            description: "You can now paste it to your desired location",
+            status: 'success',
         });
     };
 
@@ -143,14 +151,20 @@ export function CustomerTable({ data, open, setOpen }) {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent side={"left"} sideOffset={2}>
-                                    <DropdownMenuItem >
+                                    <DropdownMenuItem
+                                        onClick={() => handleCopyCustomerId(row.original.customer_id)}
+                                    >
                                         <p className="text-xs text-myBlue">Copy Customer ID</p>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem >
+                                    {/* <DropdownMenuItem >
                                         <p className="text-xs">Copy Login URL</p>
-                                    </DropdownMenuItem>
+                                    </DropdownMenuItem> */}
                                     <DropdownMenuItem>
-                                        <p className="text-xs">Customer Details</p>
+                                        <NextLink
+                                            className="focus:outline-none focus:ring-0 focus:border-transparent"
+                                            href={`/admin/customers-manager/${row.original.customer_id}`}>
+                                            <p className="text-xs">Customer Details</p>
+                                        </NextLink>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
                                         onClick={() => handlerDelete(row.original.customer_id)}
@@ -224,7 +238,7 @@ export function CustomerTable({ data, open, setOpen }) {
                                 className=""
                                 fill="#CC0019" />
                         </Button>
-                        <DatePickerWithRange className={"text-black"} />
+                        {/* <DatePickerWithRange className={"text-black"} /> */}
                     </div>
                     <div className="">
                         <Button
