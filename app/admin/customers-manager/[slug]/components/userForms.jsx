@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
+import InputMask from 'react-input-mask';
 import {
     Command,
     CommandEmpty,
@@ -242,14 +243,40 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                 name="phoneNumber"
                                 className="w-full space-y-1 "
                                 control={form.control}
+                                disabled={isDisable}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full space-y-1">
+                                        {/* <FormItem className="w-full space-y-1">
                                             <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     size="new"
                                                     className="px-1.5" type="number" id="phone" placeholder="Phone Number" {...field} />
+                                            </FormControl>
+                                        </FormItem> */}
+
+                                        <FormItem className="w-full space-y-1">
+                                            <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
+                                            <FormControl>
+                                                <InputMask
+                                                    mask="+9.999.999.9999"
+                                                    maskChar={null}
+                                                    maskPlaceholder="0000.00.0000"
+                                                    {...field}
+                                                    disabled={isDisable}
+                                                >
+                                                    {(inputProps) => (
+                                                        <Input
+                                                            className="px-1.5"
+                                                            id="phoneNumber"
+                                                            size="new"
+                                                            type="text"
+                                                            placeholder="+1.000.000.0000"
+                                                            disabled={isDisable}
+                                                            {...inputProps}
+                                                        />
+                                                    )}
+                                                </InputMask>
                                             </FormControl>
                                         </FormItem>
                                     </>
@@ -283,7 +310,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                     render={({ field }) => (
                                         <>
                                             <FormItem className="flex flex-col w-full mt-2">
-                                                <FormLabel className=" text-xs font-bold">Select Province</FormLabel>
+                                                <FormLabel className=" text-xs font-bold">State/Province</FormLabel>
                                                 <Popover className="w-full" open={openProvince} onOpenChange={setOpenProvince}>
                                                     <PopoverTrigger asChild>
                                                         <FormControl className="w-full">

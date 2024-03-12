@@ -12,6 +12,7 @@ import { PaymentCards } from './components/PaymentsCard';
 import { NewPasswordDialog } from './components/menus/dialog/NewPasswordDialog';
 import { DeleteCustomer } from '../components/dialog/DeleteCustomer';
 import { useRouter } from 'next/navigation';
+// import { CustomerInvoiceTable } from '../components/table/invoiceTable/CustomerInvoiceTable';
 export default function UserPage({ params }) {
     const router = useRouter();
     console.log("hello :", params.slug);
@@ -131,9 +132,9 @@ export default function UserPage({ params }) {
                     </div>
                 </div>
 
-                <div className="invoiceTable">
-                    
-                </div>
+                {/* <div className="invoiceTable w-full">
+                    <CustomerInvoiceTable UserID={data?.customer_name}/>
+                </div> */}
             </div>
             {/* <div className="w-full">
                 <CustomerPackageList dataID={params.slug} />
