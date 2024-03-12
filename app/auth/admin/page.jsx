@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from 'next/navigation';
 import { signIn, useSession, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
 import {
     Form,
     FormControl,
@@ -32,6 +33,7 @@ const formSchema = yup.object().shape({
 
 export default function Home() {
 
+    const { toast } = useToast();
     const { data: session, status } = useSession();
     console.log('Session:', session);
     console.log('status:', status);

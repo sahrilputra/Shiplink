@@ -190,7 +190,7 @@ export const ArrivalForms = ({
 
     // Fetch Customer Data
     const [customerData, setCustomerData] = useState([])
-  
+
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -198,7 +198,7 @@ export const ArrivalForms = ({
         index: 0
     });
 
-    
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -215,7 +215,6 @@ export const ArrivalForms = ({
 
     useEffect(() => {
         fetchData();
-      
     }, [query]);
 
 
@@ -242,9 +241,10 @@ export const ArrivalForms = ({
                                                         setValue={isLoading || setInputValue}
                                                         onBlur={handleBlur}
                                                         onFocus={() => setOpen(true)}
-                                                        placeholder={`${field.value ? customerData.find((item) => item.customer_name === field.value)?.id : "Customer"}`}
+                                                        placeholder={`${field.value ? field.value : "Customer"}`}
                                                         className="text-xs border border-neutral-300 px-2"
                                                         disableSearchIcon={true}
+                                                        autoFocus={false}
                                                     />
                                                 </div>
                                                 <div className="mt-1 relative">
@@ -271,9 +271,17 @@ export const ArrivalForms = ({
                                                                                     onSelect={() => {
                                                                                         forms.setValue("test", item.customer_name)
                                                                                         forms.setValue("customer_id", item.customer_id)
+                                                                                        setInputValue(item.customer_name)
                                                                                         handleDataChange({ target: { value: item.customer_id } })
                                                                                         setOpen(false)
+                                                                                        const inputElement = inputRef.current;
+
+                                                                                        // Periksa apakah elemen input ada dan fokus jika ada
+                                                                                        if (inputElement) {
+                                                                                            inputElement.blur(); // Menonaktifkan fokus dari elemen input
+                                                                                        }
                                                                                     }}
+                                                                                    autoFocus={false}
                                                                                 >
                                                                                     <div className='text-xs w-full justify-between flex flex-row'>
                                                                                         <p>{item.customer_id} | </p>

@@ -10,15 +10,17 @@ import { MoreAction } from './components/menus/MoreAction';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PaymentCards } from './components/PaymentsCard';
 import { NewPasswordDialog } from './components/menus/dialog/NewPasswordDialog';
-
+import { DeleteCustomer } from '../components/dialog/DeleteCustomer';
+import { useRouter } from 'next/navigation';
 export default function UserPage({ params }) {
+    const router = useRouter();
     console.log("hello :", params.slug);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({});
     const [skeleton, setSkeleton] = useState(true);
     const [disable, setDisable] = useState(true);
     const [openPassword, setOpenPassword] = useState(false);
-
+    const [openDelete, setOpenDelete] = useState(false);
     const fetchUserData = async () => {
         try {
             const response = await axios.post(`/api/admin/customer_manager/list`, { keyword: params.slug });
@@ -26,6 +28,12 @@ export default function UserPage({ params }) {
             setData(responseData);
             setLoading(false);
             setSkeleton(false);
+            if (response.data.customer[0] === undefined || response.data.customer[0] === null || response.data.customer[0] === "undefined") {
+                router.push("/admin/customers-manager");
+                console.log("Data:", responseData);
+            } else {
+                console.log("Data:", responseData);
+            }
         } catch (error) {
             setSkeleton(false);
             setLoading(false);
@@ -52,6 +60,7 @@ export default function UserPage({ params }) {
         <>
             {loading && <Loaders />}
             <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
+            <DeleteCustomer open={openDelete} setOpen={setOpenDelete} reloadData={reloadData} deleteID={data?.customer_id} />
             <div className="w-full">
                 <div className="wrapper w-full flex flex-row justify-between gap-2 h-ful ">
                     <div className="left w-[30%] ">
@@ -90,7 +99,7 @@ export default function UserPage({ params }) {
                                 >
                                     <p className="text-xs">Edit Profiles</p>
                                 </Button>
-                                <MoreAction setOpenPassword={setOpenPassword} />
+                                <MoreAction setOpenPassword={setOpenPassword} setOpenDelete={setOpenDelete} />
                             </div>
                         </div>
                     </div>
@@ -103,7 +112,7 @@ export default function UserPage({ params }) {
                             reloadData={reloadData}
                         />
                     </div>
-                    <div className="right h-full w-[40%]">
+                    <div className="right h-full w-[40%] hidden">
                         <div className="flex flex-col gap-1">
                             <div className="payments flex flex-col">
                                 <PaymentCards />
@@ -120,6 +129,10 @@ export default function UserPage({ params }) {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="invoiceTable">
+                    
                 </div>
             </div>
             {/* <div className="w-full">

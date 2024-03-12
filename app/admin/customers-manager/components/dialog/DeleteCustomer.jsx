@@ -63,7 +63,7 @@ export const DeleteCustomer = ({ open, setOpen, deleteID, reloadData }) => {
                             <AlertDialogHeader>
                                 <AlertDialogTitle className="font-bold">Are you absolutely sure?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This action cannot be undone. This Province  will be deleted permanently.
+                                    This action cannot be undone. This Customer will be deleted permanently.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -78,7 +78,7 @@ export const DeleteCustomer = ({ open, setOpen, deleteID, reloadData }) => {
                                 <Button
                                     variant="destructive"
                                     size="sm"
-                                    className="w-full"
+                                    className="w-full"s
                                     type="button"
                                     onClick={handleSubmit}
                                 >
