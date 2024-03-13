@@ -19,12 +19,12 @@ export async function GET(request) {
                 }
             }
         );
-        console.log("🚀 ~ GET ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
+                data: response.data
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

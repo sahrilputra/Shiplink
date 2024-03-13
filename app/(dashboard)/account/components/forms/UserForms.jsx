@@ -1,10 +1,9 @@
 'use-client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
-import { useSession } from 'next-auth/react'
 import {
     Form,
     FormControl,
@@ -20,8 +19,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Image from 'next/image'
 import { Edit } from 'lucide-react'
 import axios from 'axios'
+import InputMask from 'react-input-mask';
 import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
+import { useRouter } from 'next/navigation'
+
 const formSchema = yup.object().shape({
     name: yup.string().required().min(5, "min 5 character").max(25, "max 25 character"),
     email: yup.string().email().required(),
@@ -36,21 +38,29 @@ export const UserForms = ({ data = null }) => {
     const [disable, setDisable] = useState(true);
     const [loading, setLoading] = useState(false)
     const { toast } = useToast()
+    const router = useRouter()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            name: data?.user.name || "",
-            email: data?.user.email || "",
-            password: "",
+            name: data?.name || "",
+            email: data?.email || "",
+            password: data?.password || "",
             confirmPassword: "",
-            phoneNumber: "",
-            image: "",
+            phoneNumber: data?.phone_number || "",
+            image: data?.profile_picture || "",
             customer_id: "",
         },
         mode: "onChange",
         disabled: disable,
     })
 
+    useEffect(() => {
+        form.setValue('name', data?.name || "")
+        form.setValue('email', data?.email || "")
+        form.setValue('password', data?.password || "")
+        form.setValue('phoneNumber', data?.phone_number || "")
+        form.setValue('image', data?.profile_picture || "")
+    }, [data, form])
 
     const handleSave = async (formData) => {
         console.log("🚀 ~ handleSave ~ formData:", formData)
@@ -70,27 +80,31 @@ export const UserForms = ({ data = null }) => {
             )
             console.log("🚀 ~ handleSave ~ response:", response)
             setLoading(false)
+            setDisable(true)
             if (response.status === 200) {
-                setDisable(true)
                 toast({
                     title: "Success",
-                    message: response.data.message,
-                    type: "success",
+                    description: response.data.message,
+                    status: "success",
                 })
+                router.refresh()
+                // reload()
+
             } else {
                 toast({
                     title: "Error",
-                    message: response.data.message,
-                    type: "error",
+                    description: response.data.message,
+                    status: "error",
                 })
             }
+
         } catch (error) {
             console.log("🚀 ~ handleSave ~ error:", error)
             setLoading(false)
             toast({
-                title: "Error",
-                message: "Internal Server Error",
-                type: "error",
+                title: "Error 500",
+                description: "Internal Server Error",
+                status: "error",
             })
         }
     }
@@ -226,9 +240,25 @@ export const UserForms = ({ data = null }) => {
                                 <FormItem className="w-full">
                                     <FormLabel>Phone Number</FormLabel>
                                     <FormControl >
-                                        <Input type="number" className="text-xs" id="phoneNumber"  {...field} />
+                                        <InputMask
+                                            mask="+9.999.999.9999"
+                                            maskChar={null}
+                                            maskPlaceholder="0000.00.0000"
+                                            {...field}
+                                            disabled={disable}
+                                        >
+                                            {(inputProps) => (
+                                                <Input
+                                                    className="text-xs"
+                                                    id="phoneNumber"
+                                                    type="text"
+                                                    placeholder="+1.000.000.0000"
+                                                    {...inputProps}
+                                                    disabled={disable}
+                                                />
+                                            )}
+                                        </InputMask>
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             </>
                         )}
@@ -250,7 +280,10 @@ export const UserForms = ({ data = null }) => {
                                         variant="redOutline"
                                         size="sm"
                                         type="button"
-                                        onClick={() => setDisable(true)}
+                                        onClick={() => {
+                                            setDisable(true)
+                                        }
+                                        }
                                     >
                                         <p className=' font-normal text-xs'>Cancel</p>
                                     </Button>

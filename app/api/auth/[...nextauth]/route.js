@@ -50,6 +50,10 @@ export const authOption = {
     ],
     callbacks: {
         async jwt({ token, account, profile, user }) {
+            
+            console.log("🚀 ~ jwt ~ token:", token)
+
+
             if (user) {
                 token.id = user.id;
                 token.code = user.code;
@@ -67,6 +71,8 @@ export const authOption = {
                 // Delete the token property to avoid overwriting the JWT token
                 delete token.token;
             }
+
+
             return token;
         },
 

@@ -10,14 +10,18 @@ import { useSession } from 'next-auth/react'
 import axios from 'axios'
 export default function AccountLayout({ children }) {
 
-    
+
     const { data: session } = useSession()
+
+    const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
     return (
         <div className={styles.container}>
             <div className={styles.menus}>
                 <div className={styles.profiles}>
                     <Avatar className="w-[80px] h-[80px]">
-                        <AvatarImage src="https://source.boringavatars.com/beam" />
+                        {
+                            session?.user?.img ? <AvatarImage src={customerImage} alt={session?.user?.name} /> : <AvatarImage src="https://source.boringavatars.com/beam" />
+                        }
                         <AvatarFallback>SP</AvatarFallback>
                     </Avatar>
                     <div className="info py-5 flex flex-col justify-center items-center gap-[5px]">

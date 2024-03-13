@@ -7,7 +7,6 @@ const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
 export async function POST(request) {
-    console.log("🚀 ~ POST ~ request:", request)
     const tokenAccess = await getAccessToken(request)
     try {
         const {
@@ -40,7 +39,7 @@ export async function POST(request) {
                 }
             }
         );
-        console.log("Response from API", response)
+        // console.log("Response from API", response)
         if (response.status === 200) {
             const responseData = {
                 status: true,
