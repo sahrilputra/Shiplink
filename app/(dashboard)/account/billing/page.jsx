@@ -57,7 +57,9 @@ export default function Page() {
                 <div className="separator py-3 px-5">
                     <Separator className="py-[1px]" />
                 </div>
-                <div className="creditDetails p-5 flex flex-row gap-5 w-full justify-between">
+
+                {/* Issues 16 Hidding Credit Details */}
+                {/* <div className="creditDetails p-5 flex flex-row gap-5 w-full justify-between">
                     <div className="w-full p-3">
                         <h1 className='text-zinc-900 text-base font-bold py-2'>New Credit Cards</h1>
                         <CardForms />
@@ -76,7 +78,7 @@ export default function Page() {
                             }
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
 
         </>
