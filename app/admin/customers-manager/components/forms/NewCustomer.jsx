@@ -119,7 +119,7 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                     status: 'success',
                 });
             }
-            
+
             setLoading(false)
             close();
             reload();
@@ -206,7 +206,7 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                             render={({ field }) => (
                                 <FormItem className="flex flex-col w-full">
                                     <FormLabel className="text-sm">Select Country</FormLabel>
-                                    <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
+                                    <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen} modal={true}>
                                         <PopoverTrigger asChild>
                                             <FormControl className="w-full">
                                                 <Button
