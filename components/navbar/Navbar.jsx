@@ -37,7 +37,7 @@ export const Navbar = () => {
 
     const fullName = session ? session.user.name : "";
     const firstName = fullName.split(" ")[0];
-
+    const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
     return (
         <>
             {/*  */}
@@ -154,6 +154,7 @@ export const Navbar = () => {
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
                                             <div className="flex flex-row justify-between gap-2 w-[100px]">
                                                 <div className="w-[20px] h-[20px] rounded-full">
+
                                                     <img
                                                         src={`https://flagcdn.com/fr.svg`}
                                                         alt=""
@@ -192,11 +193,20 @@ export const Navbar = () => {
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
                                         ) : (
-                                            <img
-                                                src="https://source.boringavatars.com/beam"
-                                                className='rounded-full w-[35px] h-[35px]'
-                                                alt="user image"
-                                            />
+                                            session?.user?.img ? (
+                                                <img
+                                                    src={customerImage}
+                                                    className='rounded-full w-[35px] h-[35px]'
+                                                    alt="user image"
+                                                />
+                                            ) : (
+                                                <img
+                                                    src="https://source.boringavatars.com/beam"
+                                                    className='rounded-full w-[35px] h-[35px]'
+                                                    alt="user image"
+                                                />
+                                            )
+
                                         )}
                                         <div className="flex flex-col justify-start text-left">
                                             {loading ? (
@@ -207,7 +217,7 @@ export const Navbar = () => {
                                             ) : (
                                                 <>
                                                     <div className=" text-black text-sm font-semiBold">{firstName || ""}  </div>
-                                                    <div className=" text-black text-sm font-normal ">{session ? session.user.type : ""}</div>
+                                                    <div className=" text-black text-xs font-normal ">{session ? session.user.type : ""}</div>
                                                 </>
                                             )}
                                         </div>

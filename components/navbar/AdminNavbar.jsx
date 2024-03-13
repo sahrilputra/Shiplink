@@ -38,6 +38,8 @@ export const AdminNavbars = () => {
         return () => clearTimeout(timer);
     }, []);
 
+    const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
+
     return (
         <>
             {/*  */}
@@ -137,11 +139,19 @@ export const AdminNavbars = () => {
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
                                         ) : (
-                                            <img
-                                                src="https://source.boringavatars.com/beam"
-                                                className='rounded-full w-[35px] h-[35px]'
-                                                alt="user image"
-                                            />
+                                            session ? (
+                                                <img
+                                                    src={customerImage}
+                                                    className='rounded-full w-[35px] h-[35px]'
+                                                    alt="user image"
+                                                />
+                                            ) : (
+                                                <img
+                                                    src="https://source.boringavatars.com/beam"
+                                                    className='rounded-full w-[35px] h-[35px]'
+                                                    alt="user image"
+                                                />
+                                            )
                                         )}
                                         <div className="flex flex-col justify-start text-left">
                                             {loading ? (
@@ -154,7 +164,7 @@ export const AdminNavbars = () => {
                                                     <div className=" text-black text-sm font-semiBold">
                                                         {session ? session.user?.name : "User"}
                                                     </div>
-                                                    <div className=" text-black text-sm font-normal ">{session ? session.user?.role : "role"}</div>
+                                                    <div className=" text-black text-xs font-normal ">{session ? session.user?.role : "role"}</div>
                                                 </>
                                             )}
                                         </div>
