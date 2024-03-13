@@ -16,7 +16,7 @@ import { PackageStatus } from '@/components/PackageItemsUI/PackageStatus';
 import { PackageIndicator } from '@/components/PackageItemsUI/PackageIndicator';
 import { CopyIcons } from '@/components/icons/iconCollection';
 import { useToast } from '@/components/ui/use-toast';
-import { PaymentsDialog } from '../dashboardMenus/PaymentsV2/Payments';
+
 import { ExpandItems } from './ExpandItems';
 import format from 'date-fns/format';
 
