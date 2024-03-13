@@ -7,10 +7,11 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from "next-auth/react";
-import { getSession } from "next-auth/react";
 import { Loaders } from "@/components/ui/loaders";
 import { MailOpen } from "lucide-react";
-import { EmailDiallog } from "./components/EmailDialog";
+import { useSearchParams } from 'next/navigation'
+import axios from "axios";
+import { useToast } from '@/components/ui/use-toast'
 const formSchema = yup.object().shape({
     username: yup.string().required('Email/Username is required'),
     password: yup.string().required('Password is required'),
@@ -19,6 +20,12 @@ const formSchema = yup.object().shape({
 export default function Home() {
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false)
+
+    const { toast } = useToast()
+    const searchParams = useSearchParams()
+    const myParam = searchParams.get('email')
+    console.log("🚀 ~ Home ~ myParam:", myParam)
+
     const router = useRouter();
     const [open, setOpen] = useState(false)
 
@@ -27,12 +34,52 @@ export default function Home() {
             router.push('/dashboard');
         }
     }, [session, router])
+
+
+    const handleSubmit = async () => {
+        setLoading(true);
+        try {
+            await axios.post(
+                `/api/customerAPI/resendVerification`,
+                {
+                    email: myParam,
+                }
+            ).then((response) => {
+                console.log("🚀 ~ ).then ~ response:", response.status)
+                setLoading(false)
+                setOpen(false)
+                setLoading(false)
+                if (response.data.status === false || response.data.status === 'false') {
+                    toast({
+                        title: 'Error!',
+                        description: response.data.message,
+                        status: 'error',
+                    });
+                    return;
+                } else {
+                    toast({
+                        title: 'Email Sent! Please Check Your Email',
+                        description: response.data.message,
+                        status: 'success',
+                    });
+                }
+            })
+        } catch (error) {
+            setLoading(false)
+            console.log('Error:', error);
+            toast({
+                title: 'internal server error!',
+                description: error.message,
+                status: 'success',
+            });
+        }
+    }
     return (
         <>
             {
                 loading && <Loaders />
             }
-            <EmailDiallog open={open} setOpen={setOpen} />
+            {/* <EmailDiallog open={open} setOpen={setOpen} /> */}
             <div className="flex flex-col text-center pt-[90px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE] ">
                 <div className="flex flex-col gap-5 py-10">
                     <div className="text-myBlue text-lg font-bold">Please Check Your Email</div>
@@ -48,7 +95,7 @@ export default function Home() {
                             <p>Please Follow the link in your email to confimation your email</p>
                         </div>
                         <div className="py-3">
-                            <p>Didnt get email yet ? <div onClick={() => setOpen(true)} className="text-red-600 cursor-pointer">Resend Email</div></p>
+                            <p>Didnt get email yet ? <div onClick={() => handleSubmit()} className="text-red-600 cursor-pointer">Resend Email</div></p>
                         </div>
                     </div>
                 </div>

@@ -121,7 +121,7 @@ export default function Home() {
                             type: 'error',
                         })
 
-                        router.push('/auth/verification');
+                        router.push(`/auth/verification?email=${form.watch('username')}`);
                     }
                     if (responseMessage === "Incorrect") {
                         console.log("🚀 ~ ).then ~ Incorrect username and password:")
