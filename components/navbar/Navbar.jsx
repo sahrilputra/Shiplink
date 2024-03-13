@@ -55,7 +55,12 @@ export const Navbar = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>Ship</NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
+                                    Ship
+                                </NavigationMenuTrigger>
                                 <NavigationMenuContent className="flex justify-between flex-col">
                                     <Link href="/shipping-lebels/new-labels" legacyBehavior passHref>
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-10 flex justify-between `}>
@@ -77,7 +82,12 @@ export const Navbar = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>Track</NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
+                                    Track
+                                </NavigationMenuTrigger>
                                 <NavigationMenuContent className="flex justify-between flex-col">
                                     <Link href="/#" legacyBehavior passHref>
                                         <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
@@ -99,7 +109,10 @@ export const Navbar = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>Support</NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >Support</NavigationMenuTrigger>
                                 <NavigationMenuContent className="flex justify-between flex-col">
                                     <div className="w-[100%] ">
                                         <Link href="/#" legacyBehavior passHref
@@ -138,7 +151,10 @@ export const Navbar = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
                                     <div className="justify-start items-center gap-3 flex">
                                         <Image
                                             src={"/assets/country/uk-flag.png"}
@@ -188,7 +204,10 @@ export const Navbar = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
                                     <div className="justify-start items-center gap-3 flex p-2 w-[150px]">
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />

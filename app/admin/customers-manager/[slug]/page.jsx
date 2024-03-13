@@ -12,6 +12,8 @@ import { PaymentCards } from './components/PaymentsCard';
 import { NewPasswordDialog } from './components/menus/dialog/NewPasswordDialog';
 import { DeleteCustomer } from '../components/dialog/DeleteCustomer';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { MembershipTag } from '@/components/membership/MembershipTag';
 // import { CustomerInvoiceTable } from '../components/table/invoiceTable/CustomerInvoiceTable';
 export default function UserPage({ params }) {
     const router = useRouter();
@@ -87,9 +89,7 @@ export default function UserPage({ params }) {
                                 <p>{data?.email}</p>
                                 <p>{data?.phone_number || "undefined"}</p>
                             </div>
-                            <div className="bg-green-50 border border-green-200 rounded-sm text-xs mt-3">
-                                <p className="px-3 py-2">{data?.customer_plans}</p>
-                            </div>
+                            <MembershipTag plans={data?.customer_plans || "Free"} />
                             <div className="ButtonGroup flex flex-col gap-2 py-3">
                                 <Button
                                     variant="destructive"

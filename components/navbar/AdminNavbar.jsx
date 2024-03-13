@@ -57,7 +57,10 @@ export const AdminNavbars = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
                                     <div className="flex flex-row gap-2 items-center">
                                         <BellIcon width={20} height={20} />
                                         <p>Notification</p>
@@ -83,7 +86,10 @@ export const AdminNavbars = () => {
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
                                     <div className="justify-start items-center gap-3 flex">
                                         <Image
                                             src={"/assets/country/uk-flag.png"}
@@ -134,7 +140,10 @@ export const AdminNavbars = () => {
                     >
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>
+                                <NavigationMenuTrigger
+                                    onPointerEnter={(event) => event.preventDefault()}
+                                    onPointerLeave={(event) => event.preventDefault()}
+                                >
                                     <div className="justify-start items-center gap-3 flex p-2 w-[150px]">
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
