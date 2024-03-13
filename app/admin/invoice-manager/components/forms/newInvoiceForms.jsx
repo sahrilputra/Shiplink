@@ -46,7 +46,7 @@ import { cn } from "@/lib/utils"
 import axios from 'axios';
 import { Loaders } from '@/components/ui/loaders'
 import { format } from "date-fns"
-
+import { ContentForms } from './ContentForms'
 
 const formSchema = yup.object().shape({
     InvoiceNo: yup.string(),
@@ -83,7 +83,7 @@ const formSchema = yup.object().shape({
 
 
 
-export const InvoiceForms = () => {
+export const InvoiceForms = ({ customer = null }) => {
 
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -134,6 +134,7 @@ export const InvoiceForms = () => {
         index: 0
     });
 
+
     const [taxQuery, setTaxQuery] = useState({
         keyword: "",
         page: 1,
@@ -149,12 +150,18 @@ export const InvoiceForms = () => {
                 );
                 console.log(response)
                 const data = await response.data;
+                if (customer) {
+                    const findCustomer = data.customer.find(item => item.customer_id === customer)
+                    console.log("🚀 ~ fetchData ~ findCustomer:", findCustomer)
+                    form.setValue("userName", findCustomer.customer_name)
+                    form.setValue("userID", findCustomer.customer_id)
+                    form.setValue("userEmails", findCustomer.email)
+                }
                 setCustomerData(data.customer);
             } catch (error) {
                 console.log('Error:', error);
             }
         };
-
         fetchData();
     }, [query]);
 
@@ -182,30 +189,13 @@ export const InvoiceForms = () => {
         name: "items",
     });
 
+    console.log("🚀 ~ InvoiceForms ~ fields:", fields)
+
     const items = watch('items');
     const itemTax = parseFloat(watch('itemTax') || 0);
     const itemDiscount = parseFloat(watch('itemDiscount') || 0);
     const [subTotal, setSubTotal] = useState(0);
     console.log("🚀 ~ InvoiceForms ~ subTotal:", subTotal)
-    useEffect(() => {
-        const calculateSubTotal = (items) => {
-            let subTotal = 0;
-            items.forEach(item => {
-                if (typeof item.itemQty === 'number' && typeof item.itemPrice === 'number') {
-                    subTotal += (item.itemQty * item.itemPrice);
-                }
-            });
-            return subTotal;
-        };
-        const subtotal = calculateSubTotal(form.getValues('items'));
-        console.log("🚀 ~ useEffect ~ subtotal:", subtotal)
-        if (!isNaN(subtotal)) {
-            setValue('subtotal', subtotal);
-        } else {
-            setValue('subtotal', 0);
-        }
-        setSubTotal(subtotal);
-    }, [form.getValues('items'), setValue]);
 
     const onError = (error) => {
         console.log("Form Errors", error)
@@ -230,6 +220,33 @@ export const InvoiceForms = () => {
         }
     }
 
+    const handleSubTotal = () => {
+        console.log('running counting subtotal')
+        let total = 0;
+        fields.map((item, index) => {
+            const itemAmount = form.watch(`items[${index}].itemAmount`)
+            total += parseFloat(itemAmount)
+        })
+        setSubTotal(total)
+        form.setValue('subtotal', total)
+    }
+    // Totals
+    useEffect(() => {
+        const calculateTotal = () => {
+
+            // Apply tax
+            const taxAmount = (form.getValues('subtotal') * form.getValues('itemTax')) / 100;
+
+            // Apply discount
+            const discountAmount = (form.getValues('subtotal') * form.getValues('itemDiscount')) / 100;
+
+            // Calculate total
+            const total = form.getValues('subtotal') + taxAmount - discountAmount;
+            setValue("itemTotal", total);
+            return total;
+        };
+        calculateTotal();
+    }, [form.watch('subtotal'), form.watch('itemTax'), form.watch('itemDiscount')]);
 
     return (
         <>
@@ -279,7 +296,7 @@ export const InvoiceForms = () => {
                                                     <Select
                                                         className="w-full text-xs h-[30px]"
                                                         onValueChange={field.onChange}
-                                                        defaultValue={"CAD"}
+                                                        defaultValue={field.value}
                                                     >
                                                         <FormControl>
                                                             <SelectTrigger className="text-xs h-[30px] rounded-sm">
@@ -365,62 +382,7 @@ export const InvoiceForms = () => {
                                         )}
                                     />
                                 </div>
-                                {/* <div className="nameWrapper flex flex-row gap-2 w-[100%] text-xs ">
-                                    <FormField
-                                        className="w-[40%] "
-                                        name="userPhone"
-                                        control={form.control}
-                                        render={({ field, formState }) => (
-                                            <>
-                                                <FormItem className="space-y-1 w-[40%] text-xs">
-                                                    <FormLabel className=" font-bold">Phone Number</FormLabel>
-                                                    <FormControl>
-                                                        <InputMask
-                                                            mask="+999 999 999 9999"
-                                                            maskChar={null}
-                                                            maskPlaceholder="0000.00.0000"
-                                                            className={`text-xs h-[30px] pl-2`}
 
-                                                            {...field}
-                                                        >
-                                                            {(inputProps) => (
-                                                                <Input
-                                                                    className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                                                    id="customer_phone"
-                                                                    type="text"
-                                                                    placeholder="+1.000.000.0000"
-                                                                    {...inputProps}
-
-                                                                />
-                                                            )}
-                                                        </InputMask>
-                                                    </FormControl>
-                                                </FormItem>
-                                            </>
-                                        )}
-                                    />
-                                    <FormField
-                                        name="userEmails"
-                                        className="w-full text-xs"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <>
-                                                <FormItem className="w-full space-y-1 text-xs">
-                                                    <FormLabel className="text-xs font-bold">Email</FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            size="new"
-                                                            id="userEmails"
-                                                            type="text"
-                                                            className="text-xs"
-                                                            placeholder="Emails" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            </>
-                                        )}
-                                    />
-                                </div> */}
                             </div>
 
                             <div className="w-full">
@@ -711,7 +673,7 @@ export const InvoiceForms = () => {
 
                                 <div className="button-group flex flex-col gap-2 py-2 w-full mx-auto">
                                     <div className="flex flex-row justify-between gap-3">
-                                        <Button
+                                        {/* <Button
                                             variant="redOutline"
                                             type="button"
                                             className=" h-[30px] w-full rounded-sm px-4 py-0"
@@ -719,15 +681,15 @@ export const InvoiceForms = () => {
 
                                         >
                                             <p className='text-xs'>Preview</p>
-                                        </Button>
-                                        <Button
+                                        </Button> */}
+                                        {/* <Button
                                             variant="redOutline"
                                             type="button"
                                             className=" h-[30px] w-full rounded-sm px-4 py-0"
                                             size="sm"
                                         >
                                             <p className='text-xs'>Download</p>
-                                        </Button>
+                                        </Button> */}
                                     </div>
                                     <Button
                                         variant="destructive"
@@ -757,114 +719,14 @@ export const InvoiceForms = () => {
                             <TableBody>
                                 {
                                     fields.map((field, index) => (
-                                        <TableRow
+                                        <ContentForms
+                                            handleSubTotal={handleSubTotal}
                                             key={field.id}
+                                            form={form}
                                             index={index}
-                                        >
-                                            <TableCell className="font-medium">
-                                                <FormField
-                                                    className="w-full"
-                                                    name={`items[${index}].itemID`}
-                                                    control={form.control}
-                                                    disabled={true}
-                                                    render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="text-xs">
-                                                                <FormControl>
-                                                                    <Input
-                                                                        size="new"
-                                                                        id="itemID" className="text-xs" placeholder="1" {...field} />
-                                                                </FormControl>
-
-                                                            </FormItem>
-                                                        </>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <FormField
-                                                    className="w-full"
-                                                    name={`items[${index}].itemDescription`}
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="text-xs">
-                                                                <FormControl>
-                                                                    <Input
-                                                                        size="new"
-                                                                        id="itemDescription" className="text-xs" placeholder="Description" {...field} />
-                                                                </FormControl>
-
-                                                            </FormItem>
-                                                        </>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <FormField
-                                                    className="w-[100px]"
-                                                    name={`items[${index}].itemQty`}
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="text-xs">
-                                                                <FormControl>
-                                                                    <Input
-                                                                        size="new"
-                                                                        id="itemQty" type="number" className="text-xs" placeholder="1" {...field} />
-                                                                </FormControl>
-                                                            </FormItem>
-                                                        </>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <FormField
-                                                    className="w-[10%]"
-                                                    name={`items[${index}].itemPrice`}
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="text-xs">
-                                                                <FormControl>
-                                                                    <Input
-                                                                        size="new"
-                                                                        id="itemPrice" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
-                                                                </FormControl>
-                                                            </FormItem>
-                                                        </>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <FormField
-                                                    className="w-[10%]"
-                                                    name={`items[${index}].itemAmount`}
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="text-xs">
-                                                                <FormControl>
-                                                                    <Input
-                                                                        size="new"
-                                                                        id="itemAmount" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
-                                                                </FormControl>
-                                                            </FormItem>
-                                                        </>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell className="w-[50px]">
-                                                <Button
-                                                    onClick={() => remove(index)}
-                                                    variant="tableBlue"
-                                                    size="xs"
-                                                    type='button'
-                                                    className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                                    <Delete width={15} height={15} />
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
+                                            field={field}
+                                            remove={() => remove(index)}
+                                        />
                                     ))
                                 }
 
@@ -897,7 +759,7 @@ export const InvoiceForms = () => {
                             <div className="w-[30%] flex justify-end flex-col gap-2 px-5">
                                 <div className="flex flex-row justify-between items-center ">
                                     <p className='font-bold text-myBlue'>Subtotal</p>
-                                    <p className='font-bold text-myBlue'>$ {subTotal}</p>
+                                    <p className='font-bold text-myBlue'>$ {form.watch('subtotal')}</p>
                                 </div>
                                 <Separator className="w-full" />
                                 <div className="flex flex-row justify-between items-center ">
@@ -921,7 +783,6 @@ export const InvoiceForms = () => {
                                                                 {...field}
                                                             />
                                                         </FormControl>
-                                                        <FormMessage />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -947,7 +808,7 @@ export const InvoiceForms = () => {
                                                                 <SelectTrigger className="text-xs h-[30px] rounded-sm">
                                                                     <SelectValue
                                                                         className="w-full text-xs h-[30px]"
-                                                                        placeholder="Select Tax"
+                                                                        placeholder={`${field.value ? field.value : "Select Tax"}`}
                                                                     />
                                                                 </SelectTrigger>
                                                             </FormControl>
@@ -955,7 +816,7 @@ export const InvoiceForms = () => {
                                                                 {
                                                                     taxList?.map((item, index) => (
                                                                         <SelectItem
-                                                                            key={item.tax_id}
+                                                                            key={index}
                                                                             value={item?.tax_rate}
                                                                             className="text-xs"
                                                                         >

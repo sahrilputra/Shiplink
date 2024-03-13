@@ -226,8 +226,8 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                                                     No Country found.
                                                 </CommandEmpty>
 
-                                                <CommandGroup className="h-[150px]">
-                                                    <ScrollArea className="h-[150px]">
+                                                <CommandGroup className="">
+                                                    <ScrollArea className="h-[150px] w-full ">
                                                         {console.log(field.value)}
                                                         {country.map((item) => (
                                                             <>

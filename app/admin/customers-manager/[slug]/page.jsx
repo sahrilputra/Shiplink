@@ -100,7 +100,7 @@ export default function UserPage({ params }) {
                                 >
                                     <p className="text-xs">Edit Profiles</p>
                                 </Button>
-                                <MoreAction setOpenPassword={setOpenPassword} setOpenDelete={setOpenDelete} />
+                                <MoreAction setOpenPassword={setOpenPassword} setOpenDelete={setOpenDelete} customerID={data?.customer_id} />
                             </div>
                         </div>
                     </div>
