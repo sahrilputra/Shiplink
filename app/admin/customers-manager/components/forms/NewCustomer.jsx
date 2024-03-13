@@ -106,11 +106,20 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                 `/api/admin/customer_manager/setData`,
                 formData
             );
-            toast({
-                title: `New Customer ${formData.customer_name} is created!`,
-                description: response.data.message,
-                status: 'success',
-            });
+
+            if (response.data.message !== true) {
+                toast({
+                    title: `Error ${response.data.message}!`,
+                    status: 'success',
+                });
+            } else {
+                toast({
+                    title: `Sucess Customer ${formData.customer_name} is created!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            }
+            
             setLoading(false)
             close();
             reload();

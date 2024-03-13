@@ -38,6 +38,7 @@ export async function POST(request) {
                 },
             }
         );
+        console.log("🚀 ~ POST ~ response:", response)
         if (response.status === 200) {
             const responseData = {
                 status: true,
