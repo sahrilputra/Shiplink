@@ -53,6 +53,7 @@ export const DeclareContentInput = ({
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
+                                            autoComplete="off"
                                             min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="width"
@@ -79,6 +80,7 @@ export const DeclareContentInput = ({
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
+                                            autoComplete="off"
                                             min="0"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="value"
@@ -103,6 +105,7 @@ export const DeclareContentInput = ({
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
+                                            autoComplete="off"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="desc"
                                             placeholder="Description" {...field} />
@@ -123,6 +126,7 @@ export const DeclareContentInput = ({
                                 <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
+                                            autoComplete="off"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="hs_desc" placeholder="HS Description" {...field} />
                                     </FormControl>
@@ -148,6 +152,7 @@ export const DeclareContentInput = ({
                                         >
                                             {(inputProps) => (
                                                 <Input
+                                                autoComplete="off"
                                                     className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                                     id="hs_code"
                                                     type="text"

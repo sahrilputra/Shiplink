@@ -90,7 +90,10 @@ export const DeclareContet = ({
                                 size="sm"
                                 type="button"
                                 className="px-4 h-7 py-3"
-                                onClick={() => append({})}
+                                onClick={() => append({
+                                    qty: 0,
+                                    value: 0,
+                                })}
                             >
                                 <p className='text-xs'>Add Other Content</p>
                             </Button>

@@ -234,7 +234,7 @@ export default function ArrivalScanPage() {
                             <Separator className="h-[2px]" />
                         </div>
 
-                        <div className="contentImage w-[100%] bg-blue-50 mx-auto">
+                        <div className={`contentImage w-[100%] bg-blue-50 mx-auto  ${allImages.length === 0 && "hidden"}`}>
                             <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
                                 <Carousel
                                     opts={{
