@@ -5,14 +5,30 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/f
 import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/tableDashboard'
 import { CheckIcon, XIcon } from 'lucide-react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid'
+
+import { cn } from "@/lib/utils"
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
 export const DeclareContentInput = ({
     forms,
     index,
     handleRemoveContent,
     itemID,
+    countryList
 }) => {
 
     const countingSubtotal = ({ qty = 0, value = 0 }) => {
@@ -23,6 +39,7 @@ export const DeclareContentInput = ({
         forms.setValue(`package_content[${index}].subtotal`, parseQty * parseValue)
     }
 
+    const [openCountry, setOpenCountry] = useState(false);
     return (
         <>
             <TableRow className="text-xs px-2">
@@ -153,14 +170,69 @@ export const DeclareContentInput = ({
                         control={forms.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full text-sm">
+                                <FormItem className="flex flex-col">
+                                    <Popover open={openCountry} onOpenChange={setOpenCountry} >
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    className={cn(
+                                                        "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none",
+                                                        !field.value && "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    {field.value
+                                                        ? countryList.find(
+                                                            (language) => language.country_code === field.value
+                                                        )?.country_code
+                                                        : "CAN"}
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[120px] p-0">
+                                            <Command>
+                                                <CommandInput
+                                                    placeholder="Search..."
+                                                    className="h-[30px] text-xs"
+                                                />
+                                                <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
+                                                <CommandGroup>
+                                                    {countryList.map((language) => (
+                                                        <CommandItem
+                                                            className="text-xs items-center"
+                                                            value={language.country_code}
+                                                            key={language.country_id}
+                                                            onSelect={() => {
+                                                                forms.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
+                                                                setOpenCountry(false)
+                                                            }}
+                                                        >
+                                                            {language.country_code}
+                                                            <CheckIcon
+                                                                className={cn(
+                                                                    "ml-auto h-4 w-4",
+                                                                    language.country_code === field.value
+                                                                        ? "opacity-100"
+                                                                        : "opacity-0"
+                                                                )}
+                                                            />
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                </FormItem>
+                                {/* <FormItem className="w-full text-sm">
                                     <FormControl>
                                         <Input
                                             max="3"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase"
                                             id="made_in" placeholder="CAN" {...field} />
                                     </FormControl>
-                                </FormItem>
+                                </FormItem> */}
                             </>
                         )}
                     />

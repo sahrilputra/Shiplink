@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { HSCodeForms, QtyForm, DescriptionForms, HSDescriptionForms, MadeInForms, ValueForms } from './inputForms'
 import { Input } from '@/components/ui/input'
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { DeclareContentInput } from './DeclareContentInput'
+import axios from 'axios'
 import {
     FormControl,
     FormField,
@@ -31,6 +32,29 @@ export const DeclareContet = ({
     reset
 }) => {
 
+    const [countryList, setCountryList] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    {
+                        "keyword": "",
+                        "page": 0,
+                        "limit": 0,
+                        "index": 0,
+                    }
+                );
+                console.log("🚀 ~ response:", response);
+                setCountryList(response.data.country);
+            } catch (error) {
+                console.log("🚀 ~ error:", error);
+                fetchData();
+            }
+        };
+        fetchData();
+    }, [])
 
     return (
         <>
@@ -47,6 +71,7 @@ export const DeclareContet = ({
                 <TableBody>
                     {fields.map((field, index) => (
                         <DeclareContentInput
+                            countryList={countryList}
                             key={field.id}
                             index={index}
                             forms={forms}
@@ -109,7 +134,7 @@ export const DeclareContet = ({
                                     type="submit"
                                     className=" h-[30px] rounded-sm px-4 py-0"
                                     size="sm"
-                                 
+
                                 >
                                     <p className='text-xs'>Register Package</p>
                                 </Button>
