@@ -145,6 +145,7 @@ export default function ArrivalScanPage() {
                 setOpen(true);
                 setUserID(formData.customer_id)
                 setUserName(formData.customer_name)
+                form.reset();
                 toast({
                     title: `New Package Has Register to ${formData.customer_name}!`,
                     description: response.data.message,
@@ -207,6 +208,7 @@ export default function ArrivalScanPage() {
             console.log('Error:', error);
         }
     }
+
 
     useEffect(() => {
         fetchBinData();
@@ -272,6 +274,7 @@ export default function ArrivalScanPage() {
                                 remove={remove}
                                 forms={form}
                                 binData={binData}
+                                reset={form.reset}
                             />
                             <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} userID={userID} />
                         </div>

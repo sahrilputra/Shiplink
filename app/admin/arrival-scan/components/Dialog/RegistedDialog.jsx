@@ -26,6 +26,10 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
         content: () => componentRef.current,
     });
 
+    const handleDownload = () => {
+        toPDF();
+    };
+
     console.log("Tracking ID :", trackingID)
 
     const [isSkeleton, setIsSkeleton] = useState(true);
@@ -54,6 +58,44 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
         setData(trackingID)
     }, [trackingID]);
 
+    const [img, setImage] = useState("");
+
+    useEffect(() => {
+        try {
+            axios.post(
+                `/api/admin/BarcodeImg`,
+                {
+                    "data": trackingID
+                }
+            ).then((response) => {
+                console.log("🚀 ~ RegisterDialog ~ response:", response)
+                const responseData = response.data;
+                console.log("🚀 ~ ).then ~ responseData:", responseData)
+                setImage(responseData.data);
+
+            }).catch((error) => {
+                console.error(error);
+
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }, [trackingID])
+
+    console.log("🚀 ~ RegisterDialog ~ img:", img)
+
+    // useEffect(() => {
+    //     const convertImage = async () => {
+    //         const imgURL = `https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`
+    //         const base64String = btoa(imgURL);
+    //         setImage(imgURL)
+    //         console.log("🚀 ~ RegisterDialog ~ base64String:", base64String)
+    //     }
+    //     convertImage();
+    // }, [trackingID])
+    // const imgURL = `https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`
+    // const base64String = btoa(imgURL);
+    // console.log("🚀 ~ RegisterDialog ~ base64String:", base64String)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="w-max">
@@ -61,8 +103,8 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
                     <DialogTitle className="text-lg font-bold">Package Registered!</DialogTitle>
                 </DialogHeader>
 
-                <div className="w-max" ref={componentRef}>
-                    <div className="border border-neutral-500/50 rounded-sm p-5 " ref={targetRef}>
+                <div className="w-max" ref={ref => { componentRef.current = ref; targetRef.current = ref }}>
+                    <div className="border border-neutral-500/50 rounded-sm p-5 ">
                         <Image
                             src={"/logo.png"}
                             width={100}
@@ -78,7 +120,7 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
                         </div>
                         <div className="w-full flex flex-col justify-center items-center p-1">
                             <img
-                                src={`https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`}
+                                src={`${img}`}
                                 style={{ height: '80px', width: "100%", objectFit: "contain" }}
                                 alt="" />
                             <p className="text-center tracking-wider py-2">{trackingID}</p>

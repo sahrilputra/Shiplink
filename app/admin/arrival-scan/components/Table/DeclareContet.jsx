@@ -27,7 +27,8 @@ export const DeclareContet = ({
     append,
     remove,
     total,
-    binData
+    binData,
+    reset
 }) => {
 
 
@@ -108,7 +109,7 @@ export const DeclareContet = ({
                                     type="submit"
                                     className=" h-[30px] rounded-sm px-4 py-0"
                                     size="sm"
-
+                                 
                                 >
                                     <p className='text-xs'>Register Package</p>
                                 </Button>

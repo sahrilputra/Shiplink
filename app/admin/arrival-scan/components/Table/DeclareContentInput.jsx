@@ -100,6 +100,7 @@ export const DeclareContentInput = ({
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].hs_desc`}
                         control={forms.control}
+                        disabled={true}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
