@@ -70,7 +70,7 @@ export const ArrivalForms = ({
     const [customerID, setCustomerID] = useState('')
     const [newData, setNewData] = useState(null)
     const [disabled, setDisabled] = useState(false);
-
+    const [openCustomer, setOpenCustomer] = useState(false)
     const handleDataChange = (e) => {
 
         setCustomerID(e.target.value)
@@ -192,6 +192,78 @@ export const ArrivalForms = ({
                             control={forms.control}
                             render={({ field, formState }) => (
                                 <>
+                                    <FormLabel className="font-bold">Search Customer</FormLabel>
+                                    <FormItem className="flex flex-col">
+                                        <Popover open={openCustomer} onOpenChange={setOpenCustomer} >
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        className={cn(
+                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 shadow-none text-left normal-case justify-start",
+                                                            !field.value && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        {field.value
+                                                            ? customerData.find(
+                                                                (language) => language.customer_name === field.value
+                                                            )?.customer_id
+                                                            : "Search Customer"}
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[500px] p-0">
+                                                <Command className=" bg-blue-100">
+                                                    <CommandInput
+                                                        placeholder="Search..."
+                                                        className="h-[30px] text-xs"
+                                                    />
+                                                    <CommandEmpty className="text-xs px-1 py-2 text-center">No Customer Found.</CommandEmpty>
+                                                    <CommandGroup >
+                                                        <ScrollArea className="min-h-max h-[200px]" >
+                                                            {customerData.map((language) => (
+                                                                <CommandItem
+                                                                    className="text-xs items-center"
+                                                                    value={language.customer_name}
+                                                                    key={language.customer_id}
+                                                                    autoFocus={false}
+                                                                    onSelect={() => {
+                                                                        forms.setValue("test", language.customer_name)
+                                                                        forms.setValue("customer_id", language.customer_id)
+                                                                        setInputValue(language.customer_name)
+                                                                        handleDataChange({ target: { value: language.customer_id } })
+                                                                        setOpenCustomer(false)
+                                                                        const inputElement = inputRef.current;
+                                                                        if (inputElement) {
+                                                                            inputElement.blur(); // Menonaktifkan fokus dari elemen input
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <div className='text-xs w-full justify-between flex flex-row items-center'>
+                                                                        <p className='w-[100px]'>{language.customer_name}</p>
+                                                                        <p className='w-[5px]'>|</p>
+                                                                        <p className='w-[100px]'>{language.customer_id}</p>
+                                                                        <p className='w-4'></p>
+                                                                    </div>
+                                                                    <CheckIcon
+                                                                        className={cn(
+                                                                            "ml-auto h-4 w-4",
+                                                                            language.customer_name === field.value
+                                                                                ? "opacity-100"
+                                                                                : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                </CommandItem>
+                                                            ))}
+                                                        </ScrollArea>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                    {/*                                 
                                     <FormItem className="w-full text-xs ">
                                         <FormLabel className="font-bold">Search Customer</FormLabel>
                                         <FormControl className="w-full relative">
@@ -271,7 +343,7 @@ export const ArrivalForms = ({
                                                 </div>
                                             </CommandPrimitive>
                                         </FormControl>
-                                    </FormItem>
+                                    </FormItem> */}
                                 </>
                             )}
                         />
