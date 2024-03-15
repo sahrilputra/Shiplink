@@ -25,7 +25,9 @@ export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuItem>
-                    <p className='text-blue-900 text-xs'>Showing All Package</p>
+                    <NextLink href={`/admin/package-details/customer/${customerID}`} passHref>
+                        <p className='text-blue-900 text-xs'>Showing All Package</p>
+                    </NextLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <NextLink href={`/admin/invoice-manager/invoice?customer=${customerID}`} passHref>
