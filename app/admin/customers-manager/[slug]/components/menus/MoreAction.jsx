@@ -24,22 +24,21 @@ export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID }) => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    <NextLink href={`/admin/package-details/customer/${customerID}`} passHref>
+                <NextLink href={`/admin/package-details/customer/${customerID}`} passHref>
+                    <DropdownMenuItem>
                         <p className='text-blue-900 text-xs'>Showing All Package</p>
-                    </NextLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <NextLink href={`/admin/invoice-manager/invoice?customer=${customerID}`} passHref>
+                    </DropdownMenuItem>
+                </NextLink>
+                <NextLink href={`/admin/invoice-manager/invoice?customer=${customerID}`} passHref>
+                    <DropdownMenuItem>
                         <p className='text-xs'>Send Invoice</p>
-                    </NextLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <p className='text-xs'>Reference Friends</p>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <p className='text-xs'>Transaction History</p>
-                </DropdownMenuItem>
+                    </DropdownMenuItem>
+                </NextLink>
+                <NextLink href={`/admin/customers-manager/invoice/${customerID}`} passHref>
+                    <DropdownMenuItem>
+                        <p className='text-xs'>Invoice List</p>
+                    </DropdownMenuItem>
+                </NextLink>
                 <DropdownMenuItem
                     onClick={() => setOpenPassword(true)}
                 >

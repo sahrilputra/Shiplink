@@ -41,11 +41,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from 'axios'
-import { UpdateInvoiceStatus } from "@/app/admin/invoice-manager/components/dialog/UpdateInvoiceStatus";
-import { MenusInv } from "./MenusInv";
-import { DeleteInvoiceDialog } from "@/app/admin/invoice-manager/components/dialog/DeleteInvoiceDialog";
+import { InvoiceMenus } from "./dialog/InvoiceMenus";
 
-export function CustomerInvoiceTable({ CustomerID }) {
+export function InvoiceTable({ CustomerID }) {
+
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false);
@@ -56,32 +55,56 @@ export function CustomerInvoiceTable({ CustomerID }) {
     const [query, setQuery] = useState({
         keyword: "",
         invoice_id: "",
-        page: 0,
+        page: 1,
         limit: 0,
         index: 0
     });
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/invoice/list`,
+                query
+            );
+            console.log(response)
+            const data = await response.data;
+            setData(data.invoice);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/invoice/list`,
-                    query
-                );
-                console.log(response.data.invoice)
-                const data = await response.data.invoice;
-                const filterData = data.filter((item) => item.user_code === CustomerID)
-                setData(filterData);
-                setIsSkeleton(false);
-            } catch (error) {
-                fetchData();
-                console.log('Error:', error);
-            }
-        };
         fetchData();
-    }, [query, CustomerID]);
+    }, [query]);
 
     const columns = [
+        {
+            accessorKey: "select",
+            id: "select",
+            header: ({ table }) => {
+                return (
+                    <Checkbox
+                        checked={
+                            table.getIsAllPageRowsSelected() ||
+                            (table.getIsSomePageRowsSelected() && "indeterminate")
+                        }
+                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        aria-label="Select all"
+                    />
+                )
+            },
+            cell: ({ row }) => {
+                return (
+                    <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                    />
+                )
+            },
+        },
         {
             accessorKey: "invoice_id",
             header: "Inovice ID",
@@ -97,6 +120,8 @@ export function CustomerInvoiceTable({ CustomerID }) {
         {
             accessorKey: "email",
             header: "Customer Email",
+
+
         },
         {
             accessorKey: "total",
@@ -106,6 +131,32 @@ export function CustomerInvoiceTable({ CustomerID }) {
             accessorKey: "status",
             header: "Status",
         },
+        {
+            id: "Action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex flex-row gap-2">
+                        <NextLink href={`/view/invoice/${row.original.invoice_id}`}>
+                            <Button
+                                variant="secondary"
+                                className=" px-[5px] h-[25px] text-[11px] flex flex-row justify-center gap-1 items-center">
+                                <p>View</p>
+                            </Button>
+                        </NextLink>
+                        <InvoiceMenus handler={handlerStatus} invID={row.original.invoice_id} />
+                        <Button
+                            variant="tableBlue"
+                            className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center"
+                            onClick={() => handlerDelete(row.original.invoice_id)}
+                        >
+                            <Delete width={15} height={15} />
+                        </Button>
+
+                    </div>
+                )
+            },
+        }
     ]
 
 
@@ -170,11 +221,8 @@ export function CustomerInvoiceTable({ CustomerID }) {
     const selectedRows = table.getSelectedRowModel().rows.map(row => row.original.invoice_id);
     return (
         <>
-            <UpdateInvoiceStatus open={openStatus} setOpen={setOpenStatus} dataID={invStatusID} reload={reloadData} />
-            <DeleteInvoiceDialog open={openDelete} setOpen={setOpenDelete} deleteID={invoiceID} reloadData={reloadData} />
             <div className="">
                 <Table className=" rounded-md">
-
                     <TableHeader className="text-sm">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <>
@@ -245,7 +293,11 @@ export function CustomerInvoiceTable({ CustomerID }) {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-between space-x-2 py-1 w-full">
+            <div className="flex items-center justify-between space-x-2 py-4 w-full">
+                <div className=" text-sm text-muted-foreground w-full">
+                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                    {table.getFilteredRowModel().rows.length} row(s) selected.
+                </div>
                 <div className="w-full flex justify-end">
                     <Pagination className={"justify-end"}>
                         <PaginationContent>
@@ -258,6 +310,24 @@ export function CustomerInvoiceTable({ CustomerID }) {
                                     }}
                                     disabled={!table.getCanPreviousPage()}
                                 />
+                            </PaginationItem>
+                            {/* <PaginationItem>
+                                <div className="flex flex-row">
+                                    {table.getPageOptions().map((page) => (
+                                        <PaginationLink
+                                            className={"gap-1 px-2 py-1 h-[30px] text-xs"}
+                                            key={page}
+                                            href="#"
+                                            onClick={() => table.gotoPage(page)}
+                                            isActive={table.getCanNextPage()}
+                                        >
+                                            {page + 1}
+                                        </PaginationLink>
+                                    ))}
+                                </div>
+                            </PaginationItem> */}
+                            <PaginationItem>
+                                <PaginationEllipsis />
                             </PaginationItem>
                             <PaginationItem>
                                 <PaginationNext
