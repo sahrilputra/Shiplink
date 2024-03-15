@@ -8,7 +8,6 @@ import { CheckIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid'
-
 import { cn } from "@/lib/utils"
 import {
     Command,
@@ -28,7 +27,8 @@ export const DeclareContentInput = ({
     index,
     handleRemoveContent,
     itemID,
-    countryList
+    countryList,
+    setCodeNumber,
 }) => {
 
     const countingSubtotal = ({ qty = 0, value = 0 }) => {
@@ -152,11 +152,14 @@ export const DeclareContentInput = ({
                                         >
                                             {(inputProps) => (
                                                 <Input
-                                                autoComplete="off"
+                                                    autoComplete="off"
                                                     className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                                     id="hs_code"
                                                     type="text"
                                                     placeholder="0000.00.0000"
+                                                    onValueChange={(value) => {
+                                                        setCodeNumber(value.value)
+                                                    }}
                                                     {...inputProps}
                                                 />
                                             )}

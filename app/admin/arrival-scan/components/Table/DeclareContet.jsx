@@ -22,6 +22,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import hsCode from '@/data/hsCode/hsCode.json'
 export const DeclareContet = ({
     forms,
     fields,
@@ -32,8 +33,8 @@ export const DeclareContet = ({
     reset
 }) => {
 
-    const [countryList, setCountryList] = useState([]);
 
+    const [countryList, setCountryList] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -56,6 +57,21 @@ export const DeclareContet = ({
         fetchData();
     }, [])
 
+    const [hsCodeList, setHSCodeList] = useState(null);
+    const [codeNumber, setCodeNumber] = useState("");
+
+    useEffect(() => {
+        const filterHsCode = hsCode.map((hs) => {
+            return {
+                description: hs.description,
+                htsno: hs.htsno
+            };
+        })
+        setHSCodeList(filterHsCode);
+    }, [])
+    
+    console.log("🚀 ~ hsCodeList:", hsCodeList)
+
     return (
         <>
             <Table>
@@ -77,6 +93,7 @@ export const DeclareContet = ({
                             forms={forms}
                             handleRemoveContent={() => remove(index)}
                             itemID={field.itemID}
+                            setCodeNumber={setCodeNumber}
                         />
                     ))}
                 </TableBody>
