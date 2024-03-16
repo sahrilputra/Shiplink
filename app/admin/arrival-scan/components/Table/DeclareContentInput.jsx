@@ -214,7 +214,7 @@ export const DeclareContentInput = ({
                                                     </div>
                                                 ))}
                                             </ScrollArea> */}
-                                            <ScrollArea className="min-h-min max-h-[200px]">
+                                            <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
                                                 {filteredHSCodes.length > 0 ? (
                                                     filteredHSCodes.map((item) => (
                                                         <div
