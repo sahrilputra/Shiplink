@@ -61,6 +61,8 @@ export const DeclareContentInput = ({
                 });
             };
             setFilteredHSCodes(filterHS());
+        } else if (hsCode?.length >= 10) {
+            setIsHsOpen(false);
         } else {
             setIsHsOpen(false);
         }
@@ -193,10 +195,10 @@ export const DeclareContentInput = ({
                                             </InputMask>
                                         </FormControl>
 
-                                        <div className={`hs  fixed right-[180px] w-[300px] flex flex-col gap-1 bg-white rounded-sm z-30 px-2 py-2 shadow border
+                                        <div className={`hs fixed right-[180px] w-[300px] flex flex-col gap-1 bg-white rounded-sm z-30 px-2 py-2 shadow border
                                         ${isHsOpen ? "fixed" : "hidden"}
                                         `}>
-                                            <ScrollArea className="h-[200px]">
+                                            {/* <ScrollArea className="h-[200px]">
                                                 {filteredHSCodes.map((item) => (
                                                     <div
                                                         key={item.id}
@@ -211,6 +213,26 @@ export const DeclareContentInput = ({
                                                         {item.description}
                                                     </div>
                                                 ))}
+                                            </ScrollArea> */}
+                                            <ScrollArea className="min-h-min max-h-[200px]">
+                                                {filteredHSCodes.length > 0 ? (
+                                                    filteredHSCodes.map((item) => (
+                                                        <div
+                                                            key={item.id}
+                                                            className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
+                                                            onClick={() => {
+                                                                field.onChange(item.hs_code);
+                                                                setIsHsOpen(false);
+                                                                forms.setValue(`package_content[${index}].hs_desc`, item.description);
+                                                                forms.setValue(`package_content[${index}].hs_code`, item.htsno);
+                                                            }}
+                                                        >
+                                                            {item.description}
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="text-xs px-2 py-2">No result found</div>
+                                                )}
                                             </ScrollArea>
                                         </div>
                                     </div>
