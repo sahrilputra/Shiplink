@@ -32,7 +32,6 @@ import { Input } from "@/components/ui/input"
 const formSchema = yup.object().shape({
     password: yup.string().required('Password is required'),
 })
-
 export function NewPasswordDialog({ open, setOpen, data = null, reload }) {
     console.log("🚀 ~ NewPasswordDialog ~ data:", data)
 
@@ -51,14 +50,10 @@ export function NewPasswordDialog({ open, setOpen, data = null, reload }) {
         setLoading(true)
         try {
             const response = await axios.post(
-                `/api/admin/customer_manager/settingDetails`,
+                `/api/admin/customer_manager/change_password`,
                 {
-                    name: data?.customer_name,
-                    email: data?.email,
+                    customer_id: data?.customer_id,
                     password: formData.password,
-                    phone_number: data?.phone_number,
-                    user_plan: data?.customer_plans,
-                    profile_picture: "",
                 }
             );
             console.log("🚀 ~ handleSave ~ response:", response)
@@ -75,7 +70,7 @@ export function NewPasswordDialog({ open, setOpen, data = null, reload }) {
                 setLoading(false)
                 toast({
                     title: 'Something Error While Change The Password!',
-                    description: `Error`,
+                    description: `${response.data.message}`,
                     status: 'error',
                 });
             }
