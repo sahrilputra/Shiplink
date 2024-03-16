@@ -87,7 +87,7 @@ export default function UserPage({ params }) {
                             <p className="text-zinc-600 text-sm">#{data?.customer_id}</p>
                             <div className="text-xs text-zinc-600 text-center">
                                 <p>{data?.email}</p>
-                                <p>{data?.phone_number || "undefined"}</p>
+                                <p>{data?.phone_number || "Phone"}</p>
                             </div>
                             <MembershipTag plans={data?.customer_plans || "Free"} />
                             <div className="ButtonGroup flex flex-col gap-2 py-3">

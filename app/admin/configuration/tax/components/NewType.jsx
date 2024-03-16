@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const formSchema = yup.object().shape({
     tax_rate: yup.string().required(),
 });
 
-export const NewType = ({ close, data = null, selected }) => {
+export const NewType = ({ close, data = null, selected, countryCode }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [clicked, isClicked] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -40,10 +40,18 @@ export const NewType = ({ close, data = null, selected }) => {
             tax_assignment_name: "",
             abbreviation: "",
             tax_number: "",
+            country_code: countryCode,
             tax_rate: "",
         },
         mode: "onChange",
     });
+
+    useEffect(() => {
+        const handleCoutnryChange = () => {
+            form.setValue("country_code", countryCode)
+        }
+        handleCoutnryChange()
+    }, [countryCode, form])
 
     const handleSave = async (formData) => {
         console.log("data", formData)
@@ -55,16 +63,23 @@ export const NewType = ({ close, data = null, selected }) => {
                 `/api/admin/config/tax/assign/setData`,
                 formData
             );
-
             setLoading(false)
             const responseData = await response.data;
             console.log("responseData", responseData)
             form.reset()
-            toast({
-                title: "Success",
-                description: responseData.message,
-                status: "success",
-            })
+            if (responseData.status === true || responseData.status === "true") {
+                toast({
+                    title: "Success",
+                    description: responseData.message,
+                    status: "success",
+                })
+            } else {
+                toast({
+                    title: "Error",
+                    description: responseData.message,
+                    status: "error",
+                })
+            }
         } catch (error) {
             setLoading(false)
             toast({

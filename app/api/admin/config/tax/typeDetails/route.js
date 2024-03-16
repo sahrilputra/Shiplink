@@ -7,20 +7,19 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { tax_assignment_id, tax_assignment_name, abbreviation, tax_number, tax_rate, country_code, action } = await request.json();
+        const { keyword, page, limit, index, country_code } = await request.json();
         const tokenAccess = await getAccessToken(request)
-        console.log("🚀 ~ POST ~ country_code:", country_code)
-        // console.log("token from country", token)
+
+        // console.log("token from country", token);
+
         const response = await axios.post(
-            `${process.env.API_URL}/Config/TaxAssignment_setdata`,
+            `${process.env.API_URL}/Config/TaxAssignment_list`,
             {
-                tax_assignment_id: tax_assignment_id,
-                tax_assignment_name: tax_assignment_name,
-                abbreviation: abbreviation,
-                tax_number: tax_number,
+                keyword: keyword,
+                page: page,
+                limit: limit,
+                index: index,
                 country_code: country_code,
-                tax_rate: tax_rate,
-                action: action,
             },
             {
                 httpsAgent: agent,
@@ -35,8 +34,12 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: response.data.status,
+                status: true,
                 message: response.data.message,
+                total: response.data.total,
+                page_total: response.data.page_total,
+                page_limit: response.data.page_limit,
+                taxassignment: response.data.taxassignment
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

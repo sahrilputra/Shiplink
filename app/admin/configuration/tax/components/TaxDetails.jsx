@@ -3,7 +3,8 @@ import { TaxDetailsList } from './TaxDetailsList'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { DeleteDialog } from './dialog/DeleteDialog'
-export const TaxDetails = ({ close, taxAssignID }) => {
+export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
+    console.log("🚀 ~ TaxDetails ~ countryCode:", countryCode)
 
     const [change, setChange] = useState(false)
     const [taxList, setTaxList] = useState([])
@@ -13,26 +14,26 @@ export const TaxDetails = ({ close, taxAssignID }) => {
         keyword: "",
         page: 1,
         limit: 0,
-        index: 0
+        index: 0,
+        country_code: countryCode,
     });
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/tax/taxList`,
-                query,
-            );
-            const responseData = response.data.taxassignment;
-            console.log("response from api : ", responseData)
-            setTaxList(responseData)
-
-        } catch (error) {
-            console.error(error)
-        }
-    }
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/tax/typeDetails`,
+                    query,
+                );
+                const responseData = response.data.taxassignment;
+                console.log("response from api : ", responseData)
+                setTaxList(responseData)
+            } catch (error) {
+                console.error(error)
+            }
+        }
         fetchData()
-    }, [])
+    }, [countryCode, query])
 
     const reloadData = () => {
         fetchData()

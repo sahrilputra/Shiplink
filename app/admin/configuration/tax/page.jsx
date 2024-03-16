@@ -50,7 +50,13 @@ export default function Tax() {
                 );
                 const data = await response.data;
                 setCountry(data.country);
+                if (data.country && data.country.length > 0) {
+                    // Set initial value and countryCode to the first country in the list
+                    setValue(data.country[0].country_name);
+                    setCountryCode(data.country[0].country_code);
+                }
             } catch (error) {
+                fetchData();
                 console.log('Error:', error);
             }
         };
@@ -134,10 +140,10 @@ export default function Tax() {
                         </div>
                         {clicked && (
                             <>
-                                <NewType selected={seletedProvince} close={handleClose} />
+                                <NewType selected={seletedProvince} close={handleClose} countryCode={countryCode} />
                             </>
                         )}
-                        <TaxDetails close={handleClose} taxAssignID={taxAssignID} />
+                        <TaxDetails close={handleClose} taxAssignID={taxAssignID} countryCode={countryCode} />
                     </div>
                 </div>
             </div>

@@ -31,11 +31,13 @@ export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode,
     }, [query]);
 
     useEffect(() => {
-        // Melakukan filter setiap kali terjadi perubahan pada countryName atau data provinsi
         const filteredData = provinceData.filter(item => item.country_name.toLowerCase().includes(countryName.toLowerCase()));
         setFilteredProvince(filteredData);
     }, [provinceData, countryName]);
-
+    // Menampilkan daftar provinsi hanya jika ada negara yang dipilih
+    if (!countryName) {
+        return null;
+    }
     console.log("ProvinceSElected : ", isSelect)
     return (
         <>
