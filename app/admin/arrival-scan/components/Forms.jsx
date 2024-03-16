@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue, SelectLabel } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue, SelectLabel, SelectItemWihtoutIndicator } from '@/components/ui/select'
 import data from '../../../../data/admin/UserData.json'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from "@/lib/utils"
@@ -457,7 +457,7 @@ export const ArrivalForms = ({
                     </div>
 
                     <div className="flex flex-col gap-2 w-[30%]">
-                        <div className="flex flex-row gap-2">
+                        <div className="flex flex-row gap-2 items-end">
                             <FormField
                                 className="w-full"
                                 name="barcode_tracking"
@@ -486,7 +486,7 @@ export const ArrivalForms = ({
                                 render={({ field, formState }) => (
                                     <>
                                         {console.log("field.value : ", field)}
-                                        <FormItem className="space-y-0  w-[30%]">
+                                        <FormItem className="space-y-1.5  w-[30%]">
                                             <FormLabel className="font-bold">Select Carrier</FormLabel>
                                             <Select
                                                 onValueChange={field.onChange}
@@ -498,16 +498,12 @@ export const ArrivalForms = ({
                                                     <SelectTrigger
                                                         className="w-[100%] text-xs h-[30px] rounded-sm px-2 py-0">
                                                         <p>{field.value}</p>
-                                                        {/* <SelectValue
-                                                            className='text-xs w-[120px]'
-                                                            value={selectedCarrier || ""}
-                                                            placeholder={field.value || ""} /> */}
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
                                                     <SelectGroup className='text-xs '>
                                                         {carrierList.map((item, index) => (
-                                                            <SelectItem
+                                                            <SelectItemWihtoutIndicator
                                                                 className='text-xs'
                                                                 key={index}
                                                                 value={item.carrierName}
@@ -522,7 +518,7 @@ export const ArrivalForms = ({
                                                                 }}
                                                             >
                                                                 {item.carrierName}
-                                                            </SelectItem>
+                                                            </SelectItemWihtoutIndicator>
                                                         ))
                                                         }
                                                     </SelectGroup>
