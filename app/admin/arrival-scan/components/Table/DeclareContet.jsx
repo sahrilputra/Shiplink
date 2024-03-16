@@ -69,7 +69,7 @@ export const DeclareContet = ({
         })
         setHSCodeList(filterHsCode);
     }, [])
-    
+
     console.log("🚀 ~ hsCodeList:", hsCodeList)
 
     return (
@@ -94,6 +94,7 @@ export const DeclareContet = ({
                             handleRemoveContent={() => remove(index)}
                             itemID={field.itemID}
                             setCodeNumber={setCodeNumber}
+                            hsCodeList={hsCodeList}
                         />
                     ))}
                 </TableBody>
