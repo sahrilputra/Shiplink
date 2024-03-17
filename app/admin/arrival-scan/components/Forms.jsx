@@ -88,6 +88,35 @@ export const ArrivalForms = ({
         setCustomerID("");
         setNewData(null);
         setDisabled(false);
+        forms.reset({
+            box_images: [],
+            label_images: [],
+            content_images: [],
+            package_content: [
+                {
+                    itemID: "",
+                    qty: 1,
+                    value: 0,
+                    desc: "",
+                    hs_desc: "",
+                    hs_code: "",
+                    made_in: "",
+                    subtotal: 0,
+                }
+            ],
+        })
+        const inputFile = document.getElementById('content_images');
+        if (inputFile) {
+            inputFile.value = '';
+        }
+        const labelImg = document.getElementById('label_images');
+        if (labelImg) {
+            labelImg.value = '';
+        }
+        const boxImg = document.getElementById('box_images');
+        if (boxImg) {
+            boxImg.value = '';
+        }
     }
 
     const [showOtherInput, setShowOtherInput] = useState(false);
@@ -241,19 +270,23 @@ export const ArrivalForms = ({
                                                                     }}
                                                                 >
                                                                     <div className='text-xs w-full justify-between flex flex-row items-center'>
-                                                                        <p className='w-[100px]'>{language.customer_name}</p>
-                                                                        <p className='w-[5px]'>|</p>
-                                                                        <p className='w-[100px]'>{language.customer_id}</p>
-                                                                        <p className='w-4'></p>
+                                                                        <div className="w-[90%] flex flex-row justify-between">
+                                                                            <p className='w-[150px] text-nowrap'>{language.customer_name}</p>
+                                                                            <p className='w-[5px]'>|</p>
+                                                                            <p className='w-[100px]'>{language.customer_id}</p>
+                                                                        </div>
+                                                                        <div className="w-[10%]">
+                                                                            <CheckIcon
+                                                                                className={cn(
+                                                                                    "ml-auto h-4 w-4",
+                                                                                    language.customer_name === field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                        </div>
                                                                     </div>
-                                                                    <CheckIcon
-                                                                        className={cn(
-                                                                            "ml-auto h-4 w-4",
-                                                                            language.customer_name === field.value
-                                                                                ? "opacity-100"
-                                                                                : "opacity-0"
-                                                                        )}
-                                                                    />
+
                                                                 </CommandItem>
                                                             ))}
                                                         </ScrollArea>
@@ -263,87 +296,6 @@ export const ArrivalForms = ({
                                         </Popover>
                                         <FormMessage />
                                     </FormItem>
-                                    {/*                                 
-                                    <FormItem className="w-full text-xs ">
-                                        <FormLabel className="font-bold">Search Customer</FormLabel>
-                                        <FormControl className="w-full relative">
-                                            <CommandPrimitive className='border-b-0' onKeyDown={handleKeyDown}>
-                                                <div>
-                                                    <CommandArrival
-                                                        ref={inputRef}
-                                                        value={inputValue}
-                                                        setValue={isLoading || setInputValue}
-                                                        onBlur={handleBlur}
-                                                        onFocus={() => setOpen(true)}
-                                                        placeholder={`${field.value ? field.value : "Customer"}`}
-                                                        className="text-xs border border-neutral-300 px-2"
-                                                        disableSearchIcon={true}
-                                                        autoFocus={false}
-                                                    />
-                                                </div>
-                                                <div className="mt-1 relative">
-                                                    {isOpen ? (
-                                                        <div className="absolute top-0 z-10 w-full rounded-xl bg-blue-100 shadow-md outline-none animate-in fade-in-0 zoom-in-95">
-                                                            <CommandList className="ring-1 ring-slate-200  bg-blue-100 rounded-lg">
-                                                                <ScrollArea>
-                                                                    <CommandGroup>
-                                                                        {customerData.map((item) => {
-                                                                            const isSelected = selected?.value === item.customer_id
-                                                                            return (
-                                                                                <CommandItem
-                                                                                    value={item.customer_name}
-                                                                                    setValue={field.onChange}
-                                                                                    key={item.customer_id}
-                                                                                    className={cn(
-                                                                                        "flex items-center gap-2 w-full",
-                                                                                        !isSelected ? "pl-8" : null
-                                                                                    )}
-                                                                                    onMouseDown={event => {
-                                                                                        event.preventDefault()
-                                                                                        event.stopPropagation()
-                                                                                    }}
-                                                                                    onSelect={() => {
-                                                                                        forms.setValue("test", item.customer_name)
-                                                                                        forms.setValue("customer_id", item.customer_id)
-                                                                                        setInputValue(item.customer_name)
-                                                                                        handleDataChange({ target: { value: item.customer_id } })
-                                                                                        setOpen(false)
-                                                                                        const inputElement = inputRef.current;
-                                                                                        if (inputElement) {
-                                                                                            inputElement.blur(); // Menonaktifkan fokus dari elemen input
-                                                                                        }
-                                                                                    }}
-                                                                                    autoFocus={false}
-                                                                                >
-                                                                                    <div className='text-xs w-full justify-between flex flex-row items-center'>
-                                                                                        <p className='w-[100px]'>{item.customer_name}</p>
-                                                                                        <p className='w-[5px]'>|</p>
-                                                                                        <p className='w-[100px]'>{item.customer_id}</p>
-                                                                                        <p className='w-4'></p>
-                                                                                    </div>
-                                                                                    <CheckIcon
-                                                                                        className={cn(
-                                                                                            "ml-auto h-4 w-4",
-                                                                                            item.customer_name === field.value
-                                                                                                ? "opacity-100"
-                                                                                                : "opacity-0"
-                                                                                        )}
-                                                                                    />
-                                                                                </CommandItem>)
-                                                                        })}
-                                                                    </CommandGroup>
-                                                                </ScrollArea>
-                                                                {!isLoading ? (
-                                                                    <CommandEmpty className="text-xs text-center py-2">No Customer Found.</CommandEmpty>
-                                                                ) : null}
-                                                            </CommandList>
-
-                                                        </div>
-                                                    ) : null}
-                                                </div>
-                                            </CommandPrimitive>
-                                        </FormControl>
-                                    </FormItem> */}
                                 </>
                             )}
                         />
@@ -727,7 +679,7 @@ export const ArrivalForms = ({
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-300 p-0 cursor-pointer'>
                                                     <Input
-                                                        id="labelImg"
+                                                        id="box_images"
                                                         type="file"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"
@@ -773,7 +725,7 @@ export const ArrivalForms = ({
                                             <FormControl>
                                                 <div className='rounded-md border border-slate-300 p-0'>
                                                     <Input
-                                                        id="labelImg"
+                                                        id="label_images"
                                                         type="file"
                                                         className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                         placeholder="Upload Image"

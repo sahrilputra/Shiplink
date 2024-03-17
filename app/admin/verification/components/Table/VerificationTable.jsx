@@ -65,7 +65,7 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
                         <div className="flex flex-row gap-2 items-center">
                             Customer Name
                             <>
-                                {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                                {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
                             </>
                         </div>
 
@@ -101,7 +101,7 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
                         <div className="flex flex-row gap-2 items-center text-center">
                             Customs Status
                             <>
-                                {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                                {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
                             </>
                         </div>
                     </div>
