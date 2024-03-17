@@ -84,7 +84,7 @@ export default function UserPage({ params }) {
                             ) : (
                                 <p className="font-bold text-sm">{data?.customer_name}</p>
                             )}
-                            <p className="text-zinc-600 text-sm">#{data?.customer_id}</p>
+                            <p className="text-zinc-600 text-sm">Unit : {data?.customer_id}</p>
                             <div className="text-xs text-zinc-600 text-center">
                                 <p>{data?.email}</p>
                                 <p>{data?.phone_number || "Phone"}</p>
