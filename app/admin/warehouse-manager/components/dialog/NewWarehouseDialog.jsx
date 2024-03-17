@@ -35,7 +35,8 @@ import { Separator } from '@/components/ui/separator'
 
 const formSchema = yup.object().shape({
     warehouse_name: yup.string().required(),
-    country_code: yup.string().required(),
+    country_code: yup.string(),
+    country_name: yup.string(),
     address: yup.string().required(),
     warehouse_catalog: yup.string().required(),
     warehouse_manager: yup.string().required(),
@@ -51,6 +52,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
         defaultValues: {
             warehouse_name: "",
             country_code: "",
+            country_name: "",
             address: "",
             warehouse_catalog: "",
             warehouse_manager: "",
@@ -82,7 +84,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
     }
 
     const handleOpenCommand = (event) => {
-        if (!event.target.value.trim() || event.target.value.length < 2) {
+        if (!event.target.value.trim() || event.target.value.length < 1) {
             setOpenCommand(false);
         } else {
             setOpenCommand(true);
@@ -144,6 +146,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
             country_code: code,
             country_name: name,
         });
+        form.setValue('country_name', name);
         form.setValue('country_code', code);
         setOpenCommand(false)
     }
@@ -159,7 +162,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                         <DialogContent className="sm:max-w-md">
                             <DialogHeader>
                                 <DialogTitle className="font-bold">
-                                    <p>Create New Province</p>
+                                    <p>Create New Warehouse</p>
                                 </DialogTitle>
                             </DialogHeader>
                             <DialogDescription className=" flex justify-center items-center w-full">
@@ -187,7 +190,65 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                         </>
                                                     )}
                                                 />
-                                                <div className="relative w-[100%]">
+                                                <FormField
+                                                    className="w-full"
+                                                    name="country_name"
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <>
+                                                            <FormItem className="w-full text-neutral-900 space-y-1">
+                                                                <FormLabel className="text-sm">Warehouse Based Country</FormLabel>
+                                                                <FormControl>
+                                                                    <div
+                                                                        className="flex gap-1 flex-row items-center justify-start border bg-slate-100 border-zinc-300 rounded focus-visible:ring-1 focus-visible:ring-black" tabIndex={0}>
+                                                                        <div className='px-3 '>
+                                                                            {
+                                                                                selectedCountry.country_code === "" ? (
+                                                                                    "USA"
+                                                                                ) : (
+                                                                                    selectedCountry.country_code
+                                                                                )
+                                                                            }
+                                                                        </div>
+                                                                        <div className="w-[3px] h-[20px]">
+                                                                            <Separator orientation="vertical" className="w-[2px] bg-slate-400 text-black h-full" />
+                                                                        </div>
+                                                                        <Input
+                                                                            autoComplete="off"
+                                                                            className="text-sm p-0 py-1 px-2 focus:ring-offset-0 bg-slate-100 border-none text-neutral-900 outline-none focus:ring-0  focus-visible:ring-0 "
+                                                                            id="country_code"
+                                                                            type="text"
+                                                                            placeholder="Select Country"
+                                                                            onChange={handleOpenCommand}
+                                                                            {...field}
+                                                                        />
+                                                                    </div>
+                                                                </FormControl>
+                                                                {openCommand && (
+                                                                    <div className="absolute bottom-100 w-full p-2 shadow bg-white">
+                                                                        <Command>
+                                                                            <CommandEmpty>No Country Found.</CommandEmpty>
+                                                                            <CommandGroup>
+                                                                                {country.map((item) => (
+                                                                                    <CommandItem
+                                                                                        value={item.country_name}
+                                                                                        key={item.country_id}
+                                                                                        onSelect={() => {
+                                                                                            handleSelectCountry(item.country_code, item.country_name)
+                                                                                        }}
+                                                                                    >
+                                                                                        {item.country_name}
+                                                                                    </CommandItem>
+                                                                                ))}
+                                                                            </CommandGroup>
+                                                                        </Command>
+                                                                    </div>
+                                                                )}
+                                                            </FormItem>
+                                                        </>
+                                                    )}
+                                                />
+                                                {/* <div className="relative w-[100%]">
                                                     <div className="flex flex-col gap-1 w-full">
                                                         <div className="text-sm text-neutral-900 space-y-1">Warehouse Based Country</div>
                                                         <div
@@ -213,27 +274,8 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    {openCommand && (
-                                                        <div className="absolute bottom-100 w-full p-2 shadow bg-white">
-                                                            <Command>
-                                                                <CommandEmpty>No Country Found.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {country.map((item) => (
-                                                                        <CommandItem
-                                                                            value={item.country_name}
-                                                                            key={item.country_id}
-                                                                            onSelect={() => {
-                                                                                handleSelectCountry(item.country_code, item.country_name)
-                                                                            }}
-                                                                        >
-                                                                            {item.country_name}
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
-                                                            </Command>
-                                                        </div>
-                                                    )}
-                                                </div>
+
+                                                </div> */}
 
                                                 <FormField
                                                     name="address"
@@ -245,24 +287,6 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                                 <FormLabel className="text-sm">Warehouse Address</FormLabel>
                                                                 <FormControl >
                                                                     <Input id="address" className="text-sm bg-slate-100" placeholder="Warehouse Address" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage className="text-xs" />
-                                                            </FormItem>
-                                                        </>
-                                                    )}
-                                                />
-
-
-                                                <FormField
-                                                    name="warehouse_catalog"
-                                                    className="w-full text-neutral-900"
-                                                    control={form.control}
-                                                    render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="w-full text-neutral-900 space-y-1">
-                                                                <FormLabel className="text-sm">Warehouse Catalog</FormLabel>
-                                                                <FormControl >
-                                                                    <Input id="warehouse_catalog" className="text-sm bg-slate-100" placeholder="Warehouse only" {...field} />
                                                                 </FormControl>
                                                                 <FormMessage className="text-xs" />
                                                             </FormItem>

@@ -90,9 +90,19 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
 
     const [openPayments, setOpenPayments] = useState(false);
 
+    // const handleSubmit = (formData) => {
+    //     console.log("Form Data: ", formData);
+    //     axios.post(
+    //         `/api/admin/payments/cross_border`,
+    //         {
+
+    //         }
+    //     )
+    // }
+
     return (
         <>
-            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={"213"}/>
+            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={"213"} />
             <div className="">
                 <Form {...form}>
                     <form

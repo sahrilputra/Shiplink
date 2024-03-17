@@ -246,75 +246,76 @@ export const DeclareContentInput = ({
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].made_in`}
                         control={forms.control}
-                        render={({ field }) => (
-                            <>
-                                <FormItem className="flex flex-col">
-                                    <Popover open={openCountry} onOpenChange={setOpenCountry} >
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant="outline"
-                                                    role="combobox"
-                                                    className={cn(
-                                                        "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none",
-                                                        !field.value && "text-muted-foreground"
-                                                    )}
-                                                >
-                                                    {field.value
-                                                        ? countryList.find(
-                                                            (language) => language.country_code === field.value
-                                                        )?.country_code
-                                                        : "CAN"}
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-[120px] p-0">
-                                            <Command>
-                                                <CommandInput
-                                                    placeholder="Search..."
-                                                    className="h-[30px] text-xs"
-                                                />
-                                                <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
-                                                <CommandGroup>
-                                                    <ScrollArea className="h-[100px]">
-                                                        {countryList.map((language) => (
-                                                            <CommandItem
-                                                                className="text-xs items-center"
-                                                                value={language.country_code}
-                                                                key={language.country_id}
-                                                                onSelect={() => {
-                                                                    forms.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
-                                                                    setOpenCountry(false)
-                                                                }}
-                                                            >
-                                                                {language.country_code}
-                                                                <CheckIcon
-                                                                    className={cn(
-                                                                        "ml-auto h-4 w-4",
-                                                                        language.country_code === field.value
-                                                                            ? "opacity-100"
-                                                                            : "opacity-0"
-                                                                    )}
-                                                                />
-                                                            </CommandItem>
-                                                        ))}
-                                                    </ScrollArea>
-                                                </CommandGroup>
-                                            </Command>
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                                {/* <FormItem className="w-full text-sm">
-                                    <FormControl>
-                                        <Input
-                                            max="3"
-                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase"
-                                            id="made_in" placeholder="CAN" {...field} />
-                                    </FormControl>
-                                </FormItem> */}
-                            </>
-                        )}
+                        render={({ field }) => {
+                            const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
+
+                            // Jika nilai field.value belum terisi (null atau undefined), atur nilai default
+                            if (!field.value) {
+                                forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
+                            }
+                            return (
+                                <>
+                                    <FormItem className="flex flex-col">
+                                        <Popover open={openCountry} onOpenChange={setOpenCountry} >
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        className={cn(
+                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none",
+                                                            !field.value && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        {field.value
+                                                            ? countryList.find(
+                                                                (language) => language.country_code === field.value
+                                                            )?.country_code
+                                                            : "CAN"}
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[120px] p-0">
+                                                <Command>
+                                                    <CommandInput
+                                                        placeholder="Search..."
+                                                        className="h-[30px] text-xs"
+                                                    />
+                                                    <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        <ScrollArea className="h-[100px]">
+                                                            {countryList.map((language) => (
+                                                                <CommandItem
+                                                                    className="text-xs items-center"
+                                                                    value={language.country_code}
+                                                                    key={language.country_id}
+                                                                    onSelect={() => {
+                                                                        forms.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
+                                                                        setOpenCountry(false)
+                                                                    }}
+                                                                >
+                                                                    {language.country_code}
+                                                                    <CheckIcon
+                                                                        className={cn(
+                                                                            "ml-auto h-4 w-4",
+                                                                            language.country_code === field.value
+                                                                                ? "opacity-100"
+                                                                                : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                </CommandItem>
+                                                            ))}
+                                                        </ScrollArea>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                </>
+                            )
+                        }
+                        }
                     />
                 </TableCell>
                 <TableCell className="text-center  p-0 h-8 px-2 py-2 w-[40px] ">
