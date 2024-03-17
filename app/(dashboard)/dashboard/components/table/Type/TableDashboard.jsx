@@ -20,6 +20,7 @@ import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DeclareForms } from '../DeclareForms'
 import { PaymentsDialog } from '../../dashboardMenus/PaymentsV2/Payments'
+
 const formSchema = yup.object().shape({
     package_content: yup.array().of(
         yup.object().shape({
@@ -35,19 +36,19 @@ const formSchema = yup.object().shape({
     ),
     total: yup.number(),
     broker: yup.string(),
-    invoice: yup.string(),
+    invoice: yup.array(),
     pars: yup.string(),
     entry_number: yup.string(),
     warehouse: yup.string(),
 })
 
-export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
+export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             total: 0,
             broker: "",
-            invoice: "",
+            invoice: [],
             pars: "",
             warehouse: "",
             entry_number: "",
@@ -64,8 +65,11 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
                 }
             ],
         },
+          
         mode: "onChange",
     })
+
+    console.log("🚀 ~ TableDashboard ~ warehouse:", form.watch('warehouse'))
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
@@ -73,6 +77,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
     });
 
     const [selectedBroker, setSelectedBroker] = useState(null);
+    console.log("🚀 ~ TableDashboard ~ selectedBroker:", selectedBroker)
     const handleSelectBroker = (value) => {
         console.log("Selected Broker: ", value);
         setSelectedBroker(value);
@@ -100,9 +105,10 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
     //     )
     // }
 
+    console.log("PARS : ", form.watch('pars'));
     return (
         <>
-            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={"213"} />
+            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={tracking_id} type={"CrossBorder"} forms={form} selectedBroker={selectedBroker} />
             <div className="">
                 <Form {...form}>
                     <form
@@ -181,6 +187,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded }) => {
 
                                                 <Button
                                                     variant="destructive"
+                                                    type="button"
                                                     className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
                                                 >
                                                     <div className="text-white text-sm font-normal">Save</div>

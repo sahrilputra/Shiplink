@@ -18,7 +18,8 @@ import CheckoutForm from './CheckoutForm'
 
 const stripePromise = loadStripe(`pk_test_51OeSr9KoBG6qVutm67f3Sp0NSBReb8UZ9mAeiIseio551KQCV6VlXY7Yq9YpC0grIMUjUr2Y6HzGecCBLZPMhboW00fET9LdVY`);
 
-export const PaymentsDialog = ({ open, setOpen, trackingId, reload }) => {
+export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms, selectedBroker }) => {
+    console.log("🚀 ~ PaymentsDialog ~ open:", open)
     console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId)
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
     const [clientSecret, setClientSecret] = useState("");
@@ -36,25 +37,34 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload }) => {
 
     // }, [])
 
-    useEffect(() => {
-        try {
-            axios.post(
-                '/api/admin/actions/holdPickup',
-                {
-                    tracking_id: trackingId
-                },
-            ).then((response) => {
-                console.log("🚀 ~ ).then ~ response:", response)
-                setClientSecret(response.data.clientSecret);
-                setTotalAmount(response.data.total);
-                setServices(response.data.services);
-            })
-        } catch (error) {
-            console.log("🚀 ~ ).catch ~ error:", error)
-        }
-    }, [trackingId]);
+    console.log("BROKER: ", forms?.watch("warehouse"))
+
+    // useEffect(() => {
+    //     const handleHoldPickup = async () => {
+    //         try {
+    //             axios.post(
+    //                 '/api/admin/actions/holdPickup',
+    //                 {
+    //                     tracking_id: trackingId
+    //                 },
+    //             ).then((response) => {
+    //                 console.log("🚀 ~ ).then ~ response:", response)
+    //                 setClientSecret(response.data.clientSecret);
+    //                 setTotalAmount(response.data.total);
+    //                 setServices(response.data.services);
+    //             }).catch((error) => {
+    //                 console.log("🚀 ~ ).catch ~ error:", error)
+    //             })
+    //         } catch (error) {
+    //             console.log("🚀 ~ ).catch ~ error:", error)
+    //         }
+    //     }
 
 
+    // }, [trackingId, type, forms]);
+
+
+    const [showSkip, setShowSkip] = useState(false);
     const appearance = {
         theme: 'stripe',
     };
@@ -67,6 +77,99 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload }) => {
         setOpen(false);
     }
 
+    const handleHoldPickup = async () => {
+        try {
+            axios.post(
+                '/api/admin/actions/holdPickup',
+                {
+                    tracking_id: trackingId
+                },
+            ).then((response) => {
+                console.log("🚀 ~ ).then ~ response:", response)
+                setClientSecret(response.data.clientSecret);
+                setTotalAmount(response.data.total);
+                setServices(response.data.services);
+            }).catch((error) => {
+                console.log("🚀 ~ ).catch ~ error:", error)
+            })
+        } catch (error) {
+            console.log("🚀 ~ ).catch ~ error:", error)
+        }
+    }
+
+    const handleCrossBorder = async () => {
+        console.log("running")
+        try {
+            const response = await axios.post(
+                '/api/admin/actions/cross_border',
+                {
+                    "tracking_id": trackingId,
+                    "broker": selectedBroker,
+                    "file_invoices": [],
+                    "warehouse_destination": "WR Tester, USA",
+                    "entry_number": forms?.watch("entry_number"),
+                    "parspaps_number": forms?.watch("pars"),
+                },
+            )
+
+            console.log("🚀 ~ handleCrossBorder ~ response:", response)
+            if (response.status === 200) {
+                console.log("🚀 ~ handleCrossBorder ~ SUCESS:")
+                setTotalAmount(response.data.total);
+                setServices(response.data.services);
+            } else {
+                console.log("🚀 ~ handleCrossBorder ~ FAIL:")
+            }
+
+        } catch (error) {
+            console.log("🚀 ~ ).catch ~ error:", error)
+        }
+    }
+
+    if (open === true || open === "true") {
+        if (type === "Hold Pickup") {
+            handleHoldPickup()
+        } else if (type === "CrossBorder") {
+            setShowSkip(true)
+            handleCrossBorder()
+        }
+    }
+    console.log("WATHCING :", forms?.watch("package_content"))
+    const handleSubmitForms = () => {
+        try {
+            const dataToSend = forms?.watch("package_content").map((item) => {
+                console.log("🚀 ~ dataToSend ~ item:", item)
+                // Konversi qty dan value menjadi number
+                const qty = parseInt(item.qty);
+                const value = parseInt(item.value);
+
+                // // Validasi nilai yang diperlukan
+                // if (!item.tracking_id || !qty || !value) {
+                //     throw new Error("Tracking ID, qty, and value are required fields.");
+                // }
+                return {
+                    id: "",
+                    tracking_id: trackingId,
+                    qty: qty,
+                    value: value,
+                    desc: item.desc,
+                    hs_desc: item.hs_desc,
+                    hs_code: item.hs_code,
+                    made_in: item.made_in,
+                    subtotal: item.subtotal
+                };
+            });
+
+            const response = axios.post(
+                `/api/admin/verification/register_package_content`,
+                dataToSend
+            );
+            console.log('Response:', response);
+            setOpen(false);
+        } catch (error) {
+            console.log('Error', error);
+        }
+    }
 
     return (
         <>
@@ -82,7 +185,19 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload }) => {
                             </Elements>
                         )}
                     </div>
-
+                    {
+                        showSkip && (
+                            <Button
+                                variant="destructive"
+                                type="button"
+                                onClick={() => {
+                                    handleSubmitForms();
+                                }}
+                            >
+                                Skip For Now
+                            </Button>
+                        )
+                    }
                 </DialogContent>
             </Dialog>
 

@@ -6,14 +6,14 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import format from 'date-fns/format';
 
-export const ExpandItems = ({ item, handleButtonClick, selectedButton, buttonEnabled, reload }) => {
+export const ExpandItems = ({ item, handleButtonClick, selectedButton, buttonEnabled, reload, tracking_id }) => {
     const [openHoldPickup, setOpenHoldPickup] = useState(false)
     const formattedDate = format(new Date(item?.updated_at), 'dd MMM yyyy');
 
     console.log("My Fking ID : ", item?.tracking_id)
     return (
         <>
-            <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} reload={reload} />
+            <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} reload={reload} type={"Hold Pickup"} />
             <div className="flex flex-row justify-between items-center gap-5 relative pt-2 ">
                 <div className="justify-start items-center gap-[15px] flex">
                     <DetailsModals item={item} date={formattedDate} />

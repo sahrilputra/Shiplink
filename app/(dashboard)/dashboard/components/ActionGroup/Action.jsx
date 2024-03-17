@@ -32,7 +32,6 @@ export const SelectBroker = ({ onSelect }) => {
                     </div>
                     <SelectTrigger
                         className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
-
                     >
                         <SelectValue placeholder="Choose Broker" />
                     </SelectTrigger>
@@ -45,9 +44,9 @@ export const SelectBroker = ({ onSelect }) => {
                             Use Shiplink Broker
                         </SelectItem>
                         <SelectItem
-                            value="Own Broker"
+                            value="Use Own Broker"
                             className="text-xs"
-                            onSelect={() => handleChange("Own Broker")}
+                            onSelect={() => handleChange("Use Own Broker")}
                         >
                             Use Own Broker
                         </SelectItem>
@@ -216,7 +215,7 @@ export const EntryNumber = ({ forms }) => {
             <div className=" h-9 rounded-lg justify-start items-start inline-flex">
                 <FormField
                     className="w-full flex flex-row justify-center items-end"
-                    name={'pars'}
+                    name={'entry_number'}
                     control={forms.control}
                     render={({ field }) => (
                         <>
