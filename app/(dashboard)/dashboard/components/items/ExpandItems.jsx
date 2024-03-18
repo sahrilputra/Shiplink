@@ -10,7 +10,6 @@ export const ExpandItems = ({ item, handleButtonClick, selectedButton, buttonEna
     const [openHoldPickup, setOpenHoldPickup] = useState(false)
     const formattedDate = format(new Date(item?.updated_at), 'dd MMM yyyy');
 
-    console.log("My Fking ID : ", item?.tracking_id)
     return (
         <>
             <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} reload={reload} type={"Hold Pickup"} />

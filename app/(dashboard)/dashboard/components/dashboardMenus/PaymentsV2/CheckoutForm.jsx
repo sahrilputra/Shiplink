@@ -7,7 +7,7 @@ import { CheckCircle, XCircleIcon, Loader2 } from "lucide-react";
 import { Loaders } from "@/components/ui/loaders";
 import { Separator } from "@/components/ui/separator";
 
-export default function CheckoutForm({ totalAmount, close, services, setOpen, trackingId, clientSecret, reload }) {
+export default function CheckoutForm({ totalAmount, close, services, setOpen, trackingId, clientSecret, reload, handleSubmitForms }) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -58,8 +58,6 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
 
         setIsLoading(false);
         setDisplayForm(false);
-        reload();
-
         if (error) {
             setMessage(error.message);
             setPaymentStatus("failed");
@@ -68,6 +66,9 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
             setMessage("Payment succeeded!");
             setPaymentStatus("succeeded");
             confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
+            handleSubmitForms();
+            reload();
+
         } else {
             setMessage("Your payment was not successful, please try again.");
             setPaymentStatus("failed");

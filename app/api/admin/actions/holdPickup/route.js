@@ -30,7 +30,7 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
                 total: response.data.total,
                 services: response.data.services,

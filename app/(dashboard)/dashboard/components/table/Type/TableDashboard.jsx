@@ -20,6 +20,7 @@ import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DeclareForms } from '../DeclareForms'
 import { PaymentsDialog } from '../../dashboardMenus/PaymentsV2/Payments'
+import { useToast } from '@/components/ui/use-toast'
 
 const formSchema = yup.object().shape({
     package_content: yup.array().of(
@@ -35,19 +36,20 @@ const formSchema = yup.object().shape({
         })
     ),
     total: yup.number(),
-    broker: yup.string(),
+    broker: yup.string().required(),
     invoice: yup.array(),
-    pars: yup.string(),
-    entry_number: yup.string(),
-    warehouse: yup.string(),
+    pars: yup.string().required(),
+    entry_number: yup.string().required(),
+    warehouse: yup.string().required(),
 })
 
-export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id }) => {
+export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id, reload }) => {
+    const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             total: 0,
-            broker: "",
+            broker: "Use Shiplink Broker",
             invoice: [],
             pars: "",
             warehouse: "",
@@ -65,11 +67,11 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                 }
             ],
         },
-          
+
         mode: "onChange",
     })
 
-    console.log("🚀 ~ TableDashboard ~ warehouse:", form.watch('warehouse'))
+    console.log("🚀 ~ TableDashboard ~ invoice:", form.watch('invoice'))
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
@@ -79,7 +81,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     const [selectedBroker, setSelectedBroker] = useState(null);
     console.log("🚀 ~ TableDashboard ~ selectedBroker:", selectedBroker)
     const handleSelectBroker = (value) => {
-        console.log("Selected Broker: ", value);
+        form.setValue('broker', value)
         setSelectedBroker(value);
     };
     const [tableBody, setTableBody] = useState([{ id: 1 }])
@@ -95,20 +97,28 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
 
     const [openPayments, setOpenPayments] = useState(false);
 
-    // const handleSubmit = (formData) => {
-    //     console.log("Form Data: ", formData);
-    //     axios.post(
-    //         `/api/admin/payments/cross_border`,
-    //         {
-
-    //         }
-    //     )
-    // }
+    const validateForm = () => {
+        form.trigger().then((isValid) => {
+            if (isValid) {
+                // Form is valid, continue with your logic
+                setOpenPayments(true);
+                console.log("Form is valid");
+            } else {
+                // Form has errors, handle them accordingl
+                toast({
+                    title: `Errors!`,
+                    description: `Please fill in all required fields`,
+                    status: 'success',
+                });
+                console.log("Form has errors", form.errors);
+            }
+        });
+    }
 
     console.log("PARS : ", form.watch('pars'));
     return (
         <>
-            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={tracking_id} type={"CrossBorder"} forms={form} selectedBroker={selectedBroker} />
+            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={tracking_id} type={"CrossBorder"} forms={form} selectedBroker={selectedBroker} reload={reload} />
             <div className="">
                 <Form {...form}>
                     <form
@@ -168,7 +178,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
 
 
                         {
-                            selectedBroker === "Shiplink Broker" ? (
+                            selectedBroker === "Use Shiplink Broker" ? (
                                 <>
                                     <div className="use-shiplink-broker">
                                         <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
@@ -225,7 +235,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                                                     className="h-[35px] w-[100px] px-4 bg-red-700 shadow"
                                                     type="button"
                                                     onClick={() => {
-                                                        setOpenPayments(true);
+                                                        validateForm();
                                                     }}
                                                 >
                                                     <div className="text-white text-sm font-normal">Save</div>

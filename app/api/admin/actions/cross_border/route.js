@@ -17,8 +17,6 @@ export async function POST(request) {
             entry_number,
             parspaps_number,
         } = await request.json();
-        console.log("🚀 ~ POST ~ broker:", broker)
-        console.log("🚀 ~ POST ~ tracking_id:", tracking_id)
 
         const response = await axios.post(
             `${process.env.API_URL}/Package/SetCrossBorderPickup`,
@@ -43,8 +41,11 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
+                total: response.data.total,
+                services: response.data.services,
+                clientSecret: response.data.clientSecret
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

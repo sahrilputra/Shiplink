@@ -26,6 +26,7 @@ export const SelectBroker = ({ onSelect }) => {
                 <Select
                     className="flex flex-row gap-0 items-center"
                     onValueChange={(value) => handleChange(value)}
+                    defaultValue='Use Own Broker'
                 >
                     <div className="w-[100px] h-9 px-1 py-2 bg-green-500 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
                         <div className="text-white text-xs leading-tight">Select Broker</div>
@@ -38,8 +39,8 @@ export const SelectBroker = ({ onSelect }) => {
                     <SelectContent className="text-xs">
                         <SelectItem
                             className="text-xs"
-                            value="Shiplink Broker"
-                            onSelect={() => handleChange("Shiplink Broker")}
+                            value="Use Shiplink Broker"
+                            onSelect={() => handleChange("Use Shiplink Broker")}
                         >
                             Use Shiplink Broker
                         </SelectItem>
@@ -79,9 +80,33 @@ export const UploadInvoice = ({ forms }) => {
                                                 className="w-[150px] file:hidden  h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400 cursor-pointer hover:bg-stone-50/20"
                                                 type="file"
                                                 id="myFile"
+                                                multiple
                                                 accept=".pdf, .doc, .docx"
                                                 placeholder="My File"
-                                                {...field}
+                                                onChange={(event) => {
+                                                    const files = event.target.files;
+                                                    if (files) {
+                                                        const invoice = [];
+                                                        let processedFiles = 0;
+                                                        const readAndProcessFile = (file) => {
+                                                            const reader = new FileReader();
+                                                            reader.onload = (e) => {
+                                                                // Mengambil string base64 dari data yang diberikan
+                                                                const base64String = e.target.result;
+                                                                const base64WithoutHeader = base64String.replace(/^data:application\/pdf;base64,/, '');
+                                                                invoice.push(base64WithoutHeader);
+                                                                processedFiles++;
+                                                                if (processedFiles === files.length) {
+                                                                    forms.setValue("invoice", invoice);
+                                                                } else {
+                                                                    readAndProcessFile(files[processedFiles]);
+                                                                }
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        };
+                                                        readAndProcessFile(files[processedFiles]);
+                                                    }
+                                                }}
                                             />
                                         </div>
                                     </>
@@ -130,10 +155,7 @@ export const SelectWarehouse = ({ forms }) => {
                         <>
                             <FormItem className="w-full text-sm">
                                 <Select
-                                    onValueChange={(value) => {
-                                        const selectedWarehouse = warehouse.find(item => item.warehouse_name === value);
-                                        field.onChange(selectedWarehouse ? selectedWarehouse.id_status : ''); // Set id_status as value if found, otherwise empty string
-                                    }}
+                                    onValueChange={field.onChange}
                                     defaultValue={field.value}
                                 >
                                     <FormControl >
@@ -153,15 +175,22 @@ export const SelectWarehouse = ({ forms }) => {
                                     <SelectContent>
                                         {
                                             warehouse?.map((item, index) => (
-                                                <SelectItem className='text-xs' key={index} value={item.warehouse_name}>
+                                                <SelectItem
+                                                    className='text-xs'
+                                                    key={index}
+                                                    value={`${item.warehouse_name}`}
+                                                    onSelect={() =>
+                                                        forms.setValue("warehouse", item.warehouse_name)
+                                                    }
+                                                >
                                                     WR {item.warehouse_name}, {item.country_code}
                                                 </SelectItem>
                                             ))
                                         }
                                     </SelectContent>
                                 </Select>
-
                             </FormItem>
+
                         </>
                     )}
                 />

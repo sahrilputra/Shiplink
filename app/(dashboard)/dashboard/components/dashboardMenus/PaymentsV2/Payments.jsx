@@ -77,63 +77,67 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms,
         setOpen(false);
     }
 
-    const handleHoldPickup = async () => {
-        try {
-            axios.post(
-                '/api/admin/actions/holdPickup',
-                {
-                    tracking_id: trackingId
-                },
-            ).then((response) => {
-                console.log("🚀 ~ ).then ~ response:", response)
-                setClientSecret(response.data.clientSecret);
-                setTotalAmount(response.data.total);
-                setServices(response.data.services);
-            }).catch((error) => {
+    useEffect(() => {
+        const handleHoldPickup = async () => {
+            try {
+                axios.post(
+                    '/api/admin/actions/holdPickup',
+                    {
+                        tracking_id: trackingId
+                    },
+                ).then((response) => {
+                    console.log("🚀 ~ ).then ~ response:", response)
+                    setClientSecret(response.data.clientSecret);
+                    setTotalAmount(response.data.total);
+                    setServices(response.data.services);
+                }).catch((error) => {
+                    console.log("🚀 ~ ).catch ~ error:", error)
+                })
+            } catch (error) {
                 console.log("🚀 ~ ).catch ~ error:", error)
-            })
-        } catch (error) {
-            console.log("🚀 ~ ).catch ~ error:", error)
-        }
-    }
-
-    const handleCrossBorder = async () => {
-        console.log("running")
-        try {
-            const response = await axios.post(
-                '/api/admin/actions/cross_border',
-                {
-                    "tracking_id": trackingId,
-                    "broker": selectedBroker,
-                    "file_invoices": [],
-                    "warehouse_destination": "WR Tester, USA",
-                    "entry_number": forms?.watch("entry_number"),
-                    "parspaps_number": forms?.watch("pars"),
-                },
-            )
-
-            console.log("🚀 ~ handleCrossBorder ~ response:", response)
-            if (response.status === 200) {
-                console.log("🚀 ~ handleCrossBorder ~ SUCESS:")
-                setTotalAmount(response.data.total);
-                setServices(response.data.services);
-            } else {
-                console.log("🚀 ~ handleCrossBorder ~ FAIL:")
             }
-
-        } catch (error) {
-            console.log("🚀 ~ ).catch ~ error:", error)
         }
-    }
 
-    if (open === true || open === "true") {
-        if (type === "Hold Pickup") {
-            handleHoldPickup()
-        } else if (type === "CrossBorder") {
-            setShowSkip(true)
-            handleCrossBorder()
+        const handleCrossBorder = async () => {
+            console.log("running")
+            try {
+                const response = await axios.post(
+                    '/api/admin/actions/cross_border',
+                    {
+                        "tracking_id": trackingId,
+                        "broker": forms?.watch("broker"),
+                        "file_invoices": forms?.watch("invoice"),
+                        "warehouse_destination": forms?.watch("warehouse"),
+                        "entry_number": forms?.watch("entry_number"),
+                        "parspaps_number": forms?.watch("pars"),
+                    },
+                )
+
+                console.log("🚀 ~ handleCrossBorder ~ response:", response)
+                if (response.status === 200) {
+                    console.log("🚀 ~ handleCrossBorder ~ SUCESS:")
+                    setClientSecret(response.data.clientSecret);
+                    setTotalAmount(response.data.total);
+                    setServices(response.data.services);
+                } else {
+                    console.log("🚀 ~ handleCrossBorder ~ FAIL:")
+                }
+
+            } catch (error) {
+                console.log("🚀 ~ ).catch ~ error:", error)
+            }
         }
-    }
+
+        if (open === true || open === "true") {
+            if (type === "Hold Pickup") {
+                handleHoldPickup()
+            } else if (type === "CrossBorder") {
+                handleCrossBorder()
+            }
+        }
+    }, [open, type, forms, selectedBroker, trackingId]);
+
+
     console.log("WATHCING :", forms?.watch("package_content"))
     const handleSubmitForms = () => {
         try {
@@ -181,23 +185,19 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms,
                     <div className="App">
                         {clientSecret && (
                             <Elements options={options} stripe={stripePromise}>
-                                <CheckoutForm close={close} totalAmount={totalAmount} services={services} setOpen={setOpen} trackingId={trackingId} clientSecret={clientSecret} reload={reload} />
+                                <CheckoutForm
+                                    close={close}
+                                    totalAmount={totalAmount}
+                                    services={services}
+                                    setOpen={setOpen}
+                                    trackingId={trackingId}
+                                    clientSecret={clientSecret}
+                                    reload={reload}
+                                    handleSubmitForms={handleSubmitForms}
+                                />
                             </Elements>
                         )}
                     </div>
-                    {
-                        showSkip && (
-                            <Button
-                                variant="destructive"
-                                type="button"
-                                onClick={() => {
-                                    handleSubmitForms();
-                                }}
-                            >
-                                Skip For Now
-                            </Button>
-                        )
-                    }
                 </DialogContent>
             </Dialog>
 

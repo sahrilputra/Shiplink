@@ -36,8 +36,9 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
                 );
                 const responseData = response.data.taxassignment;
                 console.log("response from api : ", responseData)
+                const filterByCode = responseData.filter((item) => item.country_code === countryCode)
                 setIsSkeleton(false)
-                setTaxList(responseData)
+                setTaxList(filterByCode)
             } catch (error) {
                 console.error(error)
             }
@@ -60,13 +61,12 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
             <div className=" w-full p-5 bg-white rounded-md border flex-col justify-start items-start gap-[15px] flex">
                 <div className="text-sm text-zinc-800 font-bold leading-tight">Tax Types Details</div>
                 <div className="flex-col w-full justify-start items-start gap-1 flex">
-                    <div className="w-full flex flex-col gap-2 items-center justify-center h-[30px]">
-                        <Skeleton className={"w-[200px] h-[50px]"} />
-                    </div>
                     {
                         isskeleton && (
                             <div className="w-full flex flex-col gap-2 items-center justify-center">
-                                <Skeleton className={"w-full h-[30px]"} />
+                                <Skeleton className={"w-[100%] h-[35px]"} />
+                                <Skeleton className={"w-[100%] h-[35px]"} />
+                                <Skeleton className={"w-[100%] h-[35px]"} />
                             </div>
                         )
                     }
