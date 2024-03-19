@@ -18,7 +18,7 @@ import CheckoutForm from './CheckoutForm'
 
 const stripePromise = loadStripe(`pk_test_51OeSr9KoBG6qVutm67f3Sp0NSBReb8UZ9mAeiIseio551KQCV6VlXY7Yq9YpC0grIMUjUr2Y6HzGecCBLZPMhboW00fET9LdVY`);
 
-export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms, selectedBroker }) => {
+export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms, selectedBroker, toggleExpanded }) => {
     console.log("🚀 ~ PaymentsDialog ~ open:", open)
     console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId)
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
@@ -194,6 +194,7 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms,
                                     clientSecret={clientSecret}
                                     reload={reload}
                                     handleSubmitForms={handleSubmitForms}
+                                    toggleExpanded={toggleExpanded}
                                 />
                             </Elements>
                         )}

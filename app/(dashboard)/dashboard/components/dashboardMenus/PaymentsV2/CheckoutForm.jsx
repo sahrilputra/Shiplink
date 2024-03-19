@@ -8,7 +8,7 @@ import { Loaders } from "@/components/ui/loaders";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function CheckoutForm({ totalAmount, close, services, setOpen, trackingId, clientSecret, reload, handleSubmitForms }) {
+export default function CheckoutForm({ totalAmount, close, services, setOpen, trackingId, clientSecret, reload, handleSubmitForms, toggleExpanded }) {
     const stripe = useStripe();
     const elements = useElements();
     const { toast } = useToast();
@@ -70,6 +70,7 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
             setPaymentStatus("succeeded");
             confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
             handleSubmitForms();
+            toggleExpanded();
             toast({
                 title: `Sucess!`,
                 description: `Your payment was successful.`,

@@ -121,7 +121,16 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     console.log("PARS : ", form.watch('pars'));
     return (
         <>
-            <PaymentsDialog open={openPayments} setOpen={setOpenPayments} trackingId={tracking_id} type={"CrossBorder"} forms={form} selectedBroker={selectedBroker} reload={reload} />
+            <PaymentsDialog
+                open={openPayments}
+                setOpen={setOpenPayments}
+                trackingId={tracking_id}
+                type={"CrossBorder"}
+                forms={form}
+                selectedBroker={selectedBroker}
+                reload={reload}
+                toggleExpanded={toggleExpanded}
+            />
             <div className="">
                 <Form {...form}>
                     <form
