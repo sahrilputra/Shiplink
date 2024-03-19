@@ -38,8 +38,8 @@ const formSchema = yup.object().shape({
     total: yup.number(),
     broker: yup.string().required(),
     invoice: yup.array(),
-    pars: yup.string().required(),
-    entry_number: yup.string().required(),
+    pars: yup.string(),
+    entry_number: yup.string(),
     warehouse: yup.string().required(),
 })
 
@@ -194,6 +194,10 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                                                 <Button
                                                     variant="redOutline"
                                                     className="h-[35px] w-[100px] px-4 shadow"
+                                                    onClick={() => {
+                                                        toggleExpanded();
+                                                        form.reset();
+                                                    }}
                                                 >
                                                     <div className="text-red-700 text-sm  font-normal ">Cancel</div>
                                                 </Button>
@@ -202,6 +206,9 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                                                     variant="destructive"
                                                     type="button"
                                                     className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
+                                                    onClick={() => {
+                                                        validateForm();
+                                                    }}
                                                 >
                                                     <div className="text-white text-sm font-normal">Save</div>
                                                 </Button>

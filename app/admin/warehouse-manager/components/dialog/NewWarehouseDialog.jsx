@@ -83,17 +83,18 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
         setOpen(false)
     }
 
-    const handleOpenCommand = (event) => {
-        if (!event.target.value.trim() || event.target.value.length < 1) {
-            setOpenCommand(false);
-        } else {
-            setOpenCommand(true);
-        }
-        setQuery({
-            ...query,
-            keyword: event.target.value
-        });
-    }
+    // const handleOpenCommand = (event) => {
+    //     console.log("event", event.target.value)
+    //     if (!event.target.value.trim() || event.target.value.length < 1) {
+    //         setOpenCommand(false);
+    //     } else {
+    //         setOpenCommand(true);
+    //     }
+    //     setQuery({
+    //         ...query,
+    //         keyword: event.target.value
+    //     });
+    // }
 
     const handleSave = async (formData) => {
         setLoading(true)
@@ -150,6 +151,16 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
         form.setValue('country_code', code);
         setOpenCommand(false)
     }
+
+    useEffect(() => {
+        const countryLenght = form.watch('country_name').length;
+        if (countryLenght >= 2) {
+            setOpenCommand(true)
+        } else {
+            setOpenCommand(false)
+        }
+    }, [form])
+
     return (
         <>
             {
@@ -216,10 +227,9 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                                         <Input
                                                                             autoComplete="off"
                                                                             className="text-sm p-0 py-1 px-2 focus:ring-offset-0 bg-slate-100 border-none text-neutral-900 outline-none focus:ring-0  focus-visible:ring-0 "
-                                                                            id="country_code"
+                                                                            id="country_name"
                                                                             type="text"
                                                                             placeholder="Select Country"
-                                                                            onChange={handleOpenCommand}
                                                                             {...field}
                                                                         />
                                                                     </div>
