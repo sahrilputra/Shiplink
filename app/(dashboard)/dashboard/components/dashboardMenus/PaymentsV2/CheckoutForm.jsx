@@ -6,10 +6,12 @@ import { useRouter } from "next/router";
 import { CheckCircle, XCircleIcon, Loader2 } from "lucide-react";
 import { Loaders } from "@/components/ui/loaders";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function CheckoutForm({ totalAmount, close, services, setOpen, trackingId, clientSecret, reload, handleSubmitForms }) {
     const stripe = useStripe();
     const elements = useElements();
+    const { toast } = useToast();
 
     const [message, setMessage] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -43,6 +45,7 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("🚀 ~ handleSubmit ")
         if (!stripe || !elements) {
             return;
         }
@@ -67,8 +70,12 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
             setPaymentStatus("succeeded");
             confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
             handleSubmitForms();
+            toast({
+                title: `Sucess!`,
+                description: `Your payment was successful.`,
+                status: 'success',
+            });
             reload();
-
         } else {
             setMessage("Your payment was not successful, please try again.");
             setPaymentStatus("failed");

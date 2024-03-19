@@ -31,8 +31,6 @@ export default function Dashboard() {
         index: 0,
     })
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -44,11 +42,18 @@ export default function Dashboard() {
             }
         }
         fetchData()
+
+        const timer = setInterval(() => {
+            fetchData()
+        }, 3000)
+
+        return () => {
+            clearInterval(timer)
+        }
     }, [query])
 
-    const reloadData = (prevQuery) => {
-        setIsSkeleton(true)
-        setQuery({ ...prevQuery, page: 0, limit: 0, index: 0 })
+    const reloadData = () => {
+        fetchData()
     }
 
     const handleTabClick = (tabName) => {

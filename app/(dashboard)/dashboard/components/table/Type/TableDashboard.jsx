@@ -105,12 +105,15 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                 console.log("Form is valid");
             } else {
                 // Form has errors, handle them accordingl
+                console.log("Form has errors", form.formState.errors);
+                // showing wich fields are required
+
+
                 toast({
                     title: `Errors!`,
                     description: `Please fill in all required fields`,
                     status: 'success',
                 });
-                console.log("Form has errors", form.errors);
             }
         });
     }
