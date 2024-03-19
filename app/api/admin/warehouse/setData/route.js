@@ -10,7 +10,7 @@ export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
         const {
-            warehouse_id = "",
+            warehouse_id ,
             warehouse_name,
             phone_number,
             country_code,
@@ -21,7 +21,7 @@ export async function POST(request) {
             action,
         } = await request.json();
 
-        console.log("getReq", request.body, warehouse_id, warehouse_name, phone_number, country_code, address, warehouse_catalog, warehouse_manager, email, action)
+        console.log("getReq", request.body, warehouse_id, warehouse_name, phone_number, country_code, address, warehouse_manager, email, action)
 
         const response = await axios.post(
             `${process.env.API_URL}/Warehouse/Warehouse_setdata`,
@@ -31,7 +31,7 @@ export async function POST(request) {
                 phone_number: phone_number,
                 country_code: country_code,
                 address: address,
-                warehouse_catalog: warehouse_catalog,
+                warehouse_catalog: "none",
                 warehouse_manager: warehouse_manager,
                 warehouse_bullet_setting: "none",
                 email: email,
@@ -48,7 +48,7 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });

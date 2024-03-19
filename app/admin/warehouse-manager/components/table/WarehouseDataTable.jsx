@@ -41,8 +41,18 @@ import {
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { DeleteSingleWarehouse } from "../dialog/DeleteSingleWarehouse";
 import { DeleteMuchWarehouse } from "../dialog/DeleteMuchWarehouse";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 
-export function WarehouseDataList({ }) {
+
+export function WarehouseDataList({ setWrTotal }) {
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -54,7 +64,8 @@ export function WarehouseDataList({ }) {
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
     const [isSkeleton, setIsSkeleton] = useState(true);
-
+    const [editedWr, setEditedWr] = useState({});
+    const [selectedWrID, setSelectedWRID] = useState("");
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
@@ -72,6 +83,8 @@ export function WarehouseDataList({ }) {
             const data = await response.data;
             setWarehouse(data.warehouse);
             setIsSkeleton(false);
+            console.log('warehouse.length()', data.total)
+            setWrTotal(data.total);
         } catch (error) {
             console.log('Error:', error);
         }
@@ -163,10 +176,13 @@ export function WarehouseDataList({ }) {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent side={"left"} sideOffset={2}>
-                                            <DropdownMenuItem >
+                                            <DropdownMenuItem
+                                            >
                                                 <p className="text-xs text-myBlue">Settings</p>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem >
+                                            <DropdownMenuItem
+                                                onClick={() => handlerEdit(row.original)}
+                                            >
                                                 <p className="text-xs">Edit Information</p>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
@@ -223,11 +239,23 @@ export function WarehouseDataList({ }) {
     const reloadData = () => {
         fetchData();
     };
+
+    const handlerEdit = (item) => {
+        setEditedWr(item)
+        setSelectedWRID(item.warehouse_id)
+        setOpenNewWarehouse(true);
+    }
+
+    const handleNewDilog = () => {
+        setEditedWr(null)
+        setSelectedWRID(null)
+        setOpenNewWarehouse(true);
+    }
     return (
         <>
             <DeleteMuchWarehouse open={deleteMuchDialog} setOpen={setDeleteMuchDialog} deleteID={selectedWarehouseIds} reloadData={reloadData} />
             <DeleteSingleWarehouse open={deleteDialog} setOpen={setDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
-            <NewWarehouseDialog open={openNewWarehouse} setOpen={setOpenNewWarehouse} reload={reloadData} />
+            <NewWarehouseDialog open={openNewWarehouse} setOpen={setOpenNewWarehouse} reload={reloadData} data={editedWr} warehouse_id={selectedWrID} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -261,7 +289,7 @@ export function WarehouseDataList({ }) {
                                 variant="destructive"
                                 size="sm"
                                 className='border border-zinc-300 flex items-center rounded'
-                                onClick={() => setOpenNewWarehouse(true)}
+                                onClick={() => handleNewDilog()}
                             >
                                 <p>New Warehouse</p>
                             </Button>
@@ -348,8 +376,39 @@ export function WarehouseDataList({ }) {
                         ))
                     )}
                 </TableBody>
-
             </Table>
+
+
+            <div className="flex justify-end w-full items-end py-3">
+                <Pagination className={'flex justify-end w-full items-end'}>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className={"cursor-pointer"}
+                                onClick={() => table.setPageIndex(0)}
+                                disabled={!table.getCanPreviousPage()}
+                            />
+                        </PaginationItem>
+                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
+                            <PaginationItem key={pageNumber}>
+                                <PaginationLink
+                                    className={"cursor-pointer"}
+                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                                >
+                                    {pageNumber}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))} */}
+                        <PaginationItem>
+                            <PaginationNext
+                                className={"cursor-pointer"}
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     )
 }

@@ -11,6 +11,7 @@ import data from '../../../data/admin/WarehouseDataList.json'
 import { Loaders } from '@/components/ui/loaders'
 export default function WarehousePage() {
 
+    const [wrTotal, setWrTotal] = useState(null);
     // const [open, setOpen] = useState(false);
 
     // const [selectedTab, setSelectedTab] = useState("Pending");
@@ -35,14 +36,14 @@ export default function WarehousePage() {
                         </div>
                         <div className={`${styles.title} flex flex-col`}>
                             <h1 className=" text-zinc-900 text-sm font-bold ">Warehouse Management</h1>
-                            <p className=" text-blue-900 text-xs font-normal">10 Warehouse  | 5 Active </p>
+                            <p className=" text-blue-900 text-xs font-normal">{wrTotal} Warehouse</p>
                         </div>
                     </div>
                 </div>
                 <div className={styles.childContent}>
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
-                            <WarehouseDataList data={data} />
+                            <WarehouseDataList setWrTotal={setWrTotal} />
                         </div>
                     </div>
                 </div>

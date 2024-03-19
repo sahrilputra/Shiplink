@@ -23,46 +23,57 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import * as yup from 'yup'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { yupResolver } from '@hookform/resolvers/yup'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 import axios from "axios";
 import {
     Command,
     CommandEmpty,
     CommandGroup,
+    CommandInput,
     CommandItem,
 } from "@/components/ui/command"
 import { Separator } from '@/components/ui/separator'
+import { CheckIcon } from 'lucide-react'
+import { PopoverClose } from '@radix-ui/react-popover'
 
 const formSchema = yup.object().shape({
-    warehouse_name: yup.string().required(),
+    warehouse_name: yup.string().required('Warehouse Name is required'),
     country_code: yup.string(),
     country_name: yup.string(),
     address: yup.string().required(),
-    warehouse_catalog: yup.string().required(),
+    warehouse_catalog: yup.string(),
     warehouse_manager: yup.string().required(),
-    warehouse_bullet_setting: yup.string().required(),
-    email: yup.string().required(),
-    phone_number: yup.string().required(),
+    warehouse_bullet_setting: yup.string(),
+    email: yup.string(),
+    phone_number: yup.string(),
 })
 
-export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
+export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehouse_id = null }) => {
+    console.log("🚀 ~ NewWarehouseDialog ~ warehouse_id:", warehouse_id)
+    console.log("🚀 ~ NewWarehouseDialog ~ data:", data)
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            warehouse_name: "",
-            country_code: "",
-            country_name: "",
-            address: "",
+            warehouse_name: data?.warehouse_name || "",
+            country_code: data?.country_code || "",
+            country_name: data?.country_name || "",
+            address: data?.address || "",
             warehouse_catalog: "",
-            warehouse_manager: "",
+            warehouse_manager: data?.warehouse_manager || "",
             warehouse_bullet_setting: "none",
-            email: "",
-            phone_number: "",
+            email: data?.email || "",
+            phone_number: data?.phone_number || "",
         },
         mode: "onChange",
     })
-
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -75,44 +86,97 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
         country_code: "",
         country_name: "",
     });
+
     const [loading, setLoading] = useState(false)
-    const [openCommand, setOpenCommand] = useState(false)
+    const [popOverOpen, setPopOverOpen] = useState(false);
+    const [openCommand, setOpenCommand] = useState(true)
+    const [userList, setUserList] = useState([]);
+    const [openUser, setOpenUser] = useState(false);
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+
+    useEffect(() => {
+        form.setValue('warehouse_name', data?.warehouse_name || "")
+        form.setValue('country_code', data?.country_code || "")
+        form.setValue('country_name', data?.country_name || "")
+        form.setValue('address', data?.address || "")
+        form.setValue('warehouse_manager', data?.warehouse_manager || "")
+        form.setValue('email', data?.email || "")
+        form.setValue('phone_number', data?.phone_number || "")
+        setPhone(data?.phone_number || "")
+        setEmail(data?.email || "")
+    }, [data, form])
+
+    useEffect(() => {
+        const fetchUserList = async () => {
+            try {
+                axios.post('/api/admin/user/list',
+                    {
+                        keyword: "", page: 0, limit: 0, index: 0
+                    }
+                ).then((response) => {
+                    setUserList(response.data.users)
+                })
+            } catch (error) {
+                console.log(error)
+                fetchUserList();
+            }
+        }
+
+        fetchUserList();
+    }, [])
 
 
     const onClose = () => {
         setOpen(false)
     }
 
-    // const handleOpenCommand = (event) => {
-    //     console.log("event", event.target.value)
-    //     if (!event.target.value.trim() || event.target.value.length < 1) {
-    //         setOpenCommand(false);
-    //     } else {
-    //         setOpenCommand(true);
-    //     }
-    //     setQuery({
-    //         ...query,
-    //         keyword: event.target.value
-    //     });
-    // }
+    const handleSelectCountry = (code, name) => {
+        setSelectedCountry({
+            country_code: code,
+            country_name: name,
+        });
+        form.setValue('country_code', code);
+        form.setValue('country_name', name);
+    }
 
     const handleSave = async (formData) => {
         setLoading(true)
+
         console.log("dikirim", formData)
         try {
-            formData.action = 'add';
+            formData.action = warehouse_id === null ? "add" : "edit";
             const response = await axios.post(
                 `/api/admin/warehouse/setData`,
-                formData
+                {
+                    warehouse_id: warehouse_id,
+                    warehouse_name: formData.warehouse_name,
+                    phone_number: phone,
+                    country_code: formData.country_code,
+                    address: formData.address,
+                    warehouse_manager: formData.warehouse_manager,
+                    email: email,
+                    action: formData.action,
+                }
             );
-            toast({
-                title: `New Warehouse ${formData.warehouse_name} created!`,
-                description: response.data.message,
-                status: 'success',
-            });
             setLoading(false)
-            onClose();
-            reload();
+            console.log(response)
+            if (response.status === 200 || response.status === "true") {
+                toast({
+                    title: `Success Warehouse ${formData.warehouse_name} ${warehouse_id ? "Edited" : "Created"} !`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+                onClose();
+                reload();
+                form.reset();
+            } else {
+                toast({
+                    title: 'Error creating Warehouse',
+                    description: response.data.message,
+                    status: 'error',
+                });
+            }
         } catch (error) {
             console.log('Error', error);
             setLoading(false)
@@ -124,37 +188,36 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
         }
     };
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/countries/list`,
-                query
-            );
-            const data = await response.data;
-            setCountry(data.country);
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    query
+                );
+                const data = await response.data;
+                setCountry(data.country);
+            } catch (error) {
+                fetchData();
+                console.log('Error:', error);
+            }
+        };
+
         fetchData();
     }, [query]);
 
+    const handleSelectUser = (email, phone) => {
+        setPhone(phone);
+        setEmail(email);
+        form.setValue('email', email);
+        form.setValue('phone_number', phone);
 
-    const handleSelectCountry = (code, name) => {
-        setSelectedCountry({
-            country_code: code,
-            country_name: name,
-        });
-        form.setValue('country_name', name);
-        form.setValue('country_code', code);
-        setOpenCommand(false)
     }
 
     useEffect(() => {
         const countryLenght = form.watch('country_name').length;
-        if (countryLenght >= 2) {
+        if (countryLenght > 2) {
             setOpenCommand(true)
         } else {
             setOpenCommand(false)
@@ -194,7 +257,13 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                             <FormItem className="w-full text-neutral-900 space-y-1">
                                                                 <FormLabel className="text-sm">Warehouse Name</FormLabel>
                                                                 <FormControl>
-                                                                    <Input id="warehouse_name" type="text" placeholder="Warehouse Name" className="text-sm bg-slate-100" {...field} />
+                                                                    <Input
+                                                                        id="warehouse_name"
+                                                                        type="text"
+                                                                        placeholder="Warehouse Name"
+                                                                        className="text-sm bg-slate-100"
+                                                                        autoComplete="off"
+                                                                        {...field} />
                                                                 </FormControl>
                                                                 <FormMessage className="text-xs" />
                                                             </FormItem>
@@ -202,91 +271,83 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                     )}
                                                 />
                                                 <FormField
-                                                    className="w-full"
-                                                    name="country_name"
                                                     control={form.control}
+                                                    name="country_name"
+                                                    className="w-full"
                                                     render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="w-full text-neutral-900 space-y-1">
-                                                                <FormLabel className="text-sm">Warehouse Based Country</FormLabel>
-                                                                <FormControl>
-                                                                    <div
-                                                                        className="flex gap-1 flex-row items-center justify-start border bg-slate-100 border-zinc-300 rounded focus-visible:ring-1 focus-visible:ring-black" tabIndex={0}>
-                                                                        <div className='px-3 '>
-                                                                            {
-                                                                                selectedCountry.country_code === "" ? (
-                                                                                    "USA"
-                                                                                ) : (
-                                                                                    selectedCountry.country_code
-                                                                                )
-                                                                            }
-                                                                        </div>
-                                                                        <div className="w-[3px] h-[20px]">
-                                                                            <Separator orientation="vertical" className="w-[2px] bg-slate-400 text-black h-full" />
-                                                                        </div>
-                                                                        <Input
-                                                                            autoComplete="off"
-                                                                            className="text-sm p-0 py-1 px-2 focus:ring-offset-0 bg-slate-100 border-none text-neutral-900 outline-none focus:ring-0  focus-visible:ring-0 "
-                                                                            id="country_name"
-                                                                            type="text"
-                                                                            placeholder="Select Country"
-                                                                            {...field}
+                                                        <FormItem className="flex flex-col w-full text-neutral-900 space-y-1">
+                                                            <FormLabel className="text-sm">Select Country</FormLabel>
+                                                            <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen} modal={true}>
+                                                                <PopoverTrigger asChild>
+                                                                    <FormControl className="w-full">
+                                                                        <Button
+                                                                            onClick={() => setPopOverOpen(true)}
+                                                                            variant="outline"
+                                                                            role="combobox"
+                                                                            type="button"
+                                                                            className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                                        >
+                                                                            <span className='text-black font-bold w-[50px]'>{form.getValues('country_code') ? form.getValues('country_code') : "..."}</span>
+                                                                            <span className='text-sm'>
+                                                                                {field.value ? field.value : "Select Country"}
+                                                                            </span>
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-[400px] p-0">
+                                                                    <Command className="w-full">
+                                                                        <CommandInput
+                                                                            placeholder="Search Country..."
+                                                                            className="h-9 w-full text-xs"
                                                                         />
-                                                                    </div>
-                                                                </FormControl>
-                                                                {openCommand && (
-                                                                    <div className="absolute bottom-100 w-full p-2 shadow bg-white">
-                                                                        <Command>
-                                                                            <CommandEmpty>No Country Found.</CommandEmpty>
-                                                                            <CommandGroup>
+                                                                        <CommandEmpty
+                                                                            className="w-full text-xs text-center py-2"
+                                                                        >
+                                                                            No Country found.
+                                                                        </CommandEmpty>
+
+                                                                        <CommandGroup className="">
+                                                                            <ScrollArea className="h-[150px] w-full ">
+                                                                                {console.log(field.value)}
                                                                                 {country.map((item) => (
-                                                                                    <CommandItem
-                                                                                        value={item.country_name}
-                                                                                        key={item.country_id}
-                                                                                        onSelect={() => {
-                                                                                            handleSelectCountry(item.country_code, item.country_name)
-                                                                                        }}
-                                                                                    >
-                                                                                        {item.country_name}
-                                                                                    </CommandItem>
+                                                                                    <>
+                                                                                        <PopoverClose asChild>
+                                                                                            <CommandItem
+                                                                                                value={item.country_name}
+                                                                                                key={item.country_id}
+                                                                                                className="text-xs"
+                                                                                                onSelect={() => {
+                                                                                                    handleSelectCountry(
+                                                                                                        item.country_code,
+                                                                                                        item.country_name
+                                                                                                    );
+                                                                                                    form.setValue('country_code', item.country_code);
+                                                                                                    form.setValue('country_name', item.country_name);
+                                                                                                    field.onChange(item.country_name); // Perbarui nilai field.value
+                                                                                                    setPopOverOpen(false)
+                                                                                                }}
+                                                                                            >
+
+                                                                                                {item.country_name}
+                                                                                                <CheckIcon
+                                                                                                    className={`ml-auto h-4 w-4 ${item.country_name === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                                                />
+
+                                                                                            </CommandItem>
+                                                                                        </PopoverClose>
+                                                                                    </>
+
+
                                                                                 ))}
-                                                                            </CommandGroup>
-                                                                        </Command>
-                                                                    </div>
-                                                                )}
-                                                            </FormItem>
-                                                        </>
+                                                                            </ScrollArea>
+                                                                        </CommandGroup>
+                                                                    </Command>
+                                                                </PopoverContent>
+                                                            </Popover>
+                                                            <FormMessage />
+                                                        </FormItem>
                                                     )}
                                                 />
-                                                {/* <div className="relative w-[100%]">
-                                                    <div className="flex flex-col gap-1 w-full">
-                                                        <div className="text-sm text-neutral-900 space-y-1">Warehouse Based Country</div>
-                                                        <div
-                                                            className="flex gap-1 flex-row items-center justify-start border bg-slate-100 border-zinc-300 rounded focus-visible:ring-1 focus-visible:ring-black" tabIndex={0}>
-                                                            <div className='px-3 '>
-                                                                {
-                                                                    selectedCountry.country_code === "" ? (
-                                                                        "USA"
-                                                                    ) : (
-                                                                        selectedCountry.country_code
-                                                                    )
-                                                                }
-                                                            </div>
-                                                            <div className="w-[3px] h-[20px]">
-                                                                <Separator orientation="vertical" className="w-[2px] bg-slate-400 text-black h-full" />
-                                                            </div>
-                                                            <Input
-                                                                className="text-sm p-0 py-1 px-2 focus:ring-offset-0 bg-slate-100 border-none text-neutral-900 outline-none focus:ring-0  focus-visible:ring-0 "
-                                                                id="country_code"
-                                                                type="text"
-                                                                placeholder="Select Country"
-                                                                onChange={handleOpenCommand}
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                </div> */}
-
                                                 <FormField
                                                     name="address"
                                                     className="w-full text-neutral-900"
@@ -303,21 +364,70 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                         </>
                                                     )}
                                                 />
-
                                                 <FormField
-                                                    name="warehouse_manager"
-                                                    className="w-full text-neutral-900"
                                                     control={form.control}
+                                                    name="warehouse_manager"
                                                     render={({ field }) => (
-                                                        <>
-                                                            <FormItem className="w-full text-neutral-900 space-y-1">
-                                                                <FormLabel className="text-sm">Warehouse Managers</FormLabel>
-                                                                <FormControl >
-                                                                    <Input id="warehouse_manager" className="text-sm bg-slate-100" placeholder="Manager Names" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage className="text-xs" />
-                                                            </FormItem>
-                                                        </>
+                                                        <FormItem className="flex flex-col text-neutral-900 space-y-1">
+                                                            <FormLabel className="text-sm">Warehouse Managers</FormLabel>
+                                                            <Popover modal={true} open={openUser} onOpenChange={setOpenUser}>
+                                                                <PopoverTrigger asChild>
+                                                                    <FormControl>
+                                                                        <Button
+                                                                            variant="outline"
+                                                                            role="combobox"
+                                                                            type="button"
+                                                                            className={cn(
+                                                                                " w-[100%] justify-between text-sm bg-slate-100 shadow-none h-9 px-4 py-2 rounded",
+                                                                                !field.value && "text-muted-foreground"
+                                                                            )}
+                                                                            onClick={() => setOpenUser(true)}
+                                                                        >
+                                                                            {field.value}
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-[300px] p-0">
+                                                                    <Command>
+                                                                        <CommandInput
+                                                                            placeholder="User Name"
+                                                                            className="h-9 "
+                                                                        />
+                                                                        <CommandEmpty>No User Found.</CommandEmpty>
+                                                                        <ScrollArea className="h-[120px]">
+                                                                            <CommandGroup>
+                                                                                {userList.map((language) => (
+                                                                                    <CommandItem
+                                                                                        value={language.name}
+                                                                                        key={language.name}
+                                                                                        onSelect={() => {
+                                                                                            form.setValue("warehouse_manager", language.name)
+                                                                                            form.setValue("email", language.email)
+                                                                                            form.setValue("phone_number", language.phone_number)
+                                                                                            handleSelectUser(
+                                                                                                language.email,
+                                                                                                language.phone_number
+                                                                                            )
+                                                                                            setOpenUser(false)
+                                                                                        }}
+                                                                                    >
+                                                                                        {language.name}
+                                                                                        <CheckIcon
+                                                                                            className={cn(
+                                                                                                "ml-auto h-4 w-4",
+                                                                                                language.name === field.value
+                                                                                                    ? "opacity-100"
+                                                                                                    : "opacity-0"
+                                                                                            )}
+                                                                                        />
+                                                                                    </CommandItem>
+                                                                                ))}
+                                                                            </CommandGroup>
+                                                                        </ScrollArea>
+                                                                    </Command>
+                                                                </PopoverContent>
+                                                            </Popover>
+                                                        </FormItem>
                                                     )}
                                                 />
 
@@ -325,6 +435,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                     name="email"
                                                     className="w-full"
                                                     control={form.control}
+                                                    disabled={true}
                                                     render={({ field }) => (
                                                         <>
                                                             <FormItem className="w-full text-neutral-900 space-y-1">
@@ -342,12 +453,20 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                     name="phone_number"
                                                     className="w-full text-neutral-900"
                                                     control={form.control}
+                                                    disabled={true}
                                                     render={({ field }) => (
                                                         <>
                                                             <FormItem className="w-full text-neutral-900 space-y-1">
                                                                 <FormLabel className="text-sm">Managers Phone Number</FormLabel>
                                                                 <FormControl >
-                                                                    <Input id="phone_number" type="number" className="text-sm bg-slate-100" placeholder="081239"  {...field} />
+                                                                    <Input
+                                                                        id="phone_number"
+                                                                        type="number"
+                                                                        className="text-sm
+                                                                         bg-slate-100"
+                                                                        placeholder="Phone Number"
+                                                                        {...field}
+                                                                    />
                                                                 </FormControl>
                                                                 <FormMessage className="text-xs" />
                                                             </FormItem>
@@ -364,6 +483,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload }) => {
                                                     onClick={(e) => {
                                                         e.preventDefault()
                                                         onClose()
+                                                        form.reset();
                                                     }}
                                                 >
                                                     <p className=' font-normal text-xs'>Cancel</p>
