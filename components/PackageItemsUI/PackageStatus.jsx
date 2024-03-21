@@ -22,6 +22,12 @@ export const PackageStatus = ({ variant }) => {
                             <div className="text-center text-yellowStatus text-xs ">{variant}</div>
                         </div>
                     </>
+                ) : (variant === "Declared" || variant === "declared") ? (
+                    <>
+                        <div className="h-[23px] px-2.5 py-[5px] bg-blueStatus-foreground rounded border border-blueStatus justify-center items-center gap-2.5 flex">
+                            <div className="text-center text-blueStatus text-xs ">{"Process"}</div>
+                        </div>
+                    </>
                 ) : (
                     <>
                         <div className="h-[23px] px-2.5 py-[5px] bg-blueStatus-foreground rounded border border-blueStatus justify-center items-center gap-2.5 flex">

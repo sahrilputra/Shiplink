@@ -37,7 +37,7 @@ const formSchema = yup.object().shape({
     ),
     total: yup.number(),
     broker: yup.string().required(),
-    invoice: yup.array(),
+    invoice: yup.array().required("Please upload an invoice"),
     pars: yup.string(),
     entry_number: yup.string(),
     warehouse: yup.string().required(),
@@ -72,7 +72,6 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     })
 
     console.log("🚀 ~ TableDashboard ~ invoice:", form.watch('invoice'))
-
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "package_content",
@@ -100,25 +99,28 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     const validateForm = () => {
         form.trigger().then((isValid) => {
             if (isValid) {
-                // Form is valid, continue with your logic
                 setOpenPayments(true);
                 console.log("Form is valid");
             } else {
-                // Form has errors, handle them accordingl
                 console.log("Form has errors", form.formState.errors);
-                // showing wich fields are required
-
-
+                const errors = form.formState.errors;
+                let errorString = "";
+                for (const key in errors) {
+                    errorString += `${errors[key].message} \n`;
+                }
                 toast({
                     title: `Errors!`,
-                    description: `Please fill in all required fields`,
+                    description: errorString,
                     status: 'success',
                 });
+
+                console.log("Form String Errors", errorString);
             }
         });
     }
-
+    console.log("Declare Content : ", form.watch('package_content'));
     console.log("PARS : ", form.watch('pars'));
+
     return (
         <>
             <PaymentsDialog
@@ -135,28 +137,30 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                 <Form {...form}>
                     <form
                     >
-                        <Table>
-                            <TableHeader className="bg-sky-50 border ">
-                                <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
-                                <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
-                                <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs">Description</TableHead>
-                                <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
-                                <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[140px]">HS Code</TableHead>
-                                <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
-                                <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
-                            </TableHeader>
-                            <TableBody>
-                                {fields.map((field, index) => (
-                                    <DeclareForms
-                                        key={field.id}
-                                        index={index}
-                                        forms={form}
-                                        handleRemoveContent={() => remove(index)}
-                                        itemID={field.itemID}
-                                    />
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <div className="">
+                            <Table className="overflow-visible">
+                                <TableHeader className="bg-sky-50 border ">
+                                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
+                                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
+                                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs">Description</TableHead>
+                                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
+                                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[140px]">HS Code</TableHead>
+                                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
+                                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
+                                </TableHeader>
+                                <TableBody className="">
+                                    {fields.map((field, index) => (
+                                        <DeclareForms
+                                            key={field.id}
+                                            index={index}
+                                            forms={form}
+                                            handleRemoveContent={() => remove(index)}
+                                            itemID={field.itemID}
+                                        />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
                         <div className='body w-full px-[5px] py-1.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
                             <div className="px-[10px] py-1.5 text-blue-900 font-poppins font-semi-bold">
                                 Totals : ${form.watch('total')}

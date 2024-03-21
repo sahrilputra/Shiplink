@@ -38,7 +38,7 @@ const formSchema = yup.object().shape({
     name: yup.string().required().max(50, "character is too long"),
     email: yup.string().email().required(),
     password: yup.string().required().min(8, "min 8 character"),
-    phone_number: yup.string().required(),
+    phone_number: yup.string(),
     role: yup.string().required(),
     role_id: yup.number(),
     warehouse: yup.string().required(),
@@ -226,6 +226,33 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                                         type="email"
                                                         id="address"
                                                         placeholder="Email"
+                                                        {...field} />
+                                                </FormControl>
+                                                <FormMessage className="text-xs" />
+                                            </FormItem>
+                                        )
+                                    }
+                                </>
+                            )}
+                        />
+                        <FormField
+                            className="w-full"
+                            name="phone_number"
+                            control={form.control}
+                            render={({ field }) => (
+                                <>
+                                    {
+                                        isSkleton ? (
+                                            <Skeleton className="w-full h-8 mt-2" />
+                                        ) : (
+                                            <FormItem className="w-full text-xs">
+                                                <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        size="xs"
+                                                        className="px-1.5"
+                                                        id="name"
+                                                        placeholder="+1223"
                                                         {...field} />
                                                 </FormControl>
                                                 <FormMessage className="text-xs" />

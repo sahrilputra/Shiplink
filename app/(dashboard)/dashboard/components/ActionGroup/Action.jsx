@@ -178,9 +178,9 @@ export const SelectWarehouse = ({ forms }) => {
                                                 <SelectItem
                                                     className='text-xs'
                                                     key={index}
-                                                    value={`${item.warehouse_name}`}
+                                                    value={`${item.warehouse_id}`}
                                                     onSelect={() =>
-                                                        forms.setValue("warehouse", item.warehouse_name)
+                                                        forms.setValue("warehouse", item.warehouse_id)
                                                     }
                                                 >
                                                     WR {item.warehouse_name}, {item.country_code}

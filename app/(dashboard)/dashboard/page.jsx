@@ -52,15 +52,18 @@ export default function Dashboard() {
         }
     }, [query])
 
-    const reloadData = () => {
-        fetchData()
-    }
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     }
     const [expandedItemId, setExpandedItemId] = useState(null);
 
+
+    const reloadData = () => {
+        // fetchData()
+        setExpandedItemId(null)
+        closeExpand()
+    }
     const toggleExpand = (itemId) => {
         if (expandedItemId === itemId) {
             setExpandedItemId(null);
@@ -131,7 +134,11 @@ export default function Dashboard() {
                     <div className={`${styles.rightContent} mx-5 relative  right-[20.87px]`}>
                         <div className="w-[373px] h-10 justify-between items-start inline-flex gap-3">
                             <div type='text' className="w-full h-10 px-[15px] py-2.5 bg-white rounded-md border border-neutral-200 justify-between items-center inline-flex">
-                                <input type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none border-none' placeholder='Search ...' />
+                                <input
+                                    type="text" className='w-[90%] text-zinc-500 text-xs font-normal focus:outline-none border-none'
+                                    placeholder='Search ...'
+                                    
+                                />
                                 <SearchIcon className="w-4 h-4" />
                             </div>
                             <Button

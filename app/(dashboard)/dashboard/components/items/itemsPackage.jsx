@@ -48,11 +48,16 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
         tracking_id,
         updated_at,
         status,
+        status_forcustomer,
         date,
         time,
         country_name_arrival,
         country_code_arrival,
         warehouse_name_arrival,
+        warehouse_destination,
+        warehouse_name_destination,
+        country_code_destination,
+        country_name_destination,
     } = item;
 
     const formattedDate = format(new Date(updated_at), 'dd MMM yyyy');
@@ -187,7 +192,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                             </div>
                             <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
-                                <PackageIndicator status={status} />
+                                <PackageIndicator status={status} status_forcustomer={status_forcustomer} />
                                 <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {formattedDate}</span></div>
                             </div>
                         </div>
@@ -197,7 +202,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                         <div className="flex flex-col justify-end items-end ">
                             <PackageStatus variant={status} />
                             <div className="h-[30px]  justify-end items-center gap-2.5 flex">
-                                <div className="text-right text-zinc-600 text-xs ">{warehouse_name_arrival} WR, {country_code_arrival}</div>
+                                <div className="text-right text-zinc-600 text-xs ">{warehouse_destination ? (`WR ${warehouse_destination}, `) : ""} {country_code_destination ? (`${country_code_destination}`) : ""}</div>
                             </div>
                         </div>
                         <div className="flex flex-col justify-end items-center ">
@@ -236,7 +241,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                                         </>
                                     ) : selectedButton === "Forward Package" ? (
                                         <>
-                                            <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload}/>
+                                            <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} />
                                         </>
                                     ) : (
                                         <>

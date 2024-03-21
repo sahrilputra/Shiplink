@@ -39,6 +39,7 @@ const formSchema = yup.object().shape({
     warehouse_name: yup.string(),
     role: yup.string(),
     role_id: yup.string(),
+    phone_number: yup.string(),
     email: yup.string().required(),
     password: yup.string().required(),
 })
@@ -51,6 +52,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
             name: "",
             warehouse_id: "",
             warehouse_name: "",
+            phone_number: "",
             role: "",
             email: "",
             role_id: "",
@@ -332,6 +334,28 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                                 </>
                             )}
                         /> */}
+                        <FormField
+                            className="w-full"
+                            name="phone_number"
+                            control={form.control}
+                            render={({ field }) => (
+                                <>
+                                    <FormItem className="w-full text-neutral-900">
+                                        <FormLabel className="text-sm">Phone Number</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                autoComplete="off"
+                                                id="phone_number"
+                                                placeholder="+1.212.321"
+                                                className="text-sm"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                </>
+                            )}
+                        />
                         <FormField
                             className="w-full"
                             name="email"
