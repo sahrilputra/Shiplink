@@ -49,14 +49,18 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
         console.log("🚀 ~ handleCommandChange ~ e:", e)
         setCommandQuery(e);
     }
+
+    const handleValueChange = (e) => {
+        console.log("🚀 ~ handleValueChange ~ e:", e.target.value)
+        if (e.target.value.length >= 4) {
+            setIsHsOpen(true)
+        } else {
+            setIsHsOpen(false)
+        }
+    }
     useEffect(() => {
         setQuery(hsCode);
-        if (hsCode.length >= 5 && hsCode.length <= 13) {
-            console.log('open')
-            setIsHsOpen(true);
-        } else {
-            setIsHsOpen(false);
-        }
+
 
         const findRootCategory = (code) => {
             return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
@@ -113,7 +117,6 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
         };
         fetchData();
     }, [commandQuery])
-
 
     return (
         <>
@@ -238,6 +241,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                                     maskPlaceholder="0000.00.00.00"
                                                     maskChar={null}
                                                     className="pt-5 font-light pl-2 h-10 bg-transparent outline-none focus-visible:ring-0  text-xs"
+                                                    onInput={(e) => handleValueChange(e)}
                                                     {...field}
                                                 >
                                                     {(inputProps) => (
@@ -258,24 +262,26 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                             <div
                                                 className={`hs absolute right-0 w-[300px] flex flex-col gap-1 bg-white rounded-sm px-2 py-2 shadow border z-[1000] overflow-visible`}>
                                                 <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
-                                                    <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
                                                     {filteredHSCodes.length > 0 ? (
-                                                        filteredHSCodes.map((item) => (
-                                                            <div
-                                                                key={item.id}
-                                                                className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
-                                                                onClick={() => {
-                                                                    handleDescChange(item.description);
-                                                                    form.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                                    form.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
-                                                                    setIsHsOpen(false);
-                                                                    setHSDesc(`${rootCategory} ${item.description}`);
-                                                                }}
-                                                            >
+                                                        <>
+                                                            <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
+                                                            {filteredHSCodes.map((item) => (
+                                                                <div
+                                                                    key={item.id}
+                                                                    className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
+                                                                    onClick={() => {
+                                                                        handleDescChange(item.description);
+                                                                        form.setValue(`package_content[${index}].hs_code`, item.htsno);
+                                                                        form.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
+                                                                        setIsHsOpen(false);
+                                                                        setHSDesc(`${rootCategory} ${item.description}`);
+                                                                    }}
+                                                                >
 
-                                                                {item.description}
-                                                            </div>
-                                                        ))
+                                                                    {item.description}
+                                                                </div>
+                                                            ))}
+                                                        </>
                                                     ) : (
                                                         <div className="text-xs px-2 py-2">No result found</div>
                                                     )}
