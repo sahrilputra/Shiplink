@@ -44,7 +44,11 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
     const [myQuery, setQuery] = useState("");
     const [hsDesc, setHSDesc] = useState("");
     const [rootCategory, setRootCategory] = useState("");
-
+    const [commandQuery, setCommandQuery] = useState(form.watch(`package_content[${index}].made_in`));
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCommandQuery(e);
+    }
     useEffect(() => {
         setQuery(hsCode);
         if (hsCode.length >= 5 && hsCode.length < 10) {
@@ -90,11 +94,12 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            
             try {
                 const response = await axios.post(
                     `/api/admin/config/countries/list`,
                     {
-                        "keyword": "",
+                        "keyword": commandQuery === "" ? "" : commandQuery,
                         "page": 0,
                         "limit": 0,
                         "index": 0,
@@ -108,7 +113,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
             }
         };
         fetchData();
-    }, [])
+    }, [commandQuery])
 
 
     return (
@@ -354,6 +359,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                                                         <CommandInput
                                                                             placeholder="Search..."
                                                                             className="h-[30px] text-xs"
+                                                                            onValueChange={(e) => handleCommandChange(e)}
                                                                         />
                                                                         <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
                                                                         <CommandGroup>
@@ -361,7 +367,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                                                                 {countryList.map((language) => (
                                                                                     <CommandItem
                                                                                         className="text-xs items-center"
-                                                                                        value={language.country_code}
+                                                                                        value={language.country_name}
                                                                                         key={language.country_id}
                                                                                         onSelect={() => {
                                                                                             form.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
