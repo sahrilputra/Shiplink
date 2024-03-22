@@ -51,11 +51,9 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
     }
     useEffect(() => {
         setQuery(hsCode);
-        if (hsCode.length >= 5 && hsCode.length < 10) {
+        if (hsCode.length >= 5 && hsCode.length <= 13) {
             console.log('open')
             setIsHsOpen(true);
-        } else if (hsCode.length > 12) {
-            setIsHsOpen(false);
         } else {
             setIsHsOpen(false);
         }
@@ -70,8 +68,9 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
             if (rootCategory) {
                 // Simpan deskripsi root category ke dalam state
                 setRootCategory(rootCategory.description);
+                const filteredSubCategories = hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
                 // Filter sub-kategori yang berasal dari root category yang ditemukan
-                return hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+                return filteredSubCategories.filter(item => item.htsno.startsWith(myQuery));
             }
             return [];
         };
@@ -94,7 +93,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            
+
             try {
                 const response = await axios.post(
                     `/api/admin/config/countries/list`,

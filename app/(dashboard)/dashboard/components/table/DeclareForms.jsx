@@ -97,7 +97,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
 
     useEffect(() => {
         setQuery(hsCode);
-        if (hsCode.length >= 5 && hsCode.length < 10) {
+        if (hsCode.length >= 5 && hsCode.length <= 13) {
             console.log('open')
             setIsHsOpen(true);
         } else if (hsCode.length > 12) {
@@ -114,7 +114,8 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
             const rootCategory = findRootCategory(myQuery);
             if (rootCategory) {
                 setRootCategory(rootCategory.description);
-                return hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+                const filteredSubCategories = hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+                return filteredSubCategories.filter(item => item.htsno.startsWith(myQuery));
             }
             return [];
         };
@@ -274,25 +275,27 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                             <div
                                                 className={`hs absolute  w-[300px] flex flex-col gap-1 bg-white rounded-sm px-2 py-2 shadow border z-[1000] overflow-visible`}>
                                                 <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
-                                                    <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
                                                     {filteredHSCodes.length > 0 ? (
-                                                        filteredHSCodes.map((item) => (
-                                                            <div
-                                                                key={item.id}
-                                                                className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
-                                                                onClick={() => {
-                                                                    handleDescChange(item.description);
-                                                                    forms.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                                    forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
-                                                                    setIsHsOpen(false);
-                                                                    setHSDesc(`${rootCategory} ${item.description}`);
-                                                                }}
-                                                            >
-                                                                {item.description}
-                                                            </div>
-                                                        ))
+                                                        <>
+                                                            <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
+                                                            {filteredHSCodes.map((item) => (
+                                                                <div
+                                                                    key={item.id}
+                                                                    className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
+                                                                    onClick={() => {
+                                                                        handleDescChange(item.description);
+                                                                        forms.setValue(`package_content[${index}].hs_code`, item.htsno);
+                                                                        forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
+                                                                        setIsHsOpen(false);
+                                                                        setHSDesc(`${rootCategory} ${item.description}`);
+                                                                    }}
+                                                                >
+                                                                    {item.description}
+                                                                </div>
+                                                            ))}
+                                                        </>
                                                     ) : (
-                                                        <div className="text-xs px-2 py-2">No result found</div>
+                                                        <div className="text-xs px-2 py-2">Code Not Valid, enter valid code or leave empty</div>
                                                     )}
                                                 </ScrollArea>
                                             </div>
