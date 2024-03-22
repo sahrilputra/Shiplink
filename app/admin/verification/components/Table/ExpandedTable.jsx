@@ -67,9 +67,9 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData }) =
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col relative  w-[50%] h-10 justify-start items-start">
+                                <div className="flex flex-col relative  w-[50%] h-max justify-start items-start">
                                     <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>HS Description</p>
-                                    <div className="h-5 w-full flex justify-start items-end">
+                                    <div className="h-5 w-full flex justify-start items-end h-max">
                                         <p className=' text-xs font-light'>{item.hs_desc ? item.hs_desc : "undefined"}</p>
                                     </div>
                                 </div>

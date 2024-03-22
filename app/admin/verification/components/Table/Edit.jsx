@@ -49,6 +49,8 @@ export const Edit = ({ data, cancel, trackingID, reload }) => {
         name: "package_content",
     });
 
+    console.log("watch", form.watch("package_content"));
+
     const [loading, setLoading] = useState(false);
     console.log("ERROR", form.formState.errors)
     const handleSave = async (formData) => {
@@ -83,7 +85,7 @@ export const Edit = ({ data, cancel, trackingID, reload }) => {
                 dataToSend
             );
 
-            console.log('Response:', response);
+            console.log('Response Data:', response);
             setLoading(false);
             cancel();
             toast({

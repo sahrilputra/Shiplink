@@ -38,10 +38,12 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
     }, [data])
 
     const [filteredHSCodes, setFilteredHSCodes] = useState([]);
+    console.log("🚀 ~ EditForms ~ filteredHSCodes:", filteredHSCodes)
     const hsCode = form.watch(`package_content[${index}].hs_code`)
     const [isHsOpen, setIsHsOpen] = useState(false)
     const [myQuery, setQuery] = useState("");
     const [hsDesc, setHSDesc] = useState("");
+    const [rootCategory, setRootCategory] = useState("");
 
     useEffect(() => {
         setQuery(hsCode);
@@ -53,11 +55,24 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
         } else {
             setIsHsOpen(false);
         }
-        const filterHS = () => {
-            return hsCodeList.filter((item) => {
-                return item.htsno.includes(hsCode);
-            });
+
+        const findRootCategory = (code) => {
+            return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
         };
+
+        const filterHS = () => {
+            // Temukan root category yang sesuai dengan kode yang diinput
+            const rootCategory = findRootCategory(myQuery);
+            if (rootCategory) {
+                // Simpan deskripsi root category ke dalam state
+                setRootCategory(rootCategory.description);
+                // Filter sub-kategori yang berasal dari root category yang ditemukan
+                return hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+            }
+            return [];
+        };
+
+        setFilteredHSCodes(filterHS());
         setFilteredHSCodes(filterHS());
 
     }, [myQuery, hsCodeList, hsCode]);
@@ -66,9 +81,9 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
         setHSDesc(desc);
     }
 
-    useEffect(() => {
-        form.setValue(`package_content[${index}].hs_desc`, hsDesc);
-    }, [hsDesc, form])
+    // useEffect(() => {
+    //     form.setValue(`package_content[${index}].hs_desc`, hsDesc);
+    // }, [hsDesc, form])
 
 
     const [countryList, setCountryList] = useState([]);
@@ -181,18 +196,20 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                     <div className="h-10 w-full flex justify-start items-end">
                         <>
                             <FormField
-                                className="w-full flex flex-row justify-center items-end"
+                                className="w-full flex flex-row justify-center items-end bg-slate-800"
                                 name={`package_content[${index}].hs_desc`}
-                                disabled={true}
                                 control={form.control}
                                 render={({ field }) => (
                                     <>
                                         <FormItem className="w-full text-sm">
                                             <FormControl>
                                                 <Input id="width"
-                                                    className="pt-5 font-light pl-2 h-10 outline-none focus-visible:ring-0  text-xs"
+                                                    className="pt-5 font-light pl-2 h-10 outline-none focus-visible:ring-0  text-xs "
                                                     type="text"
-                                                    placeholder="Description" {...field} />
+                                                    placeholder="HS Description"
+                                                    disabled={true}
+                                                    value={field.value}
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     </>
@@ -238,6 +255,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                             <div
                                                 className={`hs absolute right-0 w-[300px] flex flex-col gap-1 bg-white rounded-sm px-2 py-2 shadow border z-[1000] overflow-visible`}>
                                                 <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
+                                                    <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
                                                     {filteredHSCodes.length > 0 ? (
                                                         filteredHSCodes.map((item) => (
                                                             <div
@@ -246,11 +264,12 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                                                 onClick={() => {
                                                                     handleDescChange(item.description);
                                                                     form.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                                    form.setValue(`package_content[${index}].hs_desc`, hsDesc);
+                                                                    form.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
                                                                     setIsHsOpen(false);
-                                                                    setHSDesc(item.description);
+                                                                    setHSDesc(`${rootCategory} ${item.description}`);
                                                                 }}
                                                             >
+
                                                                 {item.description}
                                                             </div>
                                                         ))
