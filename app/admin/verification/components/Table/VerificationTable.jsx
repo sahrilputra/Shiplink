@@ -16,7 +16,11 @@ import { ArrowDownV2Icons } from "@/components/icons/iconCollection";
 import { VerifiedStatus } from "../status/VerifiedStatus";
 import { EditForms } from "./EditForms";
 import { ImageTable } from "./ImageTable";
+import { Edit } from "./Edit";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+    Form,
+} from "@/components/ui/form"
 import {
     ColumnDef,
     flexRender,
@@ -38,7 +42,17 @@ import {
 } from "@/components/ui/pagination"
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+
 export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadData }) {
+    console.log("🚀 ~ VerificationTable ~ data:", data)
+    // Form Init
+
+
+    // console.log("Declare Content", data.map(item => item.content.length))
+    // const [dataLength, setDataLength] = useState(data.map(item => item.content.length))
+    // console.log('dataLength', dataLength)
+    // fields.length = dataLength;
+    // fields.length = data.map(item => item.content.length);
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -254,42 +268,28 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
                                                     <ImageTable images={row.original.images} />
                                                 </div>
                                                 {
-
                                                     isEdit ? (
-                                                        <EditForms counter={editCount} data={row.original.content} edit={toggleEdit} cancel={toggleCancel} trackingID={row.original.tracking_id} reloadData={reloadData} />
+                                                        <>
+                                                            <Edit
+                                                                data={row.original.content}
+                                                                cancel={toggleCancel}
+                                                                trackingID={row.original.tracking_id}
+                                                                reload={reloadData}
+                                                            />
+                                                        </>
                                                     ) : (
                                                         <ExpandedTable content={row.original.content} item={row.original} edit={toggleEdit} trackingID={row.original.tracking_id} reloadData={reloadData} />
                                                     )
                                                 }
-
                                             </TableCell>
-                                        </TableRow>
-                                        {/* <TableRow className="bg-blue-100 hover:bg-blue-100 ">
-                                            <TableCell className="font-medium p-0 h-7 px-5 py-2" colSpan={7}>
-                                                {
-                                                    isEdit ? (
-                                                        <EditMode cancel={toggleCancel} increaseContent={setEditCount} />
-                                                    ) : (
-                                                        <TableAction edit={toggleEdit} item={row.original} />
-                                                    )
-                                                }
-                                            </TableCell>
-                                        </TableRow> */}
+                                        </TableRow >
                                     </>
                                 )}
-                                {/* {expandedRows[row.id] && (
-                                    <TableRow>
-                                        <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
-                                            <BrokerDeclareContent data={row.original.content} details={row.original} TrackingID={row.original.tracking_id} reload={reload} status={row.original.status} />
-                                        </TableCell>
-                                    </TableRow>
-                                )} */}
-                                {/* ${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} */}
                             </>
                         ))
                     )}
                 </TableBody>
-            </Table>
+            </Table >
             <div className="flex justify-end w-full items-end">
                 <Pagination className={'flex justify-end w-full items-end'}>
                     <PaginationContent>
@@ -298,6 +298,7 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
                                 className={"cursor-pointer"}
                                 onClick={() => table.setPageIndex(0)}
                                 disabled={!table.getCanPreviousPage()}
+
                             />
                         </PaginationItem>
                         {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
