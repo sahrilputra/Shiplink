@@ -39,14 +39,21 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
     const [countryList, setCountryList] = useState([]);
     const [openCountry, setOpenCountry] = useState(false)
     const [hsDesc, setHSDesc] = useState("");
+    const [commandQuery, setCommandQuery] = useState("");
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCommandQuery(e);
+    }
+    console.log("🚀 ~ DeclareForms ~ commandQuery:", commandQuery)
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const response = await axios.post(
                     `/api/admin/config/countries/list`,
                     {
-                        "keyword": "",
+                        "keyword": commandQuery === "" ? "" : commandQuery,
                         "page": 0,
                         "limit": 0,
                         "index": 0,
@@ -60,7 +67,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
             }
         };
         fetchData();
-    }, [])
+    }, [commandQuery])
 
     useEffect(() => {
         const calculateSubtotal = () => {
@@ -85,24 +92,63 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
     const hsCode = forms.watch(`package_content[${index}].hs_code`)
     const [isHsOpen, setIsHsOpen] = useState(false)
     const [myQuery, setQuery] = useState("");
+    const [rootCategory, setRootCategory] = useState("");
     console.log("🚀 ~ myQuery:", myQuery)
 
     useEffect(() => {
         setQuery(hsCode);
-        if (hsCode.length >= 5) {
+        if (hsCode.length >= 5 && hsCode.length < 10) {
             console.log('open')
             setIsHsOpen(true);
+        } else if (hsCode.length > 12) {
+            setIsHsOpen(false);
         } else {
             setIsHsOpen(false);
         }
-        const filterHS = () => {
-            return hsCodeList.filter((item) => {
-                return item.htsno.includes(hsCode);
-            });
+
+        const findRootCategory = (code) => {
+            return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
         };
+
+        const filterHS = () => {
+            const rootCategory = findRootCategory(myQuery);
+            if (rootCategory) {
+                setRootCategory(rootCategory.description);
+                return hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+            }
+            return [];
+        };
+
         setFilteredHSCodes(filterHS());
 
     }, [myQuery, hsCodeList, hsCode]);
+    // useEffect(() => {
+    //     setQuery(hsCode);
+    //     if (hsCode.length >= 5) {
+    //         console.log('open')
+    //         setIsHsOpen(true);
+    //     } else {
+    //         setIsHsOpen(false);
+    //     }
+    //     const findRootCategory = (code) => {
+    //         return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
+    //     };
+
+    //     const filterHS = () => {
+    //         // Temukan root category yang sesuai dengan kode yang diinput
+    //         const rootCategory = findRootCategory(myQuery);
+    //         if (rootCategory) {
+    //             // Simpan deskripsi root category ke dalam state
+    //             setRootCategory(rootCategory.description);
+    //             // Filter sub-kategori yang berasal dari root category yang ditemukan
+    //             return hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+    //         }
+    //         return [];
+    //     };
+
+    //     setFilteredHSCodes(filterHS());
+
+    // }, [myQuery, hsCodeList, hsCode]);
 
     const handleDescChange = (desc) => {
         setHSDesc(desc);
@@ -228,6 +274,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                             <div
                                                 className={`hs absolute  w-[300px] flex flex-col gap-1 bg-white rounded-sm px-2 py-2 shadow border z-[1000] overflow-visible`}>
                                                 <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
+                                                    <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
                                                     {filteredHSCodes.length > 0 ? (
                                                         filteredHSCodes.map((item) => (
                                                             <div
@@ -236,9 +283,9 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                                 onClick={() => {
                                                                     handleDescChange(item.description);
                                                                     forms.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                                    forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
+                                                                    forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
                                                                     setIsHsOpen(false);
-                                                                    setHSDesc(item.description);
+                                                                    setHSDesc(`${rootCategory} ${item.description}`);
                                                                 }}
                                                             >
                                                                 {item.description}
@@ -295,21 +342,22 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                     <CommandInput
                                                         placeholder="Search..."
                                                         className="h-[30px] text-xs"
+                                                        onValueChange={(e) => handleCommandChange(e)}
                                                     />
-                                                    <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
+                                                    <CommandEmpty className="text-xs px-1 py-1 text-center">No Country Found.</CommandEmpty>
                                                     <CommandGroup>
                                                         <ScrollArea className="h-[100px]">
                                                             {countryList.map((language) => (
                                                                 <CommandItem
                                                                     className="text-xs items-center"
-                                                                    value={language.country_code}
-                                                                    key={language.country_id}
+                                                                    value={language.country_name}
+                                                                    key={language.country_code}
                                                                     onSelect={() => {
                                                                         forms.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
                                                                         setOpenCountry(false)
                                                                     }}
                                                                 >
-                                                                    {language.country_code}
+                                                                    {language.country_name}
                                                                     <CheckIcon
                                                                         className={cn(
                                                                             "ml-auto h-4 w-4",

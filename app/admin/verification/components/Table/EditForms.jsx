@@ -73,7 +73,6 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
         };
 
         setFilteredHSCodes(filterHS());
-        setFilteredHSCodes(filterHS());
 
     }, [myQuery, hsCodeList, hsCode]);
 
