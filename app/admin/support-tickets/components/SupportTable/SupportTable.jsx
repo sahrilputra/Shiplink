@@ -8,11 +8,26 @@ import { DatePickerWithRange } from '@/components/date/DateRangePicker'
 import { Checkbox } from '@/components/ui/checkbox'
 import CreateNewTickets from '../dialog/NewTickets'
 import { UpdateStatusDialog } from '../dialog/UpdateStatus'
+import { addDays, format } from "date-fns";
 export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
 
     const [openUpdate, setOpenUpdate] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [date, setDate] = useState({
+        from: "",
+        to: "",
+    });
+    const formatDate = (dateString) => {
+        return format(new Date(dateString), "yyyy-MM-dd");
+    };
+    
+    const handleSetDate = (newDate) => {
+        setDate({
+            from: formatDate(newDate?.from || new Date()),
+            to: formatDate(newDate?.to || new Date()),
+        });
 
+    };
     const toggleOpenDialog = () => {
         setOpen(!open)
     }
@@ -40,7 +55,7 @@ export const SupportTable = ({ data, onRowClick, onHide, open, setOpen }) => {
                                         className=""
                                         fill="#CC0019" />
                                 </Button>
-                                <DatePickerWithRange className={"text-black"} />
+                                <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate}/>
                             </div>
                             <div className="">
                                 <Button

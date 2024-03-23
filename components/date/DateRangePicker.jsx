@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
@@ -15,11 +15,18 @@ import {
 
 export function DatePickerWithRange({
     className,
+    mySetdate = new Date(),
+    myDate,
 }) {
     const [date, setDate] = useState({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
+        from: new Date(),
+        to: addDays(new Date(), 5),
     });
+
+    useEffect(() => {
+        mySetdate(date);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [date])
 
     return (
         <div className={cn("grid gap-2 ", className)}>

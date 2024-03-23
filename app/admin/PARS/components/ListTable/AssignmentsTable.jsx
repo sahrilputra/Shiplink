@@ -19,17 +19,28 @@ import { DeleteIcons } from "@/components/icons/iconCollection";
 import { MenuDropdown } from "../../assignments/components/menu/MenuDropdown";
 import NextLink from "next/link"
 import { MoreHorizontalIcon } from "lucide-react";
-
+import { addDays, format } from "date-fns";
 export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, selectedMenus, selectedIDHandler }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
-
+    const [date, setDate] = useState({
+        from: "",
+        to: "",
+    });
+    const formatDate = (dateString) => {
+        return format(new Date(dateString), "yyyy-MM-dd");
+    };
     const toggleRow = (index) => {
         const newExpandedRows = [...expandedRows];
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
-
+    const handleSetDate = (newDate) => {
+        setDate({
+            from: formatDate(newDate?.from || new Date()),
+            to: formatDate(newDate?.to || new Date()),
+        });
+    };
     return (
         <Table className="border border-zinc-300 rounded-sm">
             <TableHeader className="text-sm bg-white text-black">
@@ -43,7 +54,7 @@ export function AssignmetnsTabled({ data, isOpen, setOpen, selectedMenusState, s
                                 className='w-[37px] h-[37px]  border border-neutral-200 flex items-center'>
                                 <FilterIcons fill="#CC0019" />
                             </Button>
-                            <DatePickerWithRange className={"text-black"} />
+                            <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
                         </div>
                     </div>
                 </TableHead>

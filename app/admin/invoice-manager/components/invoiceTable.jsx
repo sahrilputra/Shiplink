@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import NextLink from 'next/link';
+import { addDays, format } from "date-fns";
 import { DeleteInvoiceDialog } from "./dialog/DeleteInvoiceDialog";
 
 import {
@@ -55,6 +56,13 @@ export function InvoiceTable({ isOpen, setOpen }) {
     const [openDelete, setOpenDelete] = useState(false);
     const [openStatus, setOpenStatus] = useState(false);
     const [invStatusID, setInvStatusID] = useState(false)
+    const [date, setDate] = useState({
+        from: "",
+        to: "",
+    });
+    const formatDate = (dateString) => {
+        return format(new Date(dateString), "yyyy-MM-dd");
+    };
     const [query, setQuery] = useState({
         keyword: "",
         invoice_id: "",
@@ -76,6 +84,13 @@ export function InvoiceTable({ isOpen, setOpen }) {
         } catch (error) {
             console.log('Error:', error);
         }
+    };
+    
+    const handleSetDate = (newDate) => {
+        setDate({
+            from: formatDate(newDate?.from || new Date()),
+            to: formatDate(newDate?.to || new Date()),
+        });
     };
 
     useEffect(() => {
@@ -256,7 +271,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                             className=""
                                             fill="#CC0019" />
                                     </Button>
-                                    <DatePickerWithRange className={"text-black"} />
+                                    <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
                                 </div>
                                 <div>
 

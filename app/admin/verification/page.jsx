@@ -9,6 +9,7 @@ import { SearchBar } from '@/components/ui/searchBar'
 import { Input } from '@/components/ui/input'
 import { VerificationTable } from './components/Table/VerificationTable'
 import { DatePickerWithRange } from '@/components/date/DateRangePicker'
+import { addDays, format } from "date-fns";
 import Image from 'next/image'
 import { VerificationMenus } from './components/menus/VerificationMenus'
 import axios from 'axios'
@@ -17,6 +18,17 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export default function VerificationPages() {
     const [isSkeleton, setIsSkeleton] = useState(true);
+    const [date, setDate] = useState({
+        from: "",
+        to: "",
+    });
+    const formatDate = (dateString) => {
+        return format(new Date(dateString), "yyyy-MM-dd");
+    };
+
+
+
+    console.log("🚀 ~ VerificationPages ~ selectDate:", date)
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState({
         keyword: "",
@@ -49,7 +61,19 @@ export default function VerificationPages() {
     useEffect(() => {
         fetchData();
     }, [query]);
-    
+
+    const handleSetDate = (newDate) => {
+        setDate({
+            from: formatDate(newDate?.from || new Date()),
+            to: formatDate(newDate?.to || new Date()),
+        });
+
+        setQuery({
+            ...query,
+            date_start: date.from,
+            date_end: date.to,
+        });
+    };
     const handleSearchChange = (event) => {
         setQuery({
             ...query,
@@ -72,7 +96,7 @@ export default function VerificationPages() {
         } else if (tab === 'Unverified') {
             setQuery({
                 ...query,
-                status: "Received"
+                status: "Declared"
             })
             setIsSkeleton(false);
         } else {
@@ -115,15 +139,9 @@ export default function VerificationPages() {
                         <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
                             <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                                 <SearchBar handleSearch={handleSearchChange} />
-                                <Button
-                                    variant="filter"
-                                    size="filter"
-                                    className='border border-zinc-300 flex items-center rounded'>
-                                    <FilterIcons
-                                        className=""
-                                        fill="#CC0019" />
-                                </Button>
-                                <DatePickerWithRange />
+                                <DatePickerWithRange
+                                    mySetdate={handleSetDate}
+                                />
                             </div>
                         </div>
 

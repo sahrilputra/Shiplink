@@ -94,6 +94,15 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
         {
             accessorKey: "destination",
             header: "Destination",
+            cell: ({ row }) => {
+                return (
+                    <>
+                        <div className="text-xs">
+                            {`${row.original.warehouse_name_destination} Warehouse - ${row.original.country_code_destination}`}
+                        </div>
+                    </>
+                )
+            }
         },
         {
             accessorKey: "updated_at",

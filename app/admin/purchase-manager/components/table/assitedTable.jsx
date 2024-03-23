@@ -16,13 +16,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
+import { addDays, format } from "date-fns";
 import { AssistedPurchaseMenus } from "../menus/AssistedPurchaseMenus";
 import { MoreHorizontalIcon } from "lucide-react";
 export function PendingTable({ data, isOpen, setOpen }) {
 
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
-
+    const [date, setDate] = useState({
+        from: "",
+        to: "",
+    });
+    const formatDate = (dateString) => {
+        return format(new Date(dateString), "yyyy-MM-dd");
+    };
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -34,6 +41,12 @@ export function PendingTable({ data, isOpen, setOpen }) {
         newExpandedRows[index] = true;
         setExpandedRows(newExpandedRows);
     };
+    const handleSetDate = (newDate) => {
+        setDate({
+            from: formatDate(newDate?.from || new Date()),
+            to: formatDate(newDate?.to || new Date()),
+        });
+    }
     return (
         <Table className="border border-zinc-300 rounded-sm">
             <TableHeader className="text-sm bg-white text-black">
@@ -49,7 +62,7 @@ export function PendingTable({ data, isOpen, setOpen }) {
                                     className=""
                                     fill="#CC0019" />
                             </Button>
-                            <DatePickerWithRange className={"text-black"} />
+                            <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
                         </div>
                     </div>
                 </TableHead>

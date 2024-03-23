@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/tableDashboard"
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
+import { addDays, format } from "date-fns";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { EditLotsDialog } from "../AssignLotsDialog/EditLotsDialog";
@@ -50,6 +51,14 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const [lots, setLots] = useState([]);
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [dataLots, setDataLots] = useState({})
+    const [date, setDate] = useState({
+        from: "",
+        to: "",
+    });
+    const formatDate = (dateString) => {
+        return format(new Date(dateString), "yyyy-MM-dd");
+    };
+    console.log("🚀 ~ LotsItemsTable ~ date:", date)
 
     const [query, setQuery] = useState({
         keyword: "",
@@ -81,6 +90,18 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         fetchData();
     }, [query]);
 
+    const handleSetDate = (newDate) => {
+        setDate({
+            from: formatDate(newDate?.from || new Date()),
+            to: formatDate(newDate?.to || new Date()),
+        });
+
+        setQuery({
+            ...query,
+            date_start: date.from,
+            date_end: date.to,
+        });
+    };
     const columns = [
 
         {
@@ -204,7 +225,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
             <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} data={dataLots} reload={reloadData} />
             <div className="">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center pb-3">
-                    <SearchBar />
+                    <SearchBar handleSearch={handleSearchChange}/>
                     <Button
                         variant="filter"
                         size="filter"
@@ -213,7 +234,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                             className=""
                             fill="#CC0019" />
                     </Button>
-                    <DatePickerWithRange className={"text-black"} />
+                    <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
                 </div>
             </div >
 
@@ -243,7 +264,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                 </TableHeader>
                 <TableBody>
 
-                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                    {isSkeleton || !table?.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
                                 [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
