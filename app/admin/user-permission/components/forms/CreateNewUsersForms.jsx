@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/components/ui/use-toast'
 import { Checkbox } from '@/components/ui/checkbox'
+import InputMask from 'react-input-mask';
 import axios from "axios";
 import {
     Command,
@@ -38,7 +39,7 @@ const formSchema = yup.object().shape({
     warehouse_id: yup.string().required(),
     warehouse_name: yup.string(),
     role: yup.string(),
-    role_id: yup.string(),
+    role_id: yup.number(),
     phone_number: yup.string(),
     email: yup.string().required(),
     password: yup.string().required(),
@@ -120,7 +121,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
         setLoading(true)
         console.log("dikirim", formData)
         formData.action = "add";
-        formData.phone_number = null;
+        formData.profile_picture = "";
         try {
             const response = await axios.post(
                 `/api/admin/user/setData`,
@@ -334,24 +335,34 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                                 </>
                             )}
                         /> */}
+
                         <FormField
                             className="w-full"
                             name="phone_number"
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full text-neutral-900">
-                                        <FormLabel className="text-sm">Phone Number</FormLabel>
+                                    <FormItem className="w-full">
+                                        <FormLabel className=" text-sm">Phone Number</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                autoComplete="off"
-                                                id="phone_number"
-                                                placeholder="+1.212.321"
-                                                className="text-sm"
+                                            <InputMask
+                                                mask="+9.999.999.9999"
+                                                maskChar={null}
+                                                maskPlaceholder="0000.00.0000"
                                                 {...field}
-                                            />
+                                            >
+                                                {(inputProps) => (
+                                                    <Input
+                                                        className="px-3 text-sm h-[36px]"
+                                                        id="phoneNumber"
+                                                        size="new"
+                                                        type="text"
+                                                        placeholder="+1.000.000.0000"
+                                                        {...inputProps}
+                                                    />
+                                                )}
+                                            </InputMask>
                                         </FormControl>
-                                        <FormMessage />
                                     </FormItem>
                                 </>
                             )}

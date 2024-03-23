@@ -171,14 +171,12 @@ export function UserTable() {
                                                     Manage User Permission
                                                 </NextLink>
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="text-xs">
-                                                User Details
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="text-xs">
-                                                Change Role
-                                            </DropdownMenuItem>
+                                            <NextLink href={`/admin/user-permission/profiles/${row.original.user_code}`} passHref>
+                                                <DropdownMenuItem
+                                                    className="text-xs">
+                                                    User Details
+                                                </DropdownMenuItem>
+                                            </NextLink>
                                             <DropdownMenuItem
                                                 onClick={() => handlerDelete(row.original.user_code)}
                                                 className="text-xs text-red-700">
