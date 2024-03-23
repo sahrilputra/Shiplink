@@ -34,7 +34,7 @@ export async function POST(request) {
             }
         );
 
-        console.log("response from api : ", response.data); // Log the response data
+        // console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {

@@ -97,15 +97,6 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
 
     useEffect(() => {
         setQuery(hsCode);
-        if (hsCode.length >= 5 && hsCode.length <= 13) {
-            console.log('open')
-            setIsHsOpen(true);
-        } else if (hsCode.length > 12) {
-            setIsHsOpen(false);
-        } else {
-            setIsHsOpen(false);
-        }
-
         const findRootCategory = (code) => {
             return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
         };
@@ -123,33 +114,63 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
         setFilteredHSCodes(filterHS());
 
     }, [myQuery, hsCodeList, hsCode]);
-    // useEffect(() => {
-    //     setQuery(hsCode);
-    //     if (hsCode.length >= 5) {
-    //         console.log('open')
-    //         setIsHsOpen(true);
+
+    const handleValueChange = (e) => {
+        console.log("🚀 ~ handleValueChange ~ e:", e.target.value)
+        if (e.target.value.length >= 4 && e.target.value.length < 13) {
+            setIsHsOpen(true)
+        } else if (e.target.value.length === 13) {
+            setQuery(e.target.value);
+            handle13DigitHST(e.target.value)
+        } else {
+            setIsHsOpen(false)
+            setHSDesc("")
+            forms.setValue(`package_content[${index}].hs_desc`, "");
+        }
+    }
+
+
+    const handle13DigitHST = async (hsCode) => {
+
+        const findRootCategory = (code) => {
+            return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
+        };
+
+        try {
+            const hsItem = hsCodeList.find(item => item.htsno === hsCode);
+            if (hsItem) {
+                const rootCategory = await findRootCategory(hsCode);
+                if (rootCategory) {
+                    setIsHsOpen(false);
+                    setHSDesc(`${rootCategory.description} ${hsItem.description}`);
+                    forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory.description} ${hsItem.description}`);
+                }
+            } else {
+                setHSDesc("");
+                forms.setValue(`package_content[${index}].hs_desc`, "");
+                setIsHsOpen(true);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // const handle13DigitHST = (hsCode) => {
+    //     const hsItem = hsCodeList.find(item => item.htsno === hsCode);
+    //     if (hsItem) {
+    //         // Jika ditemukan, set hs_desc dengan format yang diinginkan
+    //         setIsHsOpen(false)
+    //         setHSDesc(`${rootCategory} ${hsItem.description}`);
+    //         forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${hsItem.description}`);
     //     } else {
-    //         setIsHsOpen(false);
+    //         // Jika tidak ditemukan, bersihkan hs_desc
+    //         setHSDesc("");
+    //         forms.setValue(`package_content[${index}].hs_desc`, "");
+    //         setIsHsOpen(true)
     //     }
-    //     const findRootCategory = (code) => {
-    //         return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
-    //     };
+    // }
 
-    //     const filterHS = () => {
-    //         // Temukan root category yang sesuai dengan kode yang diinput
-    //         const rootCategory = findRootCategory(myQuery);
-    //         if (rootCategory) {
-    //             // Simpan deskripsi root category ke dalam state
-    //             setRootCategory(rootCategory.description);
-    //             // Filter sub-kategori yang berasal dari root category yang ditemukan
-    //             return hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
-    //         }
-    //         return [];
-    //     };
 
-    //     setFilteredHSCodes(filterHS());
-
-    // }, [myQuery, hsCodeList, hsCode]);
 
     const handleDescChange = (desc) => {
         setHSDesc(desc);
@@ -240,31 +261,32 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                         value={(hsDesc ? hsDesc : "")}
                     />
                 </TableCell >
-                <TableCell className="p-0 h-8 px-2 py-2  w-[140px] overflow-visible ">
+                <TableCell className="p-0 h-8 px-2 py-2  w-max overflow-visible ">
                     <FormField
-                        className="w-full block items-end"
+                        className="w-[105px] block items-end"
                         name={`package_content[${index}].hs_code`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
                                 <div className="relative">
-                                    <FormItem className="w-full text-xs relative">
+                                    <FormItem className=" text-xs relative">
                                         <div className="relative">
-                                            <FormControl>
+                                            <FormControl className="w-[105px]">
                                                 <InputMask
                                                     mask="9999.99.99.99" // Format yang diinginkan
                                                     maskPlaceholder="0000.00.00.00"
-                                                    className='text-xs h-[30px] pl-2'
+                                                    className='text-xs h-[30px] px-2 w-[105px] '
                                                     maskChar={null}
                                                     {...field}
+                                                    onInput={(e) => handleValueChange(e)}
                                                 >
                                                     {(inputProps) => (
                                                         <Input
                                                             autoComplete="off"
-                                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                                            className="text-xs h-[30px] py-1 w-[105px] px-2 focus:ring-offset-0"
                                                             id="hs_code"
                                                             type="text"
-                                                            placeholder="0000.00.0000"
+                                                            placeholder="0000.00.00.00"
                                                             {...inputProps}
                                                         />
                                                     )}
@@ -273,26 +295,28 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                         </div>
                                         {isHsOpen && (
                                             <div
-                                                className={`hs absolute  w-[300px] flex flex-col gap-1 bg-white rounded-sm px-2 py-2 shadow border z-[1000] overflow-visible`}>
+                                                className={`hs absolute  w-[300px] flex flex-col gap-1 bg-white rounded-md px-2 py-2 shadow border z-[1000] overflow-visible`}>
                                                 <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
                                                     {filteredHSCodes.length > 0 ? (
                                                         <>
-                                                            <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
-                                                            {filteredHSCodes.map((item) => (
-                                                                <div
-                                                                    key={item.id}
-                                                                    className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
-                                                                    onClick={() => {
-                                                                        handleDescChange(item.description);
-                                                                        forms.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                                        forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
-                                                                        setIsHsOpen(false);
-                                                                        setHSDesc(`${rootCategory} ${item.description}`);
-                                                                    }}
-                                                                >
-                                                                    {item.description}
-                                                                </div>
-                                                            ))}
+                                                            <div className="items-center rounded-sm">
+                                                                <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
+                                                                {filteredHSCodes.map((item) => (
+                                                                    <div
+                                                                        key={item.id}
+                                                                        className="text-xs items-center rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer"
+                                                                        onClick={() => {
+                                                                            handleDescChange(item.description);
+                                                                            forms.setValue(`package_content[${index}].hs_code`, item.htsno);
+                                                                            forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
+                                                                            setIsHsOpen(false);
+                                                                            setHSDesc(`${rootCategory} ${item.description}`);
+                                                                        }}
+                                                                    >
+                                                                        {item.description}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
                                                         </>
                                                     ) : (
                                                         <div className="text-xs px-2 py-2">Code Not Valid, enter valid code or leave empty</div>
@@ -307,7 +331,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                     />
                 </TableCell>
 
-                <TableCell className="p-0 h-8 px-2 py-2 w-[100px] ">
+                <TableCell className="p-0 h-8 px-2 py-2 w-[50px] ">
                     <FormField
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].made_in`}
@@ -320,7 +344,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                             }
                             return (
                                 <>
-                                    <FormItem className="flex flex-col">
+                                    <FormItem className="flex flex-col items-center">
                                         <Popover open={openCountry} onOpenChange={setOpenCountry} >
                                             <PopoverTrigger asChild>
                                                 <FormControl>
@@ -328,7 +352,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                         variant="outline"
                                                         role="combobox"
                                                         className={cn(
-                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none",
+                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none w-[50px]",
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
@@ -340,7 +364,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-[120px] p-0">
+                                            <PopoverContent className="w-[150px] p-0">
                                                 <Command>
                                                     <CommandInput
                                                         placeholder="Search..."
@@ -348,11 +372,11 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                         onValueChange={(e) => handleCommandChange(e)}
                                                     />
                                                     <CommandEmpty className="text-xs px-1 py-1 text-center">No Country Found.</CommandEmpty>
-                                                    <CommandGroup>
+                                                    <CommandGroup className="w-[150px] ">
                                                         <ScrollArea className="h-[100px]">
                                                             {countryList.map((language) => (
                                                                 <CommandItem
-                                                                    className="text-xs items-center"
+                                                                    className="text-xs items-center w-[150px]"
                                                                     value={language.country_name}
                                                                     key={language.country_code}
                                                                     onSelect={() => {
@@ -360,7 +384,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                                         setOpenCountry(false)
                                                                     }}
                                                                 >
-                                                                    {language.country_name}
+                                                                    {`${language.country_code} - ${language.country_name}`}
                                                                     <CheckIcon
                                                                         className={cn(
                                                                             "ml-auto h-4 w-4",
