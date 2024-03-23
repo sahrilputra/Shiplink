@@ -52,12 +52,10 @@ const formSchema = yup.object().shape({
     warehouse_manager: yup.string().required(),
     warehouse_bullet_setting: yup.string(),
     email: yup.string(),
-    phone_number: yup.string(),
+    phone_number: yup.string().required(),
 })
 
 export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehouse_id = null }) => {
-    console.log("🚀 ~ NewWarehouseDialog ~ warehouse_id:", warehouse_id)
-    console.log("🚀 ~ NewWarehouseDialog ~ data:", data)
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -140,12 +138,20 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
         form.setValue('country_name', name);
     }
 
+    const validateForm = (async (data) => {
+        if (data.warehouse_name === "" || data.country_code === "" || data.address === "" || data.warehouse_manager === "" || data.email === "" || data.phone_number === "") {
+            return false
+        } else {
+            handleSave(data)
+        }
+    })
     const handleSave = async (formData) => {
         setLoading(true)
 
         console.log("dikirim", formData)
         try {
             formData.action = warehouse_id === null ? "add" : "edit";
+            formData.email = email;
             const response = await axios.post(
                 `/api/admin/warehouse/setData`,
                 {
@@ -161,7 +167,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
             );
             setLoading(false)
             console.log(response)
-            if (response.status === 200 || response.status === "true") {
+            if (response.data.status === true || response.data.status === "true") {
                 toast({
                     title: `Success Warehouse ${formData.warehouse_name} ${warehouse_id ? "Edited" : "Created"} !`,
                     description: response.data.message,
@@ -188,14 +194,25 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
         }
     };
 
+    const [commandQuery, setCommandQuery] = useState("");
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCommandQuery(e);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.post(
                     `/api/admin/config/countries/list`,
-                    query
+                    {
+                        "keyword": commandQuery === "" ? "" : commandQuery,
+                        "page": 0,
+                        "limit": 0,
+                        "index": 0,
+                    }
                 );
+                console.log("🚀 ~ fetchData ~ response:", response)
                 const data = await response.data;
                 setCountry(data.country);
             } catch (error) {
@@ -205,14 +222,21 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
         };
 
         fetchData();
-    }, [query]);
+    }, [commandQuery]);
 
     const handleSelectUser = (email, phone) => {
-        setPhone(phone);
-        setEmail(email);
-        form.setValue('email', email);
-        form.setValue('phone_number', phone);
-
+        console.log("🚀 ~ handleSelectUser ~ email:", email)
+        if (email === null || phone === null || email === "" || phone === "") {
+            setEmail("");
+            setPhone("");
+            form.setValue('email', "");
+            form.setValue('phone_number', "");
+        } else {
+            setPhone(phone);
+            setEmail(email);
+            form.setValue('email', email);
+            form.setValue('phone_number', phone);
+        }
     }
 
     useEffect(() => {
@@ -224,6 +248,8 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
         }
     }, [form])
 
+    console.log('EMAIL', form.watch('email'))
+    console.log('EMAIL Phone', form.watch('phone_number'))
     return (
         <>
             {
@@ -299,6 +325,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                                                         <CommandInput
                                                                             placeholder="Search Country..."
                                                                             className="h-9 w-full text-xs"
+                                                                            onValueChange={(e) => handleCommandChange(e)}
                                                                         />
                                                                         <CommandEmpty
                                                                             className="w-full text-xs text-center py-2"
@@ -328,7 +355,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                                                                                 }}
                                                                                             >
 
-                                                                                                {item.country_name}
+                                                                                                {`${item.country_code} - ${item.country_name}`}
                                                                                                 <CheckIcon
                                                                                                     className={`ml-auto h-4 w-4 ${item.country_name === field.value ? "opacity-100" : "opacity-0"}`}
                                                                                                 />
@@ -387,17 +414,18 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                                                         </Button>
                                                                     </FormControl>
                                                                 </PopoverTrigger>
-                                                                <PopoverContent className="w-[300px] p-0">
+                                                                <PopoverContent className="w-[400px] p-0">
                                                                     <Command>
                                                                         <CommandInput
                                                                             placeholder="User Name"
-                                                                            className="h-9 "
+                                                                            className="h-9 w-full text-xs"
                                                                         />
-                                                                        <CommandEmpty>No User Found.</CommandEmpty>
-                                                                        <ScrollArea className="h-[120px]">
+                                                                        <CommandEmpty className="w-full text-xs text-center py-2">No User Found.</CommandEmpty>
+                                                                        <ScrollArea className="h-[150px] w-full">
                                                                             <CommandGroup>
                                                                                 {userList.map((language) => (
                                                                                     <CommandItem
+                                                                                        className="text-xs"
                                                                                         value={language.name}
                                                                                         key={language.name}
                                                                                         onSelect={() => {
@@ -441,7 +469,14 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                                             <FormItem className="w-full text-neutral-900 space-y-1">
                                                                 <FormLabel className="text-sm">Managers Emails</FormLabel>
                                                                 <FormControl>
-                                                                    <Input id="email" type="email" placeholder="Warehouse Emails" className="text-sm bg-slate-100" {...field} />
+                                                                    <Input
+                                                                        id="email"
+                                                                        type="email"
+                                                                        placeholder="Managers Emails"
+                                                                        className="text-sm bg-slate-100"
+                                                                        value={email}
+                                                                        disabled={true}
+                                                                    />
                                                                 </FormControl>
                                                                 <FormMessage className="text-xs" />
                                                             </FormItem>
@@ -453,7 +488,6 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                                     name="phone_number"
                                                     className="w-full text-neutral-900"
                                                     control={form.control}
-                                                    disabled={true}
                                                     render={({ field }) => (
                                                         <>
                                                             <FormItem className="w-full text-neutral-900 space-y-1">
@@ -461,11 +495,12 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                                                 <FormControl >
                                                                     <Input
                                                                         id="phone_number"
-                                                                        type="number"
+                                                                        type="text"
                                                                         className="text-sm
                                                                          bg-slate-100"
                                                                         placeholder="Phone Number"
-                                                                        {...field}
+                                                                        value={phone}
+                                                                        disabled={true}
                                                                     />
                                                                 </FormControl>
                                                                 <FormMessage className="text-xs" />
