@@ -37,7 +37,7 @@ import NextLink from 'next/link';
 import { MovePackageDialog } from "../dialog/MovePackageDialog";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
-export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) {
+export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackageTotal }) {
 
     console.log("SELECETED BIN ID : ", selectedBinID)
     const [rowSelection, setRowSelection] = React.useState({})
@@ -49,16 +49,16 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
     const [data, setData] = useState([])
     const [itemTotal, setItemTotal] = useState(0)
     const [selectedItemsID, setSelectedItemsID] = useState([])
-    const [query, setQuery] = useState({
-        keyword: "",
-        date_start: "",
-        date_end: "",
-        tracking_id: "",
-        bins_id: `${selectedBinID}`,
-        page: 0,
-        limit: 0,
-        index: 0,
-    });
+    // const [query, setQuery] = useState({
+    //     keyword: "",
+    //     date_start: "",
+    //     date_end: "",
+    //     tracking_id: "",
+    //     bins_id: `${selectedBinID}`,
+    //     page: 0,
+    //     limit: 0,
+    //     index: 0,
+    // });
     const toggleEdit = () => {
         setIsEdit(!isEdit)
     }
@@ -77,37 +77,47 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
         setRowSelection(selectedRows);
     };
 
-
-    const fetchData = async () => {
-        setIsSkeleton(true)
-        try {
-            const response = await axios.post(
-                `/api/admin/bin_manager/packageList`,
-                query
-            );
-            const data = await response.data;
-
-            console.log("response from api : ", data); // Log the response data
-
-            setData(data.package_info);
-            setPackageTotal(data.package_info.length)
-            setIsSkeleton(false);
-            setItemTotal(data.total);
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
+    // setQuery({
+    //     ...query,
+    //     bins_id: selectedBinID
+    // });
+    const [searchKeyword, setSearchKeyword] = useState("");
+    console.log("🚀 ~ ItemTable ~ searchKeyword:", searchKeyword)
+    const handleSearchChange = (e) => {
+        setSearchKeyword(e.target.value);
+    }
 
     useEffect(() => {
-        setQuery(prevQuery => ({
-            ...prevQuery,
-            bins_id: selectedBinID // Mengupdate bins_id ketika selectedBinID berubah
-        }));
-    }, [selectedBinID]);
+        const fetchData = async () => {
+            setIsSkeleton(true)
+            try {
+                const response = await axios.post(
+                    `/api/admin/bin_manager/packageList`,
+                    {
+                        "keyword": `${searchKeyword}`,
+                        "date_start": "",
+                        "date_end": "",
+                        "tracking_id": "",
+                        "bins_id": `${selectedBinID}`,
+                        "page": 0,
+                        "limit": 0,
+                        "index": 0,
+                    }
+                );
+                const data = await response.data;
+                const filteredDataByID = data.package_info.filter((item) => item.bin_location === selectedBinID);
+                console.log("🚀 ~ fetchData ~ filteredDataByID:", filteredDataByID)
+                setData(filteredDataByID);
+                setPackageTotal(filteredDataByID.length || 0)
+                setIsSkeleton(false);
+            } catch (error) {
+                fetchData();
+                console.log('Error:', error);
+            }
+        };
 
-    useEffect(() => {
-        fetchData(); // Memanggil fetchData setelah query diperbarui
-    }, [query]); // Panggil fetchData() setiap kali query berubah
+        fetchData();
+    }, [searchKeyword, setPackageTotal, selectedBinID]);
 
     const columns = [
         {
@@ -136,9 +146,10 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
             },
         },
         {
-            accessorKey: "barcode_tracking",
+            accessorKey: "tracking_id",
             header: "Tracking ID",
             className: "text-xs",
+            width: 120,
         },
         {
             accessorKey: "customer_name",
@@ -179,19 +190,18 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
 
     });
 
-    const reload = () => {
-        fetchData();
-    }
+    
     const selectedItemsId = table?.getSelectedRowModel().rows.map(row => row.original.tracking_id);
+
 
     return (
         <>
-            <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} data={selectedItemsID} setRowSelection={setRowSelection} reload={reload}/>
+            <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} data={selectedItemsID} setRowSelection={setRowSelection}  />
             <div className="text-sm bg-transparent py-2">
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
+                            <SearchBar handleSearch={handleSearchChange} />
                             <Button
                                 variant="filter"
                                 size="filter"
@@ -216,7 +226,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "", setPackageTotal }) 
                 </div>
             </div>
             <Table>
-                <TableHeader className="text-sm">
+                <TableHeader className="text-sm" >
                     {table.getHeaderGroups().map((headerGroup) => (
                         <>
                             {headerGroup.headers.map((header, index) => {

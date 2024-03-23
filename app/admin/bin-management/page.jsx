@@ -15,7 +15,7 @@ import { CreateNewBinDialog } from './components/dialog/CreateNewBinDialog'
 export default function BinManagementPage() {
 
     const [creteNewDialog, setCreateNewDialog] = useState(false)
-    const [selectedBinID, setSelectedBinID] = useState("")
+    const [selectedBinID, setSelectedBinID] = useState("Undefined")
     const [isReloadData, setIsReloadData] = useState(false)
     const [binTotal, setBinTotal] = useState(0)
     const [isBinSelect, setIsBinSelect] = useState(false);
@@ -63,14 +63,19 @@ export default function BinManagementPage() {
                             <div className="">
                                 <button
                                     className={`${isBinSelect ? "border-b border-blue-900 font-bold text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-                                    onClick={() => setIsBinSelect(true)}
+                                    onClick={() => {
+                                        setIsBinSelect(true)
+                                    }}
                                 >
                                     Bin
                                 </button>
                             </div>
                             <div className="">
                                 <button
-                                    onClick={() => setIsBinSelect(false)}
+                                    onClick={() => {
+                                        setIsBinSelect(false)
+                                        handleBinSelection("Undefined")
+                                    }}
                                     className={`${isBinSelect ? "text-zinc-800 font-light" : "border-b border-blue-900 font-bold  text-myBlue"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                                 >
                                     Unassigned
@@ -80,8 +85,7 @@ export default function BinManagementPage() {
                     </div>
                     <div className="px-2 py-2">
                         <BinTableList
-                            handleSelect=
-                            {handleBinSelection}
+                            handleSelect={handleBinSelection}
                             setCreateNewDialog={setCreateNewDialog}
                             isSelected={selectedBinID}
                             isReloadData={isReloadData}
