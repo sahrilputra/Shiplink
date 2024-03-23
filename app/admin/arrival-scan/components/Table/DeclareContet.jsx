@@ -14,7 +14,9 @@ import {
 } from "@/components/ui/select"
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { DeclareContentInput } from './DeclareContentInput'
+import { ExternalLink } from 'lucide-react'
 import axios from 'axios'
+import NextLink from 'next/link'
 import {
     FormControl,
     FormField,
@@ -34,67 +36,71 @@ export const DeclareContet = ({
 }) => {
 
 
-    const [countryList, setCountryList] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/config/countries/list`,
-                    {
-                        "keyword": "",
-                        "page": 0,
-                        "limit": 0,
-                        "index": 0,
-                    }
-                );
-                console.log("🚀 ~ response:", response);
-                setCountryList(response.data.country);
-            } catch (error) {
-                console.log("🚀 ~ error:", error);
-                fetchData();
-            }
-        };
-        fetchData();
-    }, [])
+    // const [countryList, setCountryList] = useState([]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.post(
+    //                 `/api/admin/config/countries/list`,
+    //                 {
+    //                     "keyword": "",
+    //                     "page": 0,
+    //                     "limit": 0,
+    //                     "index": 0,
+    //                 }
+    //             );
+    //             console.log("🚀 ~ response:", response);
+    //             setCountryList(response.data.country);
+    //         } catch (error) {
+    //             console.log("🚀 ~ error:", error);
+    //             fetchData();
+    //         }
+    //     };
+    //     fetchData();
+    // }, [])
 
-    const [hsCodeList, setHSCodeList] = useState(null);
-    const [codeNumber, setCodeNumber] = useState("");
+    // const [hsCodeList, setHSCodeList] = useState(null);
+    // const [codeNumber, setCodeNumber] = useState("");
 
-    useEffect(() => {
-        const filterHsCode = hsCode.map((hs) => {
-            return {
-                description: hs.description,
-                htsno: hs.htsno
-            };
-        })
-        setHSCodeList(filterHsCode);
-    }, [])
+    // useEffect(() => {
+    //     const filterHsCode = hsCode.map((hs) => {
+    //         return {
+    //             description: hs.description,
+    //             htsno: hs.htsno
+    //         };
+    //     })
+    //     setHSCodeList(filterHsCode);
+    // }, [])
 
-    console.log("🚀 ~ hsCodeList:", hsCodeList)
+    // console.log("🚀 ~ hsCodeList:", hsCodeList)
 
     return (
         <>
             <Table>
                 <TableHeader className="bg-sky-50 border ">
-                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs">Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[140px]">HS Code</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
-                    <TableHead className="p-0 h-8 px-5 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs">Description</TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-[120px]">
+                        <div className="text-xs flex flex-row items-center gap-2">
+                            HS Code
+                            <NextLink passHref href={'https://uscensus.prod.3ceonline.com/#!%23current-question-pos'}>
+                                <ExternalLink className='text-[11px] text-myBlue' width={10} height={10} />
+                            </NextLink>
+                        </div>
+                    </TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-[100px] ">Made in</TableHead>
+                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                 </TableHeader>
                 <TableBody>
                     {fields.map((field, index) => (
                         <DeclareContentInput
-                            countryList={countryList}
                             key={field.id}
                             index={index}
                             forms={forms}
                             handleRemoveContent={() => remove(index)}
                             itemID={field.itemID}
-                            setCodeNumber={setCodeNumber}
-                            hsCodeList={hsCodeList}
                         />
                     ))}
                 </TableBody>
@@ -109,8 +115,14 @@ export const DeclareContet = ({
                                 type="button"
                                 className="px-4 h-7 py-3"
                                 onClick={() => append({
-                                    qty: 0,
+                                    itemID: "",
+                                    qty: 1,
                                     value: 0,
+                                    desc: "",
+                                    hs_desc: "",
+                                    hs_code: "",
+                                    made_in: "",
+                                    subtotal: 0,
                                 })}
                             >
                                 <p className='text-xs'>Add Other Content</p>

@@ -10,6 +10,7 @@ import InputMask from 'react-input-mask';
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Combobox } from '@headlessui/react'
 import { v4 as uuidv4 } from 'uuid'
+import axios from 'axios'
 import { cn } from "@/lib/utils"
 import {
     Command,
@@ -23,16 +24,12 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-
+import hsCodeList from '@/data/hsCode/hsCode.json'
 export const DeclareContentInput = ({
     forms,
     index,
     handleRemoveContent,
     itemID,
-    countryList,
-    setCodeNumber,
-    hsCodeList,
-
 }) => {
 
     const countingSubtotal = ({ qty = 0, value = 0 }) => {
@@ -49,26 +46,111 @@ export const DeclareContentInput = ({
     const hsCode = forms.watch(`package_content[${index}].hs_code`)
     const [isHsOpen, setIsHsOpen] = useState(false)
     const [myQuery, setQuery] = useState("");
-    console.log("🚀 ~ myQuery:", myQuery)
+
+    const [rootCategory, setRootCategory] = useState("");
+
+    const [hsDesc, setHSDesc] = useState("");
+
+    const [countryList, setCountryList] = useState([]);
+    const [countryQuery, setCountryQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    });
+    const handleDescChange = (desc) => {
+        setHSDesc(desc);
+    }
+
+    const [commandQuery, setCommandQuery] = useState("");
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCommandQuery(e);
+        setCountryQuery({ ...countryQuery, keyword: e });
+    }
+
+
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    countryQuery
+                );
+                console.log("🚀 ~ response:", response);
+                setCountryList(response.data.country);
+            } catch (error) {
+                console.log("🚀 ~ error:", error);
+                fetchData();
+            }
+        };
+        fetchData();
+    }, [countryQuery])
+
+
+    // HS DESC
+    useEffect(() => {
         setQuery(hsCode);
-        if (hsCode?.length >= 5) {
-            setIsHsOpen(true);
-            const filterHS = () => {
-                return hsCodeList.filter((item) => {
-                    return item.htsno.includes(hsCode);
-                });
-            };
-            setFilteredHSCodes(filterHS());
-        } else if (hsCode?.length >= 10) {
-            setIsHsOpen(false);
-        } else {
-            setIsHsOpen(false);
-        }
+        const findRootCategory = (code) => {
+            return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
+        };
+
+        const filterHS = () => {
+            const rootCategory = findRootCategory(myQuery);
+            if (rootCategory) {
+                setRootCategory(rootCategory.description);
+                const filteredSubCategories = hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
+                return filteredSubCategories.filter(item => item.htsno.startsWith(myQuery));
+            }
+            return [];
+        };
+
+        setFilteredHSCodes(filterHS());
+
     }, [myQuery, hsCodeList, hsCode]);
 
-    console.log("🚀 ~ hsCode:", hsCode)
+    const handle13DigitHST = async (hsCode) => {
+        const findRootCategory = (code) => {
+            return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
+        };
+        try {
+            const hsItem = hsCodeList.find(item => item.htsno === hsCode);
+            if (hsItem) {
+                const rootCategory = await findRootCategory(hsCode);
+                if (rootCategory) {
+                    setIsHsOpen(false);
+                    setHSDesc(`${rootCategory.description} ${hsItem.description}`);
+                    forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory.description} ${hsItem.description}`);
+                }
+            } else {
+                setHSDesc("");
+                forms.setValue(`package_content[${index}].hs_desc`, "");
+                setIsHsOpen(true);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const handleValueChange = (e) => {
+        console.log("🚀 ~ handleValueChange ~ e:", e.target.value)
+        if (e.target.value.length >= 4 && e.target.value.length < 13) {
+            setIsHsOpen(true)
+        } else if (e.target.value.length === 13) {
+            setQuery(e.target.value);
+            handle13DigitHST(e.target.value)
+        } else {
+            setIsHsOpen(false)
+            setHSDesc("")
+            forms.setValue(`package_content[${index}].hs_desc`, "");
+        }
+    }
+
+    useEffect(() => {
+        forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
+    }, [hsDesc, forms])
+
 
     return (
         <>
@@ -165,78 +247,71 @@ export const DeclareContentInput = ({
                         )}
                     />
                 </TableCell >
-                <TableCell className="p-0 h-8 px-2 py-2  w-[140px] relative">
+                <TableCell className="p-0 h-8 px-2 py-2  w-max overflow-visible ">
                     <FormField
-                        className="w-full flex flex-row justify-center items-end"
+                        className="w-[105px] block items-end"
                         name={`package_content[${index}].hs_code`}
                         control={forms.control}
                         render={({ field }) => (
                             <>
-                                <FormItem className="w-full text-xs">
-                                    <div className="relative">
-                                        <FormControl>
-                                            <InputMask
-                                                mask="9999.99.99.99" // Format yang diinginkan
-                                                maskPlaceholder="0000.00.00.00"
-                                                className='text-xs h-[30px] pl-2'
-                                                maskChar={null}
-                                                {...field}
-                                            >
-                                                {(inputProps) => (
-                                                    <Input
-                                                        autoComplete="off"
-                                                        className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                                        id="hs_code"
-                                                        type="text"
-                                                        placeholder="0000.00.0000"
-                                                        {...inputProps}
-                                                    />
-                                                )}
-                                            </InputMask>
-                                        </FormControl>
-
-                                        <div className={`hs fixed right-[180px] w-[300px] flex flex-col gap-1 bg-white rounded-sm z-30 px-2 py-2 shadow border
-                                        ${isHsOpen ? "fixed" : "hidden"}
-                                        `}>
-                                            {/* <ScrollArea className="h-[200px]">
-                                                {filteredHSCodes.map((item) => (
-                                                    <div
-                                                        key={item.id}
-                                                        className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
-                                                        onClick={() => {
-                                                            field.onChange(item.hs_code);
-                                                            setIsHsOpen(false);
-                                                            forms.setValue(`package_content[${index}].hs_desc`, item.description);
-                                                            forms.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                        }}
-                                                    >
-                                                        {item.description}
-                                                    </div>
-                                                ))}
-                                            </ScrollArea> */}
-                                            <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
-                                                {filteredHSCodes.length > 0 ? (
-                                                    filteredHSCodes.map((item) => (
-                                                        <div
-                                                            key={item.id}
-                                                            className="text-xs hover:bg-slate-100 cursor-pointer px-2 py-2"
-                                                            onClick={() => {
-                                                                field.onChange(item.hs_code);
-                                                                setIsHsOpen(false);
-                                                                forms.setValue(`package_content[${index}].hs_desc`, item.description);
-                                                                forms.setValue(`package_content[${index}].hs_code`, item.htsno);
-                                                            }}
-                                                        >
-                                                            {item.description}
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <div className="text-xs px-2 py-2">No result found</div>
-                                                )}
-                                            </ScrollArea>
+                                <div className="relative">
+                                    <FormItem className=" text-xs relative">
+                                        <div className="relative">
+                                            <FormControl className="w-[105px]">
+                                                <InputMask
+                                                    mask="9999.99.99.99" // Format yang diinginkan
+                                                    maskPlaceholder="0000.00.00.00"
+                                                    className='text-xs h-[30px] px-2 w-[105px] '
+                                                    maskChar={null}
+                                                    {...field}
+                                                    onInput={(e) => handleValueChange(e)}
+                                                >
+                                                    {(inputProps) => (
+                                                        <Input
+                                                            autoComplete="off"
+                                                            className="text-xs h-[30px] py-1 w-[105px] px-2 focus:ring-offset-0"
+                                                            id="hs_code"
+                                                            type="text"
+                                                            placeholder="0000.00.00.00"
+                                                            {...inputProps}
+                                                        />
+                                                    )}
+                                                </InputMask>
+                                            </FormControl>
                                         </div>
-                                    </div>
-                                </FormItem>
+                                        {isHsOpen && (
+                                            <div
+                                                className={`hs absolute  w-[300px] flex right-0  flex-col gap-1 bg-white rounded-md px-2 py-2 shadow border z-[1000] overflow-visible`}>
+                                                <ScrollArea className={`min-h-min h-[200px] ${filteredHSCodes.length > 5 ? "h-[170px]" : "h-max"}`}>
+                                                    {filteredHSCodes.length > 0 ? (
+                                                        <>
+                                                            <div className="items-center rounded-sm">
+                                                                <p className='text-xs font-bold p-1'>{rootCategory || ""}</p>
+                                                                {filteredHSCodes.map((item) => (
+                                                                    <div
+                                                                        key={item.id}
+                                                                        className="text-xs items-center rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer"
+                                                                        onClick={() => {
+                                                                            handleDescChange(item.description);
+                                                                            forms.setValue(`package_content[${index}].hs_code`, item.htsno);
+                                                                            forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${item.description}`);
+                                                                            setIsHsOpen(false);
+                                                                            setHSDesc(`${rootCategory} ${item.description}`);
+                                                                        }}
+                                                                    >
+                                                                        {item.description}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <div className="text-xs px-2 py-2">Code Not Valid, enter valid code or leave empty</div>
+                                                    )}
+                                                </ScrollArea>
+                                            </div>
+                                        )}
+                                    </FormItem>
+                                </div>
                             </>
                         )}
                     />
@@ -275,26 +350,27 @@ export const DeclareContentInput = ({
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-[120px] p-0">
+                                            <PopoverContent className="w-[150px] p-0">
                                                 <Command>
                                                     <CommandInput
                                                         placeholder="Search..."
                                                         className="h-[30px] text-xs"
+                                                        onValueChange={(e) => handleCommandChange(e)}
                                                     />
                                                     <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
-                                                    <CommandGroup>
+                                                    <CommandGroup className="w-[150px]">
                                                         <ScrollArea className="h-[100px]">
                                                             {countryList.map((language) => (
                                                                 <CommandItem
                                                                     className="text-xs items-center"
-                                                                    value={language.country_code}
+                                                                    value={language.country_name}
                                                                     key={language.country_id}
                                                                     onSelect={() => {
                                                                         forms.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
                                                                         setOpenCountry(false)
                                                                     }}
                                                                 >
-                                                                    {language.country_code}
+                                                                    {`${language.country_code} - ${language.country_name}`}
                                                                     <CheckIcon
                                                                         className={cn(
                                                                             "ml-auto h-4 w-4",
