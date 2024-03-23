@@ -145,9 +145,10 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
             handleSave(data)
         }
     })
+
+    const [formErrorMessages, setFormErrorMessages] = useState("");
     const handleSave = async (formData) => {
         setLoading(true)
-
         console.log("dikirim", formData)
         try {
             formData.action = warehouse_id === null ? "add" : "edit";
@@ -250,6 +251,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
 
     console.log('EMAIL', form.watch('email'))
     console.log('EMAIL Phone', form.watch('phone_number'))
+
     return (
         <>
             {
@@ -266,6 +268,7 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                 </DialogTitle>
                             </DialogHeader>
                             <DialogDescription className=" flex justify-center items-center w-full">
+
                                 <div className="flex flex-col justify-center items-center w-full">
                                     <Form {...form}>
                                         <form
@@ -273,6 +276,16 @@ export const NewWarehouseDialog = ({ open, setOpen, reload, data = null, warehou
                                             className='w-full'
                                             action=""
                                         >
+                                            {form.formState.errors && (
+                                                <>
+                                                    {
+                                                        ((form.formState.errors.email && form.formState.errors.email.type === "required") ||
+                                                            (form.formState.errors.phone_number && form.formState.errors.phone_number.type === "required")) && (
+                                                            <p className='text-center text-red-500'>User is not validate, Please update emails and phone number for user</p>
+                                                        )
+                                                    }
+                                                </>
+                                            )}
                                             <div className="flex w-full flex-col gap-2 text-xs py-3 px-2 ">
                                                 <FormField
                                                     className="w-full"
