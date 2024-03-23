@@ -26,7 +26,7 @@ export const SelectBroker = ({ onSelect }) => {
                 <Select
                     className="flex flex-row gap-0 items-center"
                     onValueChange={(value) => handleChange(value)}
-                    defaultValue='Use Own Broker'
+                    defaultValue='Use Shiplink Broker'
                 >
                     <div className="w-[100px] h-9 px-1 py-2 bg-green-500 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
                         <div className="text-white text-xs leading-tight">Select Broker</div>

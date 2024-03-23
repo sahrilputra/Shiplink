@@ -77,7 +77,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
         name: "package_content",
     });
 
-    const [selectedBroker, setSelectedBroker] = useState(null);
+    const [selectedBroker, setSelectedBroker] = useState("Use Shiplink Broker");
     console.log("🚀 ~ TableDashboard ~ selectedBroker:", selectedBroker)
     const handleSelectBroker = (value) => {
         form.setValue('broker', value)
