@@ -7,7 +7,17 @@ export const VerifiedStatus = ({ param }) => {
                 <div className={`${param === "Verified" ? "bg-green-400" : "bg-orange-300"} w-3 h-3 rounded-full `} />
                 <p>{param}</p>
             </div> */}
-            <Badge variant={param === "Verified" ? "verified" : "unverified"}>{param}</Badge>
+            {
+                param === "Received" ? (
+                    <Badge variant="grayStatus">{"Pending"}</Badge>
+                ) : param === "Verified" ? (
+                    <Badge variant="verified">{"Verified"}</Badge>
+                ) : param === "Declared" ? (
+                    <Badge variant="unverified">{"Declared"}</Badge>
+                ) : (
+                    <Badge variant="grayStatus">{"Pending"}</Badge>
+                )
+            }
         </>
     )
 }
