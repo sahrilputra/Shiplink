@@ -89,7 +89,7 @@ export const Edit = ({ data, cancel, trackingID, reload }) => {
             setLoading(false);
             cancel();
             toast({
-                title: `All Declare Contents Registered successfully!`,
+                title: `Success Edited Declare Content!`,
                 status: 'success',
             });
             reload();

@@ -34,12 +34,14 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
             form.setValue(`package_content[${i}].desc`, item.desc)
             form.setValue(`package_content[${i}].hs_desc`, item.hs_desc)
             form.setValue(`package_content[${i}].hs_code`, item.hs_code)
+            setCommandQuery(`package_content[${i}].made_in`, item.made_in)
         })
     }, [data])
 
     const [filteredHSCodes, setFilteredHSCodes] = useState([]);
     console.log("🚀 ~ EditForms ~ filteredHSCodes:", filteredHSCodes)
     const hsCode = form.watch(`package_content[${index}].hs_code`)
+
     const [isHsOpen, setIsHsOpen] = useState(false)
     const [myQuery, setQuery] = useState("");
     const [hsDesc, setHSDesc] = useState("");
@@ -52,28 +54,28 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
 
     const handleValueChange = (e) => {
         console.log("🚀 ~ handleValueChange ~ e:", e.target.value)
-        if (e.target.value.length >= 4) {
+        if (e.target.value.length >= 4 && e.target.value.length < 13) {
             setIsHsOpen(true)
+        } else if (e.target.value.length === 13) {
+            setQuery(e.target.value);
+            handle13DigitHST(e.target.value)
         } else {
             setIsHsOpen(false)
+            setHSDesc("")
+            form.setValue(`package_content[${index}].hs_desc`, "");
         }
     }
     useEffect(() => {
         setQuery(hsCode);
-
-
         const findRootCategory = (code) => {
             return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
         };
 
         const filterHS = () => {
-            // Temukan root category yang sesuai dengan kode yang diinput
             const rootCategory = findRootCategory(myQuery);
             if (rootCategory) {
-                // Simpan deskripsi root category ke dalam state
                 setRootCategory(rootCategory.description);
                 const filteredSubCategories = hsCodeList.filter(item => item.htsno.startsWith(rootCategory.htsno) && item.htsno.length > rootCategory.htsno.length);
-                // Filter sub-kategori yang berasal dari root category yang ditemukan
                 return filteredSubCategories.filter(item => item.htsno.startsWith(myQuery));
             }
             return [];
@@ -82,6 +84,29 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
         setFilteredHSCodes(filterHS());
 
     }, [myQuery, hsCodeList, hsCode]);
+
+    const handle13DigitHST = async (hsCode) => {
+        const findRootCategory = (code) => {
+            return hsCodeList.find(item => code.startsWith(item.htsno) && item.htsno.length === 4);
+        };
+        try {
+            const hsItem = hsCodeList.find(item => item.htsno === hsCode);
+            if (hsItem) {
+                const rootCategory = await findRootCategory(hsCode);
+                if (rootCategory) {
+                    setIsHsOpen(false);
+                    setHSDesc(`${rootCategory.description} ${hsItem.description}`);
+                    form.setValue(`package_content[${index}].hs_desc`, `${rootCategory.description} ${hsItem.description}`);
+                }
+            } else {
+                setHSDesc("");
+                form.setValue(`package_content[${index}].hs_desc`, "");
+                setIsHsOpen(true);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
     const handleDescChange = (desc) => {
         setHSDesc(desc);
@@ -351,11 +376,7 @@ export const EditForms = ({ data, form, trackingID, index, remove }) => {
                                                                                 !field.value && "text-muted-foreground"
                                                                             )}
                                                                         >
-                                                                            {field.value
-                                                                                ? countryList.find(
-                                                                                    (language) => language.country_code === field.value
-                                                                                )?.country_code
-                                                                                : "CAN"}
+                                                                            {field.value}
                                                                         </Button>
                                                                     </FormControl>
                                                                 </PopoverTrigger>
