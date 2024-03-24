@@ -26,6 +26,7 @@ export const AdminNavbars = () => {
     console.log("session", session)
     const [loading, setLoading] = useState(true);
 
+    const [userimg, setUserimg] = useState(session?.user?.img);
     const hanldeLogout = () => {
         signOut()
         router.push('/auth/admin')
@@ -36,7 +37,12 @@ export const AdminNavbars = () => {
             setLoading(false);
         }, 1000);
         return () => clearTimeout(timer);
+
+
     }, []);
+
+    console.log("NEW img", userimg)
+
 
     const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
 
@@ -111,7 +117,7 @@ export const AdminNavbars = () => {
                                                         className='object-cover rounded-full w-[20px] h-[20px]'
                                                     />
                                                 </div>
-                                                <p>English</p>
+                                                <p>French</p>
                                             </div>
                                         </NavigationMenuLink>
                                     </Link>
@@ -148,9 +154,9 @@ export const AdminNavbars = () => {
                                         {loading ? (
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
                                         ) : (
-                                            session ? (
+                                            userimg !== "null" || userimg !== undefined || userimg === null ? (
                                                 <img
-                                                    src={customerImage}
+                                                    src={"https://source.boringavatars.com/beam"}
                                                     className='rounded-full w-[35px] h-[35px]'
                                                     alt="user image"
                                                 />

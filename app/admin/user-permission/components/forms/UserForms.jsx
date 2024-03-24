@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
+import InputMask from 'react-input-mask';
 import {
     Form,
     FormControl,
@@ -188,7 +189,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                         isSkleton ? (
                                             <Skeleton className="w-full h-8 mt-2" />
                                         ) : (
-                                            <FormItem className="w-full text-xs">
+                                            <FormItem className="w-full text-xs space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Full Name</FormLabel>
                                                 <FormControl>
                                                     <Input
@@ -216,7 +217,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                         isSkleton ? (
                                             <Skeleton className="w-full h-8 mt-2" />
                                         ) : (
-                                            <FormItem className="w-full">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Email</FormLabel>
                                                 <FormControl >
                                                     <Input
@@ -239,21 +240,35 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                             className="w-full"
                             name="phone_number"
                             control={form.control}
+                            disabled={isDisable}
                             render={({ field }) => (
                                 <>
                                     {
                                         isSkleton ? (
                                             <Skeleton className="w-full h-8 mt-2" />
                                         ) : (
-                                            <FormItem className="w-full text-xs">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
                                                 <FormControl>
-                                                    <Input
-                                                        size="xs"
-                                                        className="px-1.5"
-                                                        id="name"
-                                                        placeholder="+1223"
-                                                        {...field} />
+                                                    <InputMask
+                                                        mask="+9.999.999.9999"
+                                                        maskChar={null}
+                                                        maskPlaceholder="0000.00.0000"
+                                                        {...field}
+                                                        disabled={isDisable}
+                                                    >
+                                                        {(inputProps) => (
+                                                            <Input
+                                                                className="px-1.5"
+                                                                id="phoneNumber"
+                                                                size="new"
+                                                                type="text"
+                                                                placeholder="+1.000.000.0000"
+                                                                disabled={isDisable}
+                                                                {...inputProps}
+                                                            />
+                                                        )}
+                                                    </InputMask>
                                                 </FormControl>
                                                 <FormMessage className="text-xs" />
                                             </FormItem>
@@ -272,7 +287,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                         isSkleton ? (
                                             <Skeleton className="w-full h-8 mt-2" />
                                         ) : (
-                                            <FormItem className="w-full">
+                                            <FormItem className="w-full space-y-1">
                                                 <FormLabel className=" text-xs font-bold">Password</FormLabel>
                                                 <FormControl >
                                                     <Input
@@ -289,36 +304,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                 </>
                             )}
                         />
-                        <div className="profile flex flex-row gap-2 w-full items-end">
-                            <FormField
-                                name="phone_number"
-                                className="w-full"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <>
-                                        {
-                                            isSkleton ? (
-                                                <Skeleton className="w-full h-8 mt-2" />
-                                            ) : (
-                                                <FormItem className="w-full">
-                                                    <FormLabel className=" text-xs font-bold">Phone Number</FormLabel>
-                                                    <FormControl >
-                                                        <Input
-                                                            size="xs"
-                                                            className="px-1.5"
-                                                            type="number"
-                                                            id="phone_number"
-                                                            placeholder="Phone Number"
-                                                            {...field} />
-                                                    </FormControl>
-                                                    <FormMessage className="text-xs" />
-                                                </FormItem>
-                                            )
-                                        }
-
-                                    </>
-                                )}
-                            />
+                        <div className="profile flex flex-row gap-1 w-full items-end py-2">
                             <FormField
                                 control={form.control}
                                 name="role"
@@ -329,11 +315,11 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                             isSkleton ? (
                                                 <Skeleton className="w-full h-8 mt-2" />
                                             ) : (
-                                                <FormItem className="flex flex-col w-full">
+                                                <FormItem className="flex flex-col w-full space-y-1">
                                                     <FormLabel className=" text-xs font-bold">Select Role</FormLabel>
                                                     <Popover className="w-full" open={roleOpen} onOpenChange={setRoleOpen}>
                                                         <PopoverTrigger asChild>
-                                                            <FormControl className="w-full">
+                                                            <FormControl className="w-full space-y-1">
                                                                 <Button
                                                                     onClick={() => setRoleOpen(true)}
                                                                     variant="outline"
@@ -442,7 +428,7 @@ export const UserPermissionForms = ({ isDisable, data = null, handleDisable, isS
                                     {isSkleton ? (
                                         <Skeleton className="w-full h-8 mt-2" />
                                     ) : (
-                                        <FormItem className="flex flex-col w-full mt-2">
+                                        <FormItem className="flex flex-col w-full mt-2 space-y-1">
                                             <FormLabel className=" text-xs font-bold">Select Warehouse</FormLabel>
                                             <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
                                                 <PopoverTrigger asChild>
