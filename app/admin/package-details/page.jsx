@@ -114,9 +114,7 @@ export default function PackageDetails() {
         fetchData();
     }, [query, reloadTrigger]);
 
-    const reloadData = () => {
-        setReloadTrigger(!reloadTrigger)
-    }
+
     const columns = [
         {
             accessorKey: "select",
@@ -258,7 +256,11 @@ export default function PackageDetails() {
     }
 
     const selectedTable = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
-
+    const reloadData = () => {
+        setSkeleton(true)
+        setReloadTrigger(!reloadTrigger)
+        setRowSelection({});
+    }
     return (
         <>
             <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={packageID} reload={reloadData} />

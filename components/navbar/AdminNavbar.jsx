@@ -98,44 +98,25 @@ export const AdminNavbars = () => {
                                     onPointerLeave={(event) => event.preventDefault()}
                                 >
                                     <div className="justify-start items-center gap-3 flex">
-                                        <Image
-                                            src={"/assets/country/uk-flag.png"}
-                                            width={20}
-                                            height={20}
-                                            alt="uk-flag"
-                                        />
                                         <div className="text-black text-sm font-semibold font-['Poppins']">Eng</div>
                                     </div>
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent className="flex justify-between flex-col">
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
-                                            <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                                <div className="w-[20px] h-[20px] rounded-full">
-                                                    <img
-                                                        src={`https://flagcdn.com/fr.svg`}
-                                                        alt=""
-                                                        className='object-cover rounded-full w-[20px] h-[20px]'
-                                                    />
-                                                </div>
-                                                <p>French</p>
-                                            </div>
-                                        </NavigationMenuLink>
-                                    </Link>
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
-                                            <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                                <div className="w-[20px] h-[20px] rounded-full">
-                                                    <img
-                                                        src={`https://flagcdn.com/es.svg`}
-                                                        alt=""
-                                                        className='object-cover rounded-full w-[20px] h-[20px]'
-                                                    />
-                                                </div>
-                                                <p>Spanyol</p>
-                                            </div>
-                                        </NavigationMenuLink>
-                                    </Link>
+                                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
+                                        <div className="flex flex-row justify-between gap-2 w-[100px]">
+                                            <p>English</p>
+                                        </div>
+                                    </NavigationMenuLink>
+                                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
+                                        <div className="flex flex-row justify-between gap-2 w-[100px]">
+                                            <p>Français</p>
+                                        </div>
+                                    </NavigationMenuLink>
+                                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
+                                        <div className="flex flex-row justify-between gap-2 w-[100px]">
+                                            <p>Español</p>
+                                        </div>
+                                    </NavigationMenuLink>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         </NavigationMenuList>

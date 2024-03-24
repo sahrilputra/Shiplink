@@ -16,30 +16,33 @@ import { Button } from "@/components/ui/button"
 import axios from "axios";
 import { Loaders } from '@/components/ui/loaders';
 
-export const DeletePackage = ({ open, setOpen, deleteID , reload}) => {
+export const DeletePackage = ({ open, setOpen, deleteID, reload }) => {
     const { toast } = useToast()
     const onClose = () => {
         setOpen(false)
     }
     const [loading, setLoading] = useState(false)
     console.log("Delete ID", deleteID)
-    const fetchData = async () => {
-        setLoading(true)
+
+    const fetchData = async (deleteIDs) => {
+        setLoading(true);
         try {
-            const response = await axios.post(
-                `/api/admin/packages/delete`,
-                { data: deleteID }
-            );
-            setLoading(false)
-            toast({
-                title: `Succes, Package has been Removed!`,
-                description: response.data.message,
-                status: 'success',
-            });
+            for (const deleteID of deleteIDs) {
+                const response = await axios.post(
+                    `/api/admin/packages/delete`,
+                    { data: deleteID }
+                );
+                toast({
+                    title: `Succes, Package has been Removed!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            }
+            setLoading(false);
             reload();
-            onClose()
+            onClose();
         } catch (error) {
-            setLoading(false)
+            setLoading(false);
             toast({
                 title: 'Error Deleting Package!',
                 description: 'An error occurred while Deleting Package.',
@@ -48,10 +51,9 @@ export const DeletePackage = ({ open, setOpen, deleteID , reload}) => {
             console.log('Error:', error);
         }
     };
-
     const handleSubmit = () => {
-        fetchData()
-    }
+        fetchData(deleteID);
+    };
 
     return (
         <>
@@ -79,7 +81,7 @@ export const DeletePackage = ({ open, setOpen, deleteID , reload}) => {
                                 <Button
                                     variant="destructive"
                                     size="sm"
-                                    className="w-full"s
+                                    className="w-full" s
                                     type="button"
                                     onClick={handleSubmit}
                                 >
