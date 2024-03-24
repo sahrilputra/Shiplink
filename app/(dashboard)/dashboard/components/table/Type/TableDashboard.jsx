@@ -239,7 +239,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                                             <EntryNumber forms={form} />
                                         </div>
                                         <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
-                                            <SelectWarehouse forms={form} />
+                                            <SelectWarehouse forms={form} arrivalCode={arrivalCode} />
                                             <div className="flex flex-row gap-3">
                                                 <Button
                                                     variant="redOutline"
