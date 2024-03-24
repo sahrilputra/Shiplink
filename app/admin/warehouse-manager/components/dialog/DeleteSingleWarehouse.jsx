@@ -31,7 +31,7 @@ export const DeleteSingleWarehouse = ({ open, setOpen, deleteID, reloadData }) =
             );
             setLoading(false)
             toast({
-                title: `Province ${deleteID} Deleted!`,
+                title: `Warehouse ${deleteID} Deleted!`,
                 description: response.data.message,
                 status: 'success',
             });
@@ -40,8 +40,8 @@ export const DeleteSingleWarehouse = ({ open, setOpen, deleteID, reloadData }) =
         } catch (error) {
             setLoading(false)
             toast({
-                title: 'Error Deleting Province!',
-                description: 'An error occurred while Deleting Province.',
+                title: 'Error Deleting Warehouse!',
+                description: 'An error occurred while Deleting Warehouse.',
                 status: 'error',
             });
             console.log('Error:', error);
@@ -63,7 +63,7 @@ export const DeleteSingleWarehouse = ({ open, setOpen, deleteID, reloadData }) =
                             <AlertDialogHeader>
                                 <AlertDialogTitle className="font-bold">Are you absolutely sure?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This action cannot be undone. This Province  will be deleted permanently.
+                                    This action cannot be undone. This Warehouse will be deleted permanently.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
