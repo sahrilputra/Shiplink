@@ -11,6 +11,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
@@ -20,7 +31,7 @@ import ReactToPrint, { useReactToPrint } from "react-to-print"
 import axios from "axios";
 
 export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetForm }) {
-    const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
+    const { toPDF, targetRef } = usePDF({ filename: `${trackingID}.pdf` });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -102,14 +113,14 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetF
     // const base64String = btoa(imgURL);
     // console.log("🚀 ~ RegisterDialog ~ base64String:", base64String)
     return (
-        <Dialog open={open} onOpenChange={setOpen} modal={true}>
-            <DialogContent className="w-max">
-                <DialogHeader>
-                    <DialogTitle className="text-lg font-bold">Package Registered!</DialogTitle>
-                </DialogHeader>
+        <AlertDialog open={open} onOpenChange={setOpen} className="w-max">
+            <AlertDialogContent className="w-max">
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="text-lg font-bold text-center">Package Registered!</AlertDialogTitle>
+                </AlertDialogHeader>
 
                 <div className="w-max" ref={ref => { componentRef.current = ref; targetRef.current = ref }}>
-                    <div className="border border-neutral-500/50 rounded-sm p-5 ">
+                    <div className="border border-neutral-500/50 rounded-sm p-5 w-max ">
                         <Image
                             src={"/logo.png"}
                             width={100}
@@ -137,7 +148,7 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetF
                     </div>
                 </div>
 
-                <DialogFooter>
+                <AlertDialogFooter>
                     <Button
                         variant="redOutline"
                         className="w-full"
@@ -162,8 +173,8 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetF
                     >
                         Close
                     </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }
