@@ -90,6 +90,13 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
         {
             accessorKey: "address",
             header: "Origin",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs">
+                        {`${row.original.warehouse_name_arrival} Warehouse - ${row.original.country_name_arrival}`}
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "destination",
