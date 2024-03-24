@@ -102,7 +102,7 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetF
     // const base64String = btoa(imgURL);
     // console.log("🚀 ~ RegisterDialog ~ base64String:", base64String)
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={setOpen} modal={true}>
             <DialogContent className="w-max">
                 <DialogHeader>
                     <DialogTitle className="text-lg font-bold">Package Registered!</DialogTitle>

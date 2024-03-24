@@ -80,7 +80,7 @@ export const AdminSidebar = () => {
                   isActive={router === "/admin/package-details"}
                   title="Dashboard"
                   icon={<Package2 width={22} height={22} />}
-                  href="/admin/arrival-scan"
+                  href="/admin/package-details"
                 />
 
                 <SidebarItem
