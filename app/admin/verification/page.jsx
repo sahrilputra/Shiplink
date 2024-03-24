@@ -60,6 +60,14 @@ export default function VerificationPages() {
 
     useEffect(() => {
         fetchData();
+
+        const timer = setInterval(() => {
+            fetchData()
+        }, 3000)
+
+        return () => {
+            clearInterval(timer)
+        }
     }, [query]);
 
     const handleSetDate = (newDate) => {

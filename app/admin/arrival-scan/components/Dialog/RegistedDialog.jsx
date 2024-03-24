@@ -19,7 +19,7 @@ import { usePDF } from 'react-to-pdf';
 import ReactToPrint, { useReactToPrint } from "react-to-print"
 import axios from "axios";
 
-export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
+export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetForm }) {
     const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -84,6 +84,11 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
 
     console.log("🚀 ~ RegisterDialog ~ img:", img)
 
+    const handleClose = () => {
+        resetForm();
+        setOpen(false)
+    }
+
     // useEffect(() => {
     //     const convertImage = async () => {
     //         const imgURL = `https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`
@@ -142,12 +147,20 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID }) {
                         Print
                     </Button>
                     <Button
-                        variant="destructive"
+                        variant="redOutline"
                         className="w-full"
                         type="submit"
                         onClick={() => toPDF()}
                     >
                         Download
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        className="w-full"
+                        type="button"
+                        onClick={handleClose}
+                    >
+                        Close
                     </Button>
                 </DialogFooter>
             </DialogContent>

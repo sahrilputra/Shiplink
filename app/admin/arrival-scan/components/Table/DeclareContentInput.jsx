@@ -147,11 +147,12 @@ export const DeclareContentInput = ({
         }
     }
 
-    useEffect(() => {
-        forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
-    }, [hsDesc, forms])
+    // useEffect(() => {
+    //     forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
+    // }, [hsDesc, forms])
 
 
+    console.log('HS CODE', forms.watch(`package_content[${index}].hs_desc`))
     return (
         <>
             <TableRow className="text-xs px-2 relative">
@@ -220,7 +221,9 @@ export const DeclareContentInput = ({
                                             autoComplete="off"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="desc"
-                                            placeholder="Description" {...field} />
+                                            placeholder="Description"
+                                            {...field}
+                                        />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -232,7 +235,6 @@ export const DeclareContentInput = ({
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].hs_desc`}
                         control={forms.control}
-                        disabled={true}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
@@ -240,7 +242,10 @@ export const DeclareContentInput = ({
                                         <Input
                                             autoComplete="off"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                                            id="hs_desc" placeholder="HS Description" {...field} />
+                                            id="hs_desc" placeholder="HS Description"
+                                            disabled={true}
+                                            value={field.value}
+                                        />
                                     </FormControl>
                                 </FormItem>
                             </>

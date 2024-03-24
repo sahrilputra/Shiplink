@@ -43,7 +43,7 @@ const formSchema = yup.object().shape({
     warehouse: yup.string().required(),
 })
 
-export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id, reload }) => {
+export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id, reload, arrivalCode }) => {
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -200,7 +200,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                                         <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
                                             <SelectBroker onSelect={handleSelectBroker} />
                                             <UploadInvoice forms={form} />
-                                            <SelectWarehouse forms={form} />
+                                            <SelectWarehouse forms={form} arrivalCode={arrivalCode} />
                                         </div>
                                         <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-end items-center'>
                                             <div className="flex flex-row gap-3">

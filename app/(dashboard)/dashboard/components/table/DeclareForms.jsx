@@ -171,16 +171,17 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
     // }
 
 
+    
 
     const handleDescChange = (desc) => {
         setHSDesc(desc);
     }
 
-    useEffect(() => {
-        forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
-    }, [hsDesc, forms])
+    // useEffect(() => {
+    //     forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
+    // }, [hsDesc, forms])
 
-    console.log('HS DESC ', hsDesc)
+    console.log('HS DESC ', (`package_content[${index}].hs_desc`, hsDesc))
     return (
         <>
             <TableRow className="text-xs px-2">

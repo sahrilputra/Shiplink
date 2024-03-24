@@ -145,7 +145,6 @@ export default function ArrivalScanPage() {
                 setOpen(true);
                 setUserID(formData.customer_id)
                 setUserName(formData.customer_name)
-                form.reset();
                 toast({
                     title: `New Package Has Register to ${formData.customer_name}!`,
                     description: response.data.message,
@@ -209,6 +208,64 @@ export default function ArrivalScanPage() {
         }
     }
 
+    const handlerReset = () => {
+        form.reset();
+        form.reset(
+            {
+                test: "",
+                customer_id: "",
+                customer_name: "",
+                customer_phone: "",
+                customer_email: "",
+                barcode_tracking: "",
+                carrier_code: "",
+                packageID: "",
+                package_length: "",
+                package_witdth: "",
+                package_height: "",
+                package_height_unit: "in",
+                package_weight: "",
+                package_weight_unit: "Ibs",
+                bin_location: "",
+                total_price: 0,
+                package_content: [
+                    {
+                        itemID: "",
+                        qty: 1,
+                        value: 0,
+                        desc: "",
+                        hs_desc: "",
+                        hs_code: "",
+                        made_in: "",
+                        subtotal: 0,
+                    }
+                ],
+                box_images: [
+
+                ],
+                label_images: [
+
+                ],
+                content_images: [
+
+                ],
+
+            },
+        );
+
+        const inputFile = document.getElementById('content_images');
+        if (inputFile) {
+            inputFile.value = '';
+        }
+        const labelImg = document.getElementById('label_images');
+        if (labelImg) {
+            labelImg.value = '';
+        }
+        const boxImg = document.getElementById('box_images');
+        if (boxImg) {
+            boxImg.value = '';
+        }
+    }
 
     useEffect(() => {
         fetchBinData();
@@ -276,7 +333,7 @@ export default function ArrivalScanPage() {
                                 binData={binData}
                                 reset={form.reset}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} userID={userID} />
+                            <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} userID={userID} resetForm={handlerReset} />
                         </div>
 
                         {loading && <Loaders />}

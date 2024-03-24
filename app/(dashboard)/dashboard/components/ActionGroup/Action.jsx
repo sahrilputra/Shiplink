@@ -121,7 +121,7 @@ export const UploadInvoice = ({ forms }) => {
     )
 }
 
-export const SelectWarehouse = ({ forms }) => {
+export const SelectWarehouse = ({ forms, arrivalCode }) => {
 
     const [warehouse, setWarehouse] = useState([])
     useEffect(() => {
@@ -137,13 +137,15 @@ export const SelectWarehouse = ({ forms }) => {
                     }
                 );
                 console.log("Warehouse :", response.data);
-                setWarehouse(response.data.warehouse);
+                const filteredWarehouse = response.data.warehouse.filter(item => item.country_code !== arrivalCode);
+                setWarehouse(filteredWarehouse);
             } catch (error) {
                 console.log(error);
+                fetchData();
             }
         };
         fetchData();
-    }, []);
+    }, [arrivalCode]);
     return (
         <>
             <div className=" h-9 rounded-lg justify-start items-start inline-flex">
