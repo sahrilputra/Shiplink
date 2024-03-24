@@ -111,8 +111,8 @@ export function UserTable() {
             },
         },
         {
-            accessorKey: "user_code",
-            header: "User ID",
+            accessorKey: "name",
+            header: "User Name",
             className: "text-xs",
         },
         {
@@ -120,17 +120,8 @@ export function UserTable() {
             header: "Email",
         },
         {
-            accessorKey: "type",
-            header: "Account Type",
-        },
-        {
             accessorKey: "role",
             header: "Role",
-        },
-
-        {
-            accessorKey: "warehouse_id",
-            header: "Warehouse ID",
         },
         {
             accessorKey: "warehouse_name",
