@@ -32,12 +32,9 @@ export const PackageMenus = ({ open, setOpen, itemID, handlerDelete }) => {
                     </Button>
                 </DropdownMenuTrigger >
                 <DropdownMenuContent side={"left"} sideOffset={2}>
-                    <DropdownMenuItem >
-                        <p className="text-xs text-myBlue">Copy Package ID</p>
-                    </DropdownMenuItem>
                     <NextLink href={`/admin/package-details/${itemID}`}>
                         <DropdownMenuItem>
-                            <p className="text-xs">Package Details</p>
+                            <p className="text-xs text-myBlue">Package Details</p>
                         </DropdownMenuItem>
                     </NextLink>
                     <DropdownMenuItem
