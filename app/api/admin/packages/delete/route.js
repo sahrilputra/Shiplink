@@ -8,23 +8,12 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { keyword, date_start, date_end, tracking_id, status, lots_id, bins_id, page, limit, index, token } = await request.json();
-
         const tokenAccess = await getAccessToken(request)
-        const response = await axios.post(
-            `${process.env.API_URL}/Package/Package_list`,
-            {
-                keyword: keyword,
-                date_start: date_start,
-                date_end: date_end,
-                tracking_id: tracking_id,
-                lots_id: lots_id,
-                bins_id: bins_id,
-                status: status,
-                page: page,
-                limit: limit,
-                index: index,
-            },
+
+        const { data } = await request.json();
+        console.log("code : ", { data })
+        const response = await axios.get(
+            `${process.env.API_URL}/Package/SetDelete_package?tracking_id=${data}`,
             {
                 httpsAgent: agent,
                 headers: {
@@ -34,16 +23,10 @@ export async function POST(request) {
             }
         );
 
-        console.log("response from api : ", response.data); // Log the response data
-
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                total: response.data.total,
-                page_total: response.data.page_total,
-                page_limit: response.data.page_limit,
-                package_info: response.data.package_info
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

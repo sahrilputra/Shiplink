@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageTable } from './ImageTable'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -21,7 +21,24 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import axios from 'axios'
-export const ExpandedTable = ({ content, edit, item, trackingID, reloadData }) => {
+export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, image }) => {
+    console.log("🚀 ~ ExpandedTable ~ image:", image)
+
+    const [filterInvoice, setVilterInvoice] = useState([]);
+    useEffect(() => {
+        const removeInvImage = () => {
+            if (image) {
+                const filtered = image.filter(image => isInvoiceImage(image.type));
+                setVilterInvoice(filtered);
+            }
+        };
+
+        removeInvImage();
+    }, [image]);
+
+    const isInvoiceImage = (type) => {
+        return type.toLowerCase() === "invoices";
+    };
     const height_unit = item?.package_height_unit || "cm"
     const handleSave = async (data) => {
         console.log("data : ", data)
@@ -69,7 +86,7 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData }) =
 
                                 <div className="flex flex-col relative  w-[50%] h-max justify-start items-start">
                                     <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>HS Description</p>
-                                    <div className="h-5 w-full flex justify-start items-end h-max">
+                                    <div className=" w-full flex justify-start items-end h-max">
                                         <p className=' text-xs font-light'>{item.hs_desc ? item.hs_desc : "undefined"}</p>
                                     </div>
                                 </div>
@@ -102,9 +119,12 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData }) =
                                     <SelectValue placeholder="Invoice" />
                                 </SelectTrigger>
                                 <SelectContent className="text-xs">
-                                    <SelectItem className="text-xs text-myBlue " value="invoice1">Download Invoice 1</SelectItem>
-                                    <SelectItem className="text-xs text-myBlue" value="invoice2">Download Invoice 2</SelectItem>
-                                    <SelectItem className="text-xs text-myBlue" value="invoice3">Download Invoice 3</SelectItem>
+                                    {
+                                        filterInvoice.map((item, index) => (
+                                            <SelectItem key={index} className="text-xs text-myBlue" value={index}>invoice {index+1}</SelectItem>
+                                        ))
+                                    }
+
                                 </SelectContent>
                             </Select>
                         </div>

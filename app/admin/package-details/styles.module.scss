@@ -3,7 +3,7 @@
     width: 100%;
     // max-width: max-content;
     height: max-content;
-    // min-height: 95vh;
+    min-height: 100%;
     // max-height: max-content;
     background-color: #ffff;
     border-radius: 8px;
@@ -16,8 +16,8 @@
 .main {
     flex: 5;
     width: 100%;
-    max-height: max-content;
-    min-height: 90vh;
+    height: max-content;
+    min-height: 100vh;
     background-color: #ffff;
     border-radius: 6px;
     -webkit-border-radius: 6px;
@@ -62,18 +62,7 @@
 .configHeader {
     border: solid 1px #DEDEDE;
     border-radius: 6px;
-    padding: 20px 0 30px 20px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
-    gap: 30px;
-}
-
-.banerHeight {
-    border: solid 1px #DEDEDE;
-    border-radius: 6px;
-    padding: 20px 0 10px 20px;
+    padding: 20px 20px 20px 20px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -108,5 +97,5 @@
     flex-direction: column;
     width: 100%;
     position: relative;
-    gap: 20px;
+    gap: 15px;
 }

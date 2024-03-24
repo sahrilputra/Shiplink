@@ -23,35 +23,22 @@ export const CustomerManagerDropDown = ({ setDeleteOpen, itemID }) => {
     }
     return (
         <>
-            <Dialog>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-sm w-max px-[5px] h-[20px]`}
-                        >
-                            <MoreHorizontalIcon width={15} height={15} />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side={"left"} sideOffset={2}>
-                        <DropdownMenuItem >
-                            <p className="text-xs text-myBlue">Copy Customer ID</p>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem >
-                            <p className="text-xs">Copy Login URL</p>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <p className="text-xs">Customer Details</p>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => setDeleteOpen(selectedItemID)} // Gunakan selectedItemID yang disimpan di state local
-                        >
-                            <p className="text-xs text-red-700">Delete</p>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </Dialog>
+            <DropdownMenuContent side={"left"} sideOffset={2}>
+                <DropdownMenuItem >
+                    <p className="text-xs text-myBlue">Copy Customer ID</p>
+                </DropdownMenuItem>
+                <DropdownMenuItem >
+                    <p className="text-xs">Copy Login URL</p>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <p className="text-xs">Customer Details</p>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => setDeleteOpen(selectedItemID)} // Gunakan selectedItemID yang disimpan di state local
+                >
+                    <p className="text-xs text-red-700">Delete</p>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
         </>
     );
 }

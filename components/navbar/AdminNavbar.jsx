@@ -43,7 +43,8 @@ export const AdminNavbars = () => {
 
     console.log("NEW img", userimg)
 
-
+    const fullName = session ? session.user.name : "";
+    const firstName = fullName.split(" ")[0];
     const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
 
     return (
@@ -155,16 +156,22 @@ export const AdminNavbars = () => {
                                             <Skeleton className="w-[35px] h-[35px] rounded-full" />
                                         ) : (
                                             userimg !== "null" || userimg !== undefined || userimg === null ? (
-                                                <img
-                                                    src={"https://source.boringavatars.com/beam"}
-                                                    className='rounded-full w-[35px] h-[35px]'
+                                                <Image
+                                                    src={"/assets/user-holder.svg"}
+                                                    width={20}
+                                                    height={20}
                                                     alt="user image"
+                                                    className='object-cover rounded-full w-[20px] h-[20px]'
+                                                    style={{ borderRadius: "50%", width: "35px", height: "35px" }}
                                                 />
                                             ) : (
-                                                <img
-                                                    src="https://source.boringavatars.com/beam"
-                                                    className='rounded-full w-[35px] h-[35px]'
+                                                <Image
+                                                    src={"/assets/user-holder.svg"}
+                                                    width={20}
+                                                    height={20}
                                                     alt="user image"
+                                                    className='object-cover rounded-full w-[20px] h-[20px]'
+                                                    style={{ borderRadius: "50%", width: "35px", height: "35px" }}
                                                 />
                                             )
                                         )}
@@ -177,7 +184,7 @@ export const AdminNavbars = () => {
                                             ) : (
                                                 <>
                                                     <div className=" text-black text-sm font-semiBold">
-                                                        {session ? session.user?.name : "User"}
+                                                        {session ? firstName : "User"}
                                                     </div>
                                                     <div className=" text-black text-xs font-normal ">{session ? session.user?.role : "role"}</div>
                                                 </>

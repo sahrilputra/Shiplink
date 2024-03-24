@@ -294,7 +294,7 @@ export function VerificationTable({ data, isOpen, setOpen, isSkeleton, reloadDat
                                                             />
                                                         </>
                                                     ) : (
-                                                        <ExpandedTable content={row.original.content} item={row.original} edit={toggleEdit} trackingID={row.original.tracking_id} reloadData={reloadData} />
+                                                        <ExpandedTable content={row.original.content} item={row.original} edit={toggleEdit} trackingID={row.original.tracking_id} reloadData={reloadData} image={row.original.images} />
                                                     )
                                                 }
                                             </TableCell>
