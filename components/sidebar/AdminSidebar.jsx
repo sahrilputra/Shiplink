@@ -27,6 +27,7 @@ import {
 } from "./icon/adminIcon";
 import { Separator } from "../ui/separator";
 import { useMediaQuery } from "react-responsive";
+import { Package2 } from "lucide-react";
 export const AdminSidebar = () => {
   const [isClicked, setIsClicked] = useState(false);
   const router = usePathname();
@@ -75,6 +76,13 @@ export const AdminSidebar = () => {
               className="flex-col justify-start items-center flex "
             >
               <div className="flex-col justify-end items-start gap-[5px] flex">
+                <SidebarItem
+                  isActive={router === "/admin/package-details"}
+                  title="Dashboard"
+                  icon={<Package2 width={22} height={22} />}
+                  href="/admin/arrival-scan"
+                />
+
                 <SidebarItem
                   isActive={router === "/admin/arrival-scan"}
                   title="Arrival Scan"
