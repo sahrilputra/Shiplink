@@ -64,7 +64,7 @@ const formSchema = yup.object().shape({
 export default function ArrivalScanPage() {
     const { toast } = useToast()
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const form = useForm({
         resolver: yupResolver(formSchema),
