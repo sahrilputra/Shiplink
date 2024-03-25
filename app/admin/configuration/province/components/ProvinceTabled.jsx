@@ -68,6 +68,10 @@ export function ProvinceTabled({ }) {
     const [countryList, setCountryList] = useState([]);
     const [value, setValue] = useState("")
 
+    const handleCommandChange = (e) => {
+        setQuery({ ...query, keyword: e });
+    }
+    
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -305,7 +309,10 @@ export function ProvinceTabled({ }) {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-[200px] p-0">
                                             <Command>
-                                                <CommandInput placeholder="Search Country..." className="h-9 text-xs" />
+                                                <CommandInput
+                                                    onValueChange={(e) => handleCommandChange(e)}
+                                                    placeholder="Search Country..."
+                                                    className="h-9 text-xs" />
                                                 <CommandEmpty>No Country found.</CommandEmpty>
                                                 <ScrollArea className="h-[200px]">
                                                     <CommandGroup>

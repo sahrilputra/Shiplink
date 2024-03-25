@@ -40,6 +40,9 @@ export default function Tax() {
         index: 0
     });
     const [country, setCountry] = useState([]);
+    const handleInputChange = (e) => {
+        setQuery({ ...query, keyword: e });
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,11 +53,11 @@ export default function Tax() {
                 );
                 const data = await response.data;
                 setCountry(data.country);
-                if (data.country && data.country.length > 0) {
-                    // Set initial value and countryCode to the first country in the list
-                    setValue(data.country[0].country_name);
-                    setCountryCode(data.country[0].country_code);
-                }
+                // if (data.country && data.country.length > 0) {
+                //     // Set initial value and countryCode to the first country in the list
+                //     setValue(data.country[0].country_name);
+                //     setCountryCode(data.country[0].country_code);
+                // }
             } catch (error) {
                 fetchData();
                 console.log('Error:', error);
@@ -92,7 +95,11 @@ export default function Tax() {
                                 </PopoverTrigger>
                                 <PopoverContent className="w-[200px] p-0">
                                     <Command>
-                                        <CommandInput placeholder="Search Country..." className="h-9 text-xs" />
+                                        <CommandInput
+                                            placeholder="Search Country..."
+                                            className="h-9 text-xs"
+                                            onValueChange={(e) => handleInputChange(e)}
+                                        />
                                         <CommandEmpty>No Country found.</CommandEmpty>
                                         <ScrollArea className="h-[200px]">
                                             <CommandGroup>

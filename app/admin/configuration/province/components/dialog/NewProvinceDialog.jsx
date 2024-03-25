@@ -34,6 +34,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import InputMask from 'react-input-mask';
 import axios from "axios";
 import { Loaders } from '@/components/ui/loaders'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const formSchema = yup.object().shape({
     country_code: yup.string().required(),
@@ -178,26 +179,32 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                                                                 type="text"
                                                                 placeholder="Search Country"
                                                                 onChange={handleOpenCommand}
+                                                                value={selectedCountry.country_name}
+                                                                autoComplete="off"
+                                                                onInput={(e) => handleSelectCountry('', e.target.value)}
 
                                                             />
+
                                                         </div>
                                                         {openCommand && (
                                                             <div className="absolute bottom-100 w-full p-2 shadow bg-white">
                                                                 <Command>
                                                                     <CommandEmpty>No Country Found.</CommandEmpty>
                                                                     <CommandGroup>
-                                                                        {country.map((item) => (
-                                                                            <CommandItem
-                                                                                value={item.country_id}
-                                                                                key={item.country_numeric}
-                                                                                onSelect={() => {
-                                                                                    handleSelectCountry(item.country_code, item.country_name)
-                                                                                }}
-                                                                            >
-                                                                                {item.country_name}
+                                                                        <ScrollArea className="h-[300px]">
+                                                                            {country.map((item) => (
+                                                                                <CommandItem
+                                                                                    value={item.country_id}
+                                                                                    key={item.country_numeric}
+                                                                                    onSelect={() => {
+                                                                                        handleSelectCountry(item.country_code, item.country_name)
+                                                                                    }}
+                                                                                >
+                                                                                    {item.country_name}
 
-                                                                            </CommandItem>
-                                                                        ))}
+                                                                                </CommandItem>
+                                                                            ))}
+                                                                        </ScrollArea>
                                                                     </CommandGroup>
                                                                 </Command>
                                                             </div>
