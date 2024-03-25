@@ -100,6 +100,15 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     {
       accessorKey: "destination",
       header: "Destination",
+      cell: ({ row }) => {
+        return (
+          <>
+            <div className="text-xs">
+              {`${row.original.warehouse_name_destination} Wr - ${row.original.country_code_destination}`}
+            </div>
+          </>
+        )
+      }
     },
     {
       accessorKey: "updated_at",

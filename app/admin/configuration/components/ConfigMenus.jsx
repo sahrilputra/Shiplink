@@ -33,6 +33,11 @@ export const ConfigMenus = () => {
         title="Services"
         href="/admin/configuration/services"
       />
+      <MenuItems
+        isActive={router === "/admin/configuration/payments"}
+        title="Payments"
+        href="/admin/configuration/payments"
+      />
     </Menus>
   )
 }

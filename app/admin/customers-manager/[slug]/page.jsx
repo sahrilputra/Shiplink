@@ -106,7 +106,7 @@ export default function UserPage({ params }) {
                                     <Skeleton className="w-[50px] h-[50px] rounded-full object-cover" />
                                 ) : (
                                     <img
-                                        src="https://source.boringavatars.com/beam"
+                                        src="../../assets/user-holder.svg"
                                         alt="avatar"
                                         className="w-[50px] h-[50px] rounded-full object-cover"
                                     />
