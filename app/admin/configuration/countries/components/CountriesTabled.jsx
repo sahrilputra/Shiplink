@@ -211,7 +211,7 @@ export function CountriesTabled({ }) {
 
     useEffect(() => {
         fetchData();
-    }, [query]); // Menambahkan pagination sebagai dependensi
+    }, [query]); 
 
     const handleSearchChange = (event) => {
         setQuery({

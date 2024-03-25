@@ -26,8 +26,6 @@ export default function VerificationPages() {
         return format(new Date(dateString), "yyyy-MM-dd");
     };
 
-
-
     console.log("🚀 ~ VerificationPages ~ selectDate:", date)
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState({
@@ -36,12 +34,21 @@ export default function VerificationPages() {
         date_end: "",
         tracking_id: "",
         status: "",
-        page: 0,
-        limit: 0,
-        index: 0
+        page: 1,
+        limit: 10,
+        index: 0,
     });
     const [data, setData] = useState([]);
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
 
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -147,7 +154,18 @@ export default function VerificationPages() {
 
                         <div className={`${styles.listTable} mt-[20px] flex flex-col gap-1`}>
                             {/* <DataTable data={data} isSkeleton={isSkeleton} handleSearchChange={handleSearchChange} /> */}
-                            <VerificationTable data={data} isOpen={open} setOpen={setOpen} isSkeleton={isSkeleton} reloadData={reloadData} />
+                            <VerificationTable
+                                data={data}
+                                isOpen={open}
+                                setOpen={setOpen}
+                                isSkeleton={isSkeleton}
+                                reloadData={reloadData}
+                                setQuery={setQuery}
+                                pagination={pagination}
+                                setPagination={setPagination}
+                                rowTotalData={rowTotalData}
+                                setRowTotalData={setRowTotalData}
+                            />
                         </div>
 
                     </div>

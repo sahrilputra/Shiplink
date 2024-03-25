@@ -262,10 +262,11 @@ export default function PackageDetails() {
                         <div className="w-full flex flex-row gap-2 items-center justify-center">
                             <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                                 <Button
-                                    variant="ghost"
-                                    className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                                    <p>Details</p>
-                                    <ExternalLink width={10} height={10} />
+                                    variant="tableBlue"
+                                    size="tableIcon"
+                                    className={`w-max px-[10px] h-[20px] gap-1`}
+                                >
+                                    <p className="text-[11px] text-myBlue">Details</p>
                                 </Button>
                             </NextLink>
                             <PackageMenus handlerDelete={handlerDeleteOpen} itemID={row.original.tracking_id} />
