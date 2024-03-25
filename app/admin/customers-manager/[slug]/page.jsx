@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { UserProfileForms } from './components/userForms';
@@ -14,54 +14,87 @@ import { DeleteCustomer } from '../components/dialog/DeleteCustomer';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MembershipTag } from '@/components/membership/MembershipTag';
+import { CustomerPackageTabled } from './components/userPackageData/dataList';
 // import { CustomerInvoiceTable } from '../components/table/invoiceTable/CustomerInvoiceTable';
 export default function UserPage({ params }) {
     const router = useRouter();
-    console.log("hello :", params.slug);
+    const userID = params.slug;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({});
-    const [skeleton, setSkeleton] = useState(true);
+    const [userPackage, setUserPackage] = useState([]);
+    const [isSkeleton, setIsSkeleton] = useState(true);
     const [disable, setDisable] = useState(true);
     const [openPassword, setOpenPassword] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.post(`/api/admin/customer_manager/list`, { keyword: params.slug });
-            const responseData = response.data.customer[0];
-            setData(responseData);
-            setLoading(false);
-            setSkeleton(false);
-            if (response.data.customer[0] === undefined || response.data.customer[0] === null || response.data.customer[0] === "undefined") {
-                router.push("/admin/customers-manager");
-                console.log("Data:", responseData);
-            } else {
-                console.log("Data:", responseData);
-            }
-        } catch (error) {
-            setSkeleton(false);
-            setLoading(false);
-            console.error("Error:", error);
-        }
-    };
 
     useEffect(() => {
-        fetchUserData();
-    }, [params.slug]);
 
-    const toggleMoreOpen = () => {
-        setMoreOpen(!moreOpen);
-    };
+        const fetchData = async () => {
+            try {
+                const userDataResponse = await axios.post(`/api/admin/customer_manager/list`, { keyword: userID });
+                const userData = userDataResponse.data.customer[0];
+                setData(userData);
+                setLoading(false);
+                setIsSkeleton(false);
+            } catch (error) {
+                console.error("Error:", error);
+                setLoading(false);
+                setIsSkeleton(false);
+            }
+        }
+        fetchData();
+
+    }, [userID])
+
+    // const fetchData = async () => {
+    //     try {
+    //         const [userDataResponse, packageDataResponse] = await Promise.all([
+    //             axios.post(`/api/admin/customer_manager/list`, { keyword: userID }),
+    //             axios.post(`/api/admin/packages/list`, {
+    //                 keyword: userID,
+    //                 date_start: "",
+    //                 date_end: "",
+    //                 tracking_id: "",
+    //                 status: "",
+    //                 page: 0,
+    //                 limit: 0,
+    //                 index: 0,
+    //             })
+    //         ]);
+
+    //         const userData = userDataResponse.data.customer[0];
+    //         setData(userData);
+    //         setLoading(false);
+    //         setIsSkeleton(false);
+
+    //         if (!userData) {
+    //             router.push("/admin/customers-manager");
+    //         }
+
+    //         const packageData = packageDataResponse.data.package_info;
+    //         const filteredPackageData = packageData.filter(item => item.customer_id === userID);
+    //         setUserPackage(filteredPackageData);
+    //     } catch (error) {
+    //         console.error("Error:", error);
+    //         setLoading(false);
+    //         setIsSkeleton(false);
+    //     }
+    // };
+
+    // fetchData();
 
     const handleDisable = () => {
-        setDisable(!disable)
-    }
+        setDisable(!disable);
+    };
 
     const reloadData = () => {
-        fetchUserData();
-    }
+        setLoading(true);
+        fetchData();
+    };
+
     return (
         <>
-            {loading && <Loaders />}
+            {/* {loading && <Loaders />} */}
             <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
             <DeleteCustomer open={openDelete} setOpen={setOpenDelete} reloadData={reloadData} deleteID={data?.customer_id} />
             <div className="w-full">
@@ -69,7 +102,7 @@ export default function UserPage({ params }) {
                     <div className="left w-[30%] ">
                         <div className="content border bg-blue-200 border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full">
                             <div className="rounded-full m-3 mb-2 text-sm">
-                                {skeleton ? (
+                                {isSkeleton ? (
                                     <Skeleton className="w-[50px] h-[50px] rounded-full object-cover" />
                                 ) : (
                                     <img
@@ -79,7 +112,7 @@ export default function UserPage({ params }) {
                                     />
                                 )}
                             </div>
-                            {skeleton ? (
+                            {isSkeleton ? (
                                 <Skeleton className="w-[100px] h-[15px]" />
                             ) : (
                                 <p className="font-bold text-sm">{data?.customer_name}</p>
@@ -136,9 +169,9 @@ export default function UserPage({ params }) {
                     <CustomerInvoiceTable UserID={data?.customer_name}/>
                 </div> */}
             </div>
-            {/* <div className="w-full">
-                <CustomerPackageList dataID={params.slug} />
-            </div> */}
+            <div className="w-full">
+                <CustomerPackageTabled customerID={data?.customer_id} customerName={data?.customer_name} />
+            </div>
         </>
     );
 }

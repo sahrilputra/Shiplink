@@ -94,39 +94,71 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
     const [selectedProvince, setSelectedProvince] = useState("")
     const [selectedCountry, setSelectedCountry] = useState("")
     const [loading, setLoading] = useState(false)
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/countries/list`,
-                {
-                    keyword: "",
-                    page: 1,
-                    limit: 0,
-                    index: 0
-                },
-            );
-            console.log("repsonse", response.data)
-            setCountryList(response.data.country);
 
-            const responseProvince = await axios.post(
-                `/api/admin/config/province`,
-                {
-                    keyword: "",
-                    page: 1,
-                    limit: 0,
-                    index: 0
-                },
-            );
-            console.log("Response Province : ", responseProvince)
-            setProvinceList(responseProvince.data.province);
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
+
+    // Country
+
+    const [countryQuery, setCountryQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    });
+    const [commandQuery, setCommandQuery] = useState("");
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCommandQuery(e);
+        setCountryQuery({ ...countryQuery, keyword: e });
+    }
+
     useEffect(() => {
-        fetchData();
-    }, []);
+        const fetchCountryList = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    countryQuery
+                );
+                console.log("repsonse", response.data)
+                setCountryList(response.data.country);
+            } catch (error) {
+                console.log('Error:', error);
+                fetchCountryList();
+            }
+        }
+        fetchCountryList();
+    }, [countryQuery]);
 
+    // Province
+
+    const [provinceQuery, setProvinceQuery] = useState({
+        keyword: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    });
+
+    const handleProvinceChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setProvinceQuery({ ...provinceQuery, keyword: e });
+    }
+
+    useEffect(() => {
+        const fetchProvinceList = async () => {
+            try {
+                const responseProvince = await axios.post(
+                    `/api/admin/config/province`, provinceQuery
+                );
+                console.log("Response Province : ", responseProvince)
+                setProvinceList(responseProvince.data.province);
+            } catch (error) {
+                console.log('Error:', error);
+                fetchProvinceList();
+            }
+        }
+        fetchProvinceList();
+    }, [provinceQuery]);
+
+    // Save
     const handleSave = async (formData) => {
         setLoading(true)
         const setDataCountry = countryList.find((item) => item.country_name === formData.country || item.country_code === formData.country);
@@ -333,6 +365,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                             <CommandInput
                                                                 placeholder="Search Province..."
                                                                 className="h-9 w-full text-xs"
+                                                                onValueChange={(e) => handleProvinceChange(e)}
                                                             />
                                                             <CommandEmpty
                                                                 className="w-full text-xs text-center py-2"
@@ -347,7 +380,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                                         <>
                                                                             <PopoverClose asChild>
                                                                                 <CommandItem
-                                                                                    value={item.province_code}
+                                                                                    value={item.province_name}
                                                                                     key={item.province_id}
                                                                                     className="text-xs"
                                                                                     onSelect={() => {
@@ -426,6 +459,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                     <PopoverContent className="w-[300px] p-0">
                                                         <Command className="w-full">
                                                             <CommandInput
+                                                                onValueChange={(e) => handleCommandChange(e)}
                                                                 placeholder="Search Country..."
                                                                 className="h-9 w-full text-xs"
                                                             />
@@ -442,7 +476,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                                         <>
                                                                             <PopoverClose asChild>
                                                                                 <CommandItem
-                                                                                    value={item.country_code}
+                                                                                    value={item.country_name}
                                                                                     key={item.country_id}
                                                                                     className="text-xs"
                                                                                     onSelect={() => {
