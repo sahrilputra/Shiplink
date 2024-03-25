@@ -40,7 +40,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
-import { ChevronDown, ChevronUp, ExternalLink, MoreHorizontalIcon } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink, MoreHorizontalIcon } from 'lucide-react'
 import { SearchBar } from '@/components/ui/searchBar'
 import { DatePickerWithRange } from '@/components/date/DateRangePicker'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -65,6 +65,9 @@ export default function PackageDetails() {
         date_start: "",
         date_end: "",
         tracking_id: "",
+        page: 1,
+        limit: 10,
+        index: 0,
     });
     const [date, setDate] = useState({
         from: "",
@@ -93,18 +96,41 @@ export default function PackageDetails() {
         });
     };
 
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.post(
                     `/api/admin/packages/list`,
-                    query
+                    {
+                        ...query,
+                        page: pagination.pageIndex + 1,
+                        limit: pagination.pageSize,
+                    }
                 );
-                const responseData = response.data.package_info
+                const responseData = response.data
                 console.log("🚀 ~ fetchData ~ response:", responseData)
-                setData(responseData);
+                setData(responseData.package_info);
                 setPackageTotal(responseData.total)
+                setRowTotalData({
+                    page_limit: responseData.page_limit,
+                    page_total: responseData.page_total,
+                    total: responseData.total
+                });
+                setPagination(prevPagination => ({
+                    ...prevPagination,
+                    pageSize: responseData.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+                }));
                 setSkeleton(false)
             } catch (error) {
                 setSkeleton(false)
@@ -113,6 +139,22 @@ export default function PackageDetails() {
         };
         fetchData();
     }, [query, reloadTrigger]);
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
+
 
 
     const columns = [
@@ -238,6 +280,10 @@ export default function PackageDetails() {
     const table = useReactTable({
         data: data,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -246,6 +292,10 @@ export default function PackageDetails() {
         state: {
             sorting,
             rowSelection,
+            sorting,
+            rowSelection,
+            pagination,
+            query,
         },
 
     });
@@ -374,43 +424,66 @@ export default function PackageDetails() {
                             </TableBody>
 
                         </Table>
-                        <div className="flex w-full justify-between items-center px-2">
-                            <div className=" text-sm text-muted-foreground w-full">
-                                {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                                {table.getFilteredRowModel().rows.length} row(s) selected.
+                        <div className="flex justify-between w-full items-end mt-1 pb-2">
+                            <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                                <strong>
+                                    {table.getFilteredSelectedRowModel().rows.length}
+                                </strong>
+                                of{" "}
+                                <div className="flex flex-row gap-1">
+                                    <strong>
+                                        {table.getFilteredRowModel().rows.length}
+                                    </strong>
+                                    <p className="text-nowrap"> row(s) selected.</p>
+                                </div>
                             </div>
-                            <div className="flex justify-end w-full items-end p-3">
-
-                                <Pagination className={'flex justify-end w-full items-end'}>
-                                    <PaginationContent>
-                                        <PaginationItem>
-                                            <PaginationPrevious
-                                                className={"cursor-pointer"}
-                                                onClick={() => table.setPageIndex(0)}
-                                                disabled={!table.getCanPreviousPage()}
-                                            />
-                                        </PaginationItem>
-                                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                            <Pagination className={'flex justify-end w-full items-end gap-2'}>
+                                <div className="flex items-center gap-1 text-xs text-zinc-500">
+                                    <div>Page</div>
+                                    <strong>
+                                        {table.getState().pagination.pageIndex + 1} of{' '}
+                                        {table.getPageCount().toLocaleString()}
+                                    </strong>
+                                </div>
+                                <Button
+                                    variant={`redOutline`}
+                                    onClick={() => handlerPaginationChange(0)}
+                                    className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                                    disabled={!table.getCanPreviousPage()}
                                 >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                                        <PaginationItem>
-                                            <PaginationNext
-                                                className={"cursor-pointer"}
-                                                onClick={() => table.nextPage()}
-                                                disabled={!table.getCanNextPage()}
-                                            />
-                                        </PaginationItem>
-                                    </PaginationContent>
-                                </Pagination>
-                            </div>
+                                    <ChevronsLeftIcon className="h-4 w-4" />
+                                </Button>
 
+                                <Button
+                                    variant={`destructive`}
+                                    className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                                    onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                                    disabled={!table.getCanPreviousPage()}
+                                >
+                                    <ChevronLeft className="h-4 w-4" />
+                                </Button>
+
+                                <Button
+                                    variant={`destructive`}
+                                    className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                                    onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    <ChevronRight className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    variant={`redOutline`}
+                                    className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                                    onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    <ChevronsRightIcon className="h-4 w-4" />
+                                </Button>
+                                <PaginationContent>
+
+
+                                </PaginationContent>
+                            </Pagination>
                         </div>
                     </div>
                 </div>
