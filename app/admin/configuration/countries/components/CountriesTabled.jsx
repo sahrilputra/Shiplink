@@ -21,10 +21,11 @@ import {
     useReactTable,
     getPaginationRowModel,
     SortingState,
+    PaginationState,
     getSortedRowModel,
 } from "@tanstack/react-table";
 import axios from "axios";
-import { MoreHorizontalIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreHorizontalIcon, ChevronsRightIcon, ChevronsLeftIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { CountryMenus } from "../../components/menus/CountryMenus";
 import { CreateNewCountry } from "./dialog/CreateNewCountry";
@@ -42,17 +43,14 @@ import {
     PaginationItem,
     PaginationLink,
     PaginationNext,
+    PaginationFirst,
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
 
 export function CountriesTabled({ }) {
-    const [query, setQuery] = useState({
-        keyword: "",
-        page: 1,
-        limit: 0,
-        index: 0
-    });
+
+
     const [country, setCountry] = useState([]);
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -68,31 +66,7 @@ export function CountriesTabled({ }) {
     const [rowSelectDelete, setRowSelectDelete] = useState([])
     const [openRowDelete, setOpenRowDelete] = useState(false)
     const [isSkeleton, setIsSkeleton] = useState(true);
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/countries/list`,
-                query
-            );
-            const data = await response.data;
-            setCountry(data.country);
-            setIsSkeleton(false);
-            setLoading(false)
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
 
-    useEffect(() => {
-        fetchData();
-    }, [query]);
-
-    const handleSearchChange = (event) => {
-        setQuery({
-            ...query,
-            keyword: event.target.value
-        });
-    };
 
     const handleEditClicked = (row) => {
         setSelectedRowData(row.original);
@@ -189,11 +163,85 @@ export function CountriesTabled({ }) {
             },
         }
     ]
+    const [query, setQuery] = useState({
+        keyword: "",
+        page: 1,
+        limit: 10,
+        index: 0,
+    });
 
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/config/countries/list`,
+                {
+                    ...query,
+                    page: pagination.pageIndex + 1, // Menggunakan pageIndex dari pagination state
+                    limit: pagination.pageSize, // Menggunakan pageSize dari pagination state
+                }
+            );
+            const data = await response.data;
+            console.log("🚀 ~ fetchData ~ data:", data);
+            setCountry(data.country);
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
+            setIsSkeleton(false);
+            setLoading(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [query]); // Menambahkan pagination sebagai dependensi
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value
+        });
+    };
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
 
     const table = useReactTable({
         data: country,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -202,9 +250,12 @@ export function CountriesTabled({ }) {
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
 
     })
+
 
     console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.country_code));
     const handlerRowDelete = () => {
@@ -419,36 +470,87 @@ export function CountriesTabled({ }) {
                 </TableBody>
 
             </Table>
-            <div className="flex justify-end w-full items-end py-3">
-                <Pagination className={'flex justify-end w-full items-end'}>
+            <div className="flex justify-between w-full items-end mt-1 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div>
+                </div>
+                <Pagination className={'flex justify-end w-full items-end gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                     <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
+
+
                     </PaginationContent>
                 </Pagination>
             </div>
         </>
     )
 }
+{/* {Array.from({ length: 3 }, (_, i) => i + pagination.pageIndex) // Menggunakan pageIndex langsung sebagai referensi untuk nomor halaman
+                            .filter(pageNumber => pageNumber > 0 && pageNumber <= rowTotalData.page_total) // Memastikan nomor halaman berada dalam rentang yang benar
+                            .map((pageNumber) => (
+                                <PaginationItem key={pageNumber}>
+                                    <PaginationLink
+                                        className={"cursor-pointer text-xs px-2 py-2  h-[32px] w-[32px] text-center"}
+                                        onClick={() => handlerPaginationChange(pageNumber)}
+                                        disabled={pageNumber === pagination.pageIndex}
+                                    >
+                                        {pageNumber}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            ))
+                        } */}
+{/* <Button
+                        variant={`redOutline`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                    >
+                        1
+                    </Button> */}

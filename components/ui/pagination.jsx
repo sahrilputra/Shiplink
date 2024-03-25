@@ -37,7 +37,7 @@ const PaginationLink = ({
 }) => (
   <PaginationItem>
     <a
-      aria-current={isActive ? "page" : undefined}
+      aria-current={isActive ? "page" : "destructive"}
       className={cn(buttonVariants({
         variant: disabled ? "disable" : "ghost",
         size,
@@ -61,6 +61,20 @@ const PaginationPrevious = ({
 )
 PaginationPrevious.displayName = "PaginationPrevious"
 
+const PaginationFirst = ({
+  className,
+  ...props
+}) => (
+  <PaginationLink
+    aria-label="Go to previous page"
+    size="default"
+    className={cn("gap-1 px-2 py-1 h-[30px]", className)}
+    {...props}>
+    <ChevronLeft className="h-4 w-4" />
+  </PaginationLink>
+)
+PaginationFirst.displayName = "PaginationFirst"
+
 const PaginationNext = ({
   className,
   ...props
@@ -73,6 +87,21 @@ const PaginationNext = ({
     <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 )
+
+const PaginationLast = ({
+  className,
+  ...props
+}) => (
+  <PaginationLink
+    aria-label="Go to Last page"
+    size="default"
+    className={cn("gap-[-1] px-2 py-1 h-[30px] flex flex-row", className)}
+    {...props}>
+    <ChevronRight className="h-4 w-4" />
+    <ChevronRight className="h-4 w-4" />
+  </PaginationLink>
+)
+
 
 const PaginationEllipsis = ({
   className,
@@ -94,5 +123,7 @@ export {
   PaginationItem,
   PaginationLink,
   PaginationNext,
+  PaginationLast,
+  PaginationFirst,
   PaginationPrevious,
 }
