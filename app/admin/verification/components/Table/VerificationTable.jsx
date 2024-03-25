@@ -339,16 +339,7 @@ export function VerificationTable(
             </Table >
             <div className="flex justify-between w-full items-center mt-4 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
-                    <strong>
-                        {table.getFilteredSelectedRowModel().rows.length}
-                    </strong>
-                    of{" "}
-                    <div className="flex flex-row gap-1">
-                        <strong>
-                            {table.getFilteredRowModel().rows.length}
-                        </strong>
-                        <p className="text-nowrap"> row(s) selected.</p>
-                    </div>
+                  
                 </div>
                 <Pagination className={'flex justify-end w-full items-center gap-2 '}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">

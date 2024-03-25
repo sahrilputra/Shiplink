@@ -20,12 +20,21 @@ export default function CustomBrokerPage() {
         date_end: "",
         tracking_id: "",
         status: "",
-        page: 0,
-        limit: 0,
-        index: 0
+        page: 1,
+        limit: 10,
+        index: 0,
     });
     const [data, setData] = useState([]);
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
 
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -35,6 +44,16 @@ export default function CustomBrokerPage() {
             console.log(response)
             const data = await response.data;
             setData(data.package_info);
+            setPackageTotal(data.total)
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
             console.log("Package Length : ", data.package_info.length)
             setIsSkeleton(false);
         } catch (error) {
@@ -99,6 +118,10 @@ export default function CustomBrokerPage() {
                                 reload={reload}
                                 setQuery={setQuery}
                                 query={query}
+                                pagination={pagination}
+                                setPagination={setPagination}
+                                rowTotalData={rowTotalData}
+                                setRowTotalData={setRowTotalData}
                             />
                         </div>
                     </div>

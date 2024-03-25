@@ -425,7 +425,7 @@ export default function PackageDetails() {
                             </TableBody>
 
                         </Table>
-                        <div className="flex justify-between w-full items-end mt-1 pb-2">
+                        <div className="flex justify-between w-full items-center mt-3 pb-2">
                             <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
                                 <strong>
                                     {table.getFilteredSelectedRowModel().rows.length}
@@ -438,7 +438,7 @@ export default function PackageDetails() {
                                     <p className="text-nowrap"> row(s) selected.</p>
                                 </div>
                             </div>
-                            <Pagination className={'flex justify-end w-full items-end gap-2'}>
+                            <Pagination className={'flex justify-end w-full items-center gap-2'}>
                                 <div className="flex items-center gap-1 text-xs text-zinc-500">
                                     <div>Page</div>
                                     <strong>

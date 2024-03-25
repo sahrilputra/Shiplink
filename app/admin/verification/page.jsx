@@ -58,6 +58,16 @@ export default function VerificationPages() {
             console.log(response)
             const data = await response.data;
             setData(data.package_info);
+            setPackageTotal(data.total)
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
             setIsSkeleton(false);
         } catch (error) {
             setIsSkeleton(false);
