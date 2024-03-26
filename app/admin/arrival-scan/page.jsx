@@ -34,7 +34,7 @@ const formSchema = yup.object().shape({
     customer_phone: yup.string(),
     customer_email: yup.string().email(),
     barcode_tracking: yup.string(),
-    carrier_code: yup.string(),
+    carrier_code: yup.string().required(),
     packageID: yup.string(),
     package_length: yup.number(),
     package_witdth: yup.number(),

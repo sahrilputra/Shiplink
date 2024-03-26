@@ -445,10 +445,11 @@ export const ArrivalForms = ({
                                                 defaultValue={field.value}
                                                 open={isCarrierOpen}
                                                 onOpenChange={setCarrierOpen}
+                                                required
                                             >
                                                 <FormControl className="space-y-0">
                                                     <SelectTrigger
-                                                        className="w-[100%] text-xs h-[30px] rounded-sm px-2 py-0">
+                                                        className={`w-[100%] text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"}`}>
                                                         <p>{field.value}</p>
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -515,7 +516,6 @@ export const ArrivalForms = ({
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
-                                            <FormMessage />
                                         </FormItem>
                                     </>
                                 )}
