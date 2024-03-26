@@ -45,7 +45,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/tableDashboard"
-import { ExternalLink } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink } from 'lucide-react'
 
 export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
   const [rowSelection, setRowSelection] = React.useState({})
@@ -55,20 +55,44 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
   const [openInternal, setOpenInternal] = useState(false);
   const [data, setData] = useState({});
   const [skeleton, setSkeleton] = useState(true);
+  const [query, setQuery] = useState({
+    keyword: `${customerName}`,
+    date_start: "",
+    date_end: "",
+    tracking_id: "",
+    status: "",
+    page: 1,
+    limit: 10,
+    index: 0,
+  });
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
+  const [rowTotalData, setRowTotalData] = useState({
+    page_limit: 0,
+    page_total: 0,
+    total: 0
+  })
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
           `/api/admin/packages/list`,
-          {
-            keyword: `${customerName}`,
-            date_start: "",
-            date_end: "",
-            tracking_id: "",
-          }
+          query
         );
         console.log(response)
+        const data = await response.data;
+        setRowTotalData({
+          page_limit: data.page_limit,
+          page_total: data.page_total,
+          total: data.total
+        });
+        setPagination(prevPagination => ({
+          ...prevPagination,
+          pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+        }));
         const responseData = response.data.package_info
         const filterDataByCustomerID = responseData.filter((item) => item.customer_id === customerID)
         console.log("🚀 ~ fetchData ~ filterDataByCustomerID:", filterDataByCustomerID)
@@ -80,7 +104,22 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       }
     };
     fetchData();
-  }, [customerName, customerID]);
+  }, [customerName, customerID, query]);
+
+  const handlerPaginationChange = (page) => {
+    if (page >= 0) {
+      console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+      setPagination(prevPagination => ({
+        ...prevPagination,
+        pageIndex: page,
+      }));
+      setQuery(prevQuery => ({
+        ...prevQuery,
+        page: page,
+        index: page * prevQuery.limit
+      }));
+    }
+  };
 
   const columns = [
 
@@ -127,10 +166,11 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
             <div className="flex flex-row gap-2">
               <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                 <Button
-                  variant="ghost"
-                  className=" px-[5px] h-[25px] text-[11px] text-myBlue flex flex-row justify-center gap-1 items-center">
-                  <p>Details</p>
-                  <ExternalLink width={10} height={10} />
+                  variant="tableBlue"
+                  size="tableIcon"
+                  className={`w-max px-[10px] h-[20px] gap-1`}
+                >
+                  <p className="text-[11px] text-myBlue">Details</p>
                 </Button>
               </NextLink>
             </div>
@@ -144,6 +184,10 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
   const table = useReactTable({
     data: data,
     columns,
+    manualPagination: true,
+    pageCount: rowTotalData.page_total,
+    rowCount: rowTotalData.page_limit,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -231,33 +275,53 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
 
       </Table>
 
-      <div className="flex justify-end w-full items-end p-3">
-        <Pagination className={'flex justify-end w-full items-end'}>
+      <div className="flex justify-between w-full items-center mt-4 pb-2">
+        <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+
+        </div>
+        <Pagination className={'flex justify-end w-full items-center gap-2 '}>
+          <div className="flex items-center gap-1 text-xs text-zinc-500">
+            <div>Page</div>
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount().toLocaleString()}
+            </strong>
+          </div>
+          <Button
+            variant={`redOutline`}
+            onClick={() => handlerPaginationChange(0)}
+            className="px-1 py-1 h-[30px] w-[30px] text-xs"
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronsLeftIcon className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant={`destructive`}
+            className="px-2 py-2 h-[30px] w-[30px] text-xs"
+            onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant={`destructive`}
+            className="px-2 py-2 h-[30px] w-[30px] text-xs"
+            onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={`redOutline`}
+            className="px-1 py-1 h-[30px] w-[30px] text-xs"
+            onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronsRightIcon className="h-4 w-4" />
+          </Button>
           <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                className={"cursor-pointer"}
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              />
-            </PaginationItem>
-            {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                              <PaginationItem key={pageNumber}>
-                                  <PaginationLink
-                                      className={"cursor-pointer"}
-                                      onClick={() => table.setPageIndex(pageNumber - 1)}
-                                  >
-                                      {pageNumber}
-                                  </PaginationLink>
-                              </PaginationItem>
-                          ))} */}
-            <PaginationItem>
-              <PaginationNext
-                className={"cursor-pointer"}
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              />
-            </PaginationItem>
           </PaginationContent>
         </Pagination>
       </div>
