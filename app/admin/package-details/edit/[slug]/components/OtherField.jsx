@@ -140,6 +140,7 @@ export const OtherField = ({
                         className="w-full flex flex-row justify-center items-end space-y-2 pt-2"
                         name="documents"
                         control={forms.control}
+                        defaultValue=""
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full pt-2 ">
@@ -153,26 +154,19 @@ export const OtherField = ({
                                                     className="p-0 border-none text-xs h-[30px] rounded-sm px-0 py-0 file:mr-3 file:bg-myBlue file:text-white file:h-full file:px-3 file:text-xs cursor-pointer file:cursor-pointer hover:bg-slate-100 hover:file:bg-blue-900"
                                                     placeholder="Upload Docs"
                                                     accept="application/pdf"
-                                                    multiple
                                                     onChange={(event) => {
-                                                        const files = event.target.files;
-                                                        if (files) {
-                                                            const docs = [];
-                                                            let processedFiles = 0;
-                                                            const readAndProcessFile = (file) => {
-                                                                const reader = new FileReader();
-                                                                reader.onload = (e) => {
-                                                                    docs.push(e.target.result);
-                                                                    processedFiles++;
-                                                                    if (processedFiles === files.length) {
-                                                                        forms.setValue("documents", docs); // Atur nilai field label_images menggunakan setValue dari useForm
-                                                                    } else {
-                                                                        readAndProcessFile(files[processedFiles]);
-                                                                    }
-                                                                };
-                                                                reader.readAsDataURL(file);
+                                                        const file = event.target.files[0]; // Hanya ambil file pertama
+                                                        if (file) {
+                                                            const reader = new FileReader();
+                                                            reader.onload = (e) => {
+                                                                const base64String = e.target.result.split(',')[1]; // Mengambil bagian setelah koma
+                                                                if (typeof base64String === 'string') { // Memastikan bahwa base64String adalah string
+                                                                    forms.setValue("documents", base64String);
+                                                                } else {
+                                                                    console.error("base64String is not a string");
+                                                                }
                                                             };
-                                                            readAndProcessFile(files[processedFiles]);
+                                                            reader.readAsDataURL(file); // Membaca file sebagai Data URL
                                                         }
                                                     }}
                                                 />

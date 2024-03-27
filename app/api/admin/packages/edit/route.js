@@ -81,7 +81,7 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.status,
                 message: response.data.message,
                 tracking_id: response.data.tracking_id,
             };

@@ -27,8 +27,10 @@ export const DeclareContentInputs = ({
     append,
     remove,
     total,
-    binData
+    binData,
+    data,
 }) => {
+    console.log("🚀 ~ package_content:", data)
 
     useEffect(() => {
         const subTotal = forms.watch('package_content.subTotal')
@@ -53,6 +55,7 @@ export const DeclareContentInputs = ({
                             index={index}
                             forms={forms}
                             handleRemoveContent={() => remove(index)}
+                            data={data}
                         />
                     ))}
                 </TableBody>

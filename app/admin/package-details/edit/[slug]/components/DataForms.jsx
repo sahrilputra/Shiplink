@@ -3,7 +3,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { CheckIcon } from 'lucide-react'
+import { CheckIcon, Plus } from 'lucide-react'
 import InputMask from 'react-input-mask';
 import { Command as CommandPrimitive } from "cmdk"
 import {
@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectGroup, SelectTrigger, SelectValue, SelectLabel, SelectItemWihtoutIndicator } from '@/components/ui/select'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -56,11 +56,6 @@ const carrierList = [
         "id": 5,
         "carrierName": "Canada Post",
         "value": "Canada Post"
-    },
-    {
-        "id": 6,
-        "carrierName": "Other",
-        "value": ""
     },
 ]
 
@@ -116,7 +111,7 @@ export const DataForms = ({
     const [isCarrierOpen, setCarrierOpen] = useState(false)
     const [carrierSelected, setCarrierSelected] = useState(valueCarrier)
     const [inputCarrierValue, setInputCarrierValue] = useState(null)
-
+    const [selectedCarrier, setSelectedCarrier] = useState('');
 
     const handleKeyDown = useCallback(
         event => {
@@ -218,14 +213,14 @@ export const DataForms = ({
 
     }, [query]);
 
-
+    const [openCustomer, setOpenCustomer] = useState(false)
     console.log("Watch Carrier : ", forms.watch('carrier_code'))
     return (
         <>
             <div className="flex gap-2 flex-col text-zinc-600">
                 <div className="flex flex-row gap-3">
                     <div className="flex flex-col justify-start gap-2 w-[40%]">
-                        <FormField
+                        {/* <FormField
                             className="w-full text-sm"
                             name="customer_id"
                             control={forms.control}
@@ -300,6 +295,91 @@ export const DataForms = ({
                                                 </div>
                                             </CommandPrimitive>
                                         </FormControl>
+                                    </FormItem>
+                                </>
+                            )}
+                        /> */}
+
+                        <FormField
+                            className="w-full text-sm"
+                            name="test"
+                            control={forms.control}
+                            render={({ field, formState }) => (
+                                <>
+                                    <FormLabel className="font-bold">Search Customer</FormLabel>
+                                    <FormItem className="flex flex-col">
+                                        <Popover open={openCustomer} onOpenChange={setOpenCustomer} >
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        className={cn(
+                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 shadow-none text-left normal-case justify-start",
+                                                            !field.value && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        {field.value
+                                                            ? customerData.find(
+                                                                (language) => language.customer_name === field.value
+                                                            )?.customer_id
+                                                            : "Search Customer"}
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[500px] p-0">
+                                                <Command className=" bg-blue-100">
+                                                    <CommandInput
+                                                        placeholder="Search..."
+                                                        className="h-[30px] text-xs"
+                                                    />
+                                                    <CommandEmpty className="text-xs px-1 py-2 text-center">No Customer Found.</CommandEmpty>
+                                                    <CommandGroup >
+                                                        <ScrollArea className="min-h-max h-[200px]" >
+                                                            {customerData.map((language) => (
+                                                                <CommandItem
+                                                                    className="text-xs items-center"
+                                                                    value={language.customer_name}
+                                                                    key={language.customer_id}
+                                                                    autoFocus={false}
+                                                                    onSelect={() => {
+                                                                        forms.setValue("test", language.customer_name)
+                                                                        forms.setValue("customer_id", language.customer_id)
+                                                                        setInputValue(language.customer_name)
+                                                                        handleDataChange({ target: { value: language.customer_id } })
+                                                                        setOpenCustomer(false)
+                                                                        const inputElement = inputRef.current;
+                                                                        if (inputElement) {
+                                                                            inputElement.blur(); // Menonaktifkan fokus dari elemen input
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <div className='text-xs w-full justify-between flex flex-row items-center'>
+                                                                        <div className="w-[90%] flex flex-row justify-between">
+                                                                            <p className='w-[150px] text-nowrap'>{language.customer_name}</p>
+                                                                            <p className='w-[5px]'>|</p>
+                                                                            <p className='w-[100px]'>{language.customer_id}</p>
+                                                                        </div>
+                                                                        <div className="w-[10%]">
+                                                                            <CheckIcon
+                                                                                className={cn(
+                                                                                    "ml-auto h-4 w-4",
+                                                                                    language.customer_name === field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+
+                                                                </CommandItem>
+                                                            ))}
+                                                        </ScrollArea>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
                                     </FormItem>
                                 </>
                             )}
@@ -411,7 +491,7 @@ export const DataForms = ({
                     </div>
 
                     <div className="flex flex-col gap-2 w-[30%]">
-                        <div className="flex flex-row gap-2">
+                        <div className="flex flex-row gap-2 items-end">
                             <FormField
                                 className="w-full"
                                 name="barcode_tracking"
@@ -433,81 +513,90 @@ export const DataForms = ({
                                 )}
                             />
                             <FormField
-                                className="w-full text-sm"
+                                className=" text-sm space-y-0 w-[100%]"
                                 name="carrier_code"
                                 control={forms.control}
                                 render={({ field, formState }) => (
                                     <>
-                                        <FormItem className="text-xs w-[30%] ">
+                                        {console.log("field.value : ", field)}
+                                        <FormItem className="space-y-1.5  w-[30%]">
                                             <FormLabel className="font-bold">Select Carrier</FormLabel>
-                                            <FormControl className="w-full relative">
-                                                <CommandPrimitive className='border-b-0' onKeyDown={handleCarrierKeyDown}>
-                                                    <div>
-                                                        <Input
-                                                            id="carrier_code"
-                                                            onFocus={() => setCarrierOpen(true)}
-                                                            onBlur={handlerCarrier}
-                                                            {...field}
-                                                            className={`${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"} text-xs h-[30px] rounded-sm px-2 py-0`}
-                                                        />
-                                                        {/* <CommandArrival
-                                                            ref={inputCarrierRef}
-                                                            value={inputCarrierValue}
-                                                            setValue={setValueCarrier}
-                                                            onBlur={handlerCarrier}
-                                                            onFocus={() => setCarrierOpen(true)}
-                                                            placeholder={`${field.value || "Carrier"}`}
-                                                            className="text-xs border border-neutral-300 px-2"
-                                                            disableSearchIcon={true}
-                                                            onChange={field.value}
-                                                        /> */}
-                                                    </div>
-                                                    <div className="mt-1 relative">
-                                                        {isCarrierOpen ? (
-                                                            <div className="absolute top-0 z-10 w-full rounded-xl bg-stone-50 outline-none animate-in fade-in-0 zoom-in-95">
-                                                                <CommandList className="ring-1 ring-slate-200 rounded-lg">
-                                                                    <CommandGroup>
-                                                                        {carrierList.map((item, index) => {
-                                                                            const isSelected = selected?.value === item.value
-                                                                            return (
-                                                                                <CommandItem
-                                                                                    value={item.value}
-                                                                                    setValue={field.onChange}
-                                                                                    key={item.index}
-                                                                                    className={cn(
-                                                                                        "flex items-center gap-2 w-full",
-                                                                                        !isSelected ? "pl-8" : null
-                                                                                    )}
-                                                                                    onMouseDown={event => {
-                                                                                        event.preventDefault()
-                                                                                        event.stopPropagation()
-                                                                                    }}
-                                                                                    onSelect={() => {
-                                                                                        forms.setValue("carrier_code", item.value)
-                                                                                        setCarrierOpen(false)
-                                                                                    }}
-                                                                                >
-                                                                                    <div className='text-xs w-full justify-between flex flex-row'>
-                                                                                        <p>{item.carrierName} </p>
-                                                                                    </div>
-                                                                                    <CheckIcon
-                                                                                        className={cn(
-                                                                                            "ml-auto h-4 w-4",
-                                                                                            item.value === field.value
-                                                                                                ? "opacity-100"
-                                                                                                : "opacity-0"
-                                                                                        )}
-                                                                                    />
-                                                                                </CommandItem>
-                                                                            )
-                                                                        })}
-                                                                    </CommandGroup>
-                                                                </CommandList>
-                                                            </div>
-                                                        ) : null}
-                                                    </div>
-                                                </CommandPrimitive>
-                                            </FormControl>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                                open={isCarrierOpen}
+                                                onOpenChange={setCarrierOpen}
+                                                required
+                                            >
+                                                <FormControl className="space-y-0">
+                                                    <SelectTrigger
+                                                        className={`w-[100%] text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"}`}>
+                                                        <p>{field.value}</p>
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectGroup className='text-xs '>
+                                                        {carrierList.map((item, index) => (
+                                                            <SelectItemWihtoutIndicator
+                                                                className='text-xs'
+                                                                key={index}
+                                                                value={item.carrierName}
+                                                                onValueChange={() => {
+                                                                    forms.setValue = ("carrier_code", item.carrierName)
+                                                                    setSelectedCarrier(item.carrierName)
+                                                                }}
+                                                                onSelect={() => {
+                                                                    setCarrierOpen(false);
+                                                                    forms.setValue = ("carrier_code", item.carrierName)
+                                                                    setSelectedCarrier(item.carrierName)
+                                                                }}
+                                                            >
+                                                                {item.carrierName}
+                                                            </SelectItemWihtoutIndicator>
+                                                        ))
+                                                        }
+                                                    </SelectGroup>
+                                                    <SelectGroup>
+                                                        <SelectLabel className="px-0.5 border-b text-xs space-y-1 font-bolds ">Other</SelectLabel>
+                                                        <div className=" pt-1 flex flex-row gap-1">
+                                                            <Input
+                                                                autoComplete="off"
+                                                                id="carrier_code"
+                                                                className="text-xs h-[30px] w-[120px] rounded-sm px-2 py-0 "
+                                                                placeholder="Input Carrier"
+                                                                value={selectedCarrier || ""}
+                                                                onValueChange={(e) => {
+                                                                    setSelectedCarrier(e.target.value);
+                                                                    setCarrierOpen(true);
+                                                                    forms.setValue = ("carrier_code", e.target.value)
+                                                                }}
+                                                                onKeyPress={(e) => {
+                                                                    if (e.key === "Enter") {
+                                                                        setCarrierOpen(false)
+                                                                        handleSelectedCarrier({ target: { value: e.target.value } });
+                                                                        e.preventDefault(); // Prevent form submission
+                                                                    }
+                                                                }}
+                                                                {...field}
+                                                            />
+
+                                                            <Button
+                                                                variant="outline"
+                                                                size="xs"
+                                                                type="button"
+                                                                className="text-xs h-[30px] px-2 shadow-none"
+                                                                onClick={() => {
+
+                                                                    setCarrierOpen(false)
+                                                                }}
+                                                            >
+                                                                <Plus width={10} height={10} />
+                                                            </Button>
+
+                                                        </div>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
                                         </FormItem>
                                     </>
                                 )}

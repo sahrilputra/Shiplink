@@ -24,10 +24,10 @@ import { DeclareContentInputs } from './components/DeclareContentInputs';
 import { DataForms } from './components/DataForms';
 import { OtherField } from './components/OtherField';
 import { Loaders } from '@/components/ui/loaders';
-
-
+import { useToast } from '@/components/ui/use-toast';
 
 export const formSchema = yup.object().shape({
+    test: yup.string(),
     customer_id: yup.string(),
     customer_name: yup.string(),
     customer_phone: yup.string(),
@@ -63,17 +63,20 @@ export const formSchema = yup.object().shape({
     manifest: yup.string(),
     entry_number: yup.string(),
     status: yup.string(),
-    documents: yup.array().of(
-        yup.string()
-    )
+    tracking_id: yup.string(),
+    documents: yup.string().nullable(),
+
 })
 
 
 export const FormValidate = ({ data }) => {
+
     console.log("Form VALIDATE DATA : ", data)
+    console.log("Form content DATA : ", data?.content)
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
+            test: "",
             customer_id: data?.customer_id || "",
             customer_name: data?.customer_name || "",
             customer_phone: data?.customer_phone || "",
@@ -89,18 +92,16 @@ export const FormValidate = ({ data }) => {
             package_weight_unit: data?.package_weight_unit || "Ibs",
             bin_location: data?.bin_location || "",
             total_price: data?.total_price || 0,
-            package_content: [
-                {
-                    itemID: "",
-                    qty: 1,
-                    value: 0,
-                    desc: "",
-                    hs_desc: "",
-                    hs_code: "",
-                    made_in: "",
-                    subTotal: 0,
-                }
-            ],
+            package_content: Array.from({ length: data?.content?.length || 1 }, (_, index) => ({
+                tracking_id: data?.tracking_id || "",
+                qty: 0,
+                value: 0,
+                desc: "",
+                hs_desc: "",
+                hs_code: "",
+                made_in: "",
+                subtotal: 0,
+            })),
             box_images: [
 
             ],
@@ -115,10 +116,8 @@ export const FormValidate = ({ data }) => {
             manifest: data?.manifest || "",
             entry_number: data?.entry_number || "",
             status: data?.status || "",
-            documents: [
-
-            ],
-
+            tracking_id: data?.tracking_id || "",
+            documents: data?.documents || "",
         },
         mode: "onChange",
     })
@@ -139,7 +138,7 @@ export const FormValidate = ({ data }) => {
         form.setValue('package_weight_unit', data.package_weight_unit || 'Ibs');
         form.setValue('bin_location', data.bin_location || '');
         form.setValue('total_price', data.total_price || 0);
-        form.setValue('package_content', data.package_content || []);
+        form.setValue('package_content', data.content || []);
         form.setValue('box_images', data.box_images || []);
         form.setValue('label_images', data.label_images || []);
         form.setValue('content_images', data.content_images || []);
@@ -148,21 +147,25 @@ export const FormValidate = ({ data }) => {
         form.setValue('manifest', data.manifest || '');
         form.setValue('entry_number', data.entry_number || '');
         form.setValue('status', data.status || '');
-        form.setValue('documents', data.documents || []);
+        form.setValue('documents', data.documents || '');
+        form.setValue('tracking_id', data.tracking_id || '');
     }, [data]);
     return form
 }
 
 export default function PackageDetails({ params }) {
+    const { toast } = useToast()
     const [data, setData] = useState({});
     const [skeleton, setSkeleton] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
+    const [declareContent, setDeclareContent] = useState([])
     const [query, setQuery] = useState({
-        keyword: `${params.slug}`,
+        keyword: '',
         date_start: "",
         date_end: "",
-        tracking_id: "",
+        tracking_id: `${params.slug}`,
     });
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -171,7 +174,9 @@ export default function PackageDetails({ params }) {
             );
             console.log(response)
             const responseData = await response.data.package_info[0];
-            console.log(responseData)
+            console.log("🚀 ~ fetchData ~ content:", responseData.content)
+            setDeclareContent(responseData.content)
+            console.log("RESPONSE PAKCKAGE :", responseData);
             setData(responseData);
             setDataFetched(true);
             setSkeleton(false)
@@ -208,7 +213,6 @@ export default function PackageDetails({ params }) {
     }, [query, binQuery]);
 
 
-    console.log("data : ", data)
     console.log("data : ", data?.customer_name)
 
     const form = FormValidate({ data: data });
@@ -231,6 +235,7 @@ export default function PackageDetails({ params }) {
 
     const [loading, setLoading] = useState(false);
     console.log("🚀 ~ calculateTotal ~ total_price:", form.getValues('total_price'))
+
     const handleSubmit = async (formData) => {
         console.log("ACEPETED", formData)
         setLoading(true)
@@ -265,25 +270,37 @@ export default function PackageDetails({ params }) {
                     tracking_id: formData.tracking_id,
                 },
             )
+            console.log("🚀 ~ POST ~ SENDER response:", response)
+            console.log("🚀 ~ POST ~ SENDER response:", response.data.message)
+
             setLoading(false)
-            console.log("🚀 ~ POST ~ response:", response)
-            if (response.status === 200) {
+            if (response.data.message === "success" || response.data.message === "Success") {
                 setLoading(false)
-                const responseData = {
-                    status: true,
-                    message: response.data.message,
-                    tracking_id: response.data.tracking_id,
-                };
-                console.log("🚀 ~ handleSubmit ~ responseData:", responseData)
+                toast({
+                    title: `Sucess Edited Package for ${formData.tracking_id}`,
+                    description: response.data.message,
+                    status: 'success',
+                });
             } else {
                 setLoading(false)
                 console.log('erorr', response.data.message)
+                toast({
+                    title: `Errors!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
             }
         } catch (error) {
+            setLoading(false)
             console.log('Erorr', error)
+            toast({
+                title: `Errors!`,
+                description: 'Something went wrong, please try again later.',
+            });
         }
     }
 
+    console.log("documents : ", form.watch('documents'))
     console.log("ERRORS : ", form.formState.errors)
     return (
         <>
@@ -332,6 +349,7 @@ export default function PackageDetails({ params }) {
                                     forms={form}
                                     total={0}
                                     binData={binData}
+                                    data={declareContent}
                                 />
                             </form>
                         </Form>
