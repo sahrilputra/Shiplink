@@ -71,7 +71,7 @@ export function ProvinceTabled({ }) {
     const handleCommandChange = (e) => {
         setQuery({ ...query, keyword: e });
     }
-    
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -167,11 +167,6 @@ export function ProvinceTabled({ }) {
             },
         },
         {
-            accessorKey: "country_name",
-            header: "Country",
-            className: "text-xs",
-        },
-        {
             accessorKey: "province_code",
             header: "Province Code",
         },
@@ -180,8 +175,9 @@ export function ProvinceTabled({ }) {
             header: "State / Province",
         },
         {
-            accessorKey: "country_code",
-            header: "Province",
+            accessorKey: "country_name",
+            header: "Country",
+            className: "text-xs",
         },
         {
             id: "Action",
@@ -414,7 +410,7 @@ export function ProvinceTabled({ }) {
                             {!isSkeleton && !table.getRowModel().rows?.length && (
                                 <TableRow>
                                     <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        No results.
+                                        Select Country to view States/Province
                                     </TableCell>
                                 </TableRow>
                             )}

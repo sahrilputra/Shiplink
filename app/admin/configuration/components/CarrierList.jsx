@@ -22,7 +22,7 @@ export const CarrierList = ({ data }) => {
                     <div className="justify-start items-center gap-[54px] flex">
                         <div className="justify-center items-center gap-[41px] flex">
                             <div className="h-[21px] justify-start items-end gap-[120px] flex">
-                                <div className="text-zinc-600 text-xs font-medium font-poppins text-bold">{data?.carrier_name || "undefined"}</div>
+                                <div className="text-zinc-600 w-[150px] text-xs font-medium font-poppins text-bold">{data?.carrier_name || "undefined"}</div>
                             </div>
                         </div>
                         <div className="justify-center items-center gap-[41px] flex">

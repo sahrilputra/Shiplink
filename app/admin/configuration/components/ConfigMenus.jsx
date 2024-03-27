@@ -25,7 +25,7 @@ export const ConfigMenus = () => {
       />
       <MenuItems
         isActive={router === "/admin/configuration/province"}
-        title="Province"
+        title="State/Provinces"
         href="/admin/configuration/province"
       />
       <MenuItems
