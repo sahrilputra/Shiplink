@@ -78,15 +78,15 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                             </div>
                             <div className="flex flex-col text-xs text-zinc-500">
                                 <p>PARS</p>
-                                <p className='text-sm font-bold'>1234241241</p>
+                                <p className='text-sm font-bold'>{details?.parspaps_number || "-"}</p>
                             </div>
                             <div className="flex flex-col text-xs text-zinc-500">
                                 <p>Entry Number</p>
-                                <p className='text-sm font-bold'>undefined</p>
+                                <p className='text-sm font-bold'>{details?.entry_number || "-"}</p>
                             </div>
                             <div className="flex flex-col text-xs text-zinc-500">
                                 <p>Manifest Number</p>
-                                <p className='text-sm font-bold'>undefined</p>
+                                <p className='text-sm font-bold'>{details?.manifiest_number || "-"}</p>
                             </div>
                             <div className="flex flex-col text-xs text-zinc-500  py-3">
                                 <Button

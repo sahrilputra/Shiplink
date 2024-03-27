@@ -17,17 +17,19 @@ import { Skeleton } from '@/components/ui/skeleton'
 import NextLink from 'next/link'
 import { Card } from '@/components/ui/card'
 import { InternalCode } from './components/dialog/InternalCode'
+import { PackageDialogDetails } from '../../custom-brokers/components/dialog/PackageDialogDetails'
 export default function VerificationPages({ params }) {
     console.log("Helo", params.slug)
 
     const [openInternal, setOpenInternal] = useState(false);
+    const [openPackage, setOpenPackage] = useState(false);
     const [data, setData] = useState({});
     const [skeleton, setSkeleton] = useState(true);
     const [query, setQuery] = useState({
-        keyword: `${params.slug}`,
+        keyword: "",
         date_start: "",
         date_end: "",
-        tracking_id: "",
+        tracking_id: `${params.slug}`,
     });
 
     const fetchData = async () => {
@@ -58,6 +60,7 @@ export default function VerificationPages({ params }) {
     const heightType = data?.package_height_unit || "In";
     return (
         <>
+            <PackageDialogDetails open={openPackage} setOpen={setOpenPackage} details={data} />
             <InternalCode open={openInternal} setOpen={setOpenInternal} trackingID={data?.tracking_id} name={data?.customer_name} userID={data?.customer_id} />
             <div className={styles.wrapper}>
                 <div className={styles.configHeader}>
@@ -117,28 +120,28 @@ export default function VerificationPages({ params }) {
                                 <div className="packageData flex flex-col gap-1 px-4 py-2">
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Tracking Id</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>#{data?.tracking_id || ""}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>#{data?.tracking_id || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Package Status</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.status || ""}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.status || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Shipping Fees</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>$ {data?.shipping_fees || ""}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>$ {data?.shipping_fees || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Register Date</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.register_date || "undefined"}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.register_date || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Carrier </p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.carrier_code || "undefined"}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.carrier_code || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Location</p>
                                         <p className='text-sm font-bold'>Toronto Warehouse</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-xs'>Bin : {data?.bin_location}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>Bin : {data?.bin_location || "-"}</p>}
                                     </div>
 
                                     <Button
@@ -175,6 +178,7 @@ export default function VerificationPages({ params }) {
                                     <Button
                                         variant="secondary"
                                         size="sm"
+                                        onClick={() => setOpenPackage(true)}
                                     >
                                         <p className=' text-xs'>Download Package Information</p>
                                     </Button>
@@ -242,15 +246,15 @@ export default function VerificationPages({ params }) {
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>PARS</p>
-                                        <p className='text-sm font-bold'>{data?.pars || "undefined"}</p>
+                                        <p className='text-sm font-bold'>{data?.pars || "-"}</p>
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Entry Number</p>
-                                        <p className='text-sm font-bold'>{data?.entry_number || "undefined"}</p>
+                                        <p className='text-sm font-bold'>{data?.entry_number || "-"}</p>
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Manifest Number</p>
-                                        <p className='text-sm font-bold'>{data?.manifest || "undefined"}</p>
+                                        <p className='text-sm font-bold'>{data?.manifiest_number || "-"}</p>
                                     </div>
                                 </div>
                             </div>
