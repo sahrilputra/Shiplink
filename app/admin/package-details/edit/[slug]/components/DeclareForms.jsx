@@ -50,6 +50,7 @@ export const DeclareForms = ({
         })
     }, [data])
     const hsCode = forms.watch(`package_content[${index}].hs_code`)
+
     // const setSubTotal = (value) => {
     //     const qty = forms.getValues(`package_content[${index}].qty`);
     //     console.log("🚀 ~ setSubTotal ~ qty:", qty)
@@ -57,6 +58,7 @@ export const DeclareForms = ({
     //     console.log("🚀 ~ setSubTotal ~ subTotal:", subTotal)
     //     forms.setValue(`package_content[${index}].subTotal`, subTotal);
     // }
+
     const [openCountry, setOpenCountry] = useState(false)
     const [filteredHSCodes, setFilteredHSCodes] = useState([]);
     const [isHsOpen, setIsHsOpen] = useState(false)

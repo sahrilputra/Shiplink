@@ -40,6 +40,7 @@ export const OtherField = ({
                                         <Input
                                             placeholder={`${field.value || "Manifest Number"}`}
                                             className={`text-xs h-[30px] rounded-sm px-2 py-0 `}
+                                            {...field}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -86,6 +87,7 @@ export const OtherField = ({
                                         <Input
                                             placeholder={`${field.value || "Entry Number"}`}
                                             className={`text-xs h-[30px] rounded-sm px-2 py-0 `}
+                                            {...field}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -130,6 +132,7 @@ export const OtherField = ({
                                         <Input
                                             placeholder={`${field.value || "Status"}`}
                                             className={`text-xs h-[30px] rounded-sm px-2 py-0 `}
+                                            {...field}
                                         />
                                     </FormControl>
                                 </FormItem>

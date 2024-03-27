@@ -144,10 +144,10 @@ export const FormValidate = ({ data }) => {
         form.setValue('content_images', data.content_images || []);
         form.setValue('lots_id', data.lots_id || '');
         form.setValue('lots_name', data.lots_name || '');
-        form.setValue('manifest', data.manifest || '');
+        form.setValue('manifest', data.manifiest_number || '');
         form.setValue('entry_number', data.entry_number || '');
         form.setValue('status', data.status || '');
-        form.setValue('documents', data.documents || '');
+        form.setValue('documents', '');
         form.setValue('tracking_id', data.tracking_id || '');
     }, [data]);
     return form
