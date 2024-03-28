@@ -20,11 +20,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import NextLink from 'next/link'
 import axios from 'axios'
 export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, image, setExpandedRows }) => {
     console.log("🚀 ~ ExpandedTable ~ image:", image)
 
     const [filterInvoice, setVilterInvoice] = useState([]);
+    console.log("🚀 ~ ExpandedTable ~ filterInvoice:", filterInvoice)
     useEffect(() => {
         const removeInvImage = () => {
             if (image) {
@@ -122,7 +124,11 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
                                 <SelectContent className="text-xs">
                                     {
                                         filterInvoice.map((item, index) => (
-                                            <SelectItem key={index} className="text-xs text-myBlue" value={index}>invoice {index + 1}</SelectItem>
+                                            <SelectItem key={index} className="text-xs text-myBlue" value={index} >
+                                                {/* <NextLink key={index} href={`https://sla.webelectron.com/api/Package/downloadfile?fullName=${item.images}`} passHref> */}
+                                                invoice {index + 1}
+                                                {/* </NextLink> */}
+                                            </SelectItem>
                                         ))
                                     }
 
