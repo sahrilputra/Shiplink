@@ -468,6 +468,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                                                             item.province_code,
                                                                                             item.province_name
                                                                                         );
+                                                                                        form.setValue('province_code', item.province_code)
                                                                                         field.onChange(item.province_code);
                                                                                     }}
                                                                                 >
