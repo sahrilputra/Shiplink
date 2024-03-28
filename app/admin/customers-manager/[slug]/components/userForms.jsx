@@ -564,7 +564,10 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                                                             item.country_code,
                                                                                             item.country_name
                                                                                         );
+                                                                                        form.setValue('province_code', "")
+                                                                                        form.setValue('state', "");
                                                                                         form.setValue('country_code', item.country_code)
+                                                                                        setSelectedProvince("");
                                                                                         field.onChange(item.country_code,);
                                                                                     }}
                                                                                 >
