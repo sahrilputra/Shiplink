@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import NextLink from 'next/link'
 
-export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID }) => {
+export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID, setOpenSuspend }) => {
     console.log("🚀 ~ MoreAction ~ customerID:", customerID)
     return (
         <DropdownMenu >
@@ -45,6 +45,7 @@ export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID }) => {
                     <p className='text-xs'>Set Password</p>
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                    onClick={() => setOpenSuspend(true)}
                 >
                     <p className='text-xs'>Suspend this Customer</p>
                 </DropdownMenuItem>

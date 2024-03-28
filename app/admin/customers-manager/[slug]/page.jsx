@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { PaymentCards } from './components/PaymentsCard';
 import { NewPasswordDialog } from './components/menus/dialog/NewPasswordDialog';
 import { DeleteCustomer } from '../components/dialog/DeleteCustomer';
+import { SuspendUser } from './components/menus/dialog/SuspendUser';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MembershipTag } from '@/components/membership/MembershipTag';
@@ -26,12 +27,13 @@ export default function UserPage({ params }) {
     const [disable, setDisable] = useState(true);
     const [openPassword, setOpenPassword] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-
+    const [openSuspend, setOpenSuspend] = useState(false);
 
     const fetchData = useCallback(async () => {
         try {
             const userDataResponse = await axios.post(`/api/admin/customer_manager/list`, { keyword: userID });
             const userData = userDataResponse.data.customer[0];
+            console.log("🚀 ~ fetchData ~ userData:", userData)
             setData(userData);
             setLoading(false);
             setIsSkeleton(false);
@@ -41,7 +43,7 @@ export default function UserPage({ params }) {
             setIsSkeleton(false);
         }
     }, [userID]);
-    
+
     useEffect(() => {
         fetchData();
     }, [fetchData]);
@@ -93,6 +95,7 @@ export default function UserPage({ params }) {
     return (
         <>
             {/* {loading && <Loaders />} */}
+            <SuspendUser deleteID={data?.customer_id} open={openSuspend} setOpen={setOpenSuspend} reloadData={reloadData} />
             <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
             <DeleteCustomer open={openDelete} setOpen={setOpenDelete} reloadData={reloadData} deleteID={data?.customer_id} />
             <div className="w-full">
@@ -131,7 +134,11 @@ export default function UserPage({ params }) {
                                 >
                                     <p className="text-xs">Edit Profiles</p>
                                 </Button>
-                                <MoreAction setOpenPassword={setOpenPassword} setOpenDelete={setOpenDelete} customerID={data?.customer_id} />
+                                <MoreAction
+                                    setOpenPassword={setOpenPassword}
+                                    setOpenDelete={setOpenDelete}
+                                    setOpenSuspend={setOpenSuspend}
+                                    customerID={data?.customer_id} />
                             </div>
                         </div>
                     </div>
