@@ -15,8 +15,10 @@ import { useToast } from '@/components/ui/use-toast'
 import { Button } from "@/components/ui/button"
 import axios from "axios";
 import { Loaders } from '@/components/ui/loaders';
+import { useRouter } from 'next/navigation';
 
 export const DeletePackage = ({ open, setOpen, deleteID }) => {
+    const router = useRouter();
     const { toast } = useToast()
     const onClose = () => {
         setOpen(false)
@@ -40,6 +42,7 @@ export const DeletePackage = ({ open, setOpen, deleteID }) => {
             }
             setLoading(false);
             onClose();
+            router.push('/admin/package-details');
         } catch (error) {
             setLoading(false);
             toast({
@@ -80,7 +83,7 @@ export const DeletePackage = ({ open, setOpen, deleteID }) => {
                                 <Button
                                     variant="destructive"
                                     size="sm"
-                                    className="w-full" s
+                                    className="w-full"
                                     type="button"
                                     onClick={handleSubmit}
                                 >

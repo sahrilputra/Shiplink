@@ -41,18 +41,22 @@ const formSchema = yup.object().shape({
     packageID: yup.string(),
 })
 
-export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
+export const UpdateStatus = ({ open, setOpen, dataID = null, reload, statusNow = "" }) => {
+    console.log("🚀 ~ UpdateStatus ~ statusNow:", statusNow)
     console.log("🚀 ~ UpdateStatus ~ dataID:", dataID)
     const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            status_id: "",
+            status_id: statusNow || "",
             packageID: dataID || '',
         },
         mode: "onChange",
     })
-    
+
+    useEffect(() => {
+        form.setValue('status_id', statusNow)
+    }, [statusNow])
     console.log("🚀 ~ UpdateStatus ~ status_id:", form.watch('status_id'))
     const [statusList, setStatusList] = useState([]);
     console.log("🚀 ~ UpdateStatus ~ statusList:", statusList)
@@ -73,6 +77,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
                     desription: 'Status updated successfully',
                 })
             }
+            reload();
         } catch (error) {
             console.log('Error:', error);
             toast({
@@ -101,6 +106,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
 
     const close = () => {
         setOpen(false)
+        form.reset()
     }
     return (
         <>
@@ -144,7 +150,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
                                                     >
                                                         <FormControl className='text-xs'>
                                                             <SelectTrigger>
-                                                                <SelectValue className='text-xs' placeholder="Status" />
+                                                                <SelectValue className='text-xs' placeholder={`${field.value}`} />
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>

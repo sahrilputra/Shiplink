@@ -91,12 +91,17 @@ export default function VerificationPages({ params }) {
     const isInvoiceImage = (type) => {
         return type.toLowerCase() === "invoices";
     };
+
+    const reloadData = () => {
+        fetchData();
+        setSkeleton(true)
+    }
     console.log("Images: ", filteredImages)
 
     return (
         <>
-            <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={data?.tracking_id} />
-            <UpdateStatus open={openStatus} setOpen={setOpenStatus} dataID={data?.tracking_id} />
+            <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={[data?.tracking_id]} />
+            <UpdateStatus open={openStatus} setOpen={setOpenStatus} dataID={data?.tracking_id} statusNow={data?.status} reload={reloadData}/>
             <PackageDialogDetails open={openPackage} setOpen={setOpenPackage} details={data} />
             <InternalCode open={openInternal} setOpen={setOpenInternal} trackingID={data?.tracking_id} name={data?.customer_name} userID={data?.customer_id} />
             <div className={styles.wrapper}>
