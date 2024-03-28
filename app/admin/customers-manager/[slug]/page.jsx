@@ -15,6 +15,7 @@ import { SuspendUser } from './components/menus/dialog/SuspendUser';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MembershipTag } from '@/components/membership/MembershipTag';
+import { ActivateUser } from './components/menus/dialog/ActivateUser';
 import { CustomerPackageTabled } from './components/userPackageData/dataList';
 // import { CustomerInvoiceTable } from '../components/table/invoiceTable/CustomerInvoiceTable';
 export default function UserPage({ params }) {
@@ -28,7 +29,7 @@ export default function UserPage({ params }) {
     const [openPassword, setOpenPassword] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSuspend, setOpenSuspend] = useState(false);
-
+    const [openActivate, setOpenActivate] = useState(false);
     const fetchData = useCallback(async () => {
         try {
             const userDataResponse = await axios.post(`/api/admin/customer_manager/list`, { keyword: userID });
@@ -95,6 +96,7 @@ export default function UserPage({ params }) {
     return (
         <>
             {/* {loading && <Loaders />} */}
+            <ActivateUser open={openActivate} setOpen={setOpenActivate} deleteID={data?.customer_id} reloadData={reloadData} />
             <SuspendUser deleteID={data?.customer_id} open={openSuspend} setOpen={setOpenSuspend} reloadData={reloadData} />
             <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
             <DeleteCustomer open={openDelete} setOpen={setOpenDelete} reloadData={reloadData} deleteID={data?.customer_id} />
@@ -138,7 +140,9 @@ export default function UserPage({ params }) {
                                     setOpenPassword={setOpenPassword}
                                     setOpenDelete={setOpenDelete}
                                     setOpenSuspend={setOpenSuspend}
-                                    customerID={data?.customer_id} />
+                                    setOpenActivate={setOpenActivate}
+                                    customerID={data?.customer_id}
+                                />
                             </div>
                         </div>
                     </div>
