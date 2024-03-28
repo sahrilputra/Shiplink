@@ -26,23 +26,27 @@ export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID }) => {
             <DropdownMenuContent>
                 <NextLink href={`/admin/package-details/customer/${customerID}`} passHref>
                     <DropdownMenuItem>
-                        <p className='text-blue-900 text-xs'>Showing All Package</p>
+                        <p className='text-blue-900 text-xs'>Show All Packages</p>
                     </DropdownMenuItem>
                 </NextLink>
                 <NextLink href={`/admin/invoice-manager/invoice?customer=${customerID}`} passHref>
                     <DropdownMenuItem>
-                        <p className='text-xs'>Send Invoice</p>
+                        <p className='text-xs'>Create Invoice</p>
                     </DropdownMenuItem>
                 </NextLink>
                 <NextLink href={`/admin/customers-manager/invoice/${customerID}`} passHref>
                     <DropdownMenuItem>
-                        <p className='text-xs'>Invoice List</p>
+                        <p className='text-xs'>View Invoices</p>
                     </DropdownMenuItem>
                 </NextLink>
                 <DropdownMenuItem
                     onClick={() => setOpenPassword(true)}
                 >
-                    <p className='text-xs'>Change Password</p>
+                    <p className='text-xs'>Set Password</p>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                >
+                    <p className='text-xs'>Suspend this Customer</p>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => setOpenDelete(true)}
