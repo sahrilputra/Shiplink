@@ -21,7 +21,7 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import axios from 'axios'
-export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, image }) => {
+export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, image, setExpandedRows }) => {
     console.log("🚀 ~ ExpandedTable ~ image:", image)
 
     const [filterInvoice, setVilterInvoice] = useState([]);
@@ -42,6 +42,7 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
     const height_unit = item?.package_height_unit || "cm"
     const handleSave = async (data) => {
         console.log("data : ", data)
+        setExpandedRows({})
         try {
             const response = await axios.post(
                 `/api/admin/verification/setVerified`,
@@ -121,7 +122,7 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
                                 <SelectContent className="text-xs">
                                     {
                                         filterInvoice.map((item, index) => (
-                                            <SelectItem key={index} className="text-xs text-myBlue" value={index}>invoice {index+1}</SelectItem>
+                                            <SelectItem key={index} className="text-xs text-myBlue" value={index}>invoice {index + 1}</SelectItem>
                                         ))
                                     }
 
@@ -143,7 +144,10 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
                                 type="button"
                                 className=" h-[30px] rounded-sm px-4 py-0"
                                 size="sm"
-                                onClick={() => handleSave(trackingID)}
+                                onClick={() => {
+                                    handleSave(trackingID)
+
+                                }}
                             >
                                 <p className='text-xs font-light'>Mark As Verified</p>
                             </Button>
