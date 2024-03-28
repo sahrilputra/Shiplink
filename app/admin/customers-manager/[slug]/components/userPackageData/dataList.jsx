@@ -45,12 +45,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/tableDashboard"
-import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink } from 'lucide-react'
+import { VerifiedStatus } from '@/app/admin/verification/components/status/VerifiedStatus'
 
 export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
   console.log("🚀 ~ CustomerPackageTabled ~ customerID:", customerID)
   const [rowSelection, setRowSelection] = React.useState({})
   const [sorting, setSorting] = React.useState([])
+  const [isSortedDesc, setIsSortedDesc] = useState(false);
+
   const [openItemsDialog, setOpenItemsDialog] = useState(false)
   const [selectedItemsID, setSelectedItemsID] = useState([])
   const [openInternal, setOpenInternal] = useState(false);
@@ -77,6 +80,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     page_total: 0,
     total: 0
   })
+
   console.log("🚀 ~ CustomerPackageTabled ~ rowTotalData:", rowTotalData)
   useEffect(() => {
     const fetchData = async () => {
@@ -138,18 +142,30 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       header: "Customer Name",
     },
     {
-      accessorKey: "customer_email",
-      header: "Email",
-    },
-    {
       accessorKey: "destination",
       header: "Destination",
       cell: ({ row }) => {
         return (
           <>
-            <div className="text-xs">
-              {`${row.original.warehouse_name_destination} Wr - ${row.original.country_code_destination}`}
-            </div>
+            <>
+              {
+                row.original.status === "Hold For Pickup" ? (
+                  <div className="text-xs">
+                    {`HFP - ${row.original.warehouse_name_destination}`}
+                  </div>
+                ) : row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ? (
+                  <div className="text-xs">
+                    -
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-xs">
+                      {`${row.original.warehouse_name_destination !== null ? row.original.warehouse_name_destination : "-"} Warehouse - ${row.original.country_code_destination}`}
+                    </div>
+                  </>
+                )
+              }
+            </>
           </>
         )
       }
@@ -163,11 +179,42 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       header: "Bin Location",
     },
     {
-      id: "Action",
-      header: "Action",
+      accessorKey: "status",
+      size: 90,
+      header: ({ getSorting }) => {
+        return (
+          <div
+            className="cursor-pointer select-none w-[100px] text-center flex flex-row "
+            onClick={() => {
+              setSorting([{ id: "status", desc: !isSortedDesc }]);
+              setIsSortedDesc(!isSortedDesc);
+            }}
+          >
+            <div className="flex flex-row gap-2 items-center text-center text-nowrap">
+              Customs Status
+              <>
+                {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
+              </>
+            </div>
+          </div>
+        );
+      },
       cell: ({ row }) => {
         return (
-          <div className="w-[80px]" key={row}>
+          <div className="text-center text-xs w-[90px] flex items-center  mx-auto" >
+            <VerifiedStatus param={row.original.status} />
+          </div>
+        )
+      },
+
+    },
+    {
+      id: "Action",
+      header: "Action",
+      size: 50,
+      cell: ({ row }) => {
+        return (
+          <div className="w-[50px]" key={row}>
             <div className="flex flex-row gap-2">
               <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                 <Button
@@ -218,6 +265,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
                 const isFirstHeader = index === 0;
                 return (
                   <TableHead
+                    style={{ width: `${header.getSize()}px` }}
                     key={header.id}
                     className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
                   >
