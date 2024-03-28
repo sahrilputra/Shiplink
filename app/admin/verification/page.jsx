@@ -55,10 +55,9 @@ export default function VerificationPages() {
                 `/api/admin/verification/list`,
                 query
             );
-            console.log(response)
+            console.log("RESONSE", response)
             const data = await response.data;
             setData(data.package_info);
-            setPackageTotal(data.total)
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -66,7 +65,7 @@ export default function VerificationPages() {
             });
             setPagination(prevPagination => ({
                 ...prevPagination,
-                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+                pageSize: data.page_limit,
             }));
             setIsSkeleton(false);
         } catch (error) {
@@ -77,7 +76,7 @@ export default function VerificationPages() {
 
     useEffect(() => {
         fetchData();
-    }, [query]);
+    }, [query, rowTotalData, pagination]);
 
     const handleSetDate = (newDate) => {
         setDate({
@@ -174,7 +173,9 @@ export default function VerificationPages() {
                                 pagination={pagination}
                                 setPagination={setPagination}
                                 rowTotalData={rowTotalData}
+                                totalPage={rowTotalData.page_total}
                                 setRowTotalData={setRowTotalData}
+                                pageIndex={pagination.pageIndex}
                             />
                         </div>
 

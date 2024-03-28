@@ -54,9 +54,15 @@ export function VerificationTable(
         pagination,
         setPagination,
         rowTotalData,
-        setRowTotalData
+        setRowTotalData,
+        totalPage,
+        pageIndex,
     }
 ) {
+    console.log("🚀 ~ pageIndex:", pageIndex)
+    console.log("🚀 ~ pagination:", pagination)
+    console.log("🚀 ~ rowTotalData:", rowTotalData)
+    console.log("🚀 ~ totalPage:", totalPage)
     console.log("🚀 ~ VerificationTable ~ data:", data)
     // Form Init
 
@@ -212,8 +218,10 @@ export function VerificationTable(
         state: {
             sorting,
             rowSelection,
+            pagination,
         },
     });
+    console.log("🚀 ~ rowTotalData.page_total:", rowTotalData.page_total)
 
     const [expandedRow, setExpandedRow] = useState(null);
 
@@ -339,7 +347,7 @@ export function VerificationTable(
             </Table >
             <div className="flex justify-between w-full items-center mt-4 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
-                  
+
                 </div>
                 <Pagination className={'flex justify-end w-full items-center gap-2 '}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">

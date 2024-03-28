@@ -69,7 +69,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
   });
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 0,
   });
 
   const [rowTotalData, setRowTotalData] = useState({
@@ -77,6 +77,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     page_total: 0,
     total: 0
   })
+  console.log("🚀 ~ CustomerPackageTabled ~ rowTotalData:", rowTotalData)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -90,13 +91,11 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
         const data = await response.data;
         console.log("DATA : ", data)
         const responseData = response.data.package_info
-        const filterDataByCustomerID = responseData.filter((item) => item.customer_id === customerID)
-        console.log("🚀 ~ fetchData ~ filterDataByCustomerID:", filterDataByCustomerID.length)
-        setData(filterDataByCustomerID);
+        setData(responseData);
         setRowTotalData({
           page_limit: data.page_limit,
           page_total: data.page_total,
-          total: filterDataByCustomerID.length
+          total: data.total
         });
         setPagination(prevPagination => ({
           ...prevPagination,
@@ -202,6 +201,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     state: {
       sorting,
       rowSelection,
+      pagination,
     },
 
   });
@@ -322,7 +322,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
           <Button
             variant={`redOutline`}
             className="px-1 py-1 h-[30px] w-[30px] text-xs"
-            onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+            onClick={() => handlerPaginationChange(table.getPageCount() + 1)}
             disabled={!table.getCanNextPage()}
           >
             <ChevronsRightIcon className="h-4 w-4" />
