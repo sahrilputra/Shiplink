@@ -17,8 +17,7 @@ export const VerifiedStatus = ({ param }) => {
                 ) : param === "Hold For Pickup" ? (
                     <Badge variant="lightGray">{"Pickup"}</Badge>
                 ) : (
-                    <>
-                    </>
+                    <Badge variant="grayStatus">{"Pending"}</Badge>
                 )
             }
         </>

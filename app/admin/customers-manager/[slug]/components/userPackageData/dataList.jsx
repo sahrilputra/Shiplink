@@ -177,6 +177,13 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     {
       accessorKey: "bin_location",
       header: "Bin Location",
+      cell: ({ row }) => {
+        return (
+          <div className="text-xs">
+            {row.original.bin_location !== "Undefined" ? row.original.bin_location : "-"}
+          </div>
+        )
+      }
     },
     {
       accessorKey: "status",
