@@ -191,13 +191,13 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       header: ({ getSorting }) => {
         return (
           <div
-            className="cursor-pointer select-none w-[100px] text-center flex flex-row "
+            className="cursor-pointer select-none text-center flex flex-row "
             onClick={() => {
               setSorting([{ id: "status", desc: !isSortedDesc }]);
               setIsSortedDesc(!isSortedDesc);
             }}
           >
-            <div className="flex flex-row gap-2 items-center text-center text-nowrap">
+            <div className="flex flex-row items-center mx-auto gap-3">
               Status
               <>
                 {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
@@ -217,11 +217,17 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     },
     {
       id: "Action",
-      header: "Action",
+      header: ({ row }) => {
+        return (
+          <div className="w-full text-xs text-center">
+            Action
+          </div>
+        )
+      },
       size: 50,
       cell: ({ row }) => {
         return (
-          <div className="w-[50px]" key={row}>
+          <div className="w-[50px] mx-auto" key={row}>
             <div className="flex flex-row gap-2">
               <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                 <Button
