@@ -18,7 +18,7 @@ export async function POST(request) {
 
         const tokenAccess = await getAccessToken(request)
         const response = await axios.get(
-            `${process.env.API_URL}/Package/SetStatus_package?tracking_id=${tracking_id}&status=${status}'`,
+            `${process.env.API_URL}/Package/SetStatus_package?tracking_id=${tracking_id}&status=${status}`,
             {
                 httpsAgent: agent,
                 headers: {
