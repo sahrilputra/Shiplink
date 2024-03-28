@@ -14,8 +14,11 @@ export const VerifiedStatus = ({ param }) => {
                     <Badge variant="verified">{"Verified"}</Badge>
                 ) : param === "Declared" ? (
                     <Badge variant="unverified">{"Declared"}</Badge>
+                ) : param === "Hold For Pickup" ? (
+                    <Badge variant="lightGray">{"Pickup"}</Badge>
                 ) : (
-                    <Badge variant="grayStatus">{"Pending"}</Badge>
+                    <>
+                    </>
                 )
             }
         </>

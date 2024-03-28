@@ -20,6 +20,7 @@ const badgeVariants = cva(
         active: "rounded-[3px] bg-green-600/80 border border-greenStatus w-[80px] justify-center text-white tracking-wide",
         redStatus: "rounded-[3px] bg-red-600/80 border border-red-600 w-[80px] justify-center text-white tracking-wide",
         grayStatus: "rounded-[3px] bg-gray-600/80 border border-gray-600 w-[80px] justify-center text-white tracking-wide",
+        lightGray: "rounded-[3px] bg-gray-500/50 border border-gray-500 w-[80px] justify-center text-white tracking-wide",
       },
     },
     defaultVariants: {

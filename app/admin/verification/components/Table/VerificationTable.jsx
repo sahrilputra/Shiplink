@@ -123,9 +123,23 @@ export function VerificationTable(
             cell: ({ row }) => {
                 return (
                     <>
-                        <div className="text-xs">
-                            {`${row.original.warehouse_name_destination} Warehouse - ${row.original.country_code_destination}`}
-                        </div>
+                        {
+                            row.original.status === "Hold For Pickup" ? (
+                                <div className="text-xs">
+                                    {`HFP - ${row.original.warehouse_name_destination}`}
+                                </div>
+                            ) : row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ? (
+                                <div className="text-xs">
+                                    -
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="text-xs">
+                                        {`${row.original.warehouse_name_destination !== null ? row.original.warehouse_name_destination : "-"} Warehouse - ${row.original.country_code_destination}`}
+                                    </div>
+                                </>
+                            )
+                        }
                     </>
                 )
             }
@@ -333,7 +347,7 @@ export function VerificationTable(
                                                             />
                                                         </>
                                                     ) : (
-                                                        <ExpandedTable content={row.original.content} item={row.original} edit={toggleEdit} trackingID={row.original.tracking_id} reloadData={reloadData} image={row.original.images} setExpandedRows={setExpandedRows}/>
+                                                        <ExpandedTable content={row.original.content} item={row.original} edit={toggleEdit} trackingID={row.original.tracking_id} reloadData={reloadData} image={row.original.images} setExpandedRows={setExpandedRows} />
                                                     )
                                                 }
                                             </TableCell>
