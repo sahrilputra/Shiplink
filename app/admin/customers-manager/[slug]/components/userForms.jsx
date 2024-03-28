@@ -43,12 +43,15 @@ const formSchema = yup.object().shape({
     address: yup.string().required(),
     city: yup.string(),
     state: yup.string(),
+    province_code: yup.string(),
     zipCode: yup.string(),
     country: yup.string(),
+    country_code: yup.string(),
 })
 
 
 export const UserProfileForms = ({ data = null, isDisable, handleDisable, customerID, reloadData }) => {
+    console.log("🚀 ~ UserProfileForms ~ data:", data)
 
     const { toast } = useToast()
     const form = useForm({
@@ -60,8 +63,10 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
             address: "",
             city: "",
             state: "",
+            province_code: "",
             zipCode: "",
             country: "",
+            country_code: "",
         },
         mode: "onChange",
         disabled: isDisable,
@@ -76,12 +81,56 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
         form.setValue('state', data?.province_name)
         form.setValue('zipCode', data?.postal_code)
         form.setValue('country', data?.country_name)
+        form.setValue('country_code', data?.country_code)
+        form.setValue('province_code', data?.province_code)
         setSelectedCountry(data?.country_name)
         setSelectedProvince(data?.province_name)
+        findCountryByCode(data?.country_name)
+        findProvinceCode(data?.province_name)
+
     }, [data, form])
 
     console.log("🚀 ~ UserProfileForms ~ data:", data)
 
+    const findProvinceCode = async (province) => {
+        try {
+            const responseProvince = await axios.post(
+                `/api/admin/config/province`,
+                {
+                    keyword: province,
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                }
+            );
+            setProvinceList(responseProvince.data.province);
+            const setDataProvince = responseProvince.data.province.find((item) => item.province_name === province);
+            console.log("🚀 ~ findProvinceCode ~ setDataProvince:", setDataProvince.province_code)
+            form.setValue('province_code', setDataProvince.province_code)
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+    const findCountryByCode = async (country) => {
+        try {
+            const response = await axios.post(
+                `/api/admin/config/countries/list`,
+                {
+                    keyword: country,
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                }
+            );
+            console.log(" findCountryByCode - repsonse", response.data)
+            const responseData = response.data.country;
+            const setDataCountry = responseData.find((item) => item.country_name === country);
+            console.log("🚀 ~ findCountryByCode ~ setDataCountry:", setDataCountry)
+            form.setValue('country_code', setDataCountry.country_code)
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 
     const handleCancel = () => {
         handleDisable()
@@ -161,24 +210,41 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
     // Save
     const handleSave = async (formData) => {
         setLoading(true)
-        const setDataCountry = countryList.find((item) => item.country_name === formData.country || item.country_code === formData.country);
-        formData.country = setDataCountry.country_code;
-        console.log("🚀 ~ handleSave ~ setDataCountry:", setDataCountry)
+        // const setDataCountry = countryList.find((item) => item.country_name === formData.country || item.country_code === formData.country);
+        // // formData.country = setDataCountry.country_code;
+        // // console.log("🚀 ~ handleSave ~ setDataCountry:", setDataCountry)
         console.log("dikirim", formData)
         formData.customer_id = customerID;
         try {
             const response = await axios.post(
                 `/api/admin/customer_manager/updateData`,
-                formData
+                {
+                    customer_id: customerID,
+                    name: formData.name,
+                    address: formData.address,
+                    phoneNumber: formData.phoneNumber,
+                    email: formData.email,
+                    country_code: formData.country_code,
+                    province_code: formData.province_code,
+                    city: formData.city,
+                    zipCode: formData.zipCode,
+                }
             );
-            toast({
-                title: `Success Edit Customer ${formData.name}!`,
-                description: response.data.message,
-                status: `Status : ${response.data.status}`,
-            });
+
             handleCancel();
             setLoading(false)
-            reloadData();
+
+            if (response.data.status === "true" || response.data.status === true) {
+                toast({
+                    title: `Success Edit Customer ${formData.name}!`,
+                    description: response.data.message,
+                });
+            } else {
+                toast({
+                    title: `Error!`,
+                    description: response.data.message,
+                });
+            }
         } catch (error) {
             console.log('Error', error);
             setLoading(false)
@@ -201,8 +267,11 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
     }
 
     const handleSelectCountry = (countryCode, countryName) => {
+        console.log("🚀 ~ handleSelectCountry ~ countryCode:", countryCode)
+        console.log("🚀 ~ handleSelectCountry ~ countryCode:", countryName)
         setSelectedCountry(countryName);
-        form.setValue('country', countryCode);
+        form.setValue('country_code', countryCode);
+        form.setValue('country', countryName);
         setOpenCountry(false);
     }
 
@@ -228,7 +297,10 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                         <FormControl>
                                             <Input
                                                 size="new"
-                                                className="px-1.5" id="name" placeholder="john" {...field} />
+                                                className="px-1.5" id="name"
+                                                placeholder="john"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
@@ -484,10 +556,11 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                                                             item.country_code,
                                                                                             item.country_name
                                                                                         );
+                                                                                        form.setData('country_code', item.country_code)
                                                                                         field.onChange(item.country_code,);
                                                                                     }}
                                                                                 >
-                                                                                    {item.country_name}
+                                                                                    {`${item.country_name}- ${item.country_code}`}
                                                                                     <CheckIcon
                                                                                         className={`ml-auto h-4 w-4 ${item.country_code === field.value ? "opacity-100" : "opacity-0"}`}
                                                                                     />

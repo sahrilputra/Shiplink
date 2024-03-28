@@ -16,9 +16,9 @@ export async function POST(request) {
             phoneNumber,
             address,
             city,
-            state,
             zipCode,
-            country,
+            country_code,
+            province_code,
         } = await request.json();
 
         const tokenAccess = await getAccessToken(request)
@@ -30,8 +30,8 @@ export async function POST(request) {
                 address: address,
                 phone_number: phoneNumber,
                 email: email,
-                country_code: country,
-                province_code: state,
+                country_code: country_code,
+                province_code: province_code,
                 city: city,
                 postal_code: zipCode,
             },
@@ -43,9 +43,12 @@ export async function POST(request) {
                 },
             }
         );
+
+        console.log("🚀 ~ POST ~ response:", response)
+
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });

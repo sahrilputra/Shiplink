@@ -48,6 +48,7 @@ import {
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink } from 'lucide-react'
 
 export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
+  console.log("🚀 ~ CustomerPackageTabled ~ customerID:", customerID)
   const [rowSelection, setRowSelection] = React.useState({})
   const [sorting, setSorting] = React.useState([])
   const [openItemsDialog, setOpenItemsDialog] = useState(false)
@@ -56,8 +57,9 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
   const [data, setData] = useState({});
   const [skeleton, setSkeleton] = useState(true);
   const [query, setQuery] = useState({
-    keyword: `${customerName}`,
+    keyword: "",
     date_start: "",
+    customer_id: `${customerID}`,
     date_end: "",
     tracking_id: "",
     status: "",
@@ -80,23 +82,27 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       try {
         const response = await axios.post(
           `/api/admin/packages/list`,
-          query
+          {
+            ...query,
+            customer_id: `${customerID}`,
+          }
         );
-        console.log(response)
         const data = await response.data;
+        console.log("DATA : ", data)
+        const responseData = response.data.package_info
+        const filterDataByCustomerID = responseData.filter((item) => item.customer_id === customerID)
+        console.log("🚀 ~ fetchData ~ filterDataByCustomerID:", filterDataByCustomerID.length)
+        setData(filterDataByCustomerID);
         setRowTotalData({
           page_limit: data.page_limit,
           page_total: data.page_total,
-          total: data.total
+          total: filterDataByCustomerID.length
         });
         setPagination(prevPagination => ({
           ...prevPagination,
           pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
         }));
-        const responseData = response.data.package_info
-        const filterDataByCustomerID = responseData.filter((item) => item.customer_id === customerID)
-        console.log("🚀 ~ fetchData ~ filterDataByCustomerID:", filterDataByCustomerID)
-        setData(filterDataByCustomerID);
+
         setSkeleton(false)
       } catch (error) {
         setSkeleton(false)

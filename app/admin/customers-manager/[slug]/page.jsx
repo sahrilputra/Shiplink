@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect, use, useCallback } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { UserProfileForms } from './components/userForms';
@@ -27,24 +27,33 @@ export default function UserPage({ params }) {
     const [openPassword, setOpenPassword] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
 
-    useEffect(() => {
 
-        const fetchData = async () => {
-            try {
-                const userDataResponse = await axios.post(`/api/admin/customer_manager/list`, { keyword: userID });
-                const userData = userDataResponse.data.customer[0];
-                setData(userData);
-                setLoading(false);
-                setIsSkeleton(false);
-            } catch (error) {
-                console.error("Error:", error);
-                setLoading(false);
-                setIsSkeleton(false);
-            }
+    const fetchData = useCallback(async () => {
+        try {
+            const userDataResponse = await axios.post(`/api/admin/customer_manager/list`, { keyword: userID });
+            const userData = userDataResponse.data.customer[0];
+            setData(userData);
+            setLoading(false);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.error("Error:", error);
+            setLoading(false);
+            setIsSkeleton(false);
         }
+    }, [userID]);
+    
+    useEffect(() => {
         fetchData();
+    }, [fetchData]);
 
-    }, [userID])
+    const handleDisable = () => {
+        setDisable(!disable);
+    };
+
+    const reloadData = () => {
+        setLoading(true);
+        fetchData();
+    };
 
     // const fetchData = async () => {
     //     try {
@@ -80,17 +89,6 @@ export default function UserPage({ params }) {
     //         setIsSkeleton(false);
     //     }
     // };
-
-    // fetchData();
-
-    const handleDisable = () => {
-        setDisable(!disable);
-    };
-
-    const reloadData = () => {
-        setLoading(true);
-        fetchData();
-    };
 
     return (
         <>
