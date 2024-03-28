@@ -322,7 +322,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
           <Button
             variant={`redOutline`}
             className="px-1 py-1 h-[30px] w-[30px] text-xs"
-            onClick={() => handlerPaginationChange(table.getPageCount() + 1)}
+            onClick={() => handlerPaginationChange(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
             <ChevronsRightIcon className="h-4 w-4" />
