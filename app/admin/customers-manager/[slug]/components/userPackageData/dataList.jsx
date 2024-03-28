@@ -198,7 +198,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
             }}
           >
             <div className="flex flex-row gap-2 items-center text-center text-nowrap">
-              Customs Status
+              Status
               <>
                 {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
               </>
