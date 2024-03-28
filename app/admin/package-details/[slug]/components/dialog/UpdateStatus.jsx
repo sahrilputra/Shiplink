@@ -35,24 +35,53 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useForm } from 'react-hook-form'
-
+import { useToast } from '@/components/ui/use-toast';
 const formSchema = yup.object().shape({
-    status_id: yup.number(),
+    status_id: yup.string(),
     packageID: yup.string(),
 })
 
 export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
+    console.log("🚀 ~ UpdateStatus ~ dataID:", dataID)
+    const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            status_id: 0,
+            status_id: "",
             packageID: dataID || '',
         },
         mode: "onChange",
     })
+    
+    console.log("🚀 ~ UpdateStatus ~ status_id:", form.watch('status_id'))
     const [statusList, setStatusList] = useState([]);
     console.log("🚀 ~ UpdateStatus ~ statusList:", statusList)
 
+    const handleSave = async (data) => {
+        console.log("🚀 ~ handleSave ~ data:", data)
+        try {
+            const response = await axios.post(`/api/admin/packages/setStatus`,
+                {
+                    tracking_id: dataID,
+                    status: data.status_id
+                });
+            console.log("🚀 ~ handleSave ~ response:", response)
+            if (response.status === 200) {
+                setOpen(false);
+                toast({
+                    title: 'Success',
+                    desription: 'Status updated successfully',
+                })
+            }
+        } catch (error) {
+            console.log('Error:', error);
+            toast({
+                title: 'Error',
+                desription: 'An error occurred while updating status',
+            })
+        }
+
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -89,7 +118,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
                     <div className="flex flex-col gap-2">
                         <Form {...form}>
                             <form
-                                // onSubmit={form.handleSubmit(handleSave)}
+                                onSubmit={form.handleSubmit(handleSave)}
                                 className='flex gap-4 flex-col'
                                 action="">
                                 <div className="w-[50px] text-myBlue border-b border-myBlue text-sm text-center">
@@ -109,7 +138,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload }) => {
                                                     <Select
                                                         onValueChange={(value) => {
                                                             const selectedStatus = statusList.find(item => item.status === value);
-                                                            field.onChange(selectedStatus ? selectedStatus.id_status : ''); // Set id_status as value if found, otherwise empty string
+                                                            field.onChange(selectedStatus ? selectedStatus.status : ''); // Set id_status as value if found, otherwise empty string
                                                         }}
                                                         defaultValue={field.value}
                                                     >
