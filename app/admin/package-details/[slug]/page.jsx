@@ -5,6 +5,8 @@ import styles from './styles.module.scss'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { EventTabled } from './components/EventTable'
+import { Dialog } from '@/components/ui/dialog'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import {
     Carousel,
     CarouselContent,
@@ -18,13 +20,22 @@ import NextLink from 'next/link'
 import { Card } from '@/components/ui/card'
 import { InternalCode } from './components/dialog/InternalCode'
 import { PackageDialogDetails } from '../../custom-brokers/components/dialog/PackageDialogDetails'
+import { MoreHorizontalIcon } from 'lucide-react'
+import { UpdateStatus } from './components/dialog/UpdateStatus'
+import { DeletePackage } from './components/dialog/DeletePackage'
+import Link from 'next/link'
 export default function VerificationPages({ params }) {
     console.log("Helo", params.slug)
 
+    const [openDelete, setOpenDelete] = useState(false)
+    const [openStatus, setOpenStatus] = useState(false);
     const [openInternal, setOpenInternal] = useState(false);
     const [openPackage, setOpenPackage] = useState(false);
     const [data, setData] = useState({});
     const [skeleton, setSkeleton] = useState(true);
+    const [images, setImage] = useState([]);
+    const [documents, setDocuments] = useState("");
+    console.log("🚀 ~ VerificationPages ~ documents:", documents)
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",
@@ -36,12 +47,17 @@ export default function VerificationPages({ params }) {
         try {
             const response = await axios.post(
                 `/api/admin/packages/list`,
-                query
+                {
+                    ...query,
+                    tracking_id: `${params.slug}`,
+                }
             );
-            console.log(response)
+            console.log("response", response)
             const responseData = await response.data.package_info[0];
             console.log(responseData)
+            setDocuments(responseData.documents);
             setData(responseData);
+            setImage(responseData.images);
             setSkeleton(false)
         } catch (error) {
             setSkeleton(false)
@@ -58,8 +74,29 @@ export default function VerificationPages({ params }) {
 
     const weigthType = data?.package_weight_unit || "Ibs";
     const heightType = data?.package_height_unit || "In";
+
+    const [filteredImages, setFilteredImages] = useState([]);
+
+    useEffect(() => {
+        const removeInvImage = () => {
+            if (images) {
+                const filtered = images.filter(image => !isInvoiceImage(image.type));
+                setFilteredImages(filtered);
+            }
+        };
+
+        removeInvImage();
+    }, [images]);
+
+    const isInvoiceImage = (type) => {
+        return type.toLowerCase() === "invoices";
+    };
+    console.log("Images: ", filteredImages)
+
     return (
         <>
+            <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={data?.tracking_id} />
+            <UpdateStatus open={openStatus} setOpen={setOpenStatus} dataID={data?.tracking_id} />
             <PackageDialogDetails open={openPackage} setOpen={setOpenPackage} details={data} />
             <InternalCode open={openInternal} setOpen={setOpenInternal} trackingID={data?.tracking_id} name={data?.customer_name} userID={data?.customer_id} />
             <div className={styles.wrapper}>
@@ -144,13 +181,44 @@ export default function VerificationPages({ params }) {
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>Bin : {data?.bin_location || "-"}</p>}
                                     </div>
 
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        className="h-[30px]"
-                                    >
-                                        <p className=' text-xs'>Download Invoice</p>
-                                    </Button>
+                                    {documents === "" || documents === null ? (
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className={`h-[30px] w-full ${documents === null ? "cursor-not-allowed disabled" : "cursor-pointer"}`}
+                                            disabled={documents === "" || documents === null}
+                                        >
+                                            <p className=' text-xs'>Download Documents</p>
+                                        </Button>
+                                    ) : (
+                                        <>
+                                            <Link
+                                                className={`${documents === null ? "cursor-not-allowed" : "cursor-pointer"}`}
+                                                passHref href={`https://sla.webelectron.com/api/Package/downloadfile?fullName=${documents}`}
+                                            >
+                                                <Button
+                                                    variant="secondary"
+                                                    size="sm"
+                                                    className={`h-[30px] w-full`}
+                                                >
+                                                    <p className=' text-xs'>Download Documents</p>
+                                                </Button>
+                                            </Link>
+                                        </>
+                                    )
+                                    }
+
+
+                                    <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}`} >
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className="h-[30px] w-full"
+                                            disabled={documents === ""}
+                                        >
+                                            <p className=' text-xs'>Send Invoice To User</p>
+                                        </Button>
+                                    </NextLink>
                                 </div>
                             </div>
                         </div>
@@ -168,35 +236,49 @@ export default function VerificationPages({ params }) {
                                             <p className=' text-xs'>Edit Package</p>
                                         </Button>
                                     </NextLink>
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        onClick={() => setOpenInternal(true)}
-                                    >
-                                        <p className=' text-xs'>Download Internal Code</p>
-                                    </Button>
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        onClick={() => setOpenPackage(true)}
-                                    >
-                                        <p className=' text-xs'>Download Package Information</p>
-                                    </Button>
+                                    <div className="">
+                                        <Dialog>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        className="flex flex-row gap-3"
+                                                    >
+                                                        <p className=' text-xs'>More Action</p>
+                                                        <MoreHorizontalIcon width={15} height={15} />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent side={"bottom"} sideOffset={2}>
+                                                    <DropdownMenuItem
+                                                        onClick={() => setOpenStatus(true)}
+                                                        className="text-xs text-myBlue"
+                                                    >
+                                                        <p className=' text-xs'>Update Status</p>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={() => setOpenInternal(true)}
+                                                    >
+                                                        <p className=' text-xs'>Download Internal Code</p>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={() => setOpenPackage(true)}
+                                                        className="text-xs">
+                                                        <p className=' text-xs'>Download Package Information</p>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={() => setOpenDelete(true)}
+                                                        className="text-xs text-red-700"
+                                                    >
+                                                        Delete Package
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </Dialog>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="flex flex-row gap-4 py-2">
-                                <div className="imageContainer flex flex-col w-[400px] items-center">
-                                    {
-                                        skeleton ? (
-                                            <>
-                                                <Skeleton className={"w-[100%] h-[250px]"} />
-                                            </>
-                                        ) : (
-                                            <Carousel className="w-full ">
-                                                <CarouselContent className=" ">
-                                                    <>
-                                                        {Array.from({ length: data?.images.length }).map((_, index) => (
-                                                            <CarouselItem key={index} className=" w-full h-full grow-1">
+                            {/* <CarouselItem key={index} className=" w-full h-full grow-1">
                                                                 <div className="w-full">
                                                                     <Card>
                                                                         <img
@@ -207,11 +289,54 @@ export default function VerificationPages({ params }) {
                                                                     </Card>
 
                                                                 </div>
+                                                            </CarouselItem> */}
+                            <div className="flex flex-row gap-4 py-2">
+                                <div className="imageContainer flex flex-col w-[400px] items-center">
+
+                                    {
+                                        skeleton ? (
+                                            <>
+                                                <Skeleton className={"w-[100%] h-[250px]"} />
+                                            </>
+                                        ) : (
+                                            <Carousel className="w-full ">
+                                                <CarouselContent>
+                                                    {
+                                                        filteredImages?.length === 0 ? (
+                                                            <CarouselItem key={1} className="w-full h-full grow-1">
+                                                                <div className="p-1 w-full">
+                                                                    <Card
+                                                                        className="p-1 w-full"
+                                                                    >
+                                                                        <Image
+                                                                            src={'/assets/img-placeholder.svg'}
+                                                                            width={200}
+                                                                            height={200}
+                                                                            alt={`Image`}
+                                                                            style={{ objectFit: "contain", width: '100%', height: '250px', }}
+                                                                        />
+                                                                    </Card>
+                                                                </div>
                                                             </CarouselItem>
-                                                        ))}
-                                                    </>
+                                                        ) : null
+                                                    }
 
+                                                    {Array.from({ length: filteredImages?.length }).map((_, index) => (
+                                                        <CarouselItem key={index} className="w-full h-full grow-1">
+                                                            <div className="w-full">
+                                                                <Card
+                                                                    className="p-1 w-full"
+                                                                >
+                                                                    <img
+                                                                        style={{ objectFit: "contain", width: '100%', height: '250px', }}
+                                                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
+                                                                        alt=""
+                                                                    />
 
+                                                                </Card>
+                                                            </div>
+                                                        </CarouselItem>
+                                                    ))}
                                                 </CarouselContent>
                                                 <CarouselPrevious className="left-[10px]" />
                                                 <CarouselNext className="right-[10px]" />

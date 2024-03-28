@@ -2,31 +2,31 @@ import { NextResponse } from "next/server"
 import axios from "axios";
 import https from "https";
 import { getAccessToken } from "@/helpers/getAccessToken";
-
 const agent = new https.Agent({
     rejectUnauthorized: false // Non-production use only! Disables SSL certificate verification
 });
-export async function POST() {
+export async function GET(request) {
     try {
-        // const tokenAccess = await getAccessToken(request)
+        const tokenAccess = await getAccessToken(request)
+        console.log("code : ", tokenAccess)
         const response = await axios.post(
             `${process.env.API_URL}/Package/Packages_Status`,
+            null, 
             {
                 httpsAgent: agent,
                 headers: {
-                    Authorization:
-                        `Bearer ${process.env.BEARER_TOKEN}`
+                    Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
                 }
             }
         );
 
-        console.log("response from api : ", response.data); // Log the response data
+        console.log("🚀 ~ GET ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                data : response.data.data
+                data: response.data,
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {
