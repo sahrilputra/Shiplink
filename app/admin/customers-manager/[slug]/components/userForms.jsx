@@ -97,7 +97,8 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
             const responseProvince = await axios.post(
                 `/api/admin/config/province`,
                 {
-                    keyword: province,
+                    keyword: "",
+                    country_code: form.getValues('country_code'),
                     page: 0,
                     limit: 0,
                     index: 0,
@@ -158,6 +159,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
         console.log("🚀 ~ handleCommandChange ~ e:", e)
         setCommandQuery(e);
         setCountryQuery({ ...countryQuery, keyword: e });
+        setProvinceQuery({ ...provinceQuery, country_code: form.getValues('country_code') });
     }
 
     useEffect(() => {
@@ -181,6 +183,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
 
     const [provinceQuery, setProvinceQuery] = useState({
         keyword: "",
+        country_code: "",
         page: 0,
         limit: 0,
         index: 0,
@@ -195,17 +198,22 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
         const fetchProvinceList = async () => {
             try {
                 const responseProvince = await axios.post(
-                    `/api/admin/config/province`, provinceQuery
+                    `/api/admin/config/province`,
+                    {
+                        ...provinceQuery,
+                        country_code: form.getValues('country_code')
+                    }
                 );
                 console.log("Response Province : ", responseProvince)
-                setProvinceList(responseProvince.data.province);
+                const filterProvinceByCountryCode = responseProvince.data.province.filter((item) => item.country_code === form.getValues('country_code'));
+                setProvinceList(filterProvinceByCountryCode);
             } catch (error) {
                 console.log('Error:', error);
                 fetchProvinceList();
             }
         }
         fetchProvinceList();
-    }, [provinceQuery]);
+    }, [provinceQuery, form.getValues('country_code')]);
 
     // Save
     const handleSave = async (formData) => {
@@ -556,7 +564,7 @@ export const UserProfileForms = ({ data = null, isDisable, handleDisable, custom
                                                                                             item.country_code,
                                                                                             item.country_name
                                                                                         );
-                                                                                        form.setData('country_code', item.country_code)
+                                                                                        form.setValue('country_code', item.country_code)
                                                                                         field.onChange(item.country_code,);
                                                                                     }}
                                                                                 >
