@@ -300,6 +300,27 @@ export default function PackageDetails({ params }) {
         }
     }
 
+    // Status
+    const [statusList, setStatusList] = useState([]);
+    console.log("🚀 ~ UpdateStatus ~ statusList:", statusList)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(
+                    `/api/admin/packages/status`
+                );
+                console.log("🚀 ~ fetchData ~ response:", response)
+                const data = await response.data;
+                console.log("🚀 ~ Status ~ data:", data.data)
+                setStatusList(data.data);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
+        fetchData();
+    }, [])
+
     console.log("documents : ", form.watch('documents'))
     console.log("ERRORS : ", form.formState.errors)
     return (
@@ -340,6 +361,7 @@ export default function PackageDetails({ params }) {
                                 <OtherField
                                     forms={form}
                                     binData={binData}
+                                    statusList={statusList}
                                 />
 
                                 <DeclareContentInputs

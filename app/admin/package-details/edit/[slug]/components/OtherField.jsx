@@ -20,6 +20,7 @@ import axios from 'axios'
 export const OtherField = ({
     forms,
     binData,
+    statusList,
 }) => {
 
 
@@ -56,7 +57,7 @@ export const OtherField = ({
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger className="text-xs  h-[30px] rounded-sm px-2 py-0'">
-                                            <SelectValue placeholder="Select Bin Location" className='text-xs' defaultValue={"Unregister"} />
+                                            <SelectValue placeholder={`${field.value ? field.value : "Select Bin Location"}`} className='text-xs' defaultValue={"Unregister"} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -129,11 +130,29 @@ export const OtherField = ({
                                 <FormItem className=" text-xs ">
                                     <FormLabel className="font-bold">Set Status</FormLabel>
                                     <FormControl className="w-full relative">
-                                        <Input
+                                        {/* <Input
                                             placeholder={`${field.value || "Status"}`}
                                             className={`text-xs h-[30px] rounded-sm px-2 py-0 `}
                                             {...field}
-                                        />
+                                        /> */}
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="text-xs  h-[30px] rounded-sm px-2 py-0'">
+                                                    <SelectValue placeholder={`${field.value ? field.value : "Select Status"}`} className='text-xs' defaultValue={field.value} />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <ScrollArea className="h-[150px]">
+                                                    {
+                                                        statusList.map((statusList, index) => (
+                                                            <SelectItem className="text-xs" value={statusList.status} key={index}>{statusList.status}</SelectItem>
+                                                        ))
+                                                    }
+                                                </ScrollArea>
+                                            </SelectContent>
+                                        </Select>
+
+
                                     </FormControl>
                                 </FormItem>
                             </>
