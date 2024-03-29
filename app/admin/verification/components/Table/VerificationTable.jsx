@@ -381,7 +381,16 @@ export function VerificationTable(
                                                             />
                                                         </>
                                                     ) : (
-                                                        <ExpandedTable content={row.original.content} item={row.original} edit={toggleEdit} trackingID={row.original.tracking_id} reloadData={reloadData} image={row.original.images} setExpandedRows={setExpandedRows} />
+                                                        <ExpandedTable
+                                                            content={row.original.content}
+                                                            item={row.original}
+                                                            edit={toggleEdit}
+                                                            trackingID={row.original.tracking_id}
+                                                            reloadData={reloadData}
+                                                            image={row.original.images}
+                                                            setExpandedRows={setExpandedRows}
+                                                            status={row.original.status}
+                                                        />
                                                     )
                                                 }
                                             </TableCell>

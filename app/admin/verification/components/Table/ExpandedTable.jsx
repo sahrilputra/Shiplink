@@ -22,7 +22,17 @@ import {
 } from "@/components/ui/tableDashboard"
 import NextLink from 'next/link'
 import axios from 'axios'
-export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, image, setExpandedRows }) => {
+export const ExpandedTable = (
+    {
+        content,
+        edit, item,
+        trackingID,
+        reloadData,
+        image,
+        setExpandedRows,
+        status
+    }) => {
+    console.log("🚀 ~ status:", status)
     console.log("🚀 ~ ExpandedTable ~ image:", image)
 
     const [filterInvoice, setVilterInvoice] = useState([]);
@@ -44,7 +54,7 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
     const height_unit = item?.package_height_unit || "cm"
     const handleSave = async (data) => {
         console.log("data : ", data)
-        
+
         try {
             const response = await axios.post(
                 `/api/admin/verification/setVerified`,
@@ -59,6 +69,21 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
         }
     }
 
+    const handleDelcare = async (data) => {
+        try {
+            const response = await axios.post(
+                `/api/admin/verification/setDeclare`,
+                {
+                    tracking_id: data,
+                    status: "Declared",
+                }
+            );
+            console.log(response)
+            reloadData()
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
     return (
         <>
             <div className="w-full">
@@ -145,18 +170,36 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
                             >
                                 <p className='text-xs font-light'>Edit</p>
                             </Button>
-                            <Button
-                                variant="secondary"
-                                type="button"
-                                className=" h-[30px] rounded-sm px-4 py-0"
-                                size="sm"
-                                onClick={() => {
-                                    setExpandedRows({})
-                                    handleSave(trackingID)
-                                }}
-                            >
-                                <p className='text-xs font-light'>Mark As Verified</p>
-                            </Button>
+                            {
+                                status === "Verified" ?
+                                    (
+                                        <Button
+                                            variant="secondary"
+                                            type="button"
+                                            className=" h-[30px] rounded-sm px-4 py-0"
+                                            size="sm"
+                                            onClick={() => {
+                                                setExpandedRows({})
+                                                handleDelcare(trackingID)
+                                            }}
+                                        >
+                                            <p className='text-xs font-light'>Mark As Declared</p>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="secondary"
+                                            type="button"
+                                            className=" h-[30px] rounded-sm px-4 py-0"
+                                            size="sm"
+                                            onClick={() => {
+                                                setExpandedRows({})
+                                                handleSave(trackingID)
+                                            }}
+                                        >
+                                            <p className='text-xs font-light'>Mark As Verified</p>
+                                        </Button>
+                                    )
+                            }
                         </div>
                     </div>
                 </div>
