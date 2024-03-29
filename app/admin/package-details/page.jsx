@@ -210,7 +210,7 @@ export default function PackageDetails() {
             cell: ({ row }) => {
                 return (
                     <div className="text-xs flex flex-col flex-wrap">
-                        <span className='text-[10px] leading-3 tracking-wider font-bold '
+                        <span className='text-[10px] leading-3 tracking-wider  '
                             style={{ fontFamily: 'roboto' }}
                         >{`${row.original.customer_id}`}</span>
                         <span>{`${row.original.customer_name}`}</span>
