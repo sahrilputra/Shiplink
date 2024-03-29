@@ -90,7 +90,10 @@ export const AdminNavbars = () => {
                         </NavigationMenuList>
                     </NavigationMenu>
 
-                    <NavigationMenu>
+                    <NavigationMenu
+                        onPointerEnter={(event) => event.preventDefault()}
+                        onPointerLeave={(event) => event.preventDefault()}
+                    >
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger

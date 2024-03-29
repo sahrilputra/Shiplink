@@ -200,8 +200,8 @@ export default function PackageDetails() {
             header: "Customer",
             cell: ({ row }) => {
                 return (
-                    <div className="text-xs">
-                        {`${row.original.customer_id} - ${row.original.customer_name}`}
+                    <div className="text-xs flex flex-row items-center flex-wrap gap-2">
+                        <span className='text-[11px]'>{`${row.original.customer_id}`}</span> - <span>{`${row.original.customer_name}`}</span>
                     </div>
                 )
             }
@@ -223,10 +223,11 @@ export default function PackageDetails() {
                                     </>
                                 ) : (
                                     <>
-                                        <div className="text-xs flex flex-row gap-2 items-center">
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
                                             <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                             <span>-</span>
-                                            WH {`${row.original.warehouse_name_arrival}`}
+                                            <span className='text-nowrap'>WH  {`${row.original.warehouse_name_arrival}`}</span>
+
                                         </div>
                                     </>
                                 )
@@ -250,10 +251,10 @@ export default function PackageDetails() {
                                     </>
                                 ) : (
                                     <>
-                                        <div className="text-xs flex flex-row gap-2 items-center">
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
                                             <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                             <span>-</span>
-                                            WH {`${row.original.warehouse_name_destination}`}
+                                            <span className='text-nowrap'>WH  {`${row.original.warehouse_name_destination}`}</span>
                                         </div>
                                     </>
                                 )
@@ -286,7 +287,7 @@ export default function PackageDetails() {
         },
         {
             accessorKey: "bin_location",
-            header: "Bin Location",
+            header: "Bin",
             size: 50,
             cell: ({ row }) => {
                 return (
