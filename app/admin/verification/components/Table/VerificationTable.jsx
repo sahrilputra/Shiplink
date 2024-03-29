@@ -181,10 +181,11 @@ export function VerificationTable(
         {
 
             accessorKey: "status",
+            size: 90,
             header: ({ getSorting }) => {
                 return (
                     <div
-                        className="cursor-pointer select-none text-center w-[100%] mx-auto flex flex-row items-center"
+                        className="cursor-pointer select-none text-center w-[100%] mx-auto flex flex-row items-center justify-center gap-2"
                         onClick={() => {
                             setSorting([{ id: "status", desc: !isSortedDesc }]);
                             setIsSortedDesc(!isSortedDesc);
@@ -207,11 +208,17 @@ export function VerificationTable(
         },
         {
             id: "Action",
-            header: "Action",
-            size: 30,
+            size: 50,
+            header: ({ row }) => {
+                return (
+                    <div className="w-full text-xs text-center">
+                        Action
+                    </div>
+                )
+            },
             cell: ({ row }) => {
                 return (
-                    <div className="w-[60px]" key={row}>
+                    <div className="w-[100%] mx-auto" key={row}>
                         <div className="flex flex-row gap-2 items-center justify-center">
                             <Button
                                 onClick={() => toggleRow(row.id)}
@@ -225,7 +232,7 @@ export function VerificationTable(
                     </div>
                 )
             },
-        }
+        },
     ]
     // ${expandedRows[index] ? 'rotate-180' : ''}
     const handlerPaginationChange = (page) => {
