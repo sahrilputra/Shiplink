@@ -83,7 +83,6 @@ export function VerificationTable(
             accessorKey: "tracking_id",
             header: "Tracking ID",
             className: "text-xs",
-            size: 40,
             cell: ({ row }) => {
                 return (
                     <div className="text-xs"
@@ -114,7 +113,6 @@ export function VerificationTable(
             header: "Origin",
             cell: ({ row }) => {
                 const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
-                console.log("🚀 ~ PackageDetails ~ countryCode:", countryCode)
                 return (
                     <>
                         {
@@ -181,33 +179,31 @@ export function VerificationTable(
             }
         },
         {
+
             accessorKey: "status",
             header: ({ getSorting }) => {
                 return (
                     <div
-                        className="cursor-pointer select-none w-[150px] text-center"
+                        className="cursor-pointer select-none text-center w-[100%] mx-auto flex flex-row items-center"
                         onClick={() => {
                             setSorting([{ id: "status", desc: !isSortedDesc }]);
                             setIsSortedDesc(!isSortedDesc);
                         }}
                     >
-                        <div className="flex flex-row gap-2 items-center text-center">
+                        <p>
                             Customs Status
-                            <>
-                                {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
-                            </>
-                        </div>
+                        </p>
+                        {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
                     </div>
                 );
             },
             cell: ({ row }) => {
                 return (
-                    <div className="text-center text-xs w-[150px] " >
+                    <div className="text-center text-xs w-[] " >
                         <VerifiedStatus param={row.original.status} />
                     </div>
                 )
             },
-
         },
         {
             id: "Action",
@@ -351,9 +347,8 @@ export function VerificationTable(
                                     className={row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : ""}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        console.log("🚀 ~ cell:", cell),
                                         <TableCell
-                                            style={{ width: `${cell.column.getSize()}px` }}
+                                            style={{ width: columns.width }}
                                             key={cell.id}
                                             className={`${cell.isLast ? "w-[60px]" : cell.isFirst ? "w-[50px]" : ""} text-xs  ${expandedRows[row.id] && "bg-blue-100 hover:bg-blue-100"}`}
                                         >

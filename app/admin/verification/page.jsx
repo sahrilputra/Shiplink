@@ -76,7 +76,7 @@ export default function VerificationPages() {
 
     useEffect(() => {
         fetchData();
-    }, [query, rowTotalData, pagination]);
+    }, [query]);
 
     const handleSetDate = (newDate) => {
         setDate({
