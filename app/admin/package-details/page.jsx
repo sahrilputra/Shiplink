@@ -200,8 +200,9 @@ export default function PackageDetails() {
             header: "Customer",
             cell: ({ row }) => {
                 return (
-                    <div className="text-xs flex flex-row items-center flex-wrap gap-2">
-                        <span className='text-[11px]'>{`${row.original.customer_id}`}</span> - <span>{`${row.original.customer_name}`}</span>
+                    <div className="text-xs flex flex-col flex-wrap">
+                        <span className='text-[10px] leading-3 tracking-wider font-bold '>{`${row.original.customer_id}`}</span>
+                        <span>{`${row.original.customer_name}`}</span>
                     </div>
                 )
             }
