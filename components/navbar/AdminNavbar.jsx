@@ -19,6 +19,14 @@ import { BellIcon, LogOut, Settings } from 'lucide-react'
 import { Skeleton } from '../ui/skeleton'
 import { Separator } from '../ui/separator'
 import { useRouter } from 'next/navigation'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
 import { useSession, signOut } from 'next-auth/react'
 export const AdminNavbars = () => {
     const { data: session } = useSession()
@@ -61,9 +69,14 @@ export const AdminNavbars = () => {
                     </Button> */}
                 </div>
                 <div className="w-[100%] justify-end items-center gap-3 flex py-3 px-10">
-                    <NavigationMenu>
+                    <NavigationMenu
+                        onPointerEnter={(event) => event.preventDefault()}
+                        onPointerLeave={(event) => event.preventDefault()}
+                    >
                         <NavigationMenuList>
-                            <NavigationMenuItem>
+                            <NavigationMenuItem
+                                onPointerEnter={(event) => event.preventDefault()}
+                                onPointerLeave={(event) => event.preventDefault()}>
                                 <NavigationMenuTrigger
                                     onPointerEnter={(event) => event.preventDefault()}
                                     onPointerLeave={(event) => event.preventDefault()}
@@ -90,7 +103,7 @@ export const AdminNavbars = () => {
                         </NavigationMenuList>
                     </NavigationMenu>
 
-                    <NavigationMenu 
+                    <NavigationMenu
                         onPointerEnter={(event) => event.preventDefault()}
                         onPointerLeave={(event) => event.preventDefault()}
                     >

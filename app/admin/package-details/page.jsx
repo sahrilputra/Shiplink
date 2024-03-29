@@ -194,6 +194,15 @@ export default function PackageDetails() {
             header: "Package ID",
             className: "text-xs",
             size: 40,
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap">
+                        <span
+                            style={{ fontFamily: '' }}
+                            className=''>{`${row.original.tracking_id}`}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "customer_name",

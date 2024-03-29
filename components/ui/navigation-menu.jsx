@@ -42,6 +42,9 @@ const NavigationMenuTrigger = React.forwardRef(({ className, children, ...props 
     onPointerEnter={(event) => {
       event.preventDefault();
     }}
+    onPointerOver={(event) => {
+      event.preventDefault();
+    }}
     ref={ref}
     className={cn(navigationMenuTriggerStyle(), "group", className)}
     {...props}>

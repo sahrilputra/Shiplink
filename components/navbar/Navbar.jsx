@@ -56,6 +56,7 @@ export const Navbar = () => {
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger
+                                    
                                     onPointerEnter={(event) => event.preventDefault()}
                                     onPointerLeave={(event) => event.preventDefault()}
                                 >
