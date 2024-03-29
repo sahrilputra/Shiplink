@@ -83,6 +83,15 @@ export function VerificationTable(
             accessorKey: "tracking_id",
             header: "Tracking ID",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.tracking_id}
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "customer_name",
@@ -148,6 +157,15 @@ export function VerificationTable(
             accessorKey: "updated_at",
             header: "Last Update",
             width: 200,
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.updated_at}
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "status",
