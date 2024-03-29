@@ -1,4 +1,4 @@
-import { Poppins } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 // import localFont from 'next/font/local'
 
 import './globals.scss'
@@ -19,10 +19,10 @@ import Provider from '@/components/providers/Provider'
 
 // })
 
-export const poppins = Poppins({
+export const roboto = Roboto({
   subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-poppins',
+  weight: ['100', '300', '400', '500', '700', '900'],
+  variable: '--font-roboto',
   display: 'swap',
 })
 
@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
       <body
         className={cn(
           "min-h-screen font-sans antialiased",
-          poppins.variable
+          roboto.variable
         )}
       >
         <Provider>

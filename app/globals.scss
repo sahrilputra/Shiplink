@@ -12,11 +12,20 @@
 
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('../public/font/Poppins/Poppins-Medium.ttf');
+  font-family: 'Roboto';
+  src: url('../public/font/Roboto/Roboto-Medium.ttf');
   font-weight: 200;
   font-style: normal;
+  font-variant-numeric: tabular-nums;
 }
+
+// @font-face {
+//   font-family: 'Poppins';
+//   src: url('../public/font/Poppins/Poppins-Medium.ttf');
+//   font-weight: 200;
+//   font-style: normal;
+//   font-variant-numeric: tabular-nums;
+// }
 
 
 // body {
@@ -24,7 +33,7 @@
 // }
 
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
   // font-weight: 200;
 }
 

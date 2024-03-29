@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["poppins", "sans-serif"],
+        sans: ["roboto", "sans-serif"],
       },
       fontWeight: {
         black: 900,
