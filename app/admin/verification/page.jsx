@@ -33,7 +33,7 @@ export default function VerificationPages() {
         date_start: "",
         date_end: "",
         tracking_id: "",
-        status: "",
+        status: "Declared",
         page: 1,
         limit: 10,
         index: 0,
@@ -96,11 +96,12 @@ export default function VerificationPages() {
             keyword: event.target.value
         });
     };
-    const [selectedTab, setSelectedTab] = useState("All");
+    const [selectedTab, setSelectedTab] = useState("Unverified");
     console.log("parent : ", selectedTab)
 
     // const filterData = selectedTab === 'All' ? data : data.filter(item => item.CustomsStatus === selectedTab);
-    const handlerSelectedTab = (tab) => {
+    const handlerSelectedTab = async (tab) => {
+        console.log("🚀 ~ handlerSelectedTab ~ tab:", tab)
         setSelectedTab(tab);
         setIsSkeleton(true);
         if (tab === 'All') {
@@ -112,16 +113,15 @@ export default function VerificationPages() {
         } else if (tab === 'Unverified') {
             setQuery({
                 ...query,
-                status: "Declared"
+                status: "Declared",
             })
-            setIsSkeleton(false);
         } else {
             setQuery({
                 ...query,
-                status: tab
+                status: "Verified"
             })
-            setIsSkeleton(false);
         }
+        console.log("🚀 ~ handlerSelectedTab ~ query:", query)
     }
 
     const reloadData = () => {
@@ -147,7 +147,11 @@ export default function VerificationPages() {
                         </div>
                     </div>
                     <div className={`${styles.menus}`}>
-                        <VerificationMenus selectedTab={setSelectedTab} isSelected={selectedTab} handlerTab={handlerSelectedTab} />
+                        <VerificationMenus
+                            selectedTab={setSelectedTab}
+                            isSelected={selectedTab}
+                            handlerTab={handlerSelectedTab}
+                        />
                     </div>
                 </div>
                 <div className={styles.childContent}>

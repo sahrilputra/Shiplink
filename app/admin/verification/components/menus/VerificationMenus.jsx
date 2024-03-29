@@ -11,11 +11,12 @@ export const VerificationMenus = ({ selectedTab, isSelected, handlerTab }) => {
         <Menus>
             <div className="">
                 <button
-                    className={`${isSelected === "All" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-                    onClick={() => handlerTab("All")}
+                    onClick={() => handlerTab("Unverified")}
+                    className={`${isSelected === "Unverified" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                 >
-                    <div className="">All</div>
+                    <div className="">Unverified</div>
                 </button>
+
             </div>
             <div className="">
                 <button
@@ -27,10 +28,10 @@ export const VerificationMenus = ({ selectedTab, isSelected, handlerTab }) => {
             </div>
             <div className="">
                 <button
-                    onClick={() => handlerTab("Unverified")}
-                    className={`${isSelected === "Unverified" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                    className={`${isSelected === "All" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                    onClick={() => handlerTab("All")}
                 >
-                    <div className="">Unverified</div>
+                    <div className="">All</div>
                 </button>
             </div>
         </Menus>
