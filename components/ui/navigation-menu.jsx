@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 const NavigationMenu = React.forwardRef(({ className, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Root
     ref={ref}
+
     className={cn(
       "relative z-10 flex max-w-max flex-1 items-center justify-center",
       className
@@ -38,6 +39,9 @@ const navigationMenuTriggerStyle = cva(
 
 const NavigationMenuTrigger = React.forwardRef(({ className, children, ...props }, ref) => (
   <NavigationMenuPrimitive.Trigger
+    onPointerEnter={(event) => {
+      event.preventDefault();
+    }}
     ref={ref}
     className={cn(navigationMenuTriggerStyle(), "group", className)}
     {...props}>
