@@ -83,6 +83,7 @@ export function VerificationTable(
             accessorKey: "tracking_id",
             header: "Tracking ID",
             className: "text-xs",
+            size: 40,
             cell: ({ row }) => {
                 return (
                     <div className="text-xs"
@@ -95,34 +96,45 @@ export function VerificationTable(
         },
         {
             accessorKey: "customer_name",
-            header: () => {
+            header: "Customer",
+            cell: ({ row }) => {
                 return (
-                    <div
-                        className="cursor-pointer select-none"
-                        onClick={() => {
-                            setSorting([{ id: "tracking_id", desc: !isSortedDesc }]);
-                            setIsSortedDesc(!isSortedDesc);
-                        }}
-                    >
-                        <div className="flex flex-row gap-2 items-center">
-                            Customer Name
-                            <>
-                                {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
-                            </>
-                        </div>
-
+                    <div className="text-xs flex flex-col flex-wrap">
+                        <span className='text-[10px] leading-3 tracking-wider  '
+                            style={{ fontFamily: 'roboto' }}
+                        >{`${row.original.customer_id}`}</span>
+                        <span>{`${row.original.customer_name}`}</span>
                     </div>
-                );
-            },
+                )
+            }
+
         },
         {
             accessorKey: "address",
             header: "Origin",
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
+                console.log("🚀 ~ PackageDetails ~ countryCode:", countryCode)
                 return (
-                    <div className="text-xs">
-                        {`${row.original.warehouse_name_arrival} Warehouse - ${row.original.country_name_arrival}`}
-                    </div>
+                    <>
+                        {
+                            row.original.warehouse_name_arrival === null && row.original.warehouse_name_arrival === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            <span className='text-nowrap'>WH  {`${row.original.warehouse_name_arrival}`}</span>
+
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
                 )
             }
         },
@@ -130,24 +142,24 @@ export function VerificationTable(
             accessorKey: "destination",
             header: "Destination",
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
                     <>
                         {
-                            row.original.status === "Hold For Pickup" ? (
-                                <div className="text-xs">
-                                    {`HFP - ${row.original.warehouse_name_destination}`}
-                                </div>
-                            ) : row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ? (
-                                <div className="text-xs">
-                                    -
-                                </div>
-                            ) : (
-                                <>
-                                    <div className="text-xs">
-                                        {`${row.original.warehouse_name_destination !== null ? row.original.warehouse_name_destination : "-"} Warehouse - ${row.original.country_code_destination}`}
-                                    </div>
-                                </>
-                            )
+                            row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            <span className='text-nowrap'>WH  {`${row.original.warehouse_name_destination}`}</span>
+                                        </div>
+                                    </>
+                                )
                         }
                     </>
                 )
@@ -156,24 +168,24 @@ export function VerificationTable(
         {
             accessorKey: "updated_at",
             header: "Last Update",
-            width: 200,
+            size: 150,
             cell: ({ row }) => {
                 return (
-                    <div className="text-xs"
-                        style={{ fontFamily: 'roboto' }}
-                    >
-                        {row.original.updated_at}
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.updated_at}</span>
                     </div>
                 )
             }
         },
         {
             accessorKey: "status",
-            width: 100,
             header: ({ getSorting }) => {
                 return (
                     <div
-                        className="cursor-pointer select-none w-[100%] text-center"
+                        className="cursor-pointer select-none w-[150px] text-center"
                         onClick={() => {
                             setSorting([{ id: "status", desc: !isSortedDesc }]);
                             setIsSortedDesc(!isSortedDesc);
@@ -200,7 +212,7 @@ export function VerificationTable(
         {
             id: "Action",
             header: "Action",
-            width: 50,
+            size: 30,
             cell: ({ row }) => {
                 return (
                     <div className="w-[60px]" key={row}>
@@ -287,6 +299,7 @@ export function VerificationTable(
                                 const isFirstHeader = index === 0;
                                 return (
                                     <TableHead
+                                        style={{ width: `${header.getSize()}px` }}
                                         key={header.id}
                                         className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
                                     >
@@ -338,9 +351,10 @@ export function VerificationTable(
                                     className={row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : ""}
                                 >
                                     {row.getVisibleCells().map((cell) => (
+                                        console.log("🚀 ~ cell:", cell),
                                         <TableCell
+                                            style={{ width: `${cell.column.getSize()}px` }}
                                             key={cell.id}
-                                            style={{ width: cell.column.columnDef.width }}
                                             className={`${cell.isLast ? "w-[60px]" : cell.isFirst ? "w-[50px]" : ""} text-xs  ${expandedRows[row.id] && "bg-blue-100 hover:bg-blue-100"}`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
