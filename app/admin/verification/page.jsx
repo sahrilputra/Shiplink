@@ -106,20 +106,44 @@ export default function VerificationPages() {
         setIsSkeleton(true);
         if (tab === 'All') {
             setQuery({
-                ...query,
-                status: ""
+                status: "",
+                page: 1,
+                limit: 10,
+                index: 0,
             })
             setIsSkeleton(false);
         } else if (tab === 'Unverified') {
             setQuery({
-                ...query,
+                page: 1,
+                limit: 10,
+                index: 0,
                 status: "Declared",
             })
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
         } else {
             setQuery({
-                ...query,
+                page: 1,
+                limit: 10,
+                index: 0,
                 status: "Verified"
             })
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
         }
         console.log("🚀 ~ handlerSelectedTab ~ query:", query)
     }

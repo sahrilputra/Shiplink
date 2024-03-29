@@ -20,6 +20,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import NextLink from 'next/link'
 import axios from 'axios'
 export const ExpandedTable = (
@@ -142,23 +150,35 @@ export const ExpandedTable = (
                             <p className='font-light text-xs'>{item?.package_length || "0"} {height_unit} x {item?.package_width || "0"} {height_unit} x  {item?.package_height || "0"} {height_unit} | {item?.package_weight || "0"}  {item?.package_weight_unit || "0"}</p>
                         </div>
                         <div className="">
-                            <Select>
-                                <SelectTrigger className="w-[180px] text-xs h-[30px] rounded-sm px-2 py-0" >
-                                    <SelectValue placeholder="Invoice" />
-                                </SelectTrigger>
-                                <SelectContent className="text-xs">
+                            <DropdownMenu modal >
+                                <DropdownMenuTrigger
+                                    asChild
+                                >
+                                    <Button
+                                        variant="ghost"
+                                        className="h-[30px] rounded-sm px-4 py-0 bg-white"
+                                    >
+                                        <p className='text-xs font-light'>Invoice</p>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="text-xs">
                                     {
-                                        filterInvoice.map((item, index) => (
-                                            <SelectItem key={index} className="text-xs text-myBlue" value={index} >
-                                                {/* <NextLink key={index} href={`https://sla.webelectron.com/api/Package/downloadfile?fullName=${item.images}`} passHref> */}
-                                                invoice {index + 1}
-                                                {/* </NextLink> */}
-                                            </SelectItem>
-                                        ))
+                                        filterInvoice.length > 0 ? (
+                                            filterInvoice.map((item, index) => (
+                                                <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                    <DropdownMenuItem key={index} className="text-xs text-myBlue" value={index}>
+                                                        invoice {index + 1}
+                                                    </DropdownMenuItem>
+                                                </NextLink>
+                                            ))
+                                        ) : (
+                                            <DropdownMenuItem
+                                                disabled={true}
+                                                className="text-xs text-myBlue text-center">No Invoice</DropdownMenuItem>
+                                        )
                                     }
-
-                                </SelectContent>
-                            </Select>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                         <div className=" flex flex-row justify-center gap-2 items-center">
                             <Button
