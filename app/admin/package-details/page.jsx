@@ -47,6 +47,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { DeletePackage } from './components/dialog/DeletePackage'
 import { PackageMenus } from './components/menus/packageMenus'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
+
 export default function PackageDetails() {
 
     const [rowSelection, setRowSelection] = React.useState({})
@@ -161,7 +162,7 @@ export default function PackageDetails() {
         {
             accessorKey: "select",
             id: "select",
-            size: 50,
+            size: 40,
             header: ({ table }) => {
                 return (
                     <div className="w-[30px] flex justify-center items-center">
@@ -190,25 +191,47 @@ export default function PackageDetails() {
         },
         {
             accessorKey: "tracking_id",
-            header: "Tracking ID",
+            header: "Package ID",
             className: "text-xs",
+            size: 40,
         },
         {
             accessorKey: "customer_name",
-            header: "Customer Name",
-        },
-        {
-            accessorKey: "customer_email",
-            header: "Email",
+            header: "Customer",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs">
+                        {`${row.original.customer_id} - ${row.original.customer_name}`}
+                    </div>
+                )
+            }
+
         },
         {
             accessorKey: "address",
             header: "Origin",
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
+                console.log("🚀 ~ PackageDetails ~ countryCode:", countryCode)
                 return (
-                    <div className="text-xs">
-                        {`${row.original.warehouse_name_arrival} Wr - ${row.original.country_name_arrival}`}
-                    </div>
+                    <>
+                        {
+                            row.original.warehouse_name_arrival === null && row.original.warehouse_name_arrival === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            WH {`${row.original.warehouse_name_arrival}`}
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
                 )
             }
         },
@@ -216,11 +239,28 @@ export default function PackageDetails() {
             accessorKey: "destination",
             header: "Destination",
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
                     <>
-                        <div className="text-xs">
+                        {
+                            row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            WH {`${row.original.warehouse_name_destination}`}
+                                        </div>
+                                    </>
+                                )
+                        }
+                        {/* <div className="text-xs">
                             {`${row.original.warehouse_name_destination} Wr - ${row.original.country_code_destination}`}
-                        </div>
+                        </div> */}
                     </>
                 )
             }
@@ -332,6 +372,7 @@ export default function PackageDetails() {
                                 <p className=" text-blue-900 text-xs font-normal">Total Active Packages : {packageTotal} </p>
                             </div>
                         </div>
+
                     </div>
                     <div className={`${styles.childContent} gap-[15px]`}>
                         <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
@@ -415,6 +456,7 @@ export default function PackageDetails() {
                                                 <TableCell
                                                     key={cell.id}
                                                     className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+
                                                 >
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>

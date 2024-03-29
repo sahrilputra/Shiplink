@@ -44,7 +44,7 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
     const height_unit = item?.package_height_unit || "cm"
     const handleSave = async (data) => {
         console.log("data : ", data)
-        setExpandedRows({})
+        
         try {
             const response = await axios.post(
                 `/api/admin/verification/setVerified`,
@@ -151,8 +151,8 @@ export const ExpandedTable = ({ content, edit, item, trackingID, reloadData, ima
                                 className=" h-[30px] rounded-sm px-4 py-0"
                                 size="sm"
                                 onClick={() => {
+                                    setExpandedRows({})
                                     handleSave(trackingID)
-
                                 }}
                             >
                                 <p className='text-xs font-light'>Mark As Verified</p>
