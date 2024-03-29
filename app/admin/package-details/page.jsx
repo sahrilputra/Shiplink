@@ -258,9 +258,6 @@ export default function PackageDetails() {
                                     </>
                                 )
                         }
-                        {/* <div className="text-xs">
-                            {`${row.original.warehouse_name_destination} Wr - ${row.original.country_code_destination}`}
-                        </div> */}
                     </>
                 )
             }
@@ -291,6 +288,24 @@ export default function PackageDetails() {
             accessorKey: "bin_location",
             header: "Bin Location",
             size: 50,
+            cell: ({ row }) => {
+                return (
+                    <>
+                        {
+                            row.original.bin_location === null || row.original.bin_location === "Undefined" || row.original.bin_location === "undefined" ?
+                                (
+                                    <>
+                                        <p className="text-xs">-</p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p className="text-xs">{row.original.bin_location}</p>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             id: "Action",
