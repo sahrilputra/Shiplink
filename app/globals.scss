@@ -19,22 +19,34 @@
   font-variant-numeric: tabular-nums;
 }
 
-// @font-face {
-//   font-family: 'Poppins';
-//   src: url('../public/font/Poppins/Poppins-Medium.ttf');
-//   font-weight: 200;
-//   font-style: normal;
-//   font-variant-numeric: tabular-nums;
-// }
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/font/Poppins/Poppins-Medium.ttf');
+  font-weight: 200;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
 
+// Pengaturan font untuk elemen yang bukan angka
+:not(:matches([class*='number'])) {
+  font-family: 'Poppins', sans-serif;
+}
+
+// Pengaturan font untuk elemen yang merupakan angka
+[class*='number'] {
+  font-family: 'Roboto', sans-serif;
+}
 
 // body {
 //   background-color: #ECEDEE;
 // }
 
 * {
-  font-family: 'Roboto', sans-serif;
-  // font-weight: 200;
+  font-family: 'Poppins', sans-serif, 'Roboto';
+  font-feature-settings: "tnum";
+  //font-weight: 200;
+  -webkit-font-feature-settings: "tnum";
+  -moz-font-feature-settings: "tnum";
 }
 
 @layer base {
@@ -72,7 +84,7 @@
     --primary: #CC0019;
     --primary-foreground: #cc001877;
     --secondary: #00509D;
-    --secondary-foreground : #00519d6c;
+    --secondary-foreground: #00519d6c;
     --blue-dark: #3E9EFF;
     --blue-light: #D1E9FF;
     --green-status: #50CD8D;
@@ -128,8 +140,9 @@
     background-color: #ECEDEE;
     height: 100vh;
   }
-  main{
-    height:  100vh;
+
+  main {
+    height: 100vh;
   }
 }
 

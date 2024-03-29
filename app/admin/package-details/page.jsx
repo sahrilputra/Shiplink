@@ -165,7 +165,7 @@ export default function PackageDetails() {
             size: 40,
             header: ({ table }) => {
                 return (
-                    <div className="w-[30px] flex justify-center items-center">
+                    <div className="w-[30px] flex justify-center items-center ">
                         <Checkbox
                             checked={
                                 table.getIsAllPageRowsSelected() ||
@@ -196,9 +196,9 @@ export default function PackageDetails() {
             size: 40,
             cell: ({ row }) => {
                 return (
-                    <div className="text-xs flex flex-col flex-wrap">
+                    <div className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
-                            style={{ fontFamily: '' }}
+                            style={{ fontFamily: 'roboto' }}
                             className=''>{`${row.original.tracking_id}`}</span>
                     </div>
                 )
@@ -210,7 +210,9 @@ export default function PackageDetails() {
             cell: ({ row }) => {
                 return (
                     <div className="text-xs flex flex-col flex-wrap">
-                        <span className='text-[10px] leading-3 tracking-wider font-bold '>{`${row.original.customer_id}`}</span>
+                        <span className='text-[10px] leading-3 tracking-wider font-bold '
+                            style={{ fontFamily: 'roboto' }}
+                        >{`${row.original.customer_id}`}</span>
                         <span>{`${row.original.customer_name}`}</span>
                     </div>
                 )
@@ -294,6 +296,16 @@ export default function PackageDetails() {
                     </div>
                 );
             },
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.updated_at}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "bin_location",
@@ -310,7 +322,9 @@ export default function PackageDetails() {
                                     </>
                                 ) : (
                                     <>
-                                        <p className="text-xs">{row.original.bin_location}</p>
+                                        <p
+                                            style={{ fontFamily: 'roboto' }}
+                                            className="text-xs number tabular-nums">{row.original.bin_location}</p>
                                     </>
                                 )
                         }

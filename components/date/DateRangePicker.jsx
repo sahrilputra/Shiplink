@@ -25,11 +25,13 @@ export function DatePickerWithRange({
 
     useEffect(() => {
         mySetdate(date);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date])
 
     return (
-        <div className={cn("grid gap-2 ", className)}>
+        <div
+            style={{ fontFamily: 'roboto' }}
+            className={cn("grid gap-2 ", className)}>
             <Popover>
                 <PopoverTrigger asChild>
                     <div className="flex flex-row justify-between bg-muted/50 border border-zinc-300 rounded bg-slate-100">
@@ -37,6 +39,7 @@ export function DatePickerWithRange({
                             id="date"
                             variant={"outline"}
                             size="sm"
+                            style={{ fontFamily: 'roboto' }}
                             className={cn(
                                 "shadow-none w-[180px] text-left text-xs h-0 py-4 font-normal px-3 rounded-r-none border-none pl-2 bg-none   ",
                                 !date && "text-muted-foreground relative"
