@@ -85,14 +85,25 @@ export default function PackageDetails() {
         });
 
         setQuery({
-            ...query,
             date_start: date.from,
             date_end: date.to,
+            page: 1,
+            limit: 10,
+            index: 0,
         });
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        });
+
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
     };
     const handleSearchChange = (event) => {
         setQuery({
-            ...query,
             keyword: event.target.value
         });
     };
