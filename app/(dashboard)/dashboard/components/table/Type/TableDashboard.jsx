@@ -3,7 +3,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { data } from 'autoprefixer'
 import { Button } from '@/components/ui/button'
 // import { PlusIcons } from '@/components/icons/iconCollection'
-import { Plus } from 'lucide-react'
+import { ExternalLink, Plus } from 'lucide-react'
 import { SelectBroker, SelectWarehouse, PARSInput, UploadInvoice, EntryNumber } from '../../ActionGroup/Action'
 import {
     Form,
@@ -21,7 +21,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { DeclareForms } from '../DeclareForms'
 import { PaymentsDialog } from '../../dashboardMenus/PaymentsV2/Payments'
 import { useToast } from '@/components/ui/use-toast'
-
+import NextLink from 'next/link'
 const formSchema = yup.object().shape({
     package_content: yup.array().of(
         yup.object().shape({
@@ -144,7 +144,14 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                                     <TableHead className="p-0 h-8 px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
                                     <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs">Description</TableHead>
                                     <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
-                                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-[90px]">HS Code</TableHead>
+                                    <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-[90px]">
+                                        <div className="text-xs flex flex-row items-center gap-2">
+                                            HS Code
+                                            <NextLink passHref href={'https://uscensus.prod.3ceonline.com/#!%23current-question-pos'}>
+                                                <ExternalLink className='text-[11px] text-myBlue' width={12} height={12} />
+                                            </NextLink>
+                                        </div>
+                                    </TableHead>
                                     <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-max text-nowrap text-center">Made in</TableHead>
                                     <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                                 </TableHeader>
