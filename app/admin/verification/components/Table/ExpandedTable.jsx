@@ -110,7 +110,7 @@ export const ExpandedTable = (
                                 <div className="flex flex-col relative w-[150px] h-10 justify-start items-start">
                                     <p className=' top-0 left-0 text-myBlue text-xs h-[20px]'>Value</p>
                                     <div className="h-5 w-full flex justify-start items-end">
-                                        <p className=' text-xs font-light'>$ {item.value}</p>
+                                        <p className=' text-xs font-light'>$ {item.value > 0 ? item.value : "-"}</p>
                                     </div>
                                 </div>
                                 <div className="flex flex-col relative w-[50%] h-10 justify-start items-start">

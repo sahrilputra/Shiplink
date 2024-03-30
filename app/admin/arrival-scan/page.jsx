@@ -84,17 +84,17 @@ export default function ArrivalScanPage() {
             package_weight: "",
             package_weight_unit: "Ibs",
             bin_location: "",
-            total_price: 1,
+            total_price: 0,
             package_content: [
                 {
                     itemID: "",
                     qty: 1,
-                    value: 1,
+                    value: 0,
                     desc: "",
                     hs_desc: "",
                     hs_code: "",
                     made_in: "",
-                    subtotal: 1,
+                    subtotal: 0,
                 }
             ],
             box_images: [
@@ -169,7 +169,7 @@ export default function ArrivalScanPage() {
     const onError = (error) => {
         console.log("Form Errors", error)
     }
-    const [total, setTotal] = useState(Number(1));
+    const [total, setTotal] = useState(Number(0));
 
     const calculateTotal = () => {
         let totalPrice = 0;
