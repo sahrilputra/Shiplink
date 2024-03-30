@@ -17,6 +17,7 @@ import Image from 'next/image';
 import { MembershipTag } from '@/components/membership/MembershipTag';
 import { ActivateUser } from './components/menus/dialog/ActivateUser';
 import { CustomerPackageTabled } from './components/userPackageData/dataList';
+import { ChangeMembership } from './components/menus/dialog/ChangeMembership';
 // import { CustomerInvoiceTable } from '../components/table/invoiceTable/CustomerInvoiceTable';
 export default function UserPage({ params }) {
     const router = useRouter();
@@ -30,6 +31,7 @@ export default function UserPage({ params }) {
     const [openDelete, setOpenDelete] = useState(false);
     const [openSuspend, setOpenSuspend] = useState(false);
     const [openActivate, setOpenActivate] = useState(false);
+    const [openMembership, setOpenMembership] = useState(false);
     const fetchData = useCallback(async () => {
         try {
             const userDataResponse = await axios.post(`/api/admin/customer_manager/list`, { keyword: userID });
@@ -96,6 +98,8 @@ export default function UserPage({ params }) {
     return (
         <>
             {/* {loading && <Loaders />} */}
+
+            <ChangeMembership setOpen={setOpenMembership} open={openMembership} data={data} />
             <ActivateUser open={openActivate} setOpen={setOpenActivate} deleteID={data?.customer_id} reloadData={reloadData} />
             <SuspendUser deleteID={data?.customer_id} open={openSuspend} setOpen={setOpenSuspend} reloadData={reloadData} />
             <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
@@ -134,14 +138,16 @@ export default function UserPage({ params }) {
                                     type="button"
                                     onClick={handleDisable}
                                 >
-                                    <p className="text-xs">Edit Profiles</p>
+                                    <p className="text-xs">Edit Profile</p>
                                 </Button>
                                 <MoreAction
                                     setOpenPassword={setOpenPassword}
                                     setOpenDelete={setOpenDelete}
                                     setOpenSuspend={setOpenSuspend}
                                     setOpenActivate={setOpenActivate}
+                                    setOpenMembership={setOpenMembership}
                                     customerID={data?.customer_id}
+                                    isDisable={disable}
                                 />
                             </div>
                         </div>

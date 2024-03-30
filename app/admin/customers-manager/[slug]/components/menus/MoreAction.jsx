@@ -11,11 +11,23 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import NextLink from 'next/link'
 
-export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID, setOpenSuspend, setOpenActivate }) => {
+export const MoreAction = (
+    {
+        setOpenPassword,
+        setOpenDelete,
+        setOpenMembership,
+        customerID,
+        setOpenSuspend,
+        setOpenActivate,
+        isDisable
+    }) => {
     console.log("🚀 ~ MoreAction ~ customerID:", customerID)
     return (
         <DropdownMenu >
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger
+                asChild
+                disabled={!isDisable}
+            >
                 <Button
                     variant="redOutline"
                     size="xs"
@@ -39,6 +51,11 @@ export const MoreAction = ({ setOpenPassword, setOpenDelete, customerID, setOpen
                         <p className='text-xs'>View Invoices</p>
                     </DropdownMenuItem>
                 </NextLink>
+                <DropdownMenuItem
+                    onClick={() => setOpenMembership(true)}
+                >
+                    <p className='text-xs'>Change Membership</p>
+                </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => setOpenPassword(true)}
                 >
