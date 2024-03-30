@@ -327,12 +327,12 @@ export const DeclareContentInput = ({
                         name={`package_content[${index}].made_in`}
                         control={forms.control}
                         render={({ field }) => {
-                            const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
+                            // const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
 
-                            // Jika nilai field.value belum terisi (null atau undefined), atur nilai default
-                            if (!field.value) {
-                                forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
-                            }
+                            // // Jika nilai field.value belum terisi (null atau undefined), atur nilai default
+                            // if (!field.value) {
+                            //     forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
+                            // }
                             return (
                                 <>
                                     <FormItem className="flex flex-col">
@@ -351,7 +351,8 @@ export const DeclareContentInput = ({
                                                             ? countryList.find(
                                                                 (language) => language.country_code === field.value
                                                             )?.country_code
-                                                            : "CAN"}
+                                                            : "Country"
+                                                        }
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
