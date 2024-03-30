@@ -350,11 +350,11 @@ export function VerificationTable(
                             <>
                                 <TableRow
                                     onClick={() =>
-                                        !expandedRows[row.id] ? toggleRow(row.id) : null
+                                        toggleRow(row.id)
                                     }
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={`${(row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : "")} cursor-pointer hover:bg-blue-50 ${expandedRows[row.id] && "hover:bg-none cursor-default"}`}
+                                    className={`${(row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : "")} cursor-pointer hover:bg-blue-50 `}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
