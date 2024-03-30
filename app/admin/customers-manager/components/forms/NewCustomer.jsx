@@ -89,6 +89,10 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
         fetchData();
     }, [query]);
 
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setQuery({ ...query, keyword: e });
+    }
     const handleSelectCountry = (code, name) => {
         setSelectedCountry({
             country_code: code,
@@ -226,6 +230,7 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                                         <PopoverContent className="w-[400px] p-0">
                                             <Command className="w-full">
                                                 <CommandInput
+                                                   onValueChange={(e) => handleCommandChange(e)}
                                                     placeholder="Search Country..."
                                                     className="h-9 w-full text-xs"
                                                 />
