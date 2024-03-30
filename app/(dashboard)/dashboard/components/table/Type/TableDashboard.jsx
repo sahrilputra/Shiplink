@@ -36,13 +36,22 @@ const formSchema = yup.object().shape({
         })
     ),
     total: yup.number(),
-    broker: yup.string().required(),
-    invoice: yup.array().required("Please upload an invoice"),
+    broker: yup.string(),
+    invoice: yup.array().
+        when('broker', {
+            is: "Use Shiplink Broker",
+            then: (schema) => schema.min(1, "Please upload at least one invoice").required("Please upload an invoice"),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     pars: yup.string(),
     entry_number: yup.string(),
-    warehouse: yup.string().required(),
+    warehouse: yup.string().required("Please select a warehouse"),
 })
-
+// invoice: yup.array().min(1, "Please upload at least one invoice").required("Please upload an invoice")
+// .when('broker', {
+//     is: "Use Own Broker",
+//     then: (schema) => schema.notRequired(),
+// }),
 export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id, reload, arrivalCode }) => {
     const { toast } = useToast()
     const form = useForm({
@@ -69,9 +78,11 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
         },
 
         mode: "onChange",
+
     })
 
-    console.log("🚀 ~ TableDashboard ~ invoice:", form.watch('invoice'))
+
+    console.log("🚀 ~ TableDashboard ~ Errors:", form.errors); // Fix: Removed incomplete console.log statement
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "package_content",
@@ -105,13 +116,15 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
                 console.log("Form has errors", form.formState.errors);
                 const errors = form.formState.errors;
                 let errorString = "";
-                for (const key in errors) {
-                    errorString += `${errors[key].message} \n`;
-                }
+                Object.keys(errors).forEach((key, index) => {
+                    errorString += `${errors[key].message}`;
+                    if (index !== Object.keys(errors).length - 1) {
+                        errorString += ' And ';
+                    }
+                });
                 toast({
                     title: `Errors!`,
                     description: errorString,
-                    status: 'success',
                 });
 
                 console.log("Form String Errors", errorString);
@@ -120,6 +133,8 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     }
     console.log("Declare Content : ", form.watch('package_content'));
     console.log("PARS : ", form.watch('pars'));
+    console.log("PARS : ", form.watch('invoice'));
+    console.log("WATCH ERORRS : ", form.formState.errors);
 
     return (
         <>

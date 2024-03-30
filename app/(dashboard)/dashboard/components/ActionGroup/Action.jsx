@@ -60,14 +60,16 @@ export const SelectBroker = ({ onSelect }) => {
 }
 
 export const UploadInvoice = ({ forms }) => {
+    console.log("🚀 ~ UploadInvoice ~ forms:", forms.watch('invoice'))
     return (
         <>
             <div className=" h-9 rounded-lg justify-start items-start inline-flex">
                 <FormField
                     className="w-full flex flex-row justify-center items-end"
                     name={'invoice'}
+                    required="Invoice is required"
                     control={forms.control}
-                    render={({ field }) => (
+                    render={({ field, formState }) => (
                         <>
                             <FormItem className="w-full flex flex-row items-center text-sm">
                                 <FormControl>
@@ -80,6 +82,7 @@ export const UploadInvoice = ({ forms }) => {
                                                 className="w-[150px] file:hidden  h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400 cursor-pointer hover:bg-stone-50/20"
                                                 type="file"
                                                 id="myFile"
+                                                required
                                                 multiple
                                                 accept=".pdf, .doc, .docx"
                                                 placeholder="My File"
