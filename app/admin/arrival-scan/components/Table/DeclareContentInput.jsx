@@ -167,7 +167,7 @@ export const DeclareContentInput = ({
                                     <FormControl>
                                         <Input
                                             autoComplete="off"
-                                            min="0"
+                                            min="1"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="width"
                                             type="number"
@@ -194,14 +194,17 @@ export const DeclareContentInput = ({
                                     <FormControl>
                                         <Input
                                             autoComplete="off"
-                                            min="0"
+                                            min="1"
                                             className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
                                             id="value"
+                                            plac
                                             type="number"
                                             onChange={() =>
                                                 countingSubtotal({ value: field })
                                             }
-                                            placeholder="0" {...field} />
+                                            placeholder="1"
+                                            {...field}
+                                        />
                                     </FormControl>
                                 </FormItem>
                             </>

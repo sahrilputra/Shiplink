@@ -117,12 +117,12 @@ export const DeclareContet = ({
                                 onClick={() => append({
                                     itemID: "",
                                     qty: 1,
-                                    value: 0,
+                                    value: 1,
                                     desc: "",
                                     hs_desc: "",
                                     hs_code: "",
                                     made_in: "",
-                                    subtotal: 0,
+                                    subtotal: 1,
                                 })}
                             >
                                 <p className='text-xs'>Add Other Content</p>
