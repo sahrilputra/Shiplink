@@ -36,11 +36,11 @@ export const ImageTable = ({ images = null }) => {
     return (
         <>
             <ImageDisplay open={openImage} setOpen={setOpenImage} images={filteredImages} />
-            <Carousel>
-                <CarouselContent>
+            <Carousel className={`${filteredImages?.length > 0 ? "w-[60%]" : "w-[200px]"}`}>
+                <CarouselContent className="items-center">
                     {
                         filteredImages?.length === 0 ? (
-                            <CarouselItem key={1} className="basis-1">
+                            <CarouselItem key={1} className="basis-1 items-center">
                                 <div className="p-1">
                                     <Card
                                         className="p-1 w-[200px]"
@@ -59,7 +59,7 @@ export const ImageTable = ({ images = null }) => {
                     }
 
                     {Array.from({ length: filteredImages?.length }).map((_, index) => (
-                        <CarouselItem key={index} className="basis-1/3">
+                        <CarouselItem key={index} className="basis-1/3 ">
                             <div className="p-1">
                                 <Card
                                     className="p-1 w-[200px]"
