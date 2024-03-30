@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
@@ -18,13 +30,16 @@ import { usePDF } from 'react-to-pdf';
 import ReactToPrint, { useReactToPrint } from "react-to-print"
 import axios from "axios";
 
-
 export function InternalCode({ open, setOpen, trackingID, name, userID }) {
-    const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
+    const { toPDF, targetRef } = usePDF({ filename: `${trackingID}.pdf` });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+    const handleDownload = () => {
+        toPDF();
+    };
 
     console.log("Tracking ID :", trackingID)
 
@@ -54,15 +69,57 @@ export function InternalCode({ open, setOpen, trackingID, name, userID }) {
         setData(trackingID)
     }, [trackingID]);
 
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="w-max">
-                <DialogHeader>
-                    <DialogTitle className="text-lg font-bold">Internal Code!</DialogTitle>
-                </DialogHeader>
+    const [img, setImage] = useState("");
 
-                <div className="w-max" ref={componentRef}>
-                    <div className="border border-neutral-500/50 rounded-sm p-5 " ref={targetRef}>
+    useEffect(() => {
+        try {
+            axios.post(
+                `/api/admin/BarcodeImg`,
+                {
+                    "data": trackingID
+                }
+            ).then((response) => {
+                console.log("🚀 ~ RegisterDialog ~ response:", response)
+                const responseData = response.data;
+                console.log("🚀 ~ ).then ~ responseData:", responseData)
+                setImage(responseData.data);
+
+            }).catch((error) => {
+                console.error(error);
+
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }, [trackingID])
+
+    console.log("🚀 ~ RegisterDialog ~ img:", img)
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    // useEffect(() => {
+    //     const convertImage = async () => {
+    //         const imgURL = `https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`
+    //         const base64String = btoa(imgURL);
+    //         setImage(imgURL)
+    //         console.log("🚀 ~ RegisterDialog ~ base64String:", base64String)
+    //     }
+    //     convertImage();
+    // }, [trackingID])
+    // const imgURL = `https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`
+    // const base64String = btoa(imgURL);
+    // console.log("🚀 ~ RegisterDialog ~ base64String:", base64String)
+    return (
+        <AlertDialog open={open} onOpenChange={setOpen} className="w-max">
+            <AlertDialogContent className="w-max">
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="text-lg font-bold text-center">Package Internal Code</AlertDialogTitle>
+                </AlertDialogHeader>
+
+                <div className="w-max" ref={ref => { componentRef.current = ref; targetRef.current = ref }}>
+                    <div className="border border-neutral-500/50 rounded-sm p-5 w-max ">
                         <Image
                             src={"/logo.png"}
                             width={100}
@@ -78,10 +135,10 @@ export function InternalCode({ open, setOpen, trackingID, name, userID }) {
                         </div>
                         <div className="w-full flex flex-col justify-center items-center p-1">
                             <img
-                                src={`https://sla.webelectron.com/api/Package/barcode_trackingid?tracking_id=${trackingID}`}
+                                src={`${img}`}
                                 style={{ height: '80px', width: "100%", objectFit: "contain" }}
                                 alt="" />
-                                <p className="text-center tracking-wider py-2">{trackingID}</p>
+                            <p className="text-center tracking-wider py-2">{trackingID}</p>
                             {/* <Barcode value={`${trackingID}`}
                                 options={{ format: 'code128', width: '3', lineColor: "#2d2d2d", textMargin: 10, fontSize: 16, height: 70 }}
                                 renderer="svg" className="tracking-wider "
@@ -90,7 +147,7 @@ export function InternalCode({ open, setOpen, trackingID, name, userID }) {
                     </div>
                 </div>
 
-                <DialogFooter>
+                <AlertDialogFooter>
                     <Button
                         variant="redOutline"
                         className="w-full"
@@ -100,15 +157,23 @@ export function InternalCode({ open, setOpen, trackingID, name, userID }) {
                         Print
                     </Button>
                     <Button
-                        variant="destructive"
+                        variant="redOutline"
                         className="w-full"
                         type="submit"
                         onClick={() => toPDF()}
                     >
                         Download
                     </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                    <Button
+                        variant="destructive"
+                        className="w-full"
+                        type="button"
+                        onClick={handleClose}
+                    >
+                        Close
+                    </Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }

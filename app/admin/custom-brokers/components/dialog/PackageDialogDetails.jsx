@@ -39,7 +39,45 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                     <div className="flex flex-row gap-4 items-center">
                         <div className="imageContainer flex flex-col w-[400px] items-center">
                             <Carousel className="w-full ">
-                                <CarouselContent className=" ">
+                                <CarouselContent>
+                                    {
+                                        images?.length === 0 ? (
+                                            <CarouselItem key={1} className="w-full h-full grow-1">
+                                                <div className="p-1 w-full">
+                                                    <Card
+                                                        className="p-1 w-full"
+                                                    >
+                                                        <Image
+                                                            src={'/assets/img-placeholder.svg'}
+                                                            width={200}
+                                                            height={200}
+                                                            alt={`Image`}
+                                                            style={{ objectFit: "contain", width: '100%', height: '250px', }}
+                                                        />
+                                                    </Card>
+                                                </div>
+                                            </CarouselItem>
+                                        ) : null
+                                    }
+
+                                    {Array.from({ length: images?.length }).map((_, index) => (
+                                        <CarouselItem key={index} className=" w-full h-full grow-1">
+                                            <div className="w-full">
+                                                <Card
+                                                    className="p-1 w-full"
+                                                >
+                                                    <img
+                                                        style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
+                                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
+                                                        alt=""
+                                                    />
+
+                                                </Card>
+                                            </div>
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                                {/* <CarouselContent className=" ">
                                     {Array.from({ length: images?.length }).map((_, index) => (
                                         <CarouselItem key={index} className=" w-full h-full grow-1">
                                             <div className="w-full">
@@ -53,7 +91,7 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                                             </div>
                                         </CarouselItem>
                                     ))}
-                                </CarouselContent>
+                                </CarouselContent> */}
                                 <CarouselPrevious className="left-[10px]" />
                                 <CarouselNext className="right-[10px]" />
                             </Carousel>

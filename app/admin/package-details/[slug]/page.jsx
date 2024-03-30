@@ -76,7 +76,9 @@ export default function VerificationPages({ params }) {
     const heightType = data?.package_height_unit || "In";
 
     const [filteredImages, setFilteredImages] = useState([]);
+    const [filterInvoice, setVilterInvoice] = useState([]);
 
+    console.log("🚀 ~ ExpandedTable ~ filterInvoice:", filterInvoice)
     useEffect(() => {
         const removeInvImage = () => {
             if (images) {
@@ -85,6 +87,14 @@ export default function VerificationPages({ params }) {
             }
         };
 
+        const removeNonInvoice = () => {
+            if (images) {
+                const filtered = images.filter(image => isInvoiceImage(image.type));
+                setVilterInvoice(filtered);
+            }
+        };
+
+        removeNonInvoice();
         removeInvImage();
     }, [images]);
 
@@ -101,7 +111,7 @@ export default function VerificationPages({ params }) {
     return (
         <>
             <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={[data?.tracking_id]} />
-            <UpdateStatus open={openStatus} setOpen={setOpenStatus} dataID={data?.tracking_id} statusNow={data?.status} reload={reloadData}/>
+            <UpdateStatus open={openStatus} setOpen={setOpenStatus} dataID={data?.tracking_id} statusNow={data?.status} reload={reloadData} />
             <PackageDialogDetails open={openPackage} setOpen={setOpenPackage} details={data} />
             <InternalCode open={openInternal} setOpen={setOpenInternal} trackingID={data?.tracking_id} name={data?.customer_name} userID={data?.customer_id} />
             <div className={styles.wrapper}>
@@ -183,10 +193,10 @@ export default function VerificationPages({ params }) {
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Location</p>
                                         <p className='text-sm font-bold'>Toronto Warehouse</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>Bin : {data?.bin_location || "-"}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>Bin : {data?.bin_location === "undefined" || data?.bin_location === "Undefined" ? "-" : data?.bin_location}</p>}
                                     </div>
 
-                                    {documents === "" || documents === null ? (
+                                    {/* {documents === "" || documents === null ? (
                                         <Button
                                             variant="secondary"
                                             size="sm"
@@ -211,7 +221,7 @@ export default function VerificationPages({ params }) {
                                             </Link>
                                         </>
                                     )
-                                    }
+                                    } */}
 
 
                                     <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}`} >
@@ -224,6 +234,47 @@ export default function VerificationPages({ params }) {
                                             <p className=' text-xs'>Send Invoice To User</p>
                                         </Button>
                                     </NextLink>
+
+                                    <div className="">
+                                        <DropdownMenu modal >
+                                            <DropdownMenuTrigger
+                                                asChild
+                                            >
+                                                <Button
+                                                    variant="secondary"
+                                                    size="sm"
+                                                    className={`h-[30px] w-full`}
+                                                >
+                                                    <p className='text-xs font-light'>Download Invoice</p>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="text-xs w-full">
+                                                {
+                                                    filterInvoice.length > 0 ? (
+                                                        filterInvoice.map((item, index) => (
+                                                            <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                                <DropdownMenuItem
+                                                                    key={index}
+                                                                    className="text-xs text-myBlue w-[200px] text-center flex flex-row gap-1 items-center justify-center bg-blue-50 hover:bg-blue-100 cursor-pointer"
+                                                                    value={index}
+
+                                                                >
+                                                                    invoice {index + 1}
+                                                                </DropdownMenuItem>
+                                                            </NextLink>
+                                                        ))
+                                                    ) : (
+                                                        <DropdownMenuItem
+                                                            disabled={true}
+                                                            className="text-xs text-myBlue w-[200px] text-center flex flex-row gap-1 items-center justify-center bg-blue-50 "
+                                                        >
+                                                            No Invoice
+                                                        </DropdownMenuItem>
+                                                    )
+                                                }
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -372,7 +423,7 @@ export default function VerificationPages({ params }) {
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Total Item Price</p>
-                                        <p className='text-sm font-bold'>$ {data?.total_price}</p>
+                                        <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>PARS</p>
