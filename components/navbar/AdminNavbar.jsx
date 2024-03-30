@@ -26,7 +26,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import { useSession, signOut } from 'next-auth/react'
 export const AdminNavbars = () => {
     const { data: session } = useSession()
@@ -70,10 +70,13 @@ export const AdminNavbars = () => {
                 </div>
                 <div className="w-[100%] justify-end items-center gap-3 flex py-3 px-10">
                     <NavigationMenu
+                        onMouseOver={(event) => {
+                            event.preventDefault()
+                        }}
                         onPointerEnter={(event) => event.preventDefault()}
                         onPointerLeave={(event) => event.preventDefault()}
                     >
-                        <NavigationMenuList>
+                        <NavigationMenuList >
                             <NavigationMenuItem
                                 onPointerEnter={(event) => event.preventDefault()}
                                 onPointerLeave={(event) => event.preventDefault()}>
