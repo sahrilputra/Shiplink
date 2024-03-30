@@ -111,10 +111,10 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                 formData
             );
 
-            if (response.data.message !== true) {
+            if (response.data.message === false) {
                 toast({
                     title: `Error ${response.data.message}!`,
-                    status: 'success',
+                    status: 'Error',
                 });
             } else {
                 toast({
