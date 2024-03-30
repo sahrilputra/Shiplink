@@ -8,7 +8,19 @@ import { Loaders } from "@/components/ui/loaders";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function CheckoutForm({ totalAmount, close, services, setOpen, trackingId, clientSecret, reload, handleSubmitForms, toggleExpanded }) {
+export default function CheckoutForm(
+    {
+        totalAmount,
+        close,
+        services,
+        setOpen,
+        trackingId,
+        clientSecret,
+        reload,
+        handleSubmitForms,
+        toggleExpanded,
+        type
+    }) {
     const stripe = useStripe();
     const elements = useElements();
     const { toast } = useToast();
@@ -59,7 +71,7 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
             redirect: "if_required",
         });
 
-        setIsLoading(false);
+
         setDisplayForm(false);
         if (error) {
             setMessage(error.message);
@@ -69,17 +81,27 @@ export default function CheckoutForm({ totalAmount, close, services, setOpen, tr
             setMessage("Payment succeeded!");
             setPaymentStatus("succeeded");
             confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
-            handleSubmitForms();
+            if (type === "CrossBorder") {
+                handleSubmitForms();
+            }
+            reload();
             toggleExpanded();
             toast({
                 title: `Sucess!`,
                 description: `Your payment was successful.`,
                 status: 'success',
             });
-            reload();
+            setIsLoading(false);
         } else {
             setMessage("Your payment was not successful, please try again.");
             setPaymentStatus("failed");
+            reload();
+            toast({
+                title: `Failed!`,
+                description: `Your payment was not successful, please try again.`,
+                status: 'Error',
+            });
+            setIsLoading(false);
         }
     };
 

@@ -17,6 +17,7 @@ export default function Dashboard() {
     const [selectedTab, setSelectedTab] = useState("all");
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
+    console.log("🚀 ~ Dashboard ~ data:", data)
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",

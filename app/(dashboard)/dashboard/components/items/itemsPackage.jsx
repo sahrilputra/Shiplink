@@ -229,12 +229,19 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                 {
                     isExpand ? (
                         <div className="expanded transition-transform ease-in-out ">
-                            <ExpandItems tracking_id={tracking_id} handleButtonClick={handleButtonClick} item={item} selectedButton={selectedButton} buttonEnabled={buttonEnabled} reload={reload} />
+                            <ExpandItems
+                                tracking_id={tracking_id}
+                                handleButtonClick={handleButtonClick}
+                                item={item} selectedButton={selectedButton}
+                                buttonEnabled={buttonEnabled}
+                                reload={reload} 
+                                toggleExpanded={toggleExpanded}
+                                />
 
                             <div className="w-[100%] flex justify-center align-middle mx-auto ">
                                 {
                                     selectedButton === "Cross Border Forward" ? (
-                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival}/>
+                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
                                     ) : selectedButton === "Cross Border Pickup" ? (
                                         <>
                                             <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
