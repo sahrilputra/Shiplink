@@ -12,14 +12,29 @@ import {
     NavigationMenuTrigger,
     NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+    DropdownMenuPortal,
+} from "@/components/ui/dropdown-menu"
 import { ShippingLabelIcon, ShippingCalculatorIcon } from '../icons/navbarIcons'
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
-import { LogOutIcon, Settings } from 'lucide-react'
+import { ChevronDown, LogOut, LogOutIcon, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { Skeleton } from '../ui/skeleton'
 import { useSession, signOut } from 'next-auth/react'
+import { Button } from '../ui/button'
 export const Navbar = () => {
 
+    const [openShip, setOpenShip] = useState(false);
+    const [openSupport, setOpenSupport] = useState(false);
+    const [openTrack, setOpenTrack] = useState(false);
+    const [openLang, setOpenLang] = useState(false);
+    const [openProfile, setOpenProfile] = useState(false);
     const [loading, setLoading] = useState(true);
     const { data: session } = useSession()
 
@@ -34,6 +49,8 @@ export const Navbar = () => {
     const handleSingOut = () => {
         signOut()
     }
+
+    console.log("IMAGES : ", session?.user?.img)
 
     const fullName = session ? session.user.name : "";
     const firstName = fullName.split(" ")[0];
@@ -52,156 +69,219 @@ export const Navbar = () => {
                     </Button> */}
                 </div>
                 <div className="w-[100%] justify-end items-center gap-3 flex py-3 px-10">
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger
-                                    
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
-                                >
-                                    Ship
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
-                                    <Link href="/shipping-lebels/new-labels" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-10 flex justify-between `}>
-                                            <p>Shipping Labels</p>
-                                            <ShippingLabelIcon width={20} height={20} />
-                                        </NavigationMenuLink>
-                                    </Link>
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 flex justify-between `}>
-                                            <p>Shipping Calculator</p>
-                                            <ShippingCalculatorIcon width={20} height={20} />
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
+                    <DropdownMenu modal={false} open={openShip} onOpenChange={setOpenShip}>
+                        <DropdownMenuTrigger >
 
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
-                                >
-                                    Track
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
-                                            <p>Track My Package</p>
-                                            <ShippingLabelIcon width={20} height={20} />
-                                        </NavigationMenuLink>
-                                    </Link>
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
-                                            <p>Delivery Status</p>
-                                            <ShippingLabelIcon width={20} height={20} />
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
+                            <Button
+                                id="btn"
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center"
+                            >
+                                <p>Ship</p>
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openShip ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <Link href="/shipping-lebels/new-labels" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                        <p>Shipping Labels</p>
+                                        <ShippingLabelIcon width={20} height={20} />
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/shipping-lebels/new-labels" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                        <p>Shipping Calculator</p>
+                                        <ShippingCalculatorIcon width={20} height={20} />
+                                    </DropdownMenuItem>
+                                </Link>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
 
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
-                                >Support</NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
-                                    <div className="w-[100%] ">
-                                        <Link href="/#" legacyBehavior passHref
-                                            className='w-full justify-start flex '>
-                                            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} w-[100%] gap-3 flex justify-between`}>
-                                                <div className="flex flex-row justify-between gap-2 w-[150px]">
-                                                    <p>Create Tickets</p>
-                                                    <ShippingLabelIcon width={20} height={20} />
+                    <DropdownMenu modal={false} open={openTrack} onOpenChange={setOpenTrack}>
+                        <DropdownMenuTrigger >
+                            <Button
+                                id="btn"
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center"
+                            >
+                                <p>Track</p>
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openTrack ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <Link href="/shipping-lebels/new-labels" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                        <p>Track My Package</p>
+                                        <ShippingLabelIcon width={20} height={20} />
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/shipping-lebels/new-labels" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                        <p>Delivery Status</p>
+                                        <ShippingLabelIcon width={20} height={20} />
+                                    </DropdownMenuItem>
+                                </Link>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
+
+
+                    <DropdownMenu modal={false} open={openSupport} onOpenChange={setOpenSupport}>
+                        <DropdownMenuTrigger >
+                            <Button
+                                id="btn"
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center"
+                            >
+                                <p>Support</p>
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openSupport ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <Link href="/shipping-lebels/new-labels" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                        <p>Create Tickets</p>
+                                        <ShippingLabelIcon width={20} height={20} />
+                                    </DropdownMenuItem>
+                                </Link>
+                                <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                    <p>Contact Us</p>
+                                    <ShippingLabelIcon width={20} height={20} />
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="flex justify-between flex-row gap-3 cursor-pointer">
+                                    <p>FAQ</p>
+                                    <ShippingLabelIcon width={20} height={20} />
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
+
+                    <DropdownMenu modal={false} open={openLang} onOpenChange={setOpenLang}>
+                        <DropdownMenuTrigger>
+                            <Button
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center">
+                                <div className="text-black text-sm font-semibold font-['Poppins']">Eng</div>
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openLang ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>English</p>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>Français</p>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>Español</p>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
+
+                    <DropdownMenu modal={false} open={openProfile} onOpenChange={setOpenProfile}>
+                        <DropdownMenuTrigger className='flex flex-row items-start justify-start'>
+                            <Button
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center justify-start"
+                            >
+                                <div className="justify-start items-center gap-3 flex p-2">
+                                    {loading ? (
+                                        <Skeleton className="w-[35px] h-[35px] rounded-full" />
+                                    ) : (
+                                        session?.user?.img === "null" || session?.user?.img === undefined || session?.user?.img === null || session?.user?.img === "" ? (
+                                            <Image
+                                                src={"/assets/user-holder.svg"}
+                                                width={20}
+                                                height={20}
+                                                alt="user image"
+                                                className='object-cover rounded-full w-[20px] h-[20px]'
+                                                style={{ borderRadius: "50%", width: "35px", height: "35px" }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={customerImage}
+                                                className='rounded-full w-[35px] h-[35px]'
+                                                alt="user image"
+                                            />
+                                        )
+                                    )}
+                                    <div className="flex flex-col justify-start text-left">
+                                        {loading ? (
+                                            <>
+                                                <Skeleton className="h-4 w-[100px]" />
+                                                <Skeleton className="h-3 w-[50px]" />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className=" text-black text-sm font-semiBold">
+                                                    {session ? firstName : "User"}
                                                 </div>
-                                            </NavigationMenuLink>
-                                        </Link>
-                                        <Link href="/#" legacyBehavior passHref
-                                            className='w-[100%] justify-start flex '>
-                                            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} w-[100%] gap-3 flex justify-between`}>
-                                                <div className="flex flex-row justify-between gap-2 w-[150px]">
-                                                    <p>Contact Us</p>
-                                                    <ShippingLabelIcon width={20} height={20} />
-                                                </div>
-                                            </NavigationMenuLink>
-                                        </Link>
-                                        <Link href="/#" legacyBehavior passHref
-                                            className='w-full justify-start flex'>
-                                            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} w-full flex justify-between`}>
-                                                <div className="flex flex-row justify-between gap-2 w-[150px]">
-                                                    <p>FAQ</p>
-                                                    <ShippingLabelIcon width={20} height={20} />
-                                                </div>
-                                            </NavigationMenuLink>
-                                        </Link>
+                                                <div className=" text-black text-xs font-normal ">{session ? session.user.type : "Type"}</div>
+                                            </>
+                                        )}
                                     </div>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
+                                </div>
 
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openProfile ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <Link href="/account" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-col cursor-pointer" >
+                                        <div className="flex flex-row justify-between gap-2 w-[170px]">
+                                            <p>Account Setting</p>
+                                            <Settings width={20} height={20} />
+                                        </div>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/membership" passHref>
+                                    <DropdownMenuItem className="flex justify-between flex-col cursor-pointer" >
+                                        <div className="flex flex-row justify-between gap-2 w-[170px]">
+                                            <p>Membership Plan</p>
+                                            <ShippingLabelIcon width={20} height={20} />
+                                        </div>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <DropdownMenuItem
+                                    onClick={() => handleSingOut()}
+                                    className="flex justify-between flex-col cursor-pointer"
                                 >
-                                    <div className="justify-start items-center gap-3 flex">
-                                        <Image
-                                            src={"/assets/country/uk-flag.png"}
-                                            width={20}
-                                            height={20}
-                                            alt="uk-flag"
-                                        />
-                                        <div className="text-black text-sm font-semibold font-['Poppins']">Eng</div>
+                                    <div>
+                                        <div
+                                            className="flex flex-row justify-between gap-2 w-[170px]"
+                                        >
+                                            <p>Logout</p>
+                                            <LogOut width={20} height={20} />
+                                        </div>
                                     </div>
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
-                                            <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                                <div className="w-[20px] h-[20px] rounded-full">
-
-                                                    <img
-                                                        src={`https://flagcdn.com/fr.svg`}
-                                                        alt=""
-                                                        className='object-cover rounded-full w-[20px] h-[20px]'
-                                                    />
-                                                </div>
-                                                <p>English</p>
-                                            </div>
-                                        </NavigationMenuLink>
-                                    </Link>
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
-                                            <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                                <div className="w-[20px] h-[20px] rounded-full">
-                                                    <img
-                                                        src={`https://flagcdn.com/es.svg`}
-                                                        alt=""
-                                                        className='object-cover rounded-full w-[20px] h-[20px]'
-                                                    />
-                                                </div>
-                                                <p>Spanyol</p>
-                                            </div>
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-
-
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
+                    
+                    {/* 
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
@@ -273,7 +353,7 @@ export const Navbar = () => {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         </NavigationMenuList>
-                    </NavigationMenu>
+                    </NavigationMenu> */}
 
                 </div>
             </nav>

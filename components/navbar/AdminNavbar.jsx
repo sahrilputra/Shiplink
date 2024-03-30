@@ -16,6 +16,7 @@ import { ShippingLabelIcon, ShippingCalculatorIcon } from '../icons/navbarIcons'
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
 import { BellIcon, LogOut, Settings } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { Skeleton } from '../ui/skeleton'
 import { Separator } from '../ui/separator'
 import { useRouter } from 'next/navigation'
@@ -26,8 +27,10 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
+    DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu"
 import { useSession, signOut } from 'next-auth/react'
+import { Button } from '../ui/button'
 export const AdminNavbars = () => {
     const { data: session } = useSession()
     const router = useRouter()
@@ -45,8 +48,6 @@ export const AdminNavbars = () => {
             setLoading(false);
         }, 1000);
         return () => clearTimeout(timer);
-
-
     }, []);
 
     console.log("NEW img", userimg)
@@ -55,6 +56,11 @@ export const AdminNavbars = () => {
     const firstName = fullName.split(" ")[0];
     const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
 
+
+    const [openNotification, setOpenNotification] = useState(false)
+    console.log("🚀 ~ AdminNavbars ~ openNotification:", openNotification)
+    const [openLanguage, setOpenLanguage] = useState(false)
+    const [openProfile, setOpenProfile] = useState(false)
     return (
         <>
             {/*  */}
@@ -69,154 +75,139 @@ export const AdminNavbars = () => {
                     </Button> */}
                 </div>
                 <div className="w-[100%] justify-end items-center gap-3 flex py-3 px-10">
-                    <NavigationMenu
-                        onMouseOver={(event) => {
-                            event.preventDefault()
-                        }}
-                        onPointerEnter={(event) => event.preventDefault()}
-                        onPointerLeave={(event) => event.preventDefault()}
-                    >
-                        <NavigationMenuList >
-                            <NavigationMenuItem
-                                onPointerEnter={(event) => event.preventDefault()}
-                                onPointerLeave={(event) => event.preventDefault()}>
-                                <NavigationMenuTrigger
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
-                                >
-                                    <div className="flex flex-row gap-2 items-center">
-                                        <BellIcon width={20} height={20} />
-                                        <p>Notification</p>
-                                    </div>
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
-                                    <div className="notif flex flex-col gap-2 p-2">
-                                        <p className='font-bold text-xs'>Logs</p>
-                                        <div className="">
-                                            <Separator className="h-[1px]" />
-                                        </div>
-                                        <Link href="/#" legacyBehavior passHref>
-                                            <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-10 flex justify-between `}>
-                                                <p>Nothing Happend</p>
-                                            </NavigationMenuLink>
-                                        </Link>
-                                    </div>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-
-                    <NavigationMenu
-                        onPointerEnter={(event) => event.preventDefault()}
-                        onPointerLeave={(event) => event.preventDefault()}
-                    >
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
-                                >
-                                    <div className="justify-start items-center gap-3 flex">
-                                        <div className="text-black text-sm font-semibold font-['Poppins']">Eng</div>
-                                    </div>
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col">
-                                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
-                                        <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                            <p>English</p>
-                                        </div>
-                                    </NavigationMenuLink>
-                                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
-                                        <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                            <p>Français</p>
-                                        </div>
-                                    </NavigationMenuLink>
-                                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-9`}>
-                                        <div className="flex flex-row justify-between gap-2 w-[100px]">
-                                            <p>Español</p>
-                                        </div>
-                                    </NavigationMenuLink>
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
+                    <DropdownMenu modal={false} onOpenChange={setOpenNotification} open={openNotification} >
+                        <DropdownMenuTrigger >
+                            <Button
+                                id="btn"
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center"
+                            >
+                                <BellIcon width={18} height={18} />
+                                <p>Notification</p>
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openNotification ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <DropdownMenuLabel className='font-bold text-xs'>Logs</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>Nothing Happend</p>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
 
 
-                    <NavigationMenu
-                        className="flex flex-row gap-3 items-center"
-                    >
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuTrigger
-                                    onPointerEnter={(event) => event.preventDefault()}
-                                    onPointerLeave={(event) => event.preventDefault()}
-                                >
-                                    <div className="justify-start items-center gap-3 flex p-2 w-[150px]">
-                                        {loading ? (
-                                            <Skeleton className="w-[35px] h-[35px] rounded-full" />
+                    <DropdownMenu modal={false} open={openLanguage} onOpenChange={setOpenLanguage}>
+                        <DropdownMenuTrigger>
+                            <Button
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center">
+                                <div className="text-black text-sm font-semibold font-['Poppins']">Eng</div>
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openLanguage ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>English</p>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>Français</p>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="flex justify-between flex-col">
+                                    <p>Español</p>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
+
+                    <DropdownMenu modal={false} open={openProfile} onOpenChange={setOpenProfile}>
+                        <DropdownMenuTrigger className='flex flex-row items-start justify-start'>
+                            <Button
+                                variant="ghost"
+                                className="flex flex-row gap-2 items-center justify-start"
+                            >
+                                <div className="justify-start items-center gap-3 flex p-2">
+                                    {loading ? (
+                                        <Skeleton className="w-[35px] h-[35px] rounded-full" />
+                                    ) : (
+                                        userimg !== "null" || userimg !== undefined || userimg === null ? (
+                                            <Image
+                                                src={"/assets/user-holder.svg"}
+                                                width={20}
+                                                height={20}
+                                                alt="user image"
+                                                className='object-cover rounded-full w-[20px] h-[20px]'
+                                                style={{ borderRadius: "50%", width: "35px", height: "35px" }}
+                                            />
                                         ) : (
-                                            userimg !== "null" || userimg !== undefined || userimg === null ? (
-                                                <Image
-                                                    src={"/assets/user-holder.svg"}
-                                                    width={20}
-                                                    height={20}
-                                                    alt="user image"
-                                                    className='object-cover rounded-full w-[20px] h-[20px]'
-                                                    style={{ borderRadius: "50%", width: "35px", height: "35px" }}
-                                                />
-                                            ) : (
-                                                <Image
-                                                    src={"/assets/user-holder.svg"}
-                                                    width={20}
-                                                    height={20}
-                                                    alt="user image"
-                                                    className='object-cover rounded-full w-[20px] h-[20px]'
-                                                    style={{ borderRadius: "50%", width: "35px", height: "35px" }}
-                                                />
-                                            )
+                                            <Image
+                                                src={"/assets/user-holder.svg"}
+                                                width={20}
+                                                height={20}
+                                                alt="user image"
+                                                className='object-cover rounded-full w-[20px] h-[20px]'
+                                                style={{ borderRadius: "50%", width: "35px", height: "35px" }}
+                                            />
+                                        )
+                                    )}
+                                    <div className="flex flex-col justify-start text-left">
+                                        {loading ? (
+                                            <>
+                                                <Skeleton className="h-4 w-[100px]" />
+                                                <Skeleton className="h-3 w-[50px]" />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className=" text-black text-sm font-semiBold">
+                                                    {session ? firstName : "User"}
+                                                </div>
+                                                <div className=" text-black text-xs font-normal ">{session ? session.user.type : "Type"}</div>
+                                            </>
                                         )}
-                                        <div className="flex flex-col justify-start text-left">
-                                            {loading ? (
-                                                <>
-                                                    <Skeleton className="h-4 w-[100px]" />
-                                                    <Skeleton className="h-3 w-[50px]" />
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className=" text-black text-sm font-semiBold">
-                                                        {session ? firstName : "User"}
-                                                    </div>
-                                                    <div className=" text-black text-xs font-normal ">{session ? session.user?.role : "role"}</div>
-                                                </>
-                                            )}
-                                        </div>
                                     </div>
-                                </NavigationMenuTrigger>
-                                <NavigationMenuContent className="flex justify-between flex-col ">
-                                    <Link href="/#" legacyBehavior passHref>
-                                        <NavigationMenuLink className={`${navigationMenuTriggerStyle()} gap-3 `}>
-                                            <div className="flex flex-row justify-between gap-2 w-[170px]">
-                                                <p>Account Setting</p>
-                                                <Settings width={20} height={20} />
-                                            </div>
-                                        </NavigationMenuLink>
+                                </div>
+
+                                <ChevronDown
+                                    size={14}
+                                    className={`transform ${openProfile ? "-rotate-180 transition-transform" : "transition-transform"} transition-transform`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuPortal forceMount>
+                            <DropdownMenuContent className="border border-gray-200" >
+                                <DropdownMenuItem className="flex justify-between flex-col cursor-pointer" >
+                                    <Link href="/#" passHref>
+                                        <div className="flex flex-row justify-between gap-2 w-[170px]">
+                                            <p>Account Setting</p>
+                                            <Settings width={20} height={20} />
+                                        </div>
                                     </Link>
-                                    <NavigationMenuLink
-                                        onClick={() => hanldeLogout()}
-                                        className={`${navigationMenuTriggerStyle()} gap-9`}>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => hanldeLogout()}
+                                    className="flex justify-between flex-col cursor-pointer"
+                                >
+                                    <div>
                                         <div
                                             className="flex flex-row justify-between gap-2 w-[170px]"
                                         >
                                             <p>Logout</p>
                                             <LogOut width={20} height={20} />
                                         </div>
-                                    </NavigationMenuLink>
-
-                                </NavigationMenuContent>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-
+                                    </div>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenu>
                 </div>
             </nav>
         </>
