@@ -36,14 +36,15 @@ import {
 } from "@/components/ui/select"
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/components/ui/use-toast';
+import { Loaders } from '@/components/ui/loaders';
+
 const formSchema = yup.object().shape({
     status_id: yup.string(),
     packageID: yup.string(),
 })
 
 export const UpdateStatus = ({ open, setOpen, dataID = null, reload, statusNow = "" }) => {
-    console.log("🚀 ~ UpdateStatus ~ statusNow:", statusNow)
-    console.log("🚀 ~ UpdateStatus ~ dataID:", dataID)
+    const [loading, setLoading] = useState(false)
     const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -63,6 +64,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload, statusNow =
 
     const handleSave = async (data) => {
         console.log("🚀 ~ handleSave ~ data:", data)
+        setLoading(true);
         try {
             const response = await axios.post(`/api/admin/packages/setStatus`,
                 {
@@ -70,15 +72,18 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload, statusNow =
                     status: data.status_id
                 });
             console.log("🚀 ~ handleSave ~ response:", response)
+
             if (response.status === 200) {
                 setOpen(false);
                 toast({
                     title: 'Success',
                     desription: 'Status updated successfully',
                 })
+                setLoading(false);
             }
             reload();
         } catch (error) {
+            setLoading(false);
             console.log('Error:', error);
             toast({
                 title: 'Error',
@@ -110,6 +115,7 @@ export const UpdateStatus = ({ open, setOpen, dataID = null, reload, statusNow =
     }
     return (
         <>
+            {loading && <Loaders />}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>

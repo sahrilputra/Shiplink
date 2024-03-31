@@ -99,3 +99,15 @@
     position: relative;
     gap: 30px;
 }
+
+.history {
+    border: solid 1px #DEDEDE;
+    border-radius: 6px;
+    margin-top: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    gap: 10px;
+}

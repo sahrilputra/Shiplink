@@ -24,10 +24,11 @@ import { MoreHorizontalIcon } from 'lucide-react'
 import { UpdateStatus } from './components/dialog/UpdateStatus'
 import { DeletePackage } from './components/dialog/DeletePackage'
 import Link from 'next/link'
+import { useToast } from '@/components/ui/use-toast'
 import { EventTable } from './components/EventTable'
 export default function VerificationPages({ params }) {
     console.log("Helo", params.slug)
-
+    const { toast } = useToast()
     const [openDelete, setOpenDelete] = useState(false)
     const [openStatus, setOpenStatus] = useState(false);
     const [openInternal, setOpenInternal] = useState(false);
@@ -109,6 +110,36 @@ export default function VerificationPages({ params }) {
     }
     console.log("Images: ", filteredImages)
 
+    const markDelivered = async () => {
+        setSkeleton(true);
+        try {
+            const response = await axios.post(`/api/admin/packages/setStatus`,
+                {
+                    tracking_id: data?.tracking_id,
+                    status: "Complete"
+                });
+            console.log("🚀 ~ handleSave ~ response:", response)
+            if (response.status === 200) {
+                toast({
+                    title: 'Success',
+                    desription: 'Pakcage has been marked as delivered!',
+                })
+                setSkeleton(false);
+            }
+            fetchData();
+            setSkeleton(false);
+        } catch (error) {
+            setSkeleton(false);
+            console.log('Error:', error);
+            toast({
+                title: 'Error',
+                desription: 'An error occurred while updating package',
+            })
+        }
+    }
+
+    const profileImg = `https://sla.webelectron.com/api/Users/getprofileimages_usercode?user_code=${data?.customer_id}` || "none"
+    console.log("🚀 ~ VerificationPages ~ profileImg:", profileImg)
     return (
         <>
             <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={[data?.tracking_id]} />
@@ -143,10 +174,16 @@ export default function VerificationPages({ params }) {
                                     <div className="imgContainer w-[30] h-[30] rounded-full">
                                         {skeleton
                                             ? <Skeleton className="w-[30px] h-[30px] rounded-full object-cover" />
-                                            : <img src="https://source.boringavatars.com/beam"
-                                                alt="avatar"
-                                                className='w-[30px] h-[30px] rounded-full object-cover'
-                                            />
+                                            :
+                                            <>
+                                                <img src={profileImg !== "none" ? profileImg : "'../../../assets/user-holder.svg'"}
+                                                    alt="avatar"
+                                                    onError={(e) => {
+                                                        e.target.src = '../../../assets/user-holder.svg'; // Ganti dengan URL gambar default
+                                                    }}
+                                                    className='w-[30px] h-[30px] rounded-full object-cover border'
+                                                />
+                                            </>
                                         }
                                     </div>
                                     <div className="nameContainer">
@@ -193,11 +230,11 @@ export default function VerificationPages({ params }) {
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Arrival</p>
-                                        <p className='text-sm font-bold'>{data?.warehouse_name_arrival} WR - {data?.country_name_arrival}</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.warehouse_name_arrival} WR - {data?.country_name_arrival}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Destination</p>
-                                        <p className='text-sm font-bold'>{data?.warehouse_name_destination} WR - {data?.country_name_destination}</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.warehouse_name_destination} WR - {data?.country_name_destination}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Bin Location</p>
@@ -283,6 +320,16 @@ export default function VerificationPages({ params }) {
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
+
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="h-[30px] w-full"
+                                        onClick={markDelivered}
+                                        disabled={data?.status === "Complete"}
+                                    >
+                                        <p className=' text-xs'>Mark As Delivered</p>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -450,11 +497,13 @@ export default function VerificationPages({ params }) {
                         </div>
                     </div>
                 </div>
-                <div className={styles.childContent}>
-                    <div className="head">
+                <div className={`${styles.history} mb-1 p-0 gap-[10px]`}>
+                    <div className="head mt-2">
                         <p className=' text-myBlue font-base font-bold'>Package History</p>
                     </div>
-                    <EventTable id={data?.tracking_id}/>
+                    <div className="mb-1">
+                        <EventTable id={data?.tracking_id} status={data?.status} />
+                    </div>
                 </div>
             </div>
         </>

@@ -27,10 +27,14 @@ import axios from 'axios'
 import { Checkbox } from '@/components/ui/checkbox';
 
 const columns = [
-
     {
         accessorKey: "id",
         header: "#",
+        size: 40,
+        cell: (row) => {
+            console.log("🚀 ~ EventTable ~ row:", row)
+            return <div>{row.row.index + 1}</div>
+        }
     },
     {
         accessorKey: "description",
@@ -43,18 +47,37 @@ const columns = [
     {
         accessorKey: "updated_at",
         header: "Update At",
-
+        cell: ({ row }) => {
+            return (
+                <div
+                    className="text-xs flex flex-col flex-wrap number tabular-nums">
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                    >{row.original.updated_at}</span>
+                </div>
+            )
+        }
 
     },
     {
         accessorKey: "updated_by",
         header: "Update By",
+        cell: ({ row }) => {
+            return (
+                <div
+                    className="text-xs flex flex-col flex-wrap number tabular-nums">
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                    >{row.original.updated_by}</span>
+                </div>
+            )
+        }
     },
 ]
 
 
-export const EventTable = ({ id }) => {
-console.log("🚀 ~ EventTable ~ id:", id)
+export const EventTable = ({ id, status }) => {
+    console.log("🚀 ~ EventTable ~ id:", id)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +89,7 @@ console.log("🚀 ~ EventTable ~ id:", id)
                     }
                 )
                 console.log("🚀 ~ EventTable ~ response:", response)
-                setData(response.data);
+                setData(response.data.history);
                 setIsSkeleton(false)
             } catch (error) {
                 console.log(error)
@@ -74,7 +97,7 @@ console.log("🚀 ~ EventTable ~ id:", id)
             }
         }
         fetchData();
-    }, [id])
+    }, [id, status])
 
 
     const [rowSelection, setRowSelection] = React.useState({})
@@ -85,6 +108,7 @@ console.log("🚀 ~ EventTable ~ id:", id)
     const [columnVisibility, setColumnVisibility] = useState({})
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
+    console.log("🚀 ~ EventTable ~ data:", data)
     const [loading, setLoading] = useState(false);
     const [invoiceID, setInvoiceID] = useState([]);
     const [openDelete, setOpenDelete] = useState(false);
@@ -121,6 +145,7 @@ console.log("🚀 ~ EventTable ~ id:", id)
                             return (
                                 <TableHead
                                     key={header.id}
+                                    style={{ width: header.column.columnDef.size || "auto" }}
                                     className={`${isLastHeader ? "w-[30px] " : ""} text-xs`}
                                 >
                                     {header.isPlaceholder
@@ -141,7 +166,7 @@ console.log("🚀 ~ EventTable ~ id:", id)
                 {isSkeleton || !table.getRowModel().rows?.length ? (
                     <>
                         {isSkeleton &&
-                            [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                            [...Array(table.getRowModel().rows?.length || 1)].map((_, index) => (
                                 <TableRow key={index}>
                                     {columns.map((column, columnIndex) => (
                                         <TableCell
@@ -156,7 +181,7 @@ console.log("🚀 ~ EventTable ~ id:", id)
 
                         {!isSkeleton && !table.getRowModel().rows?.length && (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell colSpan={columns.length} className="h-[40px] text-center">
                                     No History Found
                                 </TableCell>
                             </TableRow>
