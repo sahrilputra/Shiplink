@@ -35,6 +35,8 @@ export default function CustomBrokerPage() {
         page_total: 0,
         total: 0
     })
+
+    const [totalDataLenght, setTotalDataLength] = useState(0)
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -43,8 +45,11 @@ export default function CustomBrokerPage() {
             );
             console.log(response)
             const data = await response.data;
-            setData(data.package_info);
-            setPackageTotal(data.total)
+
+            const filterData = selectedTab !== 'Cleared Custom'
+                ? data.package_info.filter(item => item.status !== 'Cleared Custom')
+                : data.package_info.filter(item => item.status === 'Cleared Custom');
+            setData(filterData);
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -52,9 +57,11 @@ export default function CustomBrokerPage() {
             });
             setPagination(prevPagination => ({
                 ...prevPagination,
-                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+                pageSize: data.page_limit,
             }));
-            console.log("Package Length : ", data.package_info.length)
+            setTotalDataLength(data.total);
+            // setclearancePendingCount(data.package_info.filter(item => item.status !== 'Cleared Custom').length);
+            // setclearanceCustomsCount(data.package_info.filter(item => item.status === 'Cleared Custom').length);
             setIsSkeleton(false);
         } catch (error) {
             setIsSkeleton(false);
@@ -65,6 +72,37 @@ export default function CustomBrokerPage() {
         fetchData();
     }, [query]);
 
+    useEffect(() => {
+        const fetchCountingTotal = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/verification/list`,
+                    {
+                        keyword: "",
+                        date_start: "",
+                        date_end: "",
+                        tracking_id: "",
+                        status: "",
+                        page: 1,
+                        limit: totalDataLenght,
+                        index: 0,
+                    }
+                );
+                console.log(response)
+                const data = await response.data;
+                setclearancePendingCount(data.package_info.filter(item => item.status !== 'Cleared Custom').length);
+                setclearanceCustomsCount(data.package_info.filter(item => item.status === 'Cleared Custom').length);
+                console.log("Package Length : ", data.package_info.length)
+                setIsSkeleton(false);
+            } catch (error) {
+                setIsSkeleton(false);
+                console.log('Error:', error);
+            }
+        }
+
+        fetchCountingTotal()
+    }, [totalDataLenght])
+    
     const reload = () => {
         setIsSkeleton(true);
         fetchData();
@@ -80,12 +118,8 @@ export default function CustomBrokerPage() {
     const [selectedTab, setSelectedTab] = useState("");
     console.log("parent : ", selectedTab)
 
-    const filterData = selectedTab !== 'Cleared Custom'
-        ? data.filter(item => item.status !== 'Cleared Custom')
-        : data.filter(item => item.status === 'Cleared Custom');
-    const clearancePendingCount = data.filter(item => item.status !== 'Cleared Custom').length;
-    const clearanceCustomsCount = data.filter(item => item.status === 'Cleared Custom').length;
-
+    const [clearancePendingCount, setclearancePendingCount] = useState(0);
+    const [clearanceCustomsCount, setclearanceCustomsCount] = useState(0);
     return (
         <>
             <div className={styles.wrapper}>
@@ -112,7 +146,7 @@ export default function CustomBrokerPage() {
                     <div className={styles.carrier}>
                         <div className={`${styles.listTable} flex flex-col gap-1`}>
                             <PendingTable
-                                data={filterData}
+                                data={data}
                                 isSkeleton={isSkeleton}
                                 handleSearchChange={handleSearchChange}
                                 reload={reload}
@@ -121,7 +155,9 @@ export default function CustomBrokerPage() {
                                 pagination={pagination}
                                 setPagination={setPagination}
                                 rowTotalData={rowTotalData}
+                                totalPage={rowTotalData.page_total}
                                 setRowTotalData={setRowTotalData}
+                                pageIndex={pagination.pageIndex}
                             />
                         </div>
                     </div>

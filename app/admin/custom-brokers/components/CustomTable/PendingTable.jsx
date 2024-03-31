@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 'use client'
 import React, { useEffect, useState } from "react";
@@ -42,7 +43,24 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
-export function PendingTable({ data, isSkeleton, handleSearchChange, reload, setQuery, query, status, pagination, setPagination, rowTotalData, setRowTotalData }) {
+export function PendingTable
+    (
+        {
+            data,
+            isSkeleton,
+            handleSearchChange,
+            reload,
+            setQuery,
+            query,
+            status,
+            pagination,
+            setPagination,
+            rowTotalData,
+            totalPage,
+            setRowTotalData,
+            pageIndex
+        }
+    ) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [isSortedDesc, setIsSortedDesc] = useState(false);
@@ -96,6 +114,15 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload, set
                 );
             },
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                            className=''>{`${row.original.tracking_id}`}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "customer_name",
@@ -120,12 +147,45 @@ export function PendingTable({ data, isSkeleton, handleSearchChange, reload, set
             },
         },
         {
-            accessorKey: "address",
+            accessorKey: "destination",
             header: "Destination",
+            cell: ({ row }) => {
+                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            <span className='text-nowrap'>WH  {`${row.original.warehouse_name_destination}`}</span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             accessorKey: "updated_at",
             header: "Update Date",
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.updated_at}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "status",
