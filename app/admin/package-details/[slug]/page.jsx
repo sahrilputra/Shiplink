@@ -278,7 +278,7 @@ export default function VerificationPages({ params }) {
                                         <p className=' text-xs'>Mark As Delivered</p>
                                     </Button>
 
-                                    <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}`} >
+                                    <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}&package_id=${data?.tracking_id}`} >
                                         <Button
                                             variant="secondary"
                                             size="sm"

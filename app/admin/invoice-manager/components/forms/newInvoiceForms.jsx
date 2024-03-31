@@ -83,13 +83,13 @@ const formSchema = yup.object().shape({
 
 
 
-export const InvoiceForms = ({ customer = null }) => {
-
+export const InvoiceForms = ({ customer = null, data = null }) => {
+    const today = format(new Date(), "yyyy-MM-dd");
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             InvoiceNo: "",
-            InvoiceDate: "",
+            InvoiceDate: today || "",
             InvoiceCurrency: "",
             InvoiceTerms: "",
             BilledToName: "",
@@ -150,12 +150,17 @@ export const InvoiceForms = ({ customer = null }) => {
                 );
                 console.log(response)
                 const data = await response.data;
+                console.log("🚀 ~ fetchData ~ data:", data)
                 if (customer) {
                     const findCustomer = data.customer.find(item => item.customer_id === customer)
                     console.log("🚀 ~ fetchData ~ findCustomer:", findCustomer)
                     form.setValue("userName", findCustomer.customer_name)
                     form.setValue("userID", findCustomer.customer_id)
                     form.setValue("userEmails", findCustomer.email)
+                    form.setValue("ShippedToName", findCustomer.customer_name)
+                    form.setValue("ShippedToAddress", findCustomer.address)
+                    form.setValue("ShippedToZip", findCustomer.postal_code)
+                    form.setValue("ShippedToCountry", findCustomer.country_name)
                 }
                 setCustomerData(data.customer);
             } catch (error) {
@@ -163,7 +168,14 @@ export const InvoiceForms = ({ customer = null }) => {
             }
         };
         fetchData();
-    }, [query]);
+
+        if (data) {
+            form.setValue(`items[0].itemDescription`, `Logistic Service For Package : ${data.tracking_id}`)
+            form.setValue(`items[0].itemQty`, 1)
+            form.setValue(`items[0].itemPrice`, data.total_price)
+        }
+
+    }, [query, data]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -337,6 +349,7 @@ export const InvoiceForms = ({ customer = null }) => {
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
+                                                            <SelectItem className="text-xs" value="Today">Today</SelectItem>
                                                             <SelectItem className="text-xs" value="Next 30 Days">Next 30 Days</SelectItem>
                                                             <SelectItem className="text-xs" value="End of the month">End Of The Month</SelectItem>
                                                         </SelectContent>
@@ -808,21 +821,26 @@ export const InvoiceForms = ({ customer = null }) => {
                                                                 <SelectTrigger className="text-xs h-[30px] rounded-sm">
                                                                     <SelectValue
                                                                         className="w-full text-xs h-[30px]"
-                                                                        placeholder={`${field.value ? field.value : "Select Tax"}`}
+                                                                        placeholder={`Select Tax`}
                                                                     />
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
                                                                 {
-                                                                    taxList?.map((item, index) => (
-                                                                        <SelectItem
-                                                                            key={index}
-                                                                            value={item?.tax_rate}
-                                                                            className="text-xs"
-                                                                        >
-                                                                            {item?.tax_rate}
-                                                                        </SelectItem>
-                                                                    ))
+                                                                    taxList
+                                                                        ?.filter((item, index, self) => self.findIndex(t => t.tax_rate === item.tax_rate) === index)
+                                                                        .map((item, index) => (
+                                                                            <SelectItem
+                                                                                key={index}
+                                                                                value={item?.tax_rate}
+                                                                                className="text-xs"
+                                                                                onClick={() => {
+                                                                                    form.setValue('itemTax', item?.tax_rate)
+                                                                                }}
+                                                                            >
+                                                                                {item?.tax_rate}
+                                                                            </SelectItem>
+                                                                        ))
                                                                 }
                                                             </SelectContent>
                                                         </Select>
