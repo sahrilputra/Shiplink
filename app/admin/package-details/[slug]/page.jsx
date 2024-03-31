@@ -24,6 +24,7 @@ import { MoreHorizontalIcon } from 'lucide-react'
 import { UpdateStatus } from './components/dialog/UpdateStatus'
 import { DeletePackage } from './components/dialog/DeletePackage'
 import Link from 'next/link'
+import { EventTable } from './components/EventTable'
 export default function VerificationPages({ params }) {
     console.log("Helo", params.slug)
 
@@ -179,21 +180,28 @@ export default function VerificationPages({ params }) {
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.status || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Shipping Fees</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>$ {data?.shipping_fees || "-"}</p>}
+                                        <p>Package Total Price</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>$ {data?.total_price || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Register Date</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.register_date || "-"}</p>}
+                                        <p>Last Update</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.updated_at || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Carrier </p>
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.carrier_code || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Location</p>
-                                        <p className='text-sm font-bold'>Toronto Warehouse</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>Bin : {data?.bin_location === "undefined" || data?.bin_location === "Undefined" ? "-" : data?.bin_location}</p>}
+                                        <p>Arrival</p>
+                                        <p className='text-sm font-bold'>{data?.warehouse_name_arrival} WR - {data?.country_name_arrival}</p>
+                                    </div>
+                                    <div className="flex flex-col text-xs text-zinc-500">
+                                        <p>Destination</p>
+                                        <p className='text-sm font-bold'>{data?.warehouse_name_destination} WR - {data?.country_name_destination}</p>
+                                    </div>
+                                    <div className="flex flex-col text-xs text-zinc-500">
+                                        <p>Bin Location</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.bin_location === "undefined" || data?.bin_location === "Undefined" ? "-" : data?.bin_location}</p>}
                                     </div>
 
                                     {/* {documents === "" || documents === null ? (
@@ -446,7 +454,7 @@ export default function VerificationPages({ params }) {
                     <div className="head">
                         <p className=' text-myBlue font-base font-bold'>Package History</p>
                     </div>
-                    {/* <EventTabled data={data} /> */}
+                    <EventTable id={data?.tracking_id}/>
                 </div>
             </div>
         </>
