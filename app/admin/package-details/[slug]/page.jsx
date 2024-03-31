@@ -209,20 +209,20 @@ export default function VerificationPages({ params }) {
 
                                 <div className="packageData flex flex-col gap-1 px-4 py-2">
                                     <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Tracking Id</p>
+                                        <p>Package ID</p>
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>#{data?.tracking_id || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Package Status</p>
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.status || "-"}</p>}
                                     </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
+                                    {/* <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Package Total Price</p>
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>$ {data?.total_price || "-"}</p>}
-                                    </div>
+                                    </div> */}
                                     <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Last Update</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.updated_at || "-"}</p>}
+                                        <p>Tracking Number</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.barcode_tracking || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Carrier </p>
@@ -267,7 +267,7 @@ export default function VerificationPages({ params }) {
                                         </>
                                     )
                                     } */}
-
+                                    {/* 
                                     <Button
                                         variant="secondary"
                                         size="sm"
@@ -287,48 +287,9 @@ export default function VerificationPages({ params }) {
                                         >
                                             <p className=' text-xs'>Send Invoice To User</p>
                                         </Button>
-                                    </NextLink>
+                                    </NextLink> */}
 
-                                    <div className="">
-                                        <DropdownMenu modal >
-                                            <DropdownMenuTrigger
-                                                asChild
-                                            >
-                                                <Button
-                                                    variant="secondary"
-                                                    size="sm"
-                                                    className={`h-[30px] w-full`}
-                                                >
-                                                    <p className='text-xs font-light'>Download Invoice</p>
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent className="text-xs w-full">
-                                                {
-                                                    filterInvoice.length > 0 ? (
-                                                        filterInvoice.map((item, index) => (
-                                                            <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
-                                                                <DropdownMenuItem
-                                                                    key={index}
-                                                                    className="text-xs text-myBlue w-[200px] text-center flex flex-row gap-1 items-center justify-center bg-blue-50 hover:bg-blue-100 cursor-pointer"
-                                                                    value={index}
 
-                                                                >
-                                                                    invoice {index + 1}
-                                                                </DropdownMenuItem>
-                                                            </NextLink>
-                                                        ))
-                                                    ) : (
-                                                        <DropdownMenuItem
-                                                            disabled={true}
-                                                            className="text-xs text-myBlue w-[200px] text-center flex flex-row gap-1 items-center justify-center bg-blue-50 "
-                                                        >
-                                                            No Invoice
-                                                        </DropdownMenuItem>
-                                                    )
-                                                }
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
 
                                 </div>
                             </div>
@@ -354,32 +315,70 @@ export default function VerificationPages({ params }) {
                                                     <Button
                                                         variant="secondary"
                                                         size="sm"
-                                                        className="flex flex-row gap-3"
+                                                        className="flex flex-row gap-3 "
                                                     >
                                                         <p className=' text-xs'>More Action</p>
                                                         <MoreHorizontalIcon width={15} height={15} />
                                                     </Button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent side={"bottom"} sideOffset={2}>
+                                                <DropdownMenuContent side={"bottom"} align={"end"} sideOffset={2}>
+                                                    <DropdownMenuItem
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
+                                                        onClick={markDelivered}
+                                                        disabled={data?.status === "Complete"}
+                                                    >
+                                                        <p className=' text-xs'>Mark As Delivered</p>
+                                                    </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => setOpenStatus(true)}
-                                                        className="text-xs text-myBlue"
+                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
                                                     >
                                                         <p className=' text-xs'>Update Status</p>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
+                                                        className="text-xs cursor-pointer"
+                                                    >
+                                                        <p className=' text-xs'>Send Invoice To User</p>
+                                                    </DropdownMenuItem>
+                                                    {
+                                                        filterInvoice.length > 0 ? (
+                                                            filterInvoice.map((item, index) => (
+                                                                <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                                    <DropdownMenuItem
+                                                                        key={index}
+                                                                        className="text-xs w-[200px] cursor-pointer"
+                                                                        value={index}
+
+                                                                    >
+                                                                        Donwload Invoice {index > 1 && index + 1}
+                                                                    </DropdownMenuItem>
+                                                                </NextLink>
+                                                            ))
+                                                        ) : (
+                                                            <DropdownMenuItem
+                                                                disabled={true}
+                                                                className="text-xs text-myBlue w-[200px] cursor-pointer "
+                                                            >
+                                                                No Invoice
+                                                            </DropdownMenuItem>
+                                                        )
+                                                    }
+
+                                                    <DropdownMenuItem
                                                         onClick={() => setOpenInternal(true)}
                                                     >
-                                                        <p className=' text-xs'>Download Internal Code</p>
+                                                        <p className=' text-xs cursor-pointer'>Download Internal Code</p>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => setOpenPackage(true)}
-                                                        className="text-xs">
+                                                        className="text-xs cursor-pointer">
                                                         <p className=' text-xs'>Download Package Information</p>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={() => setOpenDelete(true)}
-                                                        className="text-xs text-red-700"
+                                                        className="text-xs text-red-700 cursor-pointer hover:bg-red-50 focus:bg-red-50 focus:text-red-700"
                                                     >
                                                         Delete Package
                                                     </DropdownMenuItem>
@@ -477,7 +476,7 @@ export default function VerificationPages({ params }) {
                                         <p className='text-sm font-bold'>{data?.package_length} x {data?.package_witdth} x {data?.package_height}  {data?.package_height_unit}</p>
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Total Item Price</p>
+                                        <p>Package Total Price</p>
                                         <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">

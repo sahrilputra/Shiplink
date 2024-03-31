@@ -70,6 +70,9 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                                                         style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
                                                         src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
                                                         alt=""
+                                                        onError={(e) => {
+                                                            e.target.src = '../../../assets/img-placeholder.svg'; // Ganti dengan URL gambar default
+                                                        }}
                                                     />
 
                                                 </Card>
