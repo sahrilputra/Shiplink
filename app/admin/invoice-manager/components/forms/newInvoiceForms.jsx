@@ -821,6 +821,40 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 <SelectTrigger className="text-xs h-[30px] rounded-sm">
                                                                     <SelectValue
                                                                         className="w-full text-xs h-[30px]"
+                                                                        placeholder="Select Tax"
+                                                                    />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                {
+                                                                    taxList
+                                                                        ?.filter((item, index, self) => self.findIndex(t => t.tax_rate === item.tax_rate) === index)
+                                                                        .map((item, index) => (
+                                                                            <SelectItem
+                                                                                key={index}
+                                                                                value={`${item?.tax_rate}`}
+                                                                                className="text-xs"
+                                                                                onClick={() => {
+                                                                                    form.setValue('itemTax', item?.tax_rate)
+                                                                                }}
+                                                                            >
+                                                                                {item?.tax_rate}
+                                                                            </SelectItem>
+                                                                        ))
+                                                                }
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormItem>
+                                                    {/* <FormItem className="space-y-1 w-[100%]">
+                                                        <Select
+                                                            className="w-full text-xs h-[30px]"
+                                                            onValueChange={field.onChange}
+                                                            defaultValue={field.value}
+                                                        >
+                                                            <FormControl>
+                                                                <SelectTrigger className="text-xs h-[30px] rounded-sm">
+                                                                    <SelectValue
+                                                                        className="w-full text-xs h-[30px]"
                                                                         placeholder={`Select Tax`}
                                                                     />
                                                                 </SelectTrigger>
@@ -844,7 +878,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 }
                                                             </SelectContent>
                                                         </Select>
-                                                    </FormItem>
+                                                    </FormItem> */}
                                                 </>
                                             )}
                                         />
