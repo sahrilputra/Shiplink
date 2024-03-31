@@ -45,7 +45,6 @@ export default function CustomBrokerPage() {
             );
             console.log(response)
             const data = await response.data;
-
             const filterData = selectedTab !== 'Cleared Custom'
                 ? data.package_info.filter(item => item.status !== 'Cleared Custom')
                 : data.package_info.filter(item => item.status === 'Cleared Custom');
@@ -92,7 +91,7 @@ export default function CustomBrokerPage() {
                 const data = await response.data;
                 setclearancePendingCount(data.package_info.filter(item => item.status !== 'Cleared Custom').length);
                 setclearanceCustomsCount(data.package_info.filter(item => item.status === 'Cleared Custom').length);
-                console.log("Package Length : ", data.package_info.length)
+                console.log("Package Length : ", data.package_info)
                 setIsSkeleton(false);
             } catch (error) {
                 setIsSkeleton(false);
@@ -102,7 +101,7 @@ export default function CustomBrokerPage() {
 
         fetchCountingTotal()
     }, [totalDataLenght])
-    
+
     const reload = () => {
         setIsSkeleton(true);
         fetchData();
@@ -118,6 +117,53 @@ export default function CustomBrokerPage() {
     const [selectedTab, setSelectedTab] = useState("");
     console.log("parent : ", selectedTab)
 
+    const handlerSelectedTab = async (tab) => {
+        console.log("🚀 ~ handlerSelectedTab ~ tab:", tab)
+        setSelectedTab(tab);
+        setIsSkeleton(true);
+        if (tab === 'Pending') {
+            setQuery({
+                status: "",
+                page: 1,
+                limit: 10,
+                index: 0,
+            })
+            setIsSkeleton(false);
+        } else if (tab === 'Cleared Custom') {
+            setQuery({
+                page: 1,
+                limit: 10,
+                index: 0,
+                status: "Cleared Custom",
+            })
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
+        } else {
+            setQuery({
+                page: 1,
+                limit: 10,
+                index: 0,
+                status: ""
+            })
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
+        }
+        console.log("🚀 ~ handlerSelectedTab ~ query:", query)
+    }
     const [clearancePendingCount, setclearancePendingCount] = useState(0);
     const [clearanceCustomsCount, setclearanceCustomsCount] = useState(0);
     return (
@@ -139,7 +185,7 @@ export default function CustomBrokerPage() {
                         </div>
                     </div>
                     <div className={`${styles.menus}`}>
-                        <CustomMenus selectedTab={setSelectedTab} isSelected={selectedTab} />
+                        <CustomMenus selectedTab={setSelectedTab} isSelected={selectedTab} handlerSelectedTab={handlerSelectedTab} />
                     </div>
                 </div>
                 <div className={styles.childContent}>

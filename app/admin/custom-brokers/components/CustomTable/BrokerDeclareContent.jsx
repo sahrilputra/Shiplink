@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -24,6 +24,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import NextLink from 'next/link'
 import { Loaders } from '@/components/ui/loaders'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
@@ -33,7 +34,8 @@ const formSchema = yup.object().shape({
 })
 
 
-export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status }) => {
+export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status, image }) => {
+    console.log("🚀 ~ BrokerDeclareContent ~ image:", image)
     const { toast } = useToast()
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = React.useState(false);
@@ -47,6 +49,23 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
         },
         mode: "onChange",
     })
+
+    const [filterInvoice, setVilterInvoice] = useState([]);
+    console.log("🚀 ~ ExpandedTable ~ filterInvoice:", filterInvoice)
+    useEffect(() => {
+        const removeInvImage = () => {
+            if (image) {
+                const filtered = image.filter(image => isInvoiceImage(image.type));
+                setVilterInvoice(filtered);
+            }
+        };
+
+        removeInvImage();
+    }, [image]);
+
+    const isInvoiceImage = (type) => {
+        return type.toLowerCase() === "invoices";
+    };
 
     const handleSave = async (formData) => {
         setLoading(true)
@@ -127,7 +146,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                 </div>
                                 <div className="flex flex-row gap-4">
                                     <p className=' text-sm font-bold text-myBlue'>PARS : </p>
-                                    <p className=' text-sm font-semibold'>213131231</p>
+                                    <p className=' text-sm font-semibold'>{details?.parspaps_number || "-"}</p>
                                 </div>
                             </div>
                         </TableCell>
@@ -149,14 +168,27 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                             <SelectValue placeholder="Download Invoice " className='text-xs h-full border-none pl-3 w-[250px] rounded-tr-none rounded-br-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" ' />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="light">Invoice A</SelectItem>
-                                            <SelectItem value="dark">Invoice B</SelectItem>
-                                            <SelectItem value="system">Invoice C</SelectItem>
+                                            {
+                                                filterInvoice.length > 0 ? (
+                                                    filterInvoice.map((item, index) => (
+                                                        <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                            <SelectItem value="light">  invoice {index + 1}</SelectItem>
+
+                                                        </NextLink>
+                                                    ))
+                                                ) : (
+                                                    <SelectItem
+                                                        disabled={true}
+                                                        className="text-xs text-myBlue text-center">
+                                                        No Invoice
+                                                    </SelectItem>
+                                                )
+                                            }
                                         </SelectContent>
                                     </Select>
                                 </div>
                             </div>
-                            <div className={`${status === "Cleared Custom" ? "hidden" : "block"}`}>
+                            <div className={`${status === "Cleared Custom" ? "hidden" : "flex"} w-[50%] flex flex-row gap-2 justify-end`}>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSave)} className="w-[50%] flex flex-row gap-2 justify-end">
                                         <FormField

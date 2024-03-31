@@ -91,6 +91,7 @@ export function PendingTable
                     />
                 )
             },
+            size: 50,
         },
         {
             accessorKey: "tracking_id",
@@ -122,7 +123,8 @@ export function PendingTable
                             className=''>{`${row.original.tracking_id}`}</span>
                     </div>
                 )
-            }
+            },
+            size: 120,
         },
         {
             accessorKey: "customer_name",
@@ -141,10 +143,20 @@ export function PendingTable
                                 {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
                             </>
                         </div>
-
                     </div>
                 );
             },
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap">
+                        <span className='text-[10px] leading-3 tracking-wider  '
+                            style={{ fontFamily: 'roboto' }}
+                        >{`${row.original.customer_id}`}</span>
+                        <span>{`${row.original.customer_name}`}</span>
+                    </div>
+                )
+            },
+            size: 60,
         },
         {
             accessorKey: "destination",
@@ -211,6 +223,7 @@ export function PendingTable
                     </div>
                 )
             },
+            size: 10,
         }
     ]
     // ${expandedRows[index] ? 'rotate-180' : ''}
@@ -279,7 +292,7 @@ export function PendingTable
     const handlePageChange = (pageNumber) => {
         setQuery({ ...query, page: pageNumber });
     };
-
+    // ${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""}
 
     return (
         <>
@@ -322,8 +335,9 @@ export function PendingTable
                                 const isFirstHeader = index === 0;
                                 return (
                                     <TableHead
+                                        style={{ width: `${header.getSize}px` }}
                                         key={header.id}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        className={` text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -383,7 +397,14 @@ export function PendingTable
                                 {expandedRows[row.id] && (
                                     <TableRow>
                                         <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
-                                            <BrokerDeclareContent data={row.original.content} details={row.original} TrackingID={row.original.tracking_id} reload={reload} status={row.original.status} />
+                                            <BrokerDeclareContent
+                                                data={row.original.content}
+                                                details={row.original}
+                                                TrackingID={row.original.tracking_id}
+                                                reload={reload}
+                                                status={row.original.status}
+                                                image={row.original.image}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 )}
