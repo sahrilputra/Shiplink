@@ -210,7 +210,7 @@ export default function VerificationPages({ params }) {
                                 <div className="packageData flex flex-col gap-1 px-4 py-2">
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Package ID</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>#{data?.tracking_id || "-"}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.tracking_id || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Package Status</p>
@@ -222,7 +222,7 @@ export default function VerificationPages({ params }) {
                                     </div> */}
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Tracking Number</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.barcode_tracking || "-"}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px]  rounded-md" /> : <p className='text-sm font-bold text-red-700'>{data?.barcode_tracking || "-"}</p>}
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Carrier </p>
@@ -295,7 +295,7 @@ export default function VerificationPages({ params }) {
                             </div>
                         </div>
                         <div className="PackageInformation w-full border border-neutral-200 rounded-md p-4 flex flex-col gap-5">
-                            <div className="flex flex-row gap-3 justify-between items-center">
+                            {/* <div className="flex flex-row gap-3 justify-between items-center">
                                 <div className="head">
                                     <p className=' text-myBlue font-base font-bold'>Package Information</p>
                                 </div>
@@ -385,9 +385,274 @@ export default function VerificationPages({ params }) {
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </Dialog>
+                                        <div className="flex flex-col gap-3">
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                className="flex flex-row gap-3 "
+                                            >
+                                                <p className=' text-xs'>More Action</p>
+                                                <MoreHorizontalIcon width={15} height={15} />
+                                            </Button>
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                className="text-xs text-white"
+                                                onClick={markDelivered}
+                                                disabled={data?.status === "Complete"}
+                                            >
+                                                <p className=' text-xs'>Mark As Delivered</p>
+                                            </Button>
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                className="text-xs text-white"
+                                                onClick={() => setOpenStatus(true)}
+                                            >
+                                                <p className=' text-xs'>Update Status</p>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> */}
+
+                            <div className="grid grid-cols-2">
+                                <div className="col-span-1">
+                                    <div className="">
+                                        <div className="head">
+                                            <p className=' text-myBlue font-base font-bold'>Package Information</p>
+                                        </div>
+                                        <div className="flex flex-row gap-4 py-2">
+                                            <div className="imageContainer flex flex-col w-[400px] items-center">
+
+                                                {
+                                                    skeleton ? (
+                                                        <>
+                                                            <Skeleton className={"w-[100%] h-[250px]"} />
+                                                        </>
+                                                    ) : (
+                                                        <Carousel className="w-full ">
+                                                            <CarouselContent>
+                                                                {
+                                                                    filteredImages?.length === 0 ? (
+                                                                        <CarouselItem key={1} className="w-full h-full grow-1">
+                                                                            <div className="p-1 w-full">
+                                                                                <Card
+                                                                                    className="p-1 w-full"
+                                                                                >
+                                                                                    <Image
+                                                                                        src={'/assets/img-placeholder.svg'}
+                                                                                        width={200}
+                                                                                        height={200}
+                                                                                        alt={`Image`}
+                                                                                        style={{ objectFit: "contain", width: '100%', height: '250px', }}
+                                                                                    />
+                                                                                </Card>
+                                                                            </div>
+                                                                        </CarouselItem>
+                                                                    ) : null
+                                                                }
+
+                                                                {Array.from({ length: filteredImages?.length }).map((_, index) => (
+                                                                    <CarouselItem key={index} className="w-full h-full grow-1">
+                                                                        <div className="w-full">
+                                                                            <Card
+                                                                                className="p-1 w-full"
+                                                                            >
+                                                                                <img
+                                                                                    style={{ objectFit: "contain", width: '100%', height: '250px', }}
+                                                                                    src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
+                                                                                    alt=""
+                                                                                />
+
+                                                                            </Card>
+                                                                        </div>
+                                                                    </CarouselItem>
+                                                                ))}
+                                                            </CarouselContent>
+                                                            <CarouselPrevious className="left-[10px]" />
+                                                            <CarouselNext className="right-[10px]" />
+                                                        </Carousel>
+                                                    )
+                                                }
+
+                                            </div>
+
+                                            <div className="flex flex-col ">
+                                                {/* <div className="text-red-700 text-opacity-80 text-lg font-bold font-['Poppins']">
+                                        {skeleton
+                                            ? <Skeleton />
+                                            : (
+                                                <>
+                                                    #{data?.barcode_tracking}
+                                                </>
+                                            )
+                                        }
+                                    </div> */}
+                                                <div className="flex flex-col text-xs text-zinc-500">
+                                                    <p>Package Weight</p>
+                                                    <p className='text-sm font-bold'>{data?.package_weight} {data?.package_weight_unit}</p>
+                                                </div>
+                                                <div className="flex flex-col text-xs text-zinc-500">
+                                                    <p>Package Size</p>
+                                                    <p className='text-sm font-bold'>{data?.package_length} x {data?.package_witdth} x {data?.package_height}  {data?.package_height_unit}</p>
+                                                </div>
+                                                <div className="flex flex-col text-xs text-zinc-500">
+                                                    <p>Package Total Price</p>
+                                                    <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
+                                                </div>
+                                                <div className="flex flex-col text-xs text-zinc-500">
+                                                    <p>PARS</p>
+                                                    <p className='text-sm font-bold'>{data?.pars || "-"}</p>
+                                                </div>
+                                                <div className="flex flex-col text-xs text-zinc-500">
+                                                    <p>Entry Number</p>
+                                                    <p className='text-sm font-bold'>{data?.entry_number || "-"}</p>
+                                                </div>
+                                                <div className="flex flex-col text-xs text-zinc-500">
+                                                    <p>Manifest Number</p>
+                                                    <p className='text-sm font-bold'>{data?.manifiest_number || "-"}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-span-1">
+                                    <div className="justify-end items-end">
+                                        <div className="flex flex-row gap-3 ">
+                                            <div className="flex flex-row gap-2 w-full items-start content-end justify-end">
+                                                <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                    >
+                                                        <p className=' text-xs'>Edit Package</p>
+                                                    </Button>
+                                                </NextLink>
+                                                <div className="">
+                                                    <div className="flex flex-col gap-3">
+                                                        <Dialog>
+                                                            <DropdownMenu>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button
+                                                                        variant="secondary"
+                                                                        size="sm"
+                                                                        className="flex flex-row gap-3 "
+                                                                    >
+                                                                        <p className=' text-xs'>More Action</p>
+                                                                        <MoreHorizontalIcon width={15} height={15} />
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
+                                                                <DropdownMenuContent side={"bottom"} align={"end"} sideOffset={2}>
+                                                                    {/* <DropdownMenuItem
+                                                                        variant="secondary"
+                                                                        size="sm"
+                                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
+                                                                        onClick={markDelivered}
+                                                                        disabled={data?.status === "Complete"}
+                                                                    >
+                                                                        <p className=' text-xs'>Mark As Delivered</p>
+                                                                    </DropdownMenuItem> */}
+                                                                    {/* <DropdownMenuItem
+                                                                        onClick={() => setOpenStatus(true)}
+                                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
+                                                                    >
+                                                                        <p className=' text-xs'>Update Status</p>
+                                                                    </DropdownMenuItem> */}
+                                                                    {/* <DropdownMenuItem
+                                                                        className="text-xs cursor-pointer"
+                                                                    >
+                                                                        <p className=' text-xs'>Send Invoice To User</p>
+                                                                    </DropdownMenuItem> */}
+                                                                    {
+                                                                        filterInvoice.length > 0 ? (
+                                                                            filterInvoice.map((item, index) => (
+                                                                                <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                                                    <DropdownMenuItem
+                                                                                        key={index}
+                                                                                        className="text-xs w-[200px] cursor-pointer"
+                                                                                        value={index}
+
+                                                                                    >
+                                                                                        Donwload Invoice {index > 1 && index + 1}
+                                                                                    </DropdownMenuItem>
+                                                                                </NextLink>
+                                                                            ))
+                                                                        ) : (
+                                                                            <DropdownMenuItem
+                                                                                disabled={true}
+                                                                                className="text-xs text-myBlue w-[200px] cursor-pointer "
+                                                                            >
+                                                                                No Invoice
+                                                                            </DropdownMenuItem>
+                                                                        )
+                                                                    }
+
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => setOpenInternal(true)}
+                                                                    >
+                                                                        <p className=' text-xs cursor-pointer'>Download Internal Code</p>
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => setOpenPackage(true)}
+                                                                        className="text-xs cursor-pointer">
+                                                                        <p className=' text-xs'>Download Package Information</p>
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => setOpenDelete(true)}
+                                                                        className="text-xs text-red-700 cursor-pointer hover:bg-red-50 focus:bg-red-50 focus:text-red-700"
+                                                                    >
+                                                                        Delete Package
+                                                                    </DropdownMenuItem>
+                                                                </DropdownMenuContent>
+                                                            </DropdownMenu>
+                                                        </Dialog>
+                                                        <Button
+                                                            variant="secondary"
+                                                            size="sm"
+                                                            className="text-xs text-white"
+                                                            onClick={() => setOpenStatus(true)}
+                                                        >
+                                                            <p className=' text-xs'>Update Status</p>
+                                                        </Button>
+                                                        <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}&package_id=${data?.tracking_id}`} >
+                                                            <Button
+                                                                variant="secondary"
+                                                                size="sm"
+                                                                disabled={documents === ""}
+                                                            >
+                                                                <p className=' text-xs'>Send Invoice To User</p>
+                                                            </Button>
+                                                        </NextLink>
+
+                                                        <Button
+                                                            variant="secondary"
+                                                            size="sm"
+                                                            className="text-xs text-white"
+                                                            onClick={markDelivered}
+                                                            disabled={data?.status === "Complete"}
+                                                        >
+                                                            <p className=' text-xs'>Mark As Delivered</p>
+                                                        </Button>
+
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            className="text-xs text-white"
+                                                            onClick={() => setOpenStatus(true)}
+                                                        >
+                                                            <p className=' text-xs'>Delete Package</p>
+                                                        </Button>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                             {/* <CarouselItem key={index} className=" w-full h-full grow-1">
                                                                 <div className="w-full">
                                                                     <Card>
@@ -400,99 +665,7 @@ export default function VerificationPages({ params }) {
 
                                                                 </div>
                                                             </CarouselItem> */}
-                            <div className="flex flex-row gap-4 py-2">
-                                <div className="imageContainer flex flex-col w-[400px] items-center">
 
-                                    {
-                                        skeleton ? (
-                                            <>
-                                                <Skeleton className={"w-[100%] h-[250px]"} />
-                                            </>
-                                        ) : (
-                                            <Carousel className="w-full ">
-                                                <CarouselContent>
-                                                    {
-                                                        filteredImages?.length === 0 ? (
-                                                            <CarouselItem key={1} className="w-full h-full grow-1">
-                                                                <div className="p-1 w-full">
-                                                                    <Card
-                                                                        className="p-1 w-full"
-                                                                    >
-                                                                        <Image
-                                                                            src={'/assets/img-placeholder.svg'}
-                                                                            width={200}
-                                                                            height={200}
-                                                                            alt={`Image`}
-                                                                            style={{ objectFit: "contain", width: '100%', height: '250px', }}
-                                                                        />
-                                                                    </Card>
-                                                                </div>
-                                                            </CarouselItem>
-                                                        ) : null
-                                                    }
-
-                                                    {Array.from({ length: filteredImages?.length }).map((_, index) => (
-                                                        <CarouselItem key={index} className="w-full h-full grow-1">
-                                                            <div className="w-full">
-                                                                <Card
-                                                                    className="p-1 w-full"
-                                                                >
-                                                                    <img
-                                                                        style={{ objectFit: "contain", width: '100%', height: '250px', }}
-                                                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
-                                                                        alt=""
-                                                                    />
-
-                                                                </Card>
-                                                            </div>
-                                                        </CarouselItem>
-                                                    ))}
-                                                </CarouselContent>
-                                                <CarouselPrevious className="left-[10px]" />
-                                                <CarouselNext className="right-[10px]" />
-                                            </Carousel>
-                                        )
-                                    }
-
-                                </div>
-
-                                <div className="flex flex-col ">
-                                    <div className="text-red-700 text-opacity-80 text-lg font-bold font-['Poppins']">
-                                        {skeleton
-                                            ? <Skeleton />
-                                            : (
-                                                <>
-                                                    #{data?.barcode_tracking}
-                                                </>
-                                            )
-                                        }
-                                    </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Package Weight</p>
-                                        <p className='text-sm font-bold'>{data?.package_weight} {data?.package_weight_unit}</p>
-                                    </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Package Size</p>
-                                        <p className='text-sm font-bold'>{data?.package_length} x {data?.package_witdth} x {data?.package_height}  {data?.package_height_unit}</p>
-                                    </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Package Total Price</p>
-                                        <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
-                                    </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>PARS</p>
-                                        <p className='text-sm font-bold'>{data?.pars || "-"}</p>
-                                    </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Entry Number</p>
-                                        <p className='text-sm font-bold'>{data?.entry_number || "-"}</p>
-                                    </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Manifest Number</p>
-                                        <p className='text-sm font-bold'>{data?.manifiest_number || "-"}</p>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
