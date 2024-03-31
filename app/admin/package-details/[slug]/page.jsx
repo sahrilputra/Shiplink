@@ -205,6 +205,7 @@ export default function VerificationPages({ params }) {
                                         }
 
                                     </div>
+
                                 </div>
 
                                 <div className="packageData flex flex-col gap-1 px-4 py-2">
@@ -475,7 +476,15 @@ export default function VerificationPages({ params }) {
                                                         </Carousel>
                                                     )
                                                 }
-
+                                                <Button
+                                                    variant="secondary"
+                                                    size="xs"
+                                                    className="text-xs text-white w-full"
+                                                    onClick={markDelivered}
+                                                    disabled={data?.status === "Complete"}
+                                                >
+                                                    <p className=' text-xs'>Mark As Delivered</p>
+                                                </Button>
                                             </div>
 
                                             <div className="flex flex-col ">
@@ -593,15 +602,7 @@ export default function VerificationPages({ params }) {
                                                                 <p className=' text-xs'>Create Invoice</p>
                                                             </Button>
                                                         </NextLink>
-                                                        <Button
-                                                            variant="secondary"
-                                                            size="sm"
-                                                            className="text-xs text-white w-full"
-                                                            onClick={markDelivered}
-                                                            disabled={data?.status === "Complete"}
-                                                        >
-                                                            <p className=' text-xs'>Mark As Delivered</p>
-                                                        </Button>
+
 
                                                         <Button
                                                             variant="destructive"
