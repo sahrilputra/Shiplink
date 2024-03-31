@@ -525,6 +525,7 @@ export default function VerificationPages({ params }) {
                                                     <Button
                                                         variant="secondary"
                                                         size="sm"
+                                                        className="w-[150px]"
                                                     >
                                                         <p className=' text-xs'>Edit Package</p>
                                                     </Button>
@@ -610,7 +611,7 @@ export default function VerificationPages({ params }) {
                                                         <Button
                                                             variant="secondary"
                                                             size="sm"
-                                                            className="text-xs text-white"
+                                                            className="text-xs text-white w-full"
                                                             onClick={() => setOpenStatus(true)}
                                                         >
                                                             <p className=' text-xs'>Update Status</p>
@@ -619,16 +620,17 @@ export default function VerificationPages({ params }) {
                                                             <Button
                                                                 variant="secondary"
                                                                 size="sm"
+                                                                className="text-xs text-white w-full"
                                                                 disabled={documents === ""}
                                                             >
-                                                                <p className=' text-xs'>Send Invoice To User</p>
+                                                                <p className=' text-xs'>Create Invoice</p>
                                                             </Button>
                                                         </NextLink>
 
                                                         <Button
                                                             variant="secondary"
                                                             size="sm"
-                                                            className="text-xs text-white"
+                                                            className="text-xs text-white w-full"
                                                             onClick={markDelivered}
                                                             disabled={data?.status === "Complete"}
                                                         >
@@ -638,7 +640,7 @@ export default function VerificationPages({ params }) {
                                                         <Button
                                                             variant="destructive"
                                                             size="sm"
-                                                            className="text-xs text-white"
+                                                            className="text-xs text-white w-full"
                                                             onClick={() => setOpenStatus(true)}
                                                         >
                                                             <p className=' text-xs'>Delete Package</p>
