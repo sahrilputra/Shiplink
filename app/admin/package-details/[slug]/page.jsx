@@ -498,7 +498,7 @@ export default function VerificationPages({ params }) {
                                                     <p className='text-sm font-bold'>{data?.package_length} x {data?.package_witdth} x {data?.package_height}  {data?.package_height_unit}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p>Package Total Price</p>
+                                                    <p class='whitespace-nowrap leading-4 '>Package <br /> Total Price</p>
                                                     <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
@@ -506,11 +506,11 @@ export default function VerificationPages({ params }) {
                                                     <p className='text-sm font-bold'>{data?.pars || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p>Entry Number</p>
+                                                    <p className=' linen'>Entry Number</p>
                                                     <p className='text-sm font-bold'>{data?.entry_number || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p>Manifest Number</p>
+                                                    <p className='text-nowrap leading-4 '>Manifest <br />Number</p>
                                                     <p className='text-sm font-bold'>{data?.manifiest_number || "-"}</p>
                                                 </div>
                                             </div>
@@ -521,18 +521,97 @@ export default function VerificationPages({ params }) {
                                     <div className="justify-end items-end">
                                         <div className="flex flex-row gap-3 ">
                                             <div className="flex flex-row gap-2 w-full items-start content-end justify-end">
-                                                <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
-                                                    <Button
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        className="w-[150px]"
-                                                    >
-                                                        <p className=' text-xs'>Edit Package</p>
-                                                    </Button>
-                                                </NextLink>
+
                                                 <div className="">
                                                     <div className="flex flex-col gap-3">
-                                                        <Dialog>
+                                                        <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
+                                                            <Button
+                                                                variant="secondary"
+                                                                size="sm"
+                                                                className="w-full"
+                                                            >
+                                                                <p className=' text-xs'>Edit Package</p>
+                                                            </Button>
+                                                        </NextLink>
+                                                        <Button
+                                                            onClick={() => setOpenStatus(true)}
+                                                            variant="secondary"
+                                                            size="sm"
+                                                            className="text-xs text-white w-full"
+                                                        >
+                                                            <p className=' text-xs'>Update Status</p>
+                                                        </Button>
+                                                        {
+                                                            filterInvoice.length > 0 ? (
+                                                                filterInvoice.map((item, index) => (
+                                                                    <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                                        <Button
+                                                                            variant="secondary"
+                                                                            size="sm"
+                                                                            key={index}
+                                                                            className="text-xs w-full cursor-pointer"
+                                                                            value={index}
+                                                                        >
+                                                                            View Invoice {index > 1 && index + 1}
+                                                                        </Button>
+                                                                    </NextLink>
+                                                                ))
+                                                            ) : (
+                                                                <Button
+                                                                    variant="secondary"
+                                                                    size="sm"
+                                                                    disabled={true}
+                                                                    className="text-xs text-myBlue w-full cursor-pointer "
+                                                                >
+                                                                    No Invoice
+                                                                </Button>
+                                                            )
+                                                        }
+                                                        <Button
+                                                            onClick={() => setOpenPackage(true)}
+                                                            variant="secondary"
+                                                            size="sm"
+                                                            className="text-xs text-white w-full"
+                                                        >
+                                                            <p className=' text-xs'>Print Details</p>
+                                                        </Button>
+                                                        <Button
+                                                            onClick={() => setOpenInternal(true)}
+                                                            variant="secondary"
+                                                            size="sm"
+                                                            className="text-xs text-white w-full"
+                                                        >
+                                                            <p className=' text-xs'>Internal Barcode</p>
+                                                        </Button>
+                                                        <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}&package_id=${data?.tracking_id}`} >
+                                                            <Button
+                                                                variant="secondary"
+                                                                size="sm"
+                                                                className="text-xs text-white w-full"
+                                                                disabled={documents === ""}
+                                                            >
+                                                                <p className=' text-xs'>Create Invoice</p>
+                                                            </Button>
+                                                        </NextLink>
+                                                        <Button
+                                                            variant="secondary"
+                                                            size="sm"
+                                                            className="text-xs text-white w-full"
+                                                            onClick={markDelivered}
+                                                            disabled={data?.status === "Complete"}
+                                                        >
+                                                            <p className=' text-xs'>Mark As Delivered</p>
+                                                        </Button>
+
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            className="text-xs text-white w-full"
+                                                            onClick={() => setOpenStatus(true)}
+                                                        >
+                                                            <p className=' text-xs'>Delete Package</p>
+                                                        </Button>
+                                                        {/* <Dialog>
                                                             <DropdownMenu>
                                                                 <DropdownMenuTrigger asChild>
                                                                     <Button
@@ -545,7 +624,7 @@ export default function VerificationPages({ params }) {
                                                                     </Button>
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent side={"bottom"} align={"end"} sideOffset={2}>
-                                                                    {/* <DropdownMenuItem
+                                                                    <DropdownMenuItem
                                                                         variant="secondary"
                                                                         size="sm"
                                                                         className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
@@ -553,18 +632,18 @@ export default function VerificationPages({ params }) {
                                                                         disabled={data?.status === "Complete"}
                                                                     >
                                                                         <p className=' text-xs'>Mark As Delivered</p>
-                                                                    </DropdownMenuItem> */}
-                                                                    {/* <DropdownMenuItem
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem
                                                                         onClick={() => setOpenStatus(true)}
                                                                         className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
                                                                     >
                                                                         <p className=' text-xs'>Update Status</p>
-                                                                    </DropdownMenuItem> */}
-                                                                    {/* <DropdownMenuItem
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem
                                                                         className="text-xs cursor-pointer"
                                                                     >
                                                                         <p className=' text-xs'>Send Invoice To User</p>
-                                                                    </DropdownMenuItem> */}
+                                                                    </DropdownMenuItem>
                                                                     {
                                                                         filterInvoice.length > 0 ? (
                                                                             filterInvoice.map((item, index) => (
@@ -607,45 +686,7 @@ export default function VerificationPages({ params }) {
                                                                     </DropdownMenuItem>
                                                                 </DropdownMenuContent>
                                                             </DropdownMenu>
-                                                        </Dialog>
-                                                        <Button
-                                                            variant="secondary"
-                                                            size="sm"
-                                                            className="text-xs text-white w-full"
-                                                            onClick={() => setOpenStatus(true)}
-                                                        >
-                                                            <p className=' text-xs'>Update Status</p>
-                                                        </Button>
-                                                        <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}&package_id=${data?.tracking_id}`} >
-                                                            <Button
-                                                                variant="secondary"
-                                                                size="sm"
-                                                                className="text-xs text-white w-full"
-                                                                disabled={documents === ""}
-                                                            >
-                                                                <p className=' text-xs'>Create Invoice</p>
-                                                            </Button>
-                                                        </NextLink>
-
-                                                        <Button
-                                                            variant="secondary"
-                                                            size="sm"
-                                                            className="text-xs text-white w-full"
-                                                            onClick={markDelivered}
-                                                            disabled={data?.status === "Complete"}
-                                                        >
-                                                            <p className=' text-xs'>Mark As Delivered</p>
-                                                        </Button>
-
-                                                        <Button
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            className="text-xs text-white w-full"
-                                                            onClick={() => setOpenStatus(true)}
-                                                        >
-                                                            <p className=' text-xs'>Delete Package</p>
-                                                        </Button>
-
+                                                        </Dialog> */}
 
                                                     </div>
                                                 </div>
