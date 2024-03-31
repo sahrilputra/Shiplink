@@ -118,7 +118,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
             >
                 <div className="flex flex-row justify-between items-center gap-5 relative">
                     <div className="justify-start items-center gap-[15px] flex">
-                        <PackageType variant={status} notif={"notif"} />
+                        <PackageType variant={status} notif={`${status === "Received" ? "notif" : ""}`} />
                         <div className="flex-col justify-start items-start inline-flex w-[200px]">
                             <div className="text-black text-sm font-semiBold">{tracking_id}</div>
                             <div className="text-sky-700 text-xs font-semiBold">Shipping Mailbox</div>
@@ -234,9 +234,9 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                                 handleButtonClick={handleButtonClick}
                                 item={item} selectedButton={selectedButton}
                                 buttonEnabled={buttonEnabled}
-                                reload={reload} 
+                                reload={reload}
                                 toggleExpanded={toggleExpanded}
-                                />
+                            />
 
                             <div className="w-[100%] flex justify-center align-middle mx-auto ">
                                 {
