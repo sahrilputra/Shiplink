@@ -95,11 +95,12 @@ export default function UserPage({ params }) {
     //     }
     // };
 
+    const profileImg = `https://sla.webelectron.com/api/Users/getprofileimages_usercode?user_code=${data?.customer_id}` || "none"
     return (
         <>
             {/* {loading && <Loaders />} */}
 
-            <ChangeMembership setOpen={setOpenMembership} open={openMembership} data={data} />
+            <ChangeMembership setOpen={setOpenMembership} open={openMembership} data={data} reloadData={reloadData} />
             <ActivateUser open={openActivate} setOpen={setOpenActivate} deleteID={data?.customer_id} reloadData={reloadData} />
             <SuspendUser deleteID={data?.customer_id} open={openSuspend} setOpen={setOpenSuspend} reloadData={reloadData} />
             <NewPasswordDialog open={openPassword} setOpen={setOpenPassword} data={data} reload={reloadData} />
@@ -113,9 +114,12 @@ export default function UserPage({ params }) {
                                     <Skeleton className="w-[50px] h-[50px] rounded-full object-cover" />
                                 ) : (
                                     <img
-                                        src="../../assets/user-holder.svg"
+                                        src={profileImg !== "none" ? profileImg : "'../../../assets/user-holder.svg'"}
                                         alt="avatar"
                                         className="w-[50px] h-[50px] rounded-full object-cover"
+                                        onError={(e) => {
+                                            e.target.src = '../../../assets/user-holder.svg'; // Ganti dengan URL gambar default
+                                        }}
                                     />
                                 )}
                             </div>
