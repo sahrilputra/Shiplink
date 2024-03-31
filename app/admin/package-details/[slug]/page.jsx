@@ -268,6 +268,15 @@ export default function VerificationPages({ params }) {
                                     )
                                     } */}
 
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="h-[30px] w-full"
+                                        onClick={markDelivered}
+                                        disabled={data?.status === "Complete"}
+                                    >
+                                        <p className=' text-xs'>Mark As Delivered</p>
+                                    </Button>
 
                                     <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}`} >
                                         <Button
@@ -321,15 +330,6 @@ export default function VerificationPages({ params }) {
                                         </DropdownMenu>
                                     </div>
 
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        className="h-[30px] w-full"
-                                        onClick={markDelivered}
-                                        disabled={data?.status === "Complete"}
-                                    >
-                                        <p className=' text-xs'>Mark As Delivered</p>
-                                    </Button>
                                 </div>
                             </div>
                         </div>
