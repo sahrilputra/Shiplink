@@ -250,7 +250,7 @@ export default function PackageDetails() {
                                             <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                             <span>-</span>
                                             <span className='text-nowrap'>{`${row.original.warehouse_name_arrival}`} WH</span>
-
+                                            <span>{row.original.services === "Hold pickup" && "- HFP"}</span>
                                         </div>
                                     </>
                                 )
