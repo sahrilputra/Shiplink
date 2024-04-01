@@ -338,11 +338,11 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                         name={`package_content[${index}].made_in`}
                         control={forms.control}
                         render={({ field }) => {
-                            const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
+                            // const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
 
-                            if (!field.value) {
-                                forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
-                            }
+                            // if (!field.value) {
+                            //     forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
+                            // }
                             return (
                                 <>
                                     <FormItem className="flex flex-col items-center">

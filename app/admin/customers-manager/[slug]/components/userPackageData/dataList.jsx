@@ -169,11 +169,9 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
                   <>
                     <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
                       <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
-                      <span>-</span>
                       <span className='text-nowrap'>
-                        {`${row.original.warehouse_name_destination}`} WH
+                        {`- ${row.original.warehouse_name_destination} WH`} {`${row.original.services === "Hold pickup" ? "- HFP" : ""}`}
                       </span>
-                      <span>{row.original.services === "Hold pickup" && "- HFP"}</span>
                     </div>
                   </>
                 )
