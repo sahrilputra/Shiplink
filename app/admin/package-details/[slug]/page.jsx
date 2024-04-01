@@ -122,7 +122,7 @@ export default function VerificationPages({ params }) {
             const response = await axios.post(`/api/admin/packages/setStatus`,
                 {
                     tracking_id: data?.tracking_id,
-                    status: "Complete"
+                    status: "Delivered"
                 });
             console.log("🚀 ~ handleSave ~ response:", response)
             if (response.status === 200) {
@@ -555,7 +555,7 @@ export default function VerificationPages({ params }) {
                                                             size="sm"
                                                             className="text-xs text-white w-full"
                                                             onClick={markDelivered}
-                                                            disabled={data?.status === "Complete"}
+                                                            disabled={data?.status === "Delivered"}
                                                         >
                                                             <p className=' text-xs'>Mark Delivered</p>
                                                         </Button>
