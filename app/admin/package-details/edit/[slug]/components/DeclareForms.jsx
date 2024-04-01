@@ -353,12 +353,7 @@ export const DeclareForms = ({
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
-                                                        {field.value
-                                                            ? countryList.find(
-                                                                (language) => language.country_code === field.value
-                                                            )?.country_code
-                                                            : "Country"
-                                                        }
+                                                        {field.value ? field.value : "COUNTRY"}
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
