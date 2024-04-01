@@ -366,10 +366,8 @@ export default function VerificationPages({ params }) {
                             <div className="grid grid-cols-2">
                                 <div className="col-span-1">
                                     <div className="flex flex-row">
-                                        <div className="">
-                                            <div className="py-2">
-                                                <p className=' text-myBlue font-base font-bold'>Package Information</p>
-                                            </div>
+                                        <div className="flex items-start">
+                                         
                                             <div className="imageContainer flex flex-col w-[400px] items-center">
                                                 {
                                                     skeleton ? (
@@ -382,9 +380,9 @@ export default function VerificationPages({ params }) {
                                                                 {
                                                                     filteredImages?.length === 0 ? (
                                                                         <CarouselItem key={1} className="w-full h-full grow-1">
-                                                                            <div className="p-1 w-full">
+                                                                            <div className="w-full">
                                                                                 <Card
-                                                                                    className="w-full bg-cover border-none"
+                                                                                    className="w-full bg-cover"
                                                                                 >
                                                                                     <Image
                                                                                         src={'/assets/img-placeholder.svg'}
@@ -426,8 +424,8 @@ export default function VerificationPages({ params }) {
                                             </div>
                                         </div>
 
-                                        <div className=" px-3">
-                                            <div className="py-2">
+                                        <div className=" px-3 flex flex-col items-start">
+                                            <div className="pb-2">
                                                 <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
                                                     <Button
                                                         variant="secondary"
@@ -448,7 +446,7 @@ export default function VerificationPages({ params }) {
                                                     <p className='text-sm font-bold'>{data?.package_length} x {data?.package_witdth} x {data?.package_height}  {data?.package_height_unit}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p class='whitespace-nowrap  '>Package Total Price</p>
+                                                    <p class='whitespace-nowrap  '>Package Value</p>
                                                     <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
@@ -554,7 +552,7 @@ export default function VerificationPages({ params }) {
                                                             onClick={markDelivered}
                                                             disabled={data?.status === "Complete"}
                                                         >
-                                                            <p className=' text-xs'>Mark As Delivered</p>
+                                                            <p className=' text-xs'>Mark Delivered</p>
                                                         </Button>
                                                         {/* <Dialog>
                                                             <DropdownMenu>
