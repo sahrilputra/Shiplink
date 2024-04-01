@@ -81,9 +81,9 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
     total: 0
   })
 
-  console.log("🚀 ~ CustomerPackageTabled ~ rowTotalData:", rowTotalData)
   useEffect(() => {
     const fetchData = async () => {
+      setSkeleton(true)
       try {
         const response = await axios.post(
           `/api/admin/packages/list`,
@@ -111,6 +111,7 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
         setSkeleton(false)
         console.log('Error:', error);
       }
+      setSkeleton(false)
     };
     fetchData();
   }, [customerName, customerID, query]);
@@ -134,8 +135,18 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
 
     {
       accessorKey: "tracking_id",
-      header: "Tracking ID",
+      header: "Package ID",
       className: "text-xs",
+      size: 40,
+      cell: ({ row }) => {
+        return (
+          <div className="text-xs flex flex-col flex-wrap number tabular-nums">
+            <span
+              style={{ fontFamily: 'roboto' }}
+              className=''>{`${row.original.tracking_id}`}</span>
+          </div>
+        )
+      }
     },
     {
       accessorKey: "customer_name",
@@ -145,43 +156,87 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       accessorKey: "destination",
       header: "Destination",
       cell: ({ row }) => {
+        const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
         return (
           <>
-            <>
-              {
-                row.original.status === "Hold For Pickup" ? (
-                  <div className="text-xs">
-                    {`HFP - ${row.original.warehouse_name_destination}`}
-                  </div>
-                ) : row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ? (
-                  <div className="text-xs">
+            {
+              row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                (
+                  <>
                     -
-                  </div>
+                  </>
                 ) : (
                   <>
-                    <div className="text-xs">
-                      {`${row.original.warehouse_name_destination !== null ? row.original.warehouse_name_destination : "-"} Warehouse - ${row.original.country_code_destination}`}
+                    <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                      <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                      <span>-</span>
+                      <span className='text-nowrap'>
+                        {`${row.original.warehouse_name_destination}`} WH
+                      </span>
+                      <span>{row.original.services === "Hold pickup" && "- HFP"}</span>
                     </div>
                   </>
                 )
-              }
-            </>
+            }
           </>
         )
       }
     },
     {
       accessorKey: "updated_at",
-      header: "Last Update",
+      sortingFn: "datetime",
+      size: 50,
+      header: ({ getSorting }) => {
+        return (
+          <div
+            className="cursor-pointer select-none w-[100%] text-center"
+            onClick={() => {
+              setSorting([{ id: "updated_at", desc: !isSortedDesc }]);
+              setIsSortedDesc(!isSortedDesc);
+            }}
+          >
+            <div className="flex flex-row gap-2 items-center text-center"
+            >
+              Last Update
+              <>
+                {isSortedDesc ? <ChevronDown className="text-white" width={15} /> : <ChevronUp className="text-white" width={15} />}
+              </>
+            </div>
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className=""
+            style={{ fontFamily: 'roboto' }}
+          >
+            {row.original.updated_at}
+          </div>
+        )
+      },
     },
     {
       accessorKey: "bin_location",
-      header: "Bin Location",
+      header: "Bin",
+      size: 50,
       cell: ({ row }) => {
         return (
-          <div className="text-xs">
-            {row.original.bin_location !== "Undefined" ? row.original.bin_location : "-"}
-          </div>
+          <>
+            {
+              row.original.bin_location === null || row.original.bin_location === "Undefined" || row.original.bin_location === "undefined" ?
+                (
+                  <>
+                    <p className="text-xs">-</p>
+                  </>
+                ) : (
+                  <>
+                    <p
+                      style={{ fontFamily: 'roboto' }}
+                      className="text-xs number tabular-nums">{row.original.bin_location}</p>
+                  </>
+                )
+            }
+          </>
         )
       }
     },
