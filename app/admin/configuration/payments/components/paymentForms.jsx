@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { FormControl, FormField, FormItem, Form } from '@/components/ui/form'
 import axios from 'axios'
+import { useToast } from '@/components/ui/use-toast'
+import { Loaders } from '@/components/ui/loaders'
 
 const formSchema = yup.object().shape({
     publishableKey: yup.string().required(),
@@ -14,6 +16,8 @@ const formSchema = yup.object().shape({
 })
 export const PaymentForms = () => {
 
+    const [loading, setLoading] = useState(false)
+    const { toast } = useToast();
     const [data, setData] = useState({
         publishableKey: "",
         secretKey: "",
@@ -48,13 +52,17 @@ export const PaymentForms = () => {
         fetchData();
     }, [])
 
+    useEffect(() => {
 
-    form.setValue("publishableKey", data?.publishableKey || "")
-    form.setValue("secretKey", data?.secretKey || "")
+        form.setValue("publishableKey", data?.publishableKey || "")
+        form.setValue("secretKey", data?.secretKey || "")
+
+    }, [data])
 
     const { handleSubmit, formState, register, setError, setValue } = form
     const { errors } = formState
     const onSubmit = async (data) => {
+        setLoading(true)
         try {
             const response = await axios.post(
                 `/api/admin/config/payments/setData`,
@@ -63,6 +71,19 @@ export const PaymentForms = () => {
                     publishableKey: data.publishableKey,
                 }
             )
+            if (response.data.status === true || response.data.status === "true") {
+                toast({
+                    description: response.data.message,
+                    type: "success",
+                })
+            } else {
+                toast({
+                    title: "Error",
+                    description: response.data.message,
+                    type: "error",
+                })
+            }
+            setLoading(false)
         }
         catch (error) {
             console.error(error)
@@ -72,8 +93,10 @@ export const PaymentForms = () => {
 
     return (
         <>
+            {loading && <Loaders />}
             <Form {...form}>
                 <form
+                    onSubmit={handleSubmit(onSubmit)}
                     className=''
                     action="">
                     <div className="flex flex-col gap-2 w-full mt-2 px-3">
