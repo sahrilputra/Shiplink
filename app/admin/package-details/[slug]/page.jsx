@@ -240,7 +240,7 @@ export default function VerificationPages({ params }) {
                                             <div className="flex flex-row gap-1 items-center">
                                                 <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                                 <p className='text-sm font-bold'>
-                                                    {data?.warehouse_name_arrival} WR - {data?.country_name_arrival}
+                                                    {data?.warehouse_name_arrival} WH - {data?.country_name_arrival}
                                                 </p>
                                             </div>
                                         )
@@ -252,7 +252,7 @@ export default function VerificationPages({ params }) {
                                             <div className="flex flex-row gap-1 items-center">
                                                 <img src={`https://flagcdn.com/${countryCodeArrival}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                                 <p className='text-sm font-bold text-nowrap'>
-                                                    {data?.warehouse_name_destination} WR - {data?.country_name_destination}
+                                                    {data?.warehouse_name_destination} WH - {data?.country_name_destination}
                                                 </p>
                                             </div>
                                         )
