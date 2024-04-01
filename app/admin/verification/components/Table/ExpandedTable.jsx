@@ -147,7 +147,7 @@ export const ExpandedTable = (
                     <div className="w-[100%] flex flex-row justify-between gap-2 items-center">
                         <div className="flex flex-col w-[300px]">
                             <p className='text-myBlue text-xs'>Package Dimension</p>
-                            <p className='font-light text-xs'>{item?.package_length || "0"} {height_unit} x {item?.package_width || "0"} {height_unit} x  {item?.package_height || "0"} {height_unit} | {item?.package_weight || "0"}  {item?.package_weight_unit || "0"}</p>
+                            <p className='font-light text-xs'>{item?.package_length || "0"} {height_unit} x {item?.package_witdth || "0"} {height_unit} x  {item?.package_height || "0"} {height_unit} | {item?.package_weight || "0"}  {item?.package_weight_unit || "0"}</p>
                         </div>
                         <div className="">
                             <DropdownMenu modal >
