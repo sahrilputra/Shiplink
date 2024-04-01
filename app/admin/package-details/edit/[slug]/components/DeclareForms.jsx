@@ -41,22 +41,22 @@ export const DeclareForms = ({
         forms.setValue(`package_content[${index}].value`, parseValue)
         forms.setValue(`package_content[${index}].subtotal`, parseQty * parseValue)
     }
-    
-    useEffect(() => {
-        data.map((item, i) => {
-            forms.setValue(`package_content[${i}].qty`, item.qty || 0)
-            forms.setValue(`package_content[${i}].value`, item.value || 0)
-            forms.setValue(`package_content[${i}].made_in`, item.made_in || "")
-            forms.setValue(`package_content[${i}].desc`, item.desc || "")
-            forms.setValue(`package_content[${i}].hs_desc`, item.hs_desc || "")
-            forms.setValue(`package_content[${i}].hs_code`, item.hs_code || "")
-            setCommandQuery(`package_content[${i}].made_in`, item.made_in || "")
-            console.log("HS CODE ", forms.watch(`package_content[${i}].hs_code`).length)
-            if (forms.watch(`package_content[${i}].hs_code`).length === 13 && index === i) {
-                handle13DigitHST(item.hs_code)
-            }
-        })
-    }, [data])
+
+    // useEffect(() => {
+    //     data.map((item, i) => {
+    //         forms.setValue(`package_content[${i}].qty`, item.qty || 0)
+    //         forms.setValue(`package_content[${i}].value`, item.value || 0)
+    //         forms.setValue(`package_content[${i}].made_in`, item.made_in || "")
+    //         forms.setValue(`package_content[${i}].desc`, item.desc || "")
+    //         forms.setValue(`package_content[${i}].hs_desc`, item.hs_desc || "")
+    //         forms.setValue(`package_content[${i}].hs_code`, item.hs_code || "")
+    //         setCommandQuery(`package_content[${i}].made_in`, item.made_in || "")
+    //         console.log("HS CODE ", forms.watch(`package_content[${i}].hs_code`).length)
+    //         if (forms.watch(`package_content[${i}].hs_code`).length === 13 && index === i) {
+    //             handle13DigitHST(item.hs_code)
+    //         }
+    //     })
+    // }, [data])
     const hsCode = forms.watch(`package_content[${index}].hs_code`)
 
     // const setSubTotal = (value) => {
@@ -333,12 +333,12 @@ export const DeclareForms = ({
                         name={`package_content[${index}].made_in`}
                         control={forms.control}
                         render={({ field }) => {
-                            const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
+                            // const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
 
-                            // Jika nilai field.value belum terisi (null atau undefined), atur nilai default
-                            if (!field.value) {
-                                forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
-                            }
+                            // // Jika nilai field.value belum terisi (null atau undefined), atur nilai default
+                            // if (!field.value) {
+                            //     forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
+                            // }
                             return (
                                 <>
                                     <FormItem className="flex flex-col">
@@ -353,7 +353,12 @@ export const DeclareForms = ({
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
-                                                        {field.value}
+                                                        {field.value
+                                                            ? countryList.find(
+                                                                (language) => language.country_code === field.value
+                                                            )?.country_code
+                                                            : "Country"
+                                                        }
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>

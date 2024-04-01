@@ -150,6 +150,18 @@ export const FormValidate = ({ data }) => {
         form.setValue('status', data.status || '');
         form.setValue('documents', '');
         form.setValue('tracking_id', data.tracking_id || '');
+
+        data.content?.forEach((item, index) => {
+            form.setValue(`package_content[${index}].tracking_id`, item.tracking_id || '');
+            form.setValue(`package_content[${index}].qty`, item.qty || 0);
+            form.setValue(`package_content[${index}].value`, item.value || 0);
+            form.setValue(`package_content[${index}].desc`, item.desc || '');
+            form.setValue(`package_content[${index}].hs_desc`, item.hs_desc || '');
+            form.setValue(`package_content[${index}].hs_code`, item.hs_code || '');
+            form.setValue(`package_content[${index}].made_in`, item.made_in || '');
+            form.setValue(`package_content[${index}].subTotal`, item.subTotal || 0);
+        });
+        
     }, [data]);
     return form
 }
