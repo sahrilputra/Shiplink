@@ -8,7 +8,7 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { province_id = "", country_code, province_name, province_code, action } = await request.json();
+        const { province_id, country_code, province_name, province_code, action } = await request.json();
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
             `${process.env.API_URL}/Config/Province_setdata`,
@@ -23,10 +23,11 @@ export async function POST(request) {
                 httpsAgent: agent,
                 headers: {
                     Authorization:
-                    `Bearer ${tokenAccess}`
+                        `Bearer ${tokenAccess}`
                 }
             }
         );
+        console.log("🚀 ~ POST ~ response:", response)
 
         if (response.status === 200) {
             const responseData = {

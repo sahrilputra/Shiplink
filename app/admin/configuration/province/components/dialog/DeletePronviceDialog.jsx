@@ -34,8 +34,6 @@ export const DeletePronviceDialog = ({ open, setOpen, deleteID, reloadData }) =>
                 );
                 toast({
                     title: `Province Deleted!`,
-                    description: response.data.message,
-                    status: 'success',
                 });
             }
             setLoading(false);

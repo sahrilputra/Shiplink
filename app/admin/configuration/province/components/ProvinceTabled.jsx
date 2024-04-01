@@ -53,6 +53,14 @@ export function ProvinceTabled({ }) {
         limit: 0,
         index: 0
     });
+
+    const [provinceQuery, setProvinceQuery] = useState({
+        keyword: "",
+        country_code: "",
+        page: 0,
+        limit: 0,
+        index: 0,
+    })
     const [province, setProvince] = useState([]);
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -92,11 +100,14 @@ export function ProvinceTabled({ }) {
 
     useEffect(() => {
         fetchData();
-    }, [query]);
+    }, [query]);    
 
     const reloadData = () => {
         fetchData();
         setRowSelection({});
+        setProvinceQuery({
+            country_code: countryCode,
+        })
     };
 
     useEffect(() => {
@@ -105,12 +116,7 @@ export function ProvinceTabled({ }) {
             try {
                 const response = await axios.post(
                     `/api/admin/config/province`,
-                    {
-                        keyword: "",
-                        page: 0,
-                        limit: 0,
-                        index: 0,
-                    }
+                    provinceQuery
                 );
                 const data = await response.data;
                 console.log("DATA: ", data)
@@ -128,7 +134,7 @@ export function ProvinceTabled({ }) {
             }
         }
         fetchProvince();
-    }, [countryCode])
+    }, [countryCode, provinceQuery])
 
 
     console.log("🚀 ~ ProvinceTabled ~ countryCode:", countryCode)
@@ -282,7 +288,7 @@ export function ProvinceTabled({ }) {
     return (
         <>
             <DeletePronviceDialog open={deleteDialog} setOpen={setDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
-            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} />
+            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} countryData={countryCode} />
             <EditProvinceDialog key={selectedRowData?.province_id} open={isEditDialog} setOpen={setIsEditDialog} reloadData={reloadData} data={selectedRowData} />
             <Table className=" rounded-md">
                 <TableHeader className="text-sm bg-white text-black rounded-md ">

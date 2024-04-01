@@ -43,12 +43,12 @@ const formSchema = yup.object().shape({
 })
 
 
-export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
+export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) => {
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            country_code: "",
+            country_code: countryData || "",
             province_name: "",
             province_code: "",
         },
@@ -102,12 +102,18 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                 `/api/admin/config/province/setData`,
                 formData
             );
+            console.log("EDIT", response.data.status)
             setLoading(false)
-            toast({
-                title: `Province ${formData.province_name} created!`,
-                description: response.data.message,
-                status: 'success',
-            });
+            if (response.data.status === true) {
+                toast({
+                    title: `Province ${formData.province_name} created!`,
+                });
+            } else {
+                toast({
+                    title: 'Error creating province',
+                    description: response.data.message,
+                });
+            }
             reloadData();
             onClose();
         } catch (error) {
@@ -116,34 +122,46 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
             toast({
                 title: 'Error creating country',
                 description: 'An error occurred while creating the country.',
-                status: 'error',
             });
         }
     };
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/config/countries/list`,
-                query
-            );
-            const data = await response.data;
-            if (data === null) {
-                setCountry([]);
-                fetchData();
-            } else {
-                setCountry(data);
-            }
-            setCountry(data.country);
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
 
     useEffect(() => {
+     
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    query
+                );
+                const data = await response.data;
+                if (data === null) {
+                    setCountry([]);
+                    fetchData();
+                } else {
+                    setCountry(data);
+                }
+                setCountry(data.country);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
+
         fetchData();
 
-    }, [query]);
+        if (countryData) {
+            country.find((item) => {
+                if (item.country_code === countryData) {
+                    console.log('Country Data', item);
+                    setSelectedCountry({
+                        country_code: item.country_code,
+                        country_name: item.country_name,
+                    });
+                }
+            })
+        }
+    }, [query, countryData, country]);
 
 
     return (
@@ -288,8 +306,9 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData }) => {
                                                         size="sm"
                                                         className="w-full"
                                                         onClick={(e) => {
-                                                            e.preventDefault()
-                                                            onClose()
+                                                            e.preventDefault();
+                                                            form.reset();
+                                                            onClose();
                                                         }}
                                                     >
                                                         <p className=' font-normal text-xs'>Cancel</p>

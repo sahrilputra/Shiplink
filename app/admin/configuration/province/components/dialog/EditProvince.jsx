@@ -41,6 +41,7 @@ const formSchema = yup.object().shape({
     country_code: yup.string().required(),
     province_name: yup.string().required(),
     province_code: yup.string().required(),
+    province_id: yup.string().required(),
 })
 
 
@@ -52,6 +53,7 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
             country_code: data?.country_code || "",
             province_name: data?.province_name || "",
             province_code: data?.province_code || "",
+            province_id: data?.province_id || ""
         },
         mode: "onChange",
     })
@@ -63,6 +65,8 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
         limit: 0,
         index: 0
     });
+
+    console.log("🚀 ~ file: EditProvince.jsx ~ line 158 ~ EditProvinceDialog ~ data", data)
     const [selectedCountry, setSelectedCountry] = useState({
         country_code: "",
         country_name: "",
@@ -104,19 +108,26 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
                 formData
             );
             setLoading(false)
-            toast({
-                title: `Province ${formData.province_name} Edited!`,
-                description: response.data.message,
-                status: 'success',
-            });
+            if (response.data.status === true || response.data.status === "true") {
+                toast({
+                    title: `Province ${formData.province_name} Edited!`,
+                });
+            } else {
+                toast({
+                    title: 'Error Edited Province',
+                    description: response.data.message,
+                    status: 'error',
+                });
+            }
+
             reloadData();
             onClose();
         } catch (error) {
             console.log('Error', error);
             setLoading(false)
             toast({
-                title: 'Error creating country',
-                description: 'An error occurred while creating the country.',
+                title: 'Error creating Province',
+                description: 'An error occurred while creating the Province.',
                 status: 'error',
             });
         }
@@ -155,7 +166,7 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
                                     <p>Edit Province</p>
                                 </DialogTitle>
                             </DialogHeader>
-                            <DialogDescription className=" flex justify-center items-center mx-auto">
+                            <div className=" flex justify-center items-center mx-auto">
                                 <div className="flex justify-center items-center mx-auto">
                                     <Form {...form}>
                                         <form
@@ -295,7 +306,7 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
                                         </form>
                                     </Form >
                                 </div>
-                            </DialogDescription>
+                            </div>
                         </DialogContent>
                     </Dialog>
                 )
