@@ -240,18 +240,28 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                             <div className="w-[100%] flex justify-center align-middle mx-auto ">
                                 {
-                                    selectedButton === "Cross Border Forward" ? (
-                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
-                                    ) : selectedButton === "Cross Border Pickup" ? (
+                                    status === "Process" ? (
                                         <>
-                                            <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
-                                        </>
-                                    ) : selectedButton === "Forward Package" ? (
-                                        <>
-                                            <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
                                         </>
                                     ) : (
                                         <>
+                                            {
+                                                selectedButton === "Cross Border Forward" ? (
+                                                    <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
+                                                ) : selectedButton === "Cross Border Pickup" ? (
+                                                    <>
+                                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
+                                                    </>
+                                                ) : selectedButton === "Forward Package" ? (
+                                                    <>
+                                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                    </>
+                                                )
+                                            }
+
                                         </>
                                     )
                                 }

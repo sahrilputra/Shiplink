@@ -45,7 +45,7 @@ export default function Dashboard() {
 
         const timer = setInterval(() => {
             fetchData()
-        }, 3000)
+        }, 1000)
 
         return () => {
             clearInterval(timer)

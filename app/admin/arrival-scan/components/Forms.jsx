@@ -34,33 +34,33 @@ import { PopoverClose } from '@radix-ui/react-popover'
 
 import axios from 'axios'
 
-const carrierList = [
-    {
-        "id": 1,
-        "carrierName": "UPS",
-        "value": "UPS",
-    },
-    {
-        "id": 2,
-        "carrierName": "DHL",
-        "value": "DHL"
-    },
-    {
-        "id": 3,
-        "carrierName": "FedEx",
-        "value": "FedEx"
-    },
-    {
-        "id": 4,
-        "carrierName": "USPS",
-        "value": "USPS"
-    },
-    {
-        "id": 5,
-        "carrierName": "Canada Post",
-        "value": "Canada Post"
-    },
-]
+// const carrierList = [
+//     {
+//         "id": 1,
+//         "carrierName": "UPS",
+//         "value": "UPS",
+//     },
+//     {
+//         "id": 2,
+//         "carrierName": "DHL",
+//         "value": "DHL"
+//     },
+//     {
+//         "id": 3,
+//         "carrierName": "FedEx",
+//         "value": "FedEx"
+//     },
+//     {
+//         "id": 4,
+//         "carrierName": "USPS",
+//         "value": "USPS"
+//     },
+//     {
+//         "id": 5,
+//         "carrierName": "Canada Post",
+//         "value": "Canada Post"
+//     },
+// ]
 export const ArrivalForms = ({
     options,
     forms,
@@ -71,6 +71,29 @@ export const ArrivalForms = ({
     const [newData, setNewData] = useState(null)
     const [disabled, setDisabled] = useState(false);
     const [openCustomer, setOpenCustomer] = useState(false)
+    const [carrierList, setCarrierList] = useState([]);
+
+    useEffect(() => {
+        const fetchCarrier = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/courrier/list`,
+                    {
+                        keyword: "",
+                        page: 0,
+                        limit: 0,
+                        index: 0,
+                    }
+                )
+                console.log("🚀 ~ fetchCarrier ~ response:", response)
+                setCarrierList(response.data.carrier)
+            } catch (error) {
+                fetchCarrier();
+                console.log("Erorr : ", error)
+            }
+        }
+        fetchCarrier();
+    }, [])
     const handleDataChange = (e) => {
 
         setCustomerID(e.target.value)
