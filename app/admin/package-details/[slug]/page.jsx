@@ -452,7 +452,7 @@ export default function VerificationPages({ params }) {
                                                     <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p>PARS</p>
+                                                    <p>PAPS/PARS</p>
                                                     <p className='text-sm font-bold'>{data?.pars || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
