@@ -75,8 +75,8 @@ export const UploadInvoice = ({ forms }) => {
                                 <FormControl>
                                     <>
                                         <div className=" h-9 rounded-lg justify-start items-start inline-flex">
-                                            <div className="w-[100px] h-9 px-1 py-2 bg-zinc-400 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
-                                                <div className="text-white text-xs leading-tight">Invoice</div>
+                                            <div className="w-[100px]  h-9 px-1 py-2 bg-blue-900 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
+                                                <div className="text-white  text-xs leading-tight">Invoice</div>
                                             </div>
                                             <Input
                                                 className="w-[150px] file:hidden  h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400 cursor-pointer hover:bg-stone-50/20"

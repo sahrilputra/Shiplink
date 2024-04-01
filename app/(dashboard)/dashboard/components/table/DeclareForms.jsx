@@ -171,7 +171,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
     // }
 
 
-    
+
 
     const handleDescChange = (desc) => {
         setHSDesc(desc);
@@ -345,7 +345,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                             // }
                             return (
                                 <>
-                                    <FormItem className="flex flex-col items-center">
+                                    <FormItem className="flex flex-col">
                                         <Popover open={openCountry} onOpenChange={setOpenCountry} >
                                             <PopoverTrigger asChild>
                                                 <FormControl>
@@ -353,7 +353,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                         variant="outline"
                                                         role="combobox"
                                                         className={cn(
-                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none w-[50px]",
+                                                            "text-xs h-[30px] py-1 px-2 focus:ring-offset-0 text-left uppercase shadow-none",
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
@@ -361,7 +361,8 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                             ? countryList.find(
                                                                 (language) => language.country_code === field.value
                                                             )?.country_code
-                                                            : "CAN"}
+                                                            : "Country"
+                                                        }
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
@@ -372,14 +373,14 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                         className="h-[30px] text-xs"
                                                         onValueChange={(e) => handleCommandChange(e)}
                                                     />
-                                                    <CommandEmpty className="text-xs px-1 py-1 text-center">No Country Found.</CommandEmpty>
-                                                    <CommandGroup className="w-[150px] ">
+                                                    <CommandEmpty className="text-xs px-1 text-center">No Country Found.</CommandEmpty>
+                                                    <CommandGroup className="w-[150px]">
                                                         <ScrollArea className="h-[100px]">
                                                             {countryList.map((language) => (
                                                                 <CommandItem
-                                                                    className="text-xs items-center w-[150px]"
+                                                                    className="text-xs items-center"
                                                                     value={language.country_name}
-                                                                    key={language.country_code}
+                                                                    key={language.country_id}
                                                                     onSelect={() => {
                                                                         forms.setValue(`${`package_content[${index}].made_in`}`, language.country_code)
                                                                         setOpenCountry(false)
