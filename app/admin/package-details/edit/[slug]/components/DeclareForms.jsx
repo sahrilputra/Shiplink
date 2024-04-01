@@ -34,6 +34,14 @@ export const DeclareForms = ({
     console.log("🚀 ~ index:", index)
     console.log("🚀 ~ data:", data)
 
+    const countingSubtotal = ({ qty = 0, value = 0 }) => {
+        const parseQty = parseInt(qty, 10)
+        const parseValue = parseInt(value, 10)
+        forms.setValue(`package_content[${index}].qty`, parseQty)
+        forms.setValue(`package_content[${index}].value`, parseValue)
+        forms.setValue(`package_content[${index}].subtotal`, parseQty * parseValue)
+    }
+    
     useEffect(() => {
         data.map((item, i) => {
             forms.setValue(`package_content[${i}].qty`, item.qty || 0)
@@ -172,6 +180,9 @@ export const DeclareForms = ({
                                             id="qty"
                                             type="number"
                                             placeholder="1"
+                                            onChange={() =>
+                                                countingSubtotal({ qty: field })
+                                            }
                                             {...field}
                                         />
                                     </FormControl>
@@ -195,6 +206,9 @@ export const DeclareForms = ({
                                             id="value"
                                             type="number"
                                             placeholder="1"
+                                            onChange={() =>
+                                                countingSubtotal({ value: field })
+                                            }
                                             {...field}
                                         />
                                     </FormControl>

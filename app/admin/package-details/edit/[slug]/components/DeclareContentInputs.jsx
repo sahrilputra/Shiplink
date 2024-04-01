@@ -3,24 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { CheckIcon, XIcon } from 'lucide-react'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { DeclareForms } from './DeclareForms'
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { sub } from 'date-fns'
+import NextLink from 'next/link'
+import { useRouter } from 'next/navigation'
+
 export const DeclareContentInputs = ({
     forms,
     fields,
@@ -29,9 +15,20 @@ export const DeclareContentInputs = ({
     total,
     binData,
     data,
+    package_id,
 }) => {
-    console.log("🚀 ~ package_content:", data)
 
+
+    console.log("🚀 ~ package_content:", data)
+    const router = useRouter()
+
+    const handleBack = () => {
+        if (window.history.length > 1) {
+            router.back()
+        } else {
+            router.push(`/admin/package-details/${package_id}`)
+        }
+    }
     useEffect(() => {
         const subTotal = forms.watch('package_content.subTotal')
         console.log('subTotal', subTotal)
@@ -72,12 +69,12 @@ export const DeclareContentInputs = ({
                                 onClick={() => append({
                                     itemID: '',
                                     qty: 1,
-                                    value: 0,
+                                    value: 1,
                                     desc: '',
                                     hs_desc: '',
                                     hs_code: '',
                                     made_in: '',
-                                    subTotal: 0,
+                                    subTotal: 1,
                                 })}
                             >
                                 <p className='text-xs'>Add Other Content</p>
@@ -88,7 +85,7 @@ export const DeclareContentInputs = ({
                         <TableCell className="font-medium flex flex-row justify-between w-full items-center p-0 px-5 py-2  ">
                             <div className="flex flex-row gap-4">
                                 <p className=' text-sm font-bold text-myBlue'>Totals : </p>
-                                <p className=' text-sm font-semibold'>${forms.getValues('total_price')}</p>
+                                <p className=' text-sm font-semibold'>${total}</p>
 
                             </div>
                             <div className="flex flex-row justify-center gap-4">
@@ -117,6 +114,17 @@ export const DeclareContentInputs = ({
                                         </FormItem>
                                     )}
                                 /> */}
+                                {/* <NextLink passHref href={`/admin/package-details`}> */}
+                                <Button
+                                    variant="redOutline"
+                                    type="button"
+                                    className=" h-[30px] rounded-sm px-4 py-0"
+                                    size="sm"
+                                    onClick={() => handleBack()}
+                                >
+                                    <p className='text-xs'>Cancel</p>
+                                </Button>
+                                {/* </NextLink> */}
                                 <Button
                                     variant="destructive"
                                     type="submit"

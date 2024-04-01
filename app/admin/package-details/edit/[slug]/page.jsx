@@ -25,6 +25,7 @@ import { DataForms } from './components/DataForms';
 import { OtherField } from './components/OtherField';
 import { Loaders } from '@/components/ui/loaders';
 import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation'
 
 export const formSchema = yup.object().shape({
     test: yup.string(),
@@ -76,7 +77,7 @@ export const FormValidate = ({ data }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            test: "",
+            test: data?.customer_id || "",
             customer_id: data?.customer_id || "",
             customer_name: data?.customer_name || "",
             customer_phone: data?.customer_phone || "",
@@ -155,6 +156,8 @@ export const FormValidate = ({ data }) => {
 
 export default function PackageDetails({ params }) {
     const { toast } = useToast()
+    const router = useRouter();
+
     const [data, setData] = useState({});
     const [skeleton, setSkeleton] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
@@ -281,6 +284,7 @@ export default function PackageDetails({ params }) {
                     description: response.data.message,
                     status: 'success',
                 });
+                router.push(`/admin/package-details/${data.tracking_id}`)
             } else {
                 setLoading(false)
                 console.log('erorr', response.data.message)
@@ -323,6 +327,22 @@ export default function PackageDetails({ params }) {
 
     console.log("documents : ", form.watch('documents'))
     console.log("ERRORS : ", form.formState.errors)
+
+    const [total, setTotal] = useState(Number(0));
+    const calculateTotal = () => {
+        let totalPrice = 0;
+        form.getValues().package_content.forEach((item) => {
+            totalPrice += Number(item.qty) * Number(item.value);
+        });
+        console.log("Total Price : ", totalPrice)
+        setTotal(Number(totalPrice));
+        form.setValue("total_price", totalPrice);
+    }
+
+    useEffect(() => {
+        calculateTotal();
+    }, [form.watch('package_content').map(item => `${item.qty}-${item.value}`)]);
+
     return (
         <>
 
@@ -369,9 +389,10 @@ export default function PackageDetails({ params }) {
                                     append={append}
                                     remove={remove}
                                     forms={form}
-                                    total={0}
+                                    total={total}
                                     binData={binData}
                                     data={declareContent}
+                                    package_id={data?.tracking_id}
                                 />
                             </form>
                         </Form>

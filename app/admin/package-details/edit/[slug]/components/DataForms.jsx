@@ -31,33 +31,33 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { PopoverClose } from '@radix-ui/react-popover'
 import axios from 'axios'
 
-const carrierList = [
-    {
-        "id": 1,
-        "carrierName": "UPS",
-        "value": "UPS",
-    },
-    {
-        "id": 2,
-        "carrierName": "DHL",
-        "value": "DHL"
-    },
-    {
-        "id": 3,
-        "carrierName": "FedEx",
-        "value": "FedEx"
-    },
-    {
-        "id": 4,
-        "carrierName": "USPS",
-        "value": "USPS"
-    },
-    {
-        "id": 5,
-        "carrierName": "Canada Post",
-        "value": "Canada Post"
-    },
-]
+// const carrierList = [
+//     {
+//         "id": 1,
+//         "carrierName": "UPS",
+//         "value": "UPS",
+//     },
+//     {
+//         "id": 2,
+//         "carrierName": "DHL",
+//         "value": "DHL"
+//     },
+//     {
+//         "id": 3,
+//         "carrierName": "FedEx",
+//         "value": "FedEx"
+//     },
+//     {
+//         "id": 4,
+//         "carrierName": "USPS",
+//         "value": "USPS"
+//     },
+//     {
+//         "id": 5,
+//         "carrierName": "Canada Post",
+//         "value": "Canada Post"
+//     },
+// ]
 
 export const DataForms = ({
     options,
@@ -68,6 +68,29 @@ export const DataForms = ({
     const [customerID, setCustomerID] = useState('')
     const [newData, setNewData] = useState(null)
     const [disabled, setDisabled] = useState(false);
+    const [carrierList, setCarrierList] = useState([]);
+
+    useEffect(() => {
+        const fetchCarrier = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/courrier/list`,
+                    {
+                        keyword: "",
+                        page: 0,
+                        limit: 0,
+                        index: 0,
+                    }
+                )
+                console.log("🚀 ~ fetchCarrier ~ response:", response)
+                setCarrierList(response.data.carrier)
+            } catch (error) {
+                fetchCarrier();
+                console.log("Erorr : ", error)
+            }
+        }
+        fetchCarrier();
+    }, [])
 
     const handleDataChange = (e) => {
 
@@ -213,6 +236,20 @@ export const DataForms = ({
 
     }, [query]);
 
+    const customer_name = forms.watch('customer_name')
+    const custtomers_id = forms.watch('customer_id');
+
+    // findCustomer 
+    useEffect(() => {
+        if (customer_name) {
+            const selectedData = customerData.find((item) => item.customer_name === customer_name)
+            forms.setValue('test', selectedData?.customer_name)
+            setNewData(selectedData)
+            setCustomerID(selectedData?.customer_id)
+            setDisabled(true)
+        }
+    }, [customer_name, custtomers_id, customerData])
+
     const [openCustomer, setOpenCustomer] = useState(false)
     console.log("Watch Carrier : ", forms.watch('carrier_code'))
     return (
@@ -336,44 +373,47 @@ export const DataForms = ({
                                                     <CommandEmpty className="text-xs px-1 py-2 text-center">No Customer Found.</CommandEmpty>
                                                     <CommandGroup >
                                                         <ScrollArea className="min-h-max h-[200px]" >
-                                                            {customerData.map((language) => (
-                                                                <CommandItem
-                                                                    className="text-xs items-center"
-                                                                    value={language.customer_name}
-                                                                    key={language.customer_id}
-                                                                    autoFocus={false}
-                                                                    onSelect={() => {
-                                                                        forms.setValue("test", language.customer_name)
-                                                                        forms.setValue("customer_id", language.customer_id)
-                                                                        setInputValue(language.customer_name)
-                                                                        handleDataChange({ target: { value: language.customer_id } })
-                                                                        setOpenCustomer(false)
-                                                                        const inputElement = inputRef.current;
-                                                                        if (inputElement) {
-                                                                            inputElement.blur(); // Menonaktifkan fokus dari elemen input
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    <div className='text-xs w-full justify-between flex flex-row items-center'>
-                                                                        <div className="w-[90%] flex flex-row justify-between">
-                                                                            <p className='w-[150px] text-nowrap'>{language.customer_name}</p>
-                                                                            <p className='w-[5px]'>|</p>
-                                                                            <p className='w-[100px]'>{language.customer_id}</p>
+                                                            {
+                                                                customerData.map((language) => (
+                                                                    <CommandItem
+                                                                        className="text-xs items-center"
+                                                                        value={language.customer_name}
+                                                                        key={language.customer_id}
+                                                                        autoFocus={false}
+                                                                        onSelect={() => {
+                                                                            forms.setValue("test", language.customer_name)
+                                                                            forms.setValue("customer_id", language.customer_id)
+                                                                            setInputValue(language.customer_name)
+                                                                            handleDataChange({ target: { value: language.customer_id } })
+                                                                            setOpenCustomer(false)
+                                                                            const inputElement = inputRef.current;
+                                                                            if (inputElement) {
+                                                                                inputElement.blur(); // Menonaktifkan fokus dari elemen input
+                                                                            }
+                                                                        }}
+                                                                    >
+                                                                        <div className='text-xs w-full justify-between flex flex-row items-center'>
+                                                                            <div className="w-[90%] flex flex-row justify-between">
+                                                                                <p className='w-[150px] text-nowrap'>{language.customer_name}</p>
+                                                                                <p className='w-[5px]'>|</p>
+                                                                                <p className='w-[100px]'>{language.customer_id}</p>
+                                                                            </div>
+                                                                            <div className="w-[10%]">
+                                                                                <CheckIcon
+                                                                                    className={cn(
+                                                                                        "ml-auto h-4 w-4",
+                                                                                        language.customer_name === field.value
+                                                                                            ? "opacity-100"
+                                                                                            : "opacity-0"
+                                                                                    )}
+                                                                                />
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="w-[10%]">
-                                                                            <CheckIcon
-                                                                                className={cn(
-                                                                                    "ml-auto h-4 w-4",
-                                                                                    language.customer_name === field.value
-                                                                                        ? "opacity-100"
-                                                                                        : "opacity-0"
-                                                                                )}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
 
-                                                                </CommandItem>
-                                                            ))}
+                                                                    </CommandItem>
+                                                                ))
+
+                                                            }
                                                         </ScrollArea>
                                                     </CommandGroup>
                                                 </Command>
@@ -540,18 +580,18 @@ export const DataForms = ({
                                                             <SelectItemWihtoutIndicator
                                                                 className='text-xs'
                                                                 key={index}
-                                                                value={item.carrierName}
+                                                                value={item.carrier_name}
                                                                 onValueChange={() => {
-                                                                    forms.setValue = ("carrier_code", item.carrierName)
-                                                                    setSelectedCarrier(item.carrierName)
+                                                                    forms.setValue = ("carrier_code", item.carrier_name)
+                                                                    setSelectedCarrier(item.carrier_name)
                                                                 }}
                                                                 onSelect={() => {
                                                                     setCarrierOpen(false);
-                                                                    forms.setValue = ("carrier_code", item.carrierName)
-                                                                    setSelectedCarrier(item.carrierName)
+                                                                    forms.setValue = ("carrier_code", item.carrier_name)
+                                                                    setSelectedCarrier(item.carrier_name)
                                                                 }}
                                                             >
-                                                                {item.carrierName}
+                                                                {item.carrier_name}
                                                             </SelectItemWihtoutIndicator>
                                                         ))
                                                         }
