@@ -161,7 +161,7 @@ export const FormValidate = ({ data }) => {
             form.setValue(`package_content[${index}].made_in`, item.made_in || '');
             form.setValue(`package_content[${index}].subTotal`, item.subTotal || 0);
         });
-        
+
     }, [data]);
     return form
 }
@@ -182,6 +182,7 @@ export default function PackageDetails({ params }) {
     });
 
     const fetchData = async () => {
+        setLoading(true)
         try {
             const response = await axios.post(
                 `/api/admin/packages/list`,
@@ -195,9 +196,11 @@ export default function PackageDetails({ params }) {
             setData(responseData);
             setDataFetched(true);
             setSkeleton(false)
+            setLoading(false)
         } catch (error) {
             setSkeleton(false)
             console.log('Error:', error);
+            setLoading(false)
         }
     };
 
