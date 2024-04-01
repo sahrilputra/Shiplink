@@ -145,6 +145,8 @@ export default function VerificationPages({ params }) {
     }
 
     const profileImg = `https://sla.webelectron.com/api/Users/getprofileimages_usercode?user_code=${data?.customer_id}` || "none"
+    const countryCode = data?.country_code_arrival ? data?.country_code_arrival.substring(0, 2).toLowerCase() : '';
+    const countryCodeArrival = data?.country_code_destination ? data?.country_code_destination.substring(0, 2).toLowerCase() : '';
     console.log("🚀 ~ VerificationPages ~ profileImg:", profileImg)
     return (
         <>
@@ -234,11 +236,27 @@ export default function VerificationPages({ params }) {
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Arrival</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.warehouse_name_arrival} WR - {data?.country_name_arrival}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : (
+                                            <div className="flex flex-row gap-1 items-center">
+                                                <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                                <p className='text-sm font-bold'>
+                                                    {data?.warehouse_name_arrival} WR - {data?.country_name_arrival}
+                                                </p>
+                                            </div>
+                                        )
+                                        }
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Destination</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.warehouse_name_destination} WR - {data?.country_name_destination}</p>}
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : (
+                                            <div className="flex flex-row gap-1 items-center">
+                                                <img src={`https://flagcdn.com/${countryCodeArrival}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                                <p className='text-sm font-bold'>
+                                                    {data?.warehouse_name_arrival} WR - {data?.country_name_arrival}
+                                                </p>
+                                            </div>
+                                        )
+                                        }
                                     </div>
                                     <div className="flex flex-col text-xs text-zinc-500">
                                         <p>Bin Location</p>
