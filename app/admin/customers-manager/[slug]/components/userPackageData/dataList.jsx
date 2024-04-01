@@ -149,9 +149,34 @@ export const CustomerPackageTabled = ({ customerID, customerName = "" }) => {
       }
     },
     {
-      accessorKey: "customer_name",
-      header: "Customer Name",
-    },
+      accessorKey: "address",
+      header: "Origin",
+      cell: ({ row }) => {
+          const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
+          console.log("🚀 ~ PackageDetails ~ countryCode:", countryCode)
+          return (
+              <>
+                  {
+                      row.original.warehouse_name_arrival === null && row.original.warehouse_name_arrival === null ?
+                          (
+                              <>
+                                  -
+                              </>
+                          ) : (
+                              <>
+                                  <div className="text-xs flex flex-row gap-1 items-center flex-wrap">
+                                      <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                      <span>
+                                          {`- ${row.original.warehouse_name_arrival} WH`}
+                                      </span>
+                                  </div>
+                              </>
+                          )
+                  }
+              </>
+          )
+      }
+  },
     {
       accessorKey: "destination",
       header: "Destination",
