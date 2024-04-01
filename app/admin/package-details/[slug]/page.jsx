@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { EventTabled } from './components/EventTable'
 import { Dialog } from '@/components/ui/dialog'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { useRouter } from 'next/navigation'
 import {
     Carousel,
     CarouselContent,
@@ -27,6 +27,12 @@ import Link from 'next/link'
 import { useToast } from '@/components/ui/use-toast'
 import { EventTable } from './components/EventTable'
 export default function VerificationPages({ params }) {
+
+    const router = useRouter()
+
+    const handleEditButton = () => {
+        router.push(`/admin/package-details/edit/${params.slug}`)
+    }
     console.log("Helo", params.slug)
     const { toast } = useToast()
     const [openDelete, setOpenDelete] = useState(false)
@@ -367,7 +373,7 @@ export default function VerificationPages({ params }) {
                                 <div className="col-span-1">
                                     <div className="flex flex-row">
                                         <div className="flex items-start">
-                                         
+
                                             <div className="imageContainer flex flex-col w-[400px] items-center">
                                                 {
                                                     skeleton ? (
@@ -426,15 +432,14 @@ export default function VerificationPages({ params }) {
 
                                         <div className=" px-3 flex flex-col items-start">
                                             <div className="pb-2">
-                                                <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
-                                                    <Button
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        className="w-full"
-                                                    >
-                                                        <p className=' text-xs'>Edit Package</p>
-                                                    </Button>
-                                                </NextLink>
+                                                <Button
+                                                    variant="secondary"
+                                                    size="sm"
+                                                    className="w-full"
+                                                    onClick={handleEditButton}
+                                                >
+                                                    <p className=' text-xs'>Edit Package</p>
+                                                </Button>
                                             </div>
                                             <div className="flex flex-col ">
                                                 <div className="flex flex-col text-xs text-zinc-500">
