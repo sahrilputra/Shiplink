@@ -450,14 +450,16 @@ export default function VerificationPages({ params }) {
 
                                         <div className=" px-3 flex flex-col items-start">
                                             <div className="pb-2">
-                                                <Button
-                                                    variant="secondary"
-                                                    size="sm"
-                                                    className="w-full"
-                                                    onClick={handleEditButton}
-                                                >
-                                                    <p className=' text-xs'>Edit Package</p>
-                                                </Button>
+
+                                                <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} >
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        className="w-full"
+                                                    >
+                                                        <p className=' text-xs'>Edit Package</p>
+                                                    </Button>
+                                                </NextLink>
                                             </div>
                                             <div className="flex flex-col ">
                                                 <div className="flex flex-col text-xs text-zinc-500">
