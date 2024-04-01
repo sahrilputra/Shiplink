@@ -116,7 +116,7 @@ export default function UserPage({ params }) {
                                     <img
                                         src={profileImg !== "none" ? profileImg : "'../../../assets/user-holder.svg'"}
                                         alt="avatar"
-                                        className="w-[50px] h-[50px] rounded-full object-cover"
+                                        className="w-[50px] h-[50px] rounded-full object-cover border"
                                         onError={(e) => {
                                             e.target.src = '../../../assets/user-holder.svg'; // Ganti dengan URL gambar default
                                         }}
