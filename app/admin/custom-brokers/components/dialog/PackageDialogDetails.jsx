@@ -34,7 +34,7 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
     });
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent ref={componentRef}>
+            <DialogContent ref={componentRef} close={false}>
                 <DialogDescription>
                     <div className="flex flex-row gap-4 items-center">
                         <div className="imageContainer flex flex-col w-[400px] items-center">
@@ -129,15 +129,24 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                                 <p>Manifest Number</p>
                                 <p className='text-sm font-bold'>{details?.manifiest_number || "-"}</p>
                             </div>
-                            <div className="flex flex-col text-xs text-zinc-500  py-3">
+                            <div className="flex flex-row gap-2 text-xs text-zinc-500  py-3">
                                 <Button
                                     variant="destructive"
                                     size="sm"
-                                    className="h-[30px]"
+                                    className="h-[30px] w-full"
                                     type="button"
                                     onClick={handlePrint}
                                 >
-                                    <p className='text-xs'>Print Package Details</p>
+                                    <p className='text-xs'>Print</p>
+                                </Button>
+                                <Button
+                                    variant="redOutline"
+                                    size="sm"
+                                    className="h-[30px] w-full"
+                                    type="button"
+                                    onClick={() => setOpen(false)}
+                                >
+                                    <p className='text-xs'>Close</p>
                                 </Button>
                             </div>
                         </div>
