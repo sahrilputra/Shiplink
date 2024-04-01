@@ -165,10 +165,7 @@ export default function VerificationPages({ params }) {
                 </div>
                 <div className={styles.childContent}>
                     <div className={`${styles.carrier} flex flex-row gap-2`}>
-                        <div className="profileCard w-[30%] border border-neutral-200 rounded-md p-4">
-                            <div className="head">
-                                <p className=' text-myBlue font-base font-bold'>Package Details</p>
-                            </div>
+                        <div className="profileCard w-[30%] border border-neutral-200 rounded-md px-3 ">
                             <div className="flex flex-col gap-1 py-2">
                                 <div className="profiles flex flex-row justify-start items-center gap-3">
                                     <div className="imgContainer w-[30] h-[30] rounded-full">
@@ -241,61 +238,10 @@ export default function VerificationPages({ params }) {
                                         <p>Bin Location</p>
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.bin_location === "undefined" || data?.bin_location === "Undefined" ? "-" : data?.bin_location}</p>}
                                     </div>
-
-                                    {/* {documents === "" || documents === null ? (
-                                        <Button
-                                            variant="secondary"
-                                            size="sm"
-                                            className={`h-[30px] w-full ${documents === null ? "cursor-not-allowed disabled" : "cursor-pointer"}`}
-                                            disabled={documents === "" || documents === null}
-                                        >
-                                            <p className=' text-xs'>Download Documents</p>
-                                        </Button>
-                                    ) : (
-                                        <>
-                                            <Link
-                                                className={`${documents === null ? "cursor-not-allowed" : "cursor-pointer"}`}
-                                                passHref href={`https://sla.webelectron.com/api/Package/downloadfile?fullName=${documents}`}
-                                            >
-                                                <Button
-                                                    variant="secondary"
-                                                    size="sm"
-                                                    className={`h-[30px] w-full`}
-                                                >
-                                                    <p className=' text-xs'>Download Documents</p>
-                                                </Button>
-                                            </Link>
-                                        </>
-                                    )
-                                    } */}
-                                    {/* 
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        className="h-[30px] w-full"
-                                        onClick={markDelivered}
-                                        disabled={data?.status === "Complete"}
-                                    >
-                                        <p className=' text-xs'>Mark As Delivered</p>
-                                    </Button>
-
-                                    <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}&package_id=${data?.tracking_id}`} >
-                                        <Button
-                                            variant="secondary"
-                                            size="sm"
-                                            className="h-[30px] w-full"
-                                            disabled={documents === ""}
-                                        >
-                                            <p className=' text-xs'>Send Invoice To User</p>
-                                        </Button>
-                                    </NextLink> */}
-
-
-
                                 </div>
                             </div>
                         </div>
-                        <div className="PackageInformation w-full border border-neutral-200 rounded-md p-4 flex flex-col gap-5">
+                        <div className="PackageInformation w-full border border-neutral-200 rounded-md px-3 py-2 flex flex-col gap-5">
                             {/* <div className="flex flex-row gap-3 justify-between items-center">
                                 <div className="head">
                                     <p className=' text-myBlue font-base font-bold'>Package Information</p>
@@ -419,13 +365,12 @@ export default function VerificationPages({ params }) {
 
                             <div className="grid grid-cols-2">
                                 <div className="col-span-1">
-                                    <div className="">
-                                        <div className="head">
-                                            <p className=' text-myBlue font-base font-bold'>Package Information</p>
-                                        </div>
-                                        <div className="flex flex-row gap-4 py-2">
+                                    <div className="flex flex-row">
+                                        <div className="">
+                                            <div className="py-2">
+                                                <p className=' text-myBlue font-base font-bold'>Package Information</p>
+                                            </div>
                                             <div className="imageContainer flex flex-col w-[400px] items-center">
-
                                                 {
                                                     skeleton ? (
                                                         <>
@@ -439,13 +384,14 @@ export default function VerificationPages({ params }) {
                                                                         <CarouselItem key={1} className="w-full h-full grow-1">
                                                                             <div className="p-1 w-full">
                                                                                 <Card
-                                                                                    className="p-1 w-full"
+                                                                                    className="w-full bg-cover border-none"
                                                                                 >
                                                                                     <Image
                                                                                         src={'/assets/img-placeholder.svg'}
                                                                                         width={200}
                                                                                         height={200}
                                                                                         alt={`Image`}
+                                                                                        className='bg-cover bg-center rounded-lg'
                                                                                         style={{ objectFit: "contain", width: '100%', height: '250px', }}
                                                                                     />
                                                                                 </Card>
@@ -458,12 +404,13 @@ export default function VerificationPages({ params }) {
                                                                     <CarouselItem key={index} className="w-full h-full grow-1">
                                                                         <div className="w-full">
                                                                             <Card
-                                                                                className="p-1 w-full"
+                                                                                className="w-full"
                                                                             >
                                                                                 <img
                                                                                     style={{ objectFit: "contain", width: '100%', height: '250px', }}
                                                                                     src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
                                                                                     alt=""
+                                                                                    className='bg-cover bg-center rounded-lg'
                                                                                 />
 
                                                                             </Card>
@@ -476,28 +423,22 @@ export default function VerificationPages({ params }) {
                                                         </Carousel>
                                                     )
                                                 }
-                                                <Button
-                                                    variant="secondary"
-                                                    size="xs"
-                                                    className="text-xs text-white w-full"
-                                                    onClick={markDelivered}
-                                                    disabled={data?.status === "Complete"}
-                                                >
-                                                    <p className=' text-xs'>Mark As Delivered</p>
-                                                </Button>
                                             </div>
+                                        </div>
 
+                                        <div className=" px-3">
+                                            <div className="py-2">
+                                                <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        className="w-full"
+                                                    >
+                                                        <p className=' text-xs'>Edit Package</p>
+                                                    </Button>
+                                                </NextLink>
+                                            </div>
                                             <div className="flex flex-col ">
-                                                {/* <div className="text-red-700 text-opacity-80 text-lg font-bold font-['Poppins']">
-                                        {skeleton
-                                            ? <Skeleton />
-                                            : (
-                                                <>
-                                                    #{data?.barcode_tracking}
-                                                </>
-                                            )
-                                        }
-                                    </div> */}
                                                 <div className="flex flex-col text-xs text-zinc-500">
                                                     <p>Package Weight</p>
                                                     <p className='text-sm font-bold'>{data?.package_weight} {data?.package_weight_unit}</p>
@@ -507,7 +448,7 @@ export default function VerificationPages({ params }) {
                                                     <p className='text-sm font-bold'>{data?.package_length} x {data?.package_witdth} x {data?.package_height}  {data?.package_height_unit}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p class='whitespace-nowrap leading-4 '>Package <br /> Total Price</p>
+                                                    <p class='whitespace-nowrap  '>Package Total Price</p>
                                                     <p className='text-sm font-bold'>$ {(data?.total_price < 1 ? "-" : data?.total_price) || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
@@ -519,7 +460,7 @@ export default function VerificationPages({ params }) {
                                                     <p className='text-sm font-bold'>{data?.entry_number || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
-                                                    <p className='text-nowrap leading-4 '>Manifest <br />Number</p>
+                                                    <p className='text-nowrap  '>Manifest Number</p>
                                                     <p className='text-sm font-bold'>{data?.manifiest_number || "-"}</p>
                                                 </div>
                                             </div>
@@ -533,15 +474,14 @@ export default function VerificationPages({ params }) {
 
                                                 <div className="">
                                                     <div className="flex flex-col gap-3">
-                                                        <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`} passHref>
-                                                            <Button
-                                                                variant="secondary"
-                                                                size="sm"
-                                                                className="w-full"
-                                                            >
-                                                                <p className=' text-xs'>Edit Package</p>
-                                                            </Button>
-                                                        </NextLink>
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            className="text-xs text-white w-full"
+                                                            onClick={() => setOpenStatus(true)}
+                                                        >
+                                                            <p className=' text-xs'>Delete Package</p>
+                                                        </Button>
                                                         <Button
                                                             onClick={() => setOpenStatus(true)}
                                                             variant="secondary"
@@ -550,6 +490,8 @@ export default function VerificationPages({ params }) {
                                                         >
                                                             <p className=' text-xs'>Update Status</p>
                                                         </Button>
+
+
                                                         {
                                                             filterInvoice.length > 0 ? (
                                                                 filterInvoice.map((item, index) => (
@@ -570,7 +512,7 @@ export default function VerificationPages({ params }) {
                                                                     variant="secondary"
                                                                     size="sm"
                                                                     disabled={true}
-                                                                    className="text-xs text-myBlue w-full cursor-pointer "
+                                                                    className="text-xs text-white w-full cursor-pointer "
                                                                 >
                                                                     No Invoice
                                                                 </Button>
@@ -590,7 +532,7 @@ export default function VerificationPages({ params }) {
                                                             size="sm"
                                                             className="text-xs text-white w-full"
                                                         >
-                                                            <p className=' text-xs'>Internal Barcode</p>
+                                                            <p className=' text-xs'>Print Barcode</p>
                                                         </Button>
                                                         <NextLink passHref href={`/admin/invoice-manager/invoice?customer=${data?.customer_id}&package_id=${data?.tracking_id}`} >
                                                             <Button
@@ -604,13 +546,15 @@ export default function VerificationPages({ params }) {
                                                         </NextLink>
 
 
+
                                                         <Button
-                                                            variant="destructive"
+                                                            variant="secondary"
                                                             size="sm"
                                                             className="text-xs text-white w-full"
-                                                            onClick={() => setOpenStatus(true)}
+                                                            onClick={markDelivered}
+                                                            disabled={data?.status === "Complete"}
                                                         >
-                                                            <p className=' text-xs'>Delete Package</p>
+                                                            <p className=' text-xs'>Mark As Delivered</p>
                                                         </Button>
                                                         {/* <Dialog>
                                                             <DropdownMenu>
