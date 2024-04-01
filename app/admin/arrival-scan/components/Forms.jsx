@@ -482,18 +482,18 @@ export const ArrivalForms = ({
                                                             <SelectItemWihtoutIndicator
                                                                 className='text-xs'
                                                                 key={index}
-                                                                value={item.carrierName}
+                                                                value={item.carrier_name}
                                                                 onValueChange={() => {
-                                                                    forms.setValue = ("carrier_code", item.carrierName)
-                                                                    setSelectedCarrier(item.carrierName)
+                                                                    forms.setValue = ("carrier_code", item.carrier_name)
+                                                                    setSelectedCarrier(item.carrier_name)
                                                                 }}
                                                                 onSelect={() => {
                                                                     setCarrierOpen(false);
-                                                                    forms.setValue = ("carrier_code", item.carrierName)
-                                                                    setSelectedCarrier(item.carrierName)
+                                                                    forms.setValue = ("carrier_code", item.carrier_name)
+                                                                    setSelectedCarrier(item.carrier_name)
                                                                 }}
                                                             >
-                                                                {item.carrierName}
+                                                                {item.carrier_name}
                                                             </SelectItemWihtoutIndicator>
                                                         ))
                                                         }
