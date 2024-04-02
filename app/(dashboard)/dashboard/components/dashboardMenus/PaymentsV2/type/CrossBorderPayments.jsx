@@ -8,13 +8,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import * as yup from 'yup'
-import { Toast } from '@/components/ui/toast'
-import { Button } from '@/components/ui/button'
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios'
-import CheckoutForm from './CheckoutForm'
+import CheckoutForm from '../CheckoutForm';
 
 const GetPayments = async () => {
     try {
@@ -31,7 +28,19 @@ const stripePromise = GetPayments().then((publishableKey) => loadStripe(publisha
 console.log("🚀 ~ stripePromise:", stripePromise)
 
 
-export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms, selectedBroker, toggleExpanded }) => {
+export const CrossBorderPayments = (
+    {
+        open,
+        setOpen,
+        trackingId,
+        reload,
+        type = "CrossBorder",
+        forms,
+        selectedBroker,
+        toggleExpanded
+    }
+) => {
+
     console.log("🚀 ~ PaymentsDialog ~ type:", type)
     console.log("🚀 ~ PaymentsDialog ~ open:", open)
     console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId)
@@ -158,7 +167,6 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms,
             console.log('Error', error);
         }
     }
-
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -179,6 +187,7 @@ export const PaymentsDialog = ({ open, setOpen, trackingId, reload, type, forms,
                                     reload={reload}
                                     handleSubmitForms={handleSubmitForms}
                                     toggleExpanded={toggleExpanded}
+                                    type={type}
                                 />
                             </Elements>
                         )}

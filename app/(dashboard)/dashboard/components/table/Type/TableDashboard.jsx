@@ -20,6 +20,7 @@ import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { DeclareForms } from '../DeclareForms'
 import { PaymentsDialog } from '../../dashboardMenus/PaymentsV2/Payments'
+import { CrossBorderPayments } from '../../dashboardMenus/PaymentsV2/type/CrossBorderPayments'
 import { useToast } from '@/components/ui/use-toast'
 import NextLink from 'next/link'
 const formSchema = yup.object().shape({
@@ -138,11 +139,10 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
 
     return (
         <>
-            <PaymentsDialog
+            <CrossBorderPayments
                 open={openPayments}
                 setOpen={setOpenPayments}
                 trackingId={tracking_id}
-                type={"CrossBorder"}
                 forms={form}
                 selectedBroker={selectedBroker}
                 reload={reload}

@@ -21,9 +21,11 @@ export default function CheckoutForm(
         toggleExpanded,
         type
     }) {
+      
     const stripe = useStripe();
     const elements = useElements();
     const { toast } = useToast();
+    console.log("🚀 ~ CheckoutForm type:", type)
 
     const [message, setMessage] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -82,12 +84,13 @@ export default function CheckoutForm(
             setPaymentStatus("succeeded");
             confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
             if (type === "CrossBorder") {
+                console.log("Running Cross Border")
                 handleSubmitForms();
             }
             reload();
             toggleExpanded();
             toast({
-                title: `Sucess!`,
+                title: `Success!`,
                 description: `Your payment was successful.`,
                 status: 'success',
             });
@@ -109,6 +112,8 @@ export default function CheckoutForm(
         layout: "tabs",
         defaultCollapsed: false,
     };
+
+    console.log("🚀 ~ CheckoutForm type:", type)
 
     return (
         <>
@@ -155,6 +160,7 @@ export default function CheckoutForm(
                             onClick={() => {
                                 close();
                             }}
+                            disabled={!stripe}
                         >
                             Cancel
                         </Button>
@@ -163,6 +169,7 @@ export default function CheckoutForm(
                             size="sm"
                             className=" w-full text-xs"
                             variant="destructive"
+                            disabled={!stripe}
                         >
                             Pay
                         </Button>
