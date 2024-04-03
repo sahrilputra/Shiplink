@@ -210,7 +210,7 @@ export function PendingTable
                 return (
                     <div className="w-[60px]" key={row}>
                         <div className="flex flex-row gap-2 ">
-                            <DropdownPendingList data={row.original} />
+                            <DropdownPendingList data={row.original} images={row.original.images} />
                             <Button
                                 onClick={() => toggleRow(row.id)}
                                 variant="tableBlue"

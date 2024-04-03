@@ -48,7 +48,7 @@ import { Calendar } from '@/components/ui/calendar'
 import { format } from 'date-fns'
 
 const formSchema = yup.object().shape({
-    LotsId: yup.string().required().max(50, "character is too long"),
+    LotsId: yup.string(),
     LotsLabel: yup.string().required(),
     Origin: yup.string().required(),
     Destination_country: yup.string().required(),
@@ -73,32 +73,44 @@ export const NewLotsFrom = ({ close, data = null }) => {
         limit: 0,
         index: 0,
     })
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(
-                `/api/admin/transport/lots/status/list`,
-            );
-            const responseCountry = await axios.post(
-                `/api/admin/config/countries/list`,
-                countryQuery
-            )
-            console.log(response)
-            console.log("Country : ", responseCountry)
-            const countryData = await responseCountry.data;
-            setCountryList(countryData.country)
 
-
-            const data = await response.data;
-            setStatusList(data.data);
-
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(
+                    `/api/admin/transport/lots/status/list`,
+                );
+                const responseCountry = await axios.post(
+                    `/api/admin/config/countries/list`,
+                    countryQuery
+                )
+                console.log(response)
+                console.log("Country : ", responseCountry)
+                const countryData = await responseCountry.data;
+                setCountryList(countryData.country)
+
+
+                const data = await response.data;
+                setStatusList(data.data);
+
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
         fetchData();
     }, [countryQuery]);
+
+    const handleCommandChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCountryQuery(e);
+        setCountryQuery({ ...countryQuery, keyword: e });
+    }
+    const handleDestinationChange = (e) => {
+        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        setCountryQuery({ ...countryQuery, keyword: e });
+    }
+
 
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -137,7 +149,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
     const handleSave = async (formData) => {
         setLoading(true)
         console.log("dikirim", formData)
-        
+
         if (formData.Origin === formData.Destination_country) {
             setLoading(false);
             toast({
@@ -179,6 +191,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
             Destination_country: code,
         });
     }
+    console.log('error', form.formState.errors)
 
     console.log("origin, destination", form.watch("Origin"), form.watch("Destination_country"))
     return (
@@ -189,10 +202,12 @@ export const NewLotsFrom = ({ close, data = null }) => {
                 <form
                     onSubmit={form.handleSubmit(handleSave)}
                     className='flex gap-4 flex-col'
-                    action="">
+                    action=""
+
+                >
 
                     <div className="profile flex flex-col gap-4 w-full">
-                        <FormField
+                        {/* <FormField
                             className="w-full"
                             name="LotsId"
                             control={form.control}
@@ -207,7 +222,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                     </FormItem>
                                 </>
                             )}
-                        />
+                        /> */}
                         <FormField
                             name="LotsLabel"
                             className="w-full"
@@ -253,6 +268,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                     <CommandInput
                                                         placeholder="Search Country..."
                                                         className="h-9 w-full text-xs"
+                                                        onValueChange={(e) => handleCommandChange(e)}
                                                     />
                                                     <CommandEmpty
                                                         className="w-full text-xs text-center py-2"
@@ -266,6 +282,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                 <>
                                                                     <PopoverClose asChild>
                                                                         <CommandItem
+
                                                                             value={item.country_name}
                                                                             key={item.country_id}
                                                                             className="text-xs"
@@ -323,6 +340,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                     <CommandInput
                                                         placeholder="Search Country..."
                                                         className="h-9 w-full text-xs"
+                                                        onValueChange={(e) => handleDestinationChange(e)}
                                                     />
                                                     <CommandEmpty
                                                         className="w-full text-xs text-center py-2"
@@ -336,17 +354,16 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                 <>
                                                                     <PopoverClose asChild>
                                                                         <CommandItem
-                                                                            value={item.country_code}
+
+                                                                            value={item.country_name}
                                                                             key={item.country_id}
                                                                             className="text-xs"
                                                                             onSelect={() => {
                                                                                 setSelectDestination(item.country_name)
-
                                                                                 field.onChange(item.country_code); // Perbarui nilai field.value
                                                                                 setPopOverOpen(false)
                                                                             }}
                                                                         >
-
                                                                             {item.country_name}
                                                                             <CheckIcon
                                                                                 className={`ml-auto h-4 w-4 ${item.country_code === field.value ? "opacity-100" : "opacity-0"}`}
