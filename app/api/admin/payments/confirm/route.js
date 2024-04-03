@@ -36,7 +36,7 @@ export async function POST(request) {
         if (response.status === 200) {
             const responseData = {
                 status: true,
-                message: response.data.message,
+                message: "Payment confirmed successfully",
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

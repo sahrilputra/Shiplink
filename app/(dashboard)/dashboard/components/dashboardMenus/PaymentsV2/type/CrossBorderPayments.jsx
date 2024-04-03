@@ -12,6 +12,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios'
 import CheckoutForm from '../CheckoutForm';
+import { SucessPayemnts } from '../../../notif/Sucess';
+import { set } from 'date-fns';
 
 const GetPayments = async () => {
     try {
@@ -49,6 +51,9 @@ export const CrossBorderPayments = (
     const [totalAmount, setTotalAmount] = useState(0);
     const [services, setServices] = useState([]);
     const [paymentPublic, setPayemntPublic] = useState("");
+    const [isSucess, setIsSucess] = useState(false);
+    const [openSucess, setOpenSucess] = useState(false);
+
     // const stripePromise = loadStripe(paymentPublic);
 
     // useEffect(() => {
@@ -169,6 +174,10 @@ export const CrossBorderPayments = (
     }
     return (
         <>
+            {
+                isSucess &&
+                <SucessPayemnts open={openSucess} setOpen={setOpenSucess(true)} />
+            }
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
@@ -188,6 +197,8 @@ export const CrossBorderPayments = (
                                     handleSubmitForms={handleSubmitForms}
                                     toggleExpanded={toggleExpanded}
                                     type={type}
+                                    setIsSucess={setIsSucess}
+                                    setOpenSucess={setOpenSucess}
                                 />
                             </Elements>
                         )}
@@ -198,3 +209,4 @@ export const CrossBorderPayments = (
         </>
     )
 }
+

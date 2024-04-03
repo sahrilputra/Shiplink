@@ -19,9 +19,11 @@ export default function CheckoutForm(
         reload,
         handleSubmitForms,
         toggleExpanded,
-        type
+        type,
+        setIsSucess,
+        setOpenSucess
     }) {
-      
+
     const stripe = useStripe();
     const elements = useElements();
     const { toast } = useToast();
@@ -72,7 +74,6 @@ export default function CheckoutForm(
             },
             redirect: "if_required",
         });
-
 
         setDisplayForm(false);
         if (error) {

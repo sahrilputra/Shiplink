@@ -59,6 +59,8 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
         country_code_destination,
         country_name_destination,
     } = item;
+    console.log("🚀 ~ ItemsPackage ~ status_forcustomer:", status_forcustomer)
+    // console.log("🚀 ~ ItemsPackage ~ status:", status)
 
     const formattedDate = format(new Date(updated_at), 'dd MMM yyyy');
     const [isExpanded, setIsExpanded] = useState(false);
@@ -240,9 +242,8 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                             <div className="w-[100%] flex justify-center align-middle mx-auto ">
                                 {
-                                    status === "Process" ? (
-                                        <>
-                                        </>
+                                    status_forcustomer === "Process" ? (
+                                        null
                                     ) : (
                                         <>
                                             {

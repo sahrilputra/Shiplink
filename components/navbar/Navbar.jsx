@@ -70,7 +70,7 @@ export const Navbar = () => {
                 </div>
                 <div className="w-[100%] justify-end items-center gap-3 flex py-3 px-10">
                     <DropdownMenu modal={false} open={openShip} onOpenChange={setOpenShip}>
-                        <DropdownMenuTrigger >
+                        <DropdownMenuTrigger asChild >
 
                             <Button
                                 id="btn"
@@ -103,7 +103,7 @@ export const Navbar = () => {
                     </DropdownMenu>
 
                     <DropdownMenu modal={false} open={openTrack} onOpenChange={setOpenTrack}>
-                        <DropdownMenuTrigger >
+                        <DropdownMenuTrigger asChild >
                             <Button
                                 id="btn"
                                 variant="ghost"
@@ -136,7 +136,7 @@ export const Navbar = () => {
 
 
                     <DropdownMenu modal={false} open={openSupport} onOpenChange={setOpenSupport}>
-                        <DropdownMenuTrigger >
+                        <DropdownMenuTrigger asChild>
                             <Button
                                 id="btn"
                                 variant="ghost"
@@ -170,7 +170,7 @@ export const Navbar = () => {
                     </DropdownMenu>
 
                     <DropdownMenu modal={false} open={openLang} onOpenChange={setOpenLang}>
-                        <DropdownMenuTrigger>
+                        <DropdownMenuTrigger asChild>
                             <Button
                                 variant="ghost"
                                 className="flex flex-row gap-2 items-center">
@@ -197,7 +197,7 @@ export const Navbar = () => {
                     </DropdownMenu>
 
                     <DropdownMenu modal={false} open={openProfile} onOpenChange={setOpenProfile}>
-                        <DropdownMenuTrigger className='flex flex-row items-start justify-start'>
+                        <DropdownMenuTrigger asChild className='flex flex-row items-start justify-start'>
                             <Button
                                 variant="ghost"
                                 className="flex flex-row gap-2 items-center justify-start"
