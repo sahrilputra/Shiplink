@@ -58,7 +58,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
     return (
         <>
             <div className="w-full">
-                <Popover open={open} onOpenChange={setOpen}>
+                <Popover open={open} onOpenChange={setOpen} modal={true}>
                     <p>Select Lots</p>
                     <PopoverTrigger asChild>
                         <Button
@@ -71,11 +71,11 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[100%]  p-0">
+                    <PopoverContent className="w-[400px]  p-0">
                         <Command>
                             <CommandInput placeholder="Search Lots..." />
                             <CommandEmpty>No Lots Found.</CommandEmpty>
-                            <ScrollArea className="h-[200px] w-[300px] rounded-md border p-4">
+                            <ScrollArea className="h-[200px] w-full rounded-md border p-4">
                                 <CommandGroup>
                                     {lots?.map((lots) => (
                                         <>

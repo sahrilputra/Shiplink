@@ -28,7 +28,7 @@ import {
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 
-export function LotsDetailsTable({ data, setOpen , handleSearchChange, isSkeleton}) {
+export function LotsDetailsTable({ data, setOpen, handleSearchChange, isSkeleton }) {
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -39,30 +39,124 @@ export function LotsDetailsTable({ data, setOpen , handleSearchChange, isSkeleto
             accessorKey: "tracking_id",
             header: "Tracking ID",
             className: "text-xs",
+            size: 30,
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.tracking_id}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "customer_name",
             header: "Customer Name",
+            size: 30,
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap">
+                        <span className='text-[10px] leading-3 tracking-wider  '
+                            style={{ fontFamily: 'roboto' }}
+                        >{`${row.original.customer_id}`}</span>
+                        <span>{`${row.original.customer_name}`}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "address",
             header: "Origin",
+            size: 90,
+            cell: ({ row }) => {
+                const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.warehouse_name_arrival === null && row.original.warehouse_name_arrival === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>
+                                                {`- ${row.original.warehouse_name_arrival} WH`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
-            accessorKey: "phone_number",
+            accessorKey: "Destination",
             header: "Destination",
+            size: 90,
+            cell: ({ row }) => {
+                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span className='text-nowrap'>
+                                                {`- ${row.original.warehouse_name_destination} WH`} {`${row.original.services === "Hold pickup" ? "- HFP" : ""}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             accessorKey: "updated_at",
             header: "Last Update",
+            size: 60,
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.updated_at}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "bin_location",
             header: "Bin Location",
+            size: 30,
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                        >{row.original.bin_location !== "Undefined" ? row.original.bin_location : "-"}</span>
+                    </div>
+                )
+            }
         },
         {
             id: "Action",
             header: "Action",
+            size: 30,
             cell: ({ row }) => {
                 return (
                     <div className="w-[80px]" key={row}>
@@ -96,9 +190,9 @@ export function LotsDetailsTable({ data, setOpen , handleSearchChange, isSkeleto
         },
 
     });
-   
+
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
-   
+
     return (
         <>
             <div className="text-sm bg-white text-black pb-3">
@@ -139,6 +233,7 @@ export function LotsDetailsTable({ data, setOpen , handleSearchChange, isSkeleto
                                 const isFirstHeader = index === 0;
                                 return (
                                     <TableHead
+                                        style={{ width: `${header.getSize()}px` }}
                                         key={header.id}
                                         className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
                                     >

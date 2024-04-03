@@ -95,7 +95,7 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
     return (
         <>
             {loading && <Loaders />}
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={setOpen} modal={true}>
                 <DialogTrigger asChild>
                     {/* <Button variant="outline">Edit Profile</Button> */}
                 </DialogTrigger>
@@ -109,7 +109,6 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                                     <div className="flex flex-col gap-2 font-bold">
                                         <p>Assing To Lots</p>
                                     </div>
-
                                 </DialogTitle>
                             </DialogHeader>
                             <div className="py-4">

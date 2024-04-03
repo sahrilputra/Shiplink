@@ -59,12 +59,13 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         date_start: "",
         date_end: "",
         tracking_id: "",
-        lots_id: "",
         status: "",
+        lots_id: "",
+        bins_id: "",
+        customer_id: "",
         page: 1,
         limit: 10,
         index: 0,
-
     });
 
 
@@ -77,7 +78,6 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             console.log(response)
             const data = await response.data;
             const filteredData = data.package_info.filter(item => item.lots_id === null);
-            setPackageTotal(data.total)
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -136,19 +136,56 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             accessorKey: "tracking_id",
             header: "Tracking ID",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.tracking_id}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "customer_name",
             header: "Customer Name",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap">
+                        <span className='text-[10px] leading-3 tracking-wider  '
+                            style={{ fontFamily: 'roboto' }}
+                        >{`${row.original.customer_id}`}</span>
+                        <span>{`${row.original.customer_name}`}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "address",
             header: "Origin",
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
                 return (
-                    <div className="text-xs">
-                        {`${row.original.warehouse_name_arrival} Wr - ${row.original.country_name_arrival}`}
-                    </div>
+                    <>
+                        {
+                            row.original.warehouse_name_arrival === null && row.original.warehouse_name_arrival === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>
+                                                {`- ${row.original.warehouse_name_arrival} WH`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
                 )
             }
         },
@@ -156,11 +193,26 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             accessorKey: "Destination",
             header: "Destination",
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
                     <>
-                        <div className="text-xs">
-                            {`${row.original.warehouse_name_destination} Wr - ${row.original.country_code_destination}`}
-                        </div>
+                        {
+                            row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span className='text-nowrap'>
+                                                {`- ${row.original.warehouse_name_destination} WH`} {`${row.original.services === "Hold pickup" ? "- HFP" : ""}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
                     </>
                 )
             }
@@ -168,6 +220,16 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         {
             accessorKey: "updated_at",
             header: "Last Update",
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.updated_at}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "status",
@@ -247,6 +309,8 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
 
     });

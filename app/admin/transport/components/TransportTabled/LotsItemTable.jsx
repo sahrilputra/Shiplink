@@ -145,6 +145,16 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
             accessorKey: "lots_id",
             header: "Lots ID",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.lots_id}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "label",
@@ -153,21 +163,60 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         {
             accessorKey: "destination",
             header: "Destination",
+            size: 80,
+            cell: ({ row }) => {
+                const countryCode = row.original.destination ? row.original.destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.destination === null && row.original.destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>
+                                                {`- ${row.original.destination}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             accessorKey: "pickup_schedule",
             header: "Pickup Schedule",
+            size: 80,
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.pickup_schedule}</span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "documents",
             header: "Documents",
+            size: 30,
             cell: ({ row }) => {
                 // Memeriksa apakah data documents ada dan tidak kosong
                 if (row.original.documents && row.original.documents.trim() !== "") {
                     // Memisahkan string berdasarkan tanda koma dan mengambil panjang array
                     const documentCount = row.original.documents.split(',').length;
                     return (
-                        <div className="text-xs">
+                        <div className="text-xs"
+                            style={{ fontFamily: 'roboto' }}
+                        >
                             {documentCount}
                         </div>
                     )
@@ -175,7 +224,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                     // Menampilkan pesan jika tidak ada data documents atau kosong
                     return (
                         <div className="text-xs">
-                            No documents
+                            -
                         </div>
                     )
                 }
@@ -184,9 +233,11 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         {
             accessorKey: "status",
             header: "Status",
+            size: 80,
         },
         {
             id: "Action",
+            size: 50,
             header: "Action",
             cell: ({ row }) => {
                 return (
@@ -289,6 +340,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                                 return (
                                     <TableHead
                                         key={header.id}
+                                        style={{ width: `${isLastHeader ? "50px" : header.getSize()}px}` }}
                                         className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
                                     >
                                         {header.isPlaceholder

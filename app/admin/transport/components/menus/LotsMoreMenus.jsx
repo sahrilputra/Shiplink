@@ -61,7 +61,7 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                         <DropdownMenuItem>
                             <p
                                 className="text-xs"
-                                onClick={() => setIsDownload(true)}
+                                // onClick={() => setIsDownload(true)}
                             >Download Documents</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
