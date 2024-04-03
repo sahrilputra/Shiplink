@@ -34,7 +34,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontalIcon } from "lucide-react"
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon } from "lucide-react"
 import CreateNewCustomer from "../dialog/CreateNewCustomer";
 import { Dialog } from "@/components/ui/dialog";
 import {
@@ -62,33 +62,86 @@ export function CustomerTable({ data, open, setOpen }) {
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
-        limit: 0,
-        index: 0
+        limit: 10,
+        index: 0,
     });
-    const fetchData = async () => {
-        try {
-            const response = await axios.post(
-                `/api/admin/customer_manager/list`,
-                query
-            );
-            const data = await response.data;
-            setCustomer(data.customer);
-            setIsSkeleton(false);
-            setLoading(false)
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
+
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/customer_manager/list`,
+                    {
+                        ...query,
+                        page: pagination.pageIndex + 1,
+                        limit: pagination.pageSize,
+                    }
+                );
+                const data = await response.data;
+                setCustomer(data.customer);
+                setRowTotalData({
+                    page_limit: data.page_limit,
+                    page_total: data.page_total,
+                    total: data.total
+                });
+                setPagination(prevPagination => ({
+                    ...prevPagination,
+                    pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+                }));
+                setIsSkeleton(false);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
         fetchData();
     }, [query]);
+
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
 
     const handleSearchChange = (event) => {
         setQuery({
             ...query,
-            keyword: event.target.value
+            keyword: event.target.value,
+            page: 1,
+            limit: 10,
+            index: 0,
         });
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        });
+
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
     };
 
     const handleCopyCustomerId = (customerId) => {
@@ -130,23 +183,47 @@ export function CustomerTable({ data, open, setOpen }) {
     };
 
 
+
     const columns = [
         {
             accessorKey: "customer_id",
             header: "Unit ID",
             className: "text-xs",
+            size: 30,
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.customer_id}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "customer_name",
             header: "Customer Name",
+            size: 50,
         },
         {
             accessorKey: "email",
             header: "Email",
+            size: 59,
         },
         {
             accessorKey: "phone_number",
             header: "Phone Number",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.phone_number}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "customer_plans",
@@ -155,9 +232,10 @@ export function CustomerTable({ data, open, setOpen }) {
         {
             id: "Action",
             header: "Action",
+            size: 50,
             cell: ({ row }) => {
                 return (
-                    <div className="flex flex-row gap-2">
+                    <div className="flex flex-row gap-2 w-50">
                         <NextLink
                             className="focus:outline-none focus:ring-0 focus:border-transparent"
                             href={`/admin/customers-manager/${row.original.customer_id}`}>
@@ -221,6 +299,10 @@ export function CustomerTable({ data, open, setOpen }) {
     const table = useReactTable({
         data: customer,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -229,6 +311,9 @@ export function CustomerTable({ data, open, setOpen }) {
         state: {
             sorting,
             rowSelection,
+            rowSelection,
+            pagination,
+            query,
         },
 
     })
@@ -252,7 +337,13 @@ export function CustomerTable({ data, open, setOpen }) {
         setExpandedRows(newExpandedRows);
     };
     const reloadData = () => {
-        fetchData();
+        setQuery({
+            ...query,
+            keyword: "",
+            page: 1,
+            limit: 0,
+            index: 0
+        });
     };
 
     return (
@@ -263,7 +354,7 @@ export function CustomerTable({ data, open, setOpen }) {
             <div className="text-sm bg-white text-black pb-[10px]">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                        <SearchBar />
+                        <SearchBar handleSearch={handleSearchChange} />
                         <Button
                             variant="filter"
                             size="filter"
@@ -296,8 +387,9 @@ export function CustomerTable({ data, open, setOpen }) {
                                 const isFirstHeader = index === 0;
                                 return (
                                     <TableHead
+                                        style={{ width: `${header.getSize()}px` }}
                                         key={header.id}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        className={`text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -349,6 +441,7 @@ export function CustomerTable({ data, open, setOpen }) {
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell
                                         key={cell.id}
+                                        style={{ width: `${cell.column.getSize()}px` }}
                                         className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
                                     >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -360,33 +453,64 @@ export function CustomerTable({ data, open, setOpen }) {
                 </TableBody>
             </Table>
 
-            <div className="flex justify-end w-full items-end py-3">
-                <Pagination className={'flex justify-end w-full items-end'}>
+            <div className="flex justify-between w-full items-center mt-3 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    {/* <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div> */}
+                </div>
+                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                     <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
+
+
                     </PaginationContent>
                 </Pagination>
             </div>
