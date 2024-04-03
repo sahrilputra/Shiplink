@@ -233,11 +233,11 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         {
             accessorKey: "status",
             header: "Status",
-            size: 80,
+            size: 50,
         },
         {
-            id: "Action",
             size: 50,
+            id: "Action",
             header: "Action",
             cell: ({ row }) => {
                 return (
@@ -250,7 +250,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                         >
                             <p className="text-[11px]">Edit Lots</p>
                         </Button>
-                        <LotsMoreMenusDropDrown data={row.original} dataID={row.original.lots_id} />
+                        <LotsMoreMenusDropDrown data={row.original} dataID={row.original.lots_id} lots_docs={row.original.documents} />
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
@@ -276,6 +276,7 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         getSortedRowModel: getSortedRowModel(),
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,
+        columnResizeMode: "onChange",
         state: {
             sorting,
             rowSelection,
@@ -303,11 +304,21 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const toggleCancel = () => {
         setIsEdit(false)
     }
+    //     const toggleRow = (index) => {
+    //         const newExpandedRows = { ...expandedRows };
+    //         newExpandedRows[index] = !newExpandedRows[index];
+    //         setExpandedRows(newExpandedRows);
+    //     };
+    // }
     const toggleRow = (index) => {
-        const newExpandedRows = { ...expandedRows };
-        newExpandedRows[index] = !newExpandedRows[index];
-        setExpandedRows(newExpandedRows);
-    };
+        const newExpandedRows = {};
+        if (expandedRows[index]) {
+            setExpandedRows({});
+        } else {
+            newExpandedRows[index] = true;
+            setExpandedRows(newExpandedRows);
+        }
+    }
 
     const toggleOpenChange = () => {
         setOpen(true)
@@ -340,8 +351,8 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                                 return (
                                     <TableHead
                                         key={header.id}
-                                        style={{ width: `${isLastHeader ? "50px" : header.getSize()}px}` }}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        style={{ width: `${header.getSize()}px}` }}
+                                        className={`text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -382,13 +393,13 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                             )}
                         </>
                     ) : (
-                        // Jika data telah dimuat, render data aktual
                         table.getRowModel().rows.map((row) => (
                             <>
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                    onClick={() => toggleRow(row.id)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell

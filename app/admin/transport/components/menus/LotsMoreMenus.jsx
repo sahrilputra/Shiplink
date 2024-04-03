@@ -14,13 +14,13 @@ import { EditLotsDialog } from '../AssignLotsDialog/EditLotsDialog'
 import { Dialog } from '@/components/ui/dialog'
 
 import NextLink from "next/link"
-export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, dataID }) => {
+export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, dataID, lots_docs }) => {
     const handleItemClick = (item) => {
         getSelectedItem(item)
         dataIDhandler(data)
     };
 
-
+    // https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/doc-240226092117490001-0.pdf
     const [editModalOpen, setEditModalOpen] = useState(false);
 
     const render = () => {
@@ -48,7 +48,7 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                             <p className="text-xs text-myBlue">Download Package List</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <NextLink href={`/admin/transport/lots/${dataID}`}>
+                            <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
                                 <p className="text-xs">View Lots Details</p>
                             </NextLink>
                         </DropdownMenuItem>
@@ -58,12 +58,14 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                         >
                             <p className="text-xs">Edit Lots</p>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <p
-                                className="text-xs"
+                        <NextLink href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${lots_docs}`} passHref target='_blank' rel='noopener noreferrer'>
+                            <DropdownMenuItem>
+                                <p
+                                    className="text-xs"
                                 // onClick={() => setIsDownload(true)}
-                            >Download Documents</p>
-                        </DropdownMenuItem>
+                                >Download Documents</p>
+                            </DropdownMenuItem>
+                        </NextLink>
                     </DropdownMenuContent>
                 </DropdownMenu>
                 {render()}
