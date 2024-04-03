@@ -10,7 +10,7 @@ import axios from 'axios';
 export default function NewInvoice() {
     const searchParams = useSearchParams()
     const myParam = searchParams.get('customer')
-    const package_id = searchParams.get('package_id')
+    const package_id = searchParams.get('package_id') || ""
     const [open, setOpen] = useState(false);
     console.log("🚀 ~ ArrivalScanPage ~ router:", myParam)
     console.log("🚀 ~ ArrivalScanPage ~ package_id:", package_id)
@@ -39,12 +39,14 @@ export default function NewInvoice() {
                 console.log('Error:', error);
             }
         };
-        fetchData()
+        if (package_id !== "") {
+            fetchData();
+        }
     }, [query, package_id]);
     return (
         <>
             <div className={styles.forms}>
-                <InvoiceForms customer={myParam} data={data}/>
+                <InvoiceForms customer={myParam} data={data} />
             </div>
         </>
     )

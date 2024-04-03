@@ -84,6 +84,7 @@ const formSchema = yup.object().shape({
 
 
 export const InvoiceForms = ({ customer = null, data = null }) => {
+    console.log("🚀 ~ InvoiceForms ~ data:", data)
     const today = format(new Date(), "yyyy-MM-dd");
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -169,7 +170,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         };
         fetchData();
 
-        if (data) {
+        if (data !== null && data.tracking_id !== undefined) {
             form.setValue(`items[0].itemDescription`, `Logistic Service For Package : ${data.tracking_id}`)
             form.setValue(`items[0].itemQty`, 1)
             form.setValue(`items[0].itemPrice`, data.total_price)
