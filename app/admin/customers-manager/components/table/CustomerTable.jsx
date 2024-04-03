@@ -47,6 +47,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useToast } from "@/components/ui/use-toast";
+import { TableMembership } from "@/components/membership/TableMembership";
 
 export function CustomerTable({ data, open, setOpen }) {
     const { toast } = useToast();
@@ -228,6 +229,16 @@ export function CustomerTable({ data, open, setOpen }) {
         {
             accessorKey: "customer_plans",
             header: "Membership",
+            size: 120,
+            cell: ({ row }) => {
+                return (
+                    <div className="flex items-center justify-center">
+                        <div className="w-[110px]">
+                            <TableMembership plans={row.original.customer_plans || "Free"} />
+                        </div>
+                    </div>
+                )
+            }
         },
         {
             id: "Action",
@@ -389,7 +400,7 @@ export function CustomerTable({ data, open, setOpen }) {
                                     <TableHead
                                         style={{ width: `${header.getSize()}px` }}
                                         key={header.id}
-                                        className={`text-xs`}
+                                        className={`${isLastHeader && 'w-30'} text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
