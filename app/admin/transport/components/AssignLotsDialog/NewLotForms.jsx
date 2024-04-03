@@ -290,6 +290,9 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                                 setSelectOrigin(item.country_name)
                                                                                 field.onChange(item.country_code); // Perbarui nilai field.value
                                                                                 setOpenOrigin(false)
+                                                                                setCountryQuery({
+                                                                                    keyword: ""
+                                                                                })
                                                                             }}
                                                                         >
 
@@ -361,7 +364,11 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                             onSelect={() => {
                                                                                 setSelectDestination(item.country_name)
                                                                                 field.onChange(item.country_code); // Perbarui nilai field.value
+                                                                                setCountryQuery({
+                                                                                    keyword: ""
+                                                                                })
                                                                                 setPopOverOpen(false)
+
                                                                             }}
                                                                         >
                                                                             {item.country_name}

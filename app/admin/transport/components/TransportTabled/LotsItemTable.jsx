@@ -280,6 +280,8 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
 
     });
