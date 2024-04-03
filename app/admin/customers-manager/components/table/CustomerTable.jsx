@@ -229,7 +229,7 @@ export function CustomerTable({ data, open, setOpen }) {
         {
             accessorKey: "customer_plans",
             header: "Membership",
-            size: 120,
+            size: 50,
             cell: ({ row }) => {
                 return (
                     <div className="flex items-center justify-center">

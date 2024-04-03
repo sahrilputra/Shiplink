@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
-import { ExternalLink, MoreHorizontalIcon, Plus, Delete } from "lucide-react";
+import { ExternalLink, MoreHorizontalIcon, Plus, Delete, ChevronsRightIcon, ChevronRight, ChevronLeft, ChevronsLeftIcon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
@@ -71,21 +71,82 @@ export function InvoiceTable({ isOpen, setOpen }) {
         index: 0
     });
 
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
+
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
                 `/api/admin/invoice/list`,
-                query
+                {
+                    ...query,
+                    page: pagination.pageIndex + 1,
+                    limit: pagination.pageSize,
+                }
             );
             console.log(response)
             const data = await response.data;
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
             setData(data.invoice);
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
         }
     };
-    
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
+
+    const handleSearchChange = (event) => {
+        setQuery({
+            ...query,
+            keyword: event.target.value,
+            page: 1,
+            limit: 10,
+            index: 0,
+        });
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        });
+
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
+    };
+
+
     const handleSetDate = (newDate) => {
         setDate({
             from: formatDate(newDate?.from || new Date()),
@@ -126,10 +187,30 @@ export function InvoiceTable({ isOpen, setOpen }) {
         {
             accessorKey: "invoice_id",
             header: "Inovice ID",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.invoice_id}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "date",
             header: "Date",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.date}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "billed_name",
@@ -144,6 +225,16 @@ export function InvoiceTable({ isOpen, setOpen }) {
         {
             accessorKey: "total",
             header: "Total Due",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {`$ ${row.original.total}`}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "status",
@@ -187,6 +278,10 @@ export function InvoiceTable({ isOpen, setOpen }) {
     const table = useReactTable({
         data,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getPaginationRowModel: getPaginationRowModel(),
@@ -200,6 +295,8 @@ export function InvoiceTable({ isOpen, setOpen }) {
             columnFilters,
             columnVisibility,
             rowSelection,
+            pagination,
+            query,
         },
     })
 
@@ -372,56 +469,69 @@ export function InvoiceTable({ isOpen, setOpen }) {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-between space-x-2 py-4 w-full">
-                <div className=" text-sm text-muted-foreground w-full">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
+
+            <div className="flex justify-between w-full items-center mt-3 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div>
                 </div>
-                <div className="w-full flex justify-end">
-                    <Pagination className={"justify-end"}>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        table.previousPage();
-                                    }}
-                                    disabled={!table.getCanPreviousPage()}
-                                />
-                            </PaginationItem>
-                            {/* <PaginationItem>
-                                <div className="flex flex-row">
-                                    {table.getPageOptions().map((page) => (
-                                        <PaginationLink
-                                            className={"gap-1 px-2 py-1 h-[30px] text-xs"}
-                                            key={page}
-                                            href="#"
-                                            onClick={() => table.gotoPage(page)}
-                                            isActive={table.getCanNextPage()}
-                                        >
-                                            {page + 1}
-                                        </PaginationLink>
-                                    ))}
-                                </div>
-                            </PaginationItem> */}
-                            <PaginationItem>
-                                <PaginationEllipsis />
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationNext
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        table.nextPage();
-                                    }}
-                                    disabled={!table.getCanNextPage()}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
-                </div>
-                {/* <div className="space-x-2">
+                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
+                    <PaginationContent>
+
+
+                    </PaginationContent>
+                </Pagination>
+            </div>
+            {/* <div className="space-x-2">
                     <Button
                         variant="outline"
                         size="sm"
@@ -439,7 +549,6 @@ export function InvoiceTable({ isOpen, setOpen }) {
                         Next
                     </Button>
                 </div> */}
-            </div>
         </>
     )
 
