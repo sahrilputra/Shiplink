@@ -67,32 +67,32 @@ export function PendingTable
     const [isSorted, setIsSorted] = useState(false);
     const [expandedRows, setExpandedRows] = useState({});
     const columns = [
-        {
-            accessorKey: "select",
-            id: "select",
-            header: ({ table }) => {
-                return (
-                    <Checkbox
-                        checked={
-                            table.getIsAllPageRowsSelected() ||
-                            (table.getIsSomePageRowsSelected() && "indeterminate")
-                        }
-                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                        aria-label="Select all"
-                    />
-                )
-            },
-            cell: ({ row }) => {
-                return (
-                    <Checkbox
-                        checked={row.getIsSelected()}
-                        onCheckedChange={(value) => row.toggleSelected(!!value)}
-                        aria-label="Select row"
-                    />
-                )
-            },
-            size: 50,
-        },
+        // {
+        //     accessorKey: "select",
+        //     id: "select",
+        //     header: ({ table }) => {
+        //         return (
+        //             <Checkbox
+        //                 checked={
+        //                     table.getIsAllPageRowsSelected() ||
+        //                     (table.getIsSomePageRowsSelected() && "indeterminate")
+        //                 }
+        //                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        //                 aria-label="Select all"
+        //             />
+        //         )
+        //     },
+        //     cell: ({ row }) => {
+        //         return (
+        //             <Checkbox
+        //                 checked={row.getIsSelected()}
+        //                 onCheckedChange={(value) => row.toggleSelected(!!value)}
+        //                 aria-label="Select row"
+        //             />
+        //         )
+        //     },
+        //     size: 50,
+        // },
         {
             accessorKey: "tracking_id",
             header: () => {
@@ -396,7 +396,7 @@ export function PendingTable
                                 </TableRow>
                                 {expandedRows[row.id] && (
                                     <TableRow>
-                                        <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50">
+                                        <TableCell colSpan={7} className="w-full p-1 px-[20px] py-[10px] bg-blue-50 transition-transform">
                                             <BrokerDeclareContent
                                                 data={row.original.content}
                                                 details={row.original}

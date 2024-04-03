@@ -112,22 +112,22 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                         data.map((item, index) => (
                             <TableRow className="text-xs bg-white" key={index}>
                                 <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                                    <p>{item.qty ? item.qty : "undefined"}</p>
+                                    <p>{item.qty ? item.qty : "-"}</p>
                                 </TableCell>
                                 <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                                    <p>${item.value ? item.value : "undefined"}</p>
+                                    <p>${item.value ? item.value : "-"}</p>
                                 </TableCell>
                                 <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                                    <p>{item.desc ? item.desc : "undefined"}</p>
+                                    <p>{item.desc ? item.desc : "-"}</p>
                                 </TableCell>
                                 <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                                    <p>{item.hs_desc ? item.hs_desc : "undefined"}</p>
+                                    <p>{item.hs_desc ? item.hs_desc : "-"}</p>
                                 </TableCell>
                                 <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                                    <p>{item.hs_code ? item.hs_code : "undefined"}</p>
+                                    <p>{item.hs_code ? item.hs_code : "-"}</p>
                                 </TableCell>
                                 <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                                    <p>{item.made_in ? item.made_in : "undefined"}</p>
+                                    <p>{item.made_in ? item.made_in : "-"}</p>
                                 </TableCell>
                             </TableRow>
                         ))
@@ -141,7 +141,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                             <div className="flex justify-between w-full">
                                 <div className="flex flex-row gap-4">
                                     <p className=' text-sm font-bold text-myBlue'>Totals : </p>
-                                    <p className=' text-sm font-semibold'>${details?.total_price || "0"} </p>
+                                    <p className=' text-sm font-semibold'>${details?.total_price || "-"} </p>
 
                                 </div>
                                 <div className="flex flex-row gap-4">
