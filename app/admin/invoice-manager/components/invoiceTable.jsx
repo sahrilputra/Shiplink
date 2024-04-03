@@ -67,7 +67,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
         keyword: "",
         invoice_id: "",
         page: 1,
-        limit: 0,
+        limit: 10,
         index: 0
     });
 
@@ -95,6 +95,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
             );
             console.log(response)
             const data = await response.data;
+            setData(data.invoice);
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -104,7 +105,6 @@ export function InvoiceTable({ isOpen, setOpen }) {
                 ...prevPagination,
                 pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
             }));
-            setData(data.invoice);
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
