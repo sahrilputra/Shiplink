@@ -60,7 +60,7 @@ export const DropdownPendingList = ({ data, images }) => {
                                 filterInvoice.map((item, index) => (
                                     <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
                                         <DropdownMenuItem key={index} className="text-xs text-myBlue" value={index}>
-                                            invoice {index + 1}
+                                           View invoice {index + 1}
                                         </DropdownMenuItem>
                                     </NextLink>
                                 ))

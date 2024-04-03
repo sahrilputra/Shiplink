@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { CheckIcon, XIcon } from 'lucide-react'
+import { CheckIcon, ChevronDown, XIcon } from 'lucide-react'
 import { PackageDialogDetails } from '../dialog/PackageDialogDetails'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -15,6 +15,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
     Form,
     FormControl,
@@ -92,6 +100,9 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
             });
         }
     };
+    const [openInv, setOpenInv] = useState(false)
+
+
 
     return (
         <>
@@ -162,30 +173,32 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                     <p className='text-xs'>Package Details</p>
                                 </Button>
                                 <div className="">
-                                    <Select>
-                                        <SelectTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2">
+                                    <DropdownMenu open={openInv} onOpenChange={setOpenInv}>
+                                        <DropdownMenuTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2 flex flex-row">
                                             <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Invoice</p>
-                                            <SelectValue placeholder="Download Invoice " className='text-xs h-full border-none pl-3 w-[250px] rounded-tr-none rounded-br-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0" ' />
-                                        </SelectTrigger>
-                                        <SelectContent>
+                                            <div className='text-xs flex h-full border pl-3 w-[250px] bg-white  rounded-tr rounded-br focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 items-center justify-between px-2  border-slate-300 ring-offset-white text-slate-500" ' >
+                                                {filterInvoice.length <= 0 ? "No Invoice" : "View Invoice" }
+                                                <ChevronDown width={15} height={15} className={`${openInv ? "transition-transform rotate-180" : ""} transition-transform`} />
+                                            </div>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-[250px]">
                                             {
                                                 filterInvoice.length > 0 ? (
                                                     filterInvoice.map((item, index) => (
                                                         <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
-                                                            <SelectItem value="light">  invoice {index + 1}</SelectItem>
-
+                                                            <DropdownMenuItem className="text-xs text-myBlue" value="light">View invoice {index + 1}</DropdownMenuItem>
                                                         </NextLink>
                                                     ))
                                                 ) : (
-                                                    <SelectItem
+                                                    <DropdownMenuItem
                                                         disabled={true}
                                                         className="text-xs text-myBlue text-center">
                                                         No Invoice
-                                                    </SelectItem>
+                                                    </DropdownMenuItem>
                                                 )
                                             }
-                                        </SelectContent>
-                                    </Select>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </div>
                             </div>
                             <div className={`${status === "Cleared Custom" ? "hidden" : "flex"} w-[50%] flex flex-row gap-2 justify-end`}>

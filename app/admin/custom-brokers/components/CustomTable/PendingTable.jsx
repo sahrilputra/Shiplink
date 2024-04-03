@@ -381,14 +381,16 @@ export function PendingTable
                         table.getRowModel().rows.map((row) => (
                             <>
                                 <TableRow
+                                    onClick={() => toggleRow(row.id)}
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : ""}
+                                    className={`${row.isLast ? "w-[60px]" : row.isFirst ? "w-[50px]" : ""} cursor-pointer hover:bg-blue-50`}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className={`${cell.isLast ? "w-[60px]" : cell.isFirst ? "w-[50px]" : ""} text-xs  ${expandedRows[row.id] && "bg-blue-100 hover:bg-blue-100"}`}
+
+                                            className={`${cell.isLast ? "w-[60px]" : cell.isFirst ? "w-[50px]" : ""} text-xs  ${expandedRows[row.id] && "bg-blue-100 hover:bg-blue-100 "} `}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
@@ -403,7 +405,7 @@ export function PendingTable
                                                 TrackingID={row.original.tracking_id}
                                                 reload={reload}
                                                 status={row.original.status}
-                                                image={row.original.image}
+                                                image={row.original.images}
                                             />
                                         </TableCell>
                                     </TableRow>
