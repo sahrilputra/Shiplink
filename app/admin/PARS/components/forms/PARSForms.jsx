@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -19,6 +19,16 @@ import { NewNumberDialog } from '../dialog/NewNumberDialog'
 import axios from 'axios'
 import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectGroup,
+    SelectTrigger,
+    SelectValue,
+    SelectLabel,
+    SelectItemWihtoutIndicator,
+} from "@/components/ui/select";
 const formSchema = yup.object().shape({
     Type: yup.string(),
     SCAC: yup.string().required(),
@@ -82,6 +92,32 @@ export const PARSForms = ({ close, data = null }) => {
         }
     };
 
+    const [courrierList, setCourrierList] = useState([])
+    const [queryCurrier, setQueryCurrier] = useState({
+        keyword: "",
+        page: 0,
+        limit: 10,
+        index: 0,
+    })
+
+    useEffect(() => {
+        const fetchCourrier = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/courrier/list`,
+                    queryCurrier
+                )
+                const resposneData = response.data
+                setCourrierList(resposneData.carrier)
+            } catch (error) {
+                console.log('Error', error);
+                fetchCourrier();
+            }
+        }
+        fetchCourrier();
+    }, [queryCurrier]);
+
+
     return (
         <>
             {
@@ -116,6 +152,83 @@ export const PARSForms = ({ close, data = null }) => {
                     </div>
 
                     <div className="profile flex flex-row gap-4 w-full items-end text-xs justify-end">
+                        {/* <div className="">
+                        <FormField
+                                className=" text-sm space-y-0 w-[100%]"
+                                name="carrier_code"
+                                control={form.control}
+                                render={({ field, formState }) => (
+                                    <>
+                                        {console.log("field.value : ", field)}
+                                        <FormItem className="space-y-1.5  w-[30%]">
+                                            <FormLabel className="font-bold">Select Carrier</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                                open={isCarrierOpen}
+                                                onOpenChange={setCarrierOpen}
+                                                required
+                                            >
+                                                <FormControl className="space-y-0">
+                                                    <SelectTrigger
+                                                        className={`w-[100%] text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"}`}>
+                                                        <p>{field.value}</p>
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectGroup className='text-xs '>
+                                                        {carrierList.map((item, index) => (
+                                                            <SelectItemWihtoutIndicator
+                                                                className='text-xs'
+                                                                key={index}
+                                                                value={item.carrier_name}
+                                                                onValueChange={() => {
+                                                                    forms.setValue = ("carrier_code", item.carrier_name)
+                                                                    setSelectedCarrier(item.carrier_name)
+                                                                }}
+                                                                onSelect={() => {
+                                                                    setCarrierOpen(false);
+                                                                    forms.setValue = ("carrier_code", item.carrier_name)
+                                                                    setSelectedCarrier(item.carrier_name)
+                                                                }}
+                                                            >
+                                                                {item.carrier_name}
+                                                            </SelectItemWihtoutIndicator>
+                                                        ))
+                                                        }
+                                                    </SelectGroup>
+                                                    <SelectGroup>
+                                                        <SelectLabel className="px-0.5 border-b text-xs space-y-1 font-bolds ">Other</SelectLabel>
+                                                        <div className=" pt-1 flex flex-row gap-1">
+                                                            <Input
+                                                                autoComplete="off"
+                                                                id="carrier_code"
+                                                                className="text-xs h-[30px] w-[120px] rounded-sm px-2 py-0 "
+                                                                placeholder="Input Carrier"
+                                                                value={selectedCarrier || ""}
+                                                                onValueChange={(e) => {
+                                                                    setSelectedCarrier(e.target.value);
+                                                                    setCarrierOpen(true);
+                                                                    forms.setValue = ("carrier_code", e.target.value)
+                                                                }}
+                                                                onKeyPress={(e) => {
+                                                                    if (e.key === "Enter") {
+                                                                        setCarrierOpen(false)
+                                                                        handleSelectedCarrier({ target: { value: e.target.value } });
+                                                                        e.preventDefault(); // Prevent form submission
+                                                                    }
+                                                                }}
+                                                                {...field}
+                                                            />
+                                                        </div>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormItem>
+                                    </>
+                                )}
+                            />
+                        </div> */}
                         <FormField
                             className="w-full"
                             name="SCAC"

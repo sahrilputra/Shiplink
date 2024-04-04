@@ -135,7 +135,7 @@ export function PARSTable({ }) {
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-[3px] w-max px-[5px] h-6`}
-                            onClick={() => handlerDelete(row.original.id)}
+                            onClick={() => handlerDelete([row.original.id])}
                         >
                             <DeleteIcons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
                         </Button>
@@ -187,7 +187,7 @@ export function PARSTable({ }) {
     const selectedRowID = table.getSelectedRowModel().rows.map(row => row.original.id);
     return (
         <>
-            <EditSelectedNumber open={openEdit} setOpen={setOpenEdit} data={editID} reload={reloadData}/>
+            <EditSelectedNumber open={openEdit} setOpen={setOpenEdit} data={editID} reload={reloadData} />
             <DeleteSequences open={openDelete} setOpen={setOpenDelete} deleteID={deleteID} reloadData={reloadData} />
             <div className="text-sm bg-white text-black border border-zinc-300 rounded-md">
                 <div className="p-4  " >
