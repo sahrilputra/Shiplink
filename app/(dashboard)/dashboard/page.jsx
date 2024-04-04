@@ -67,6 +67,11 @@ export default function Dashboard() {
 
     const reloadData = () => {
         // fetchData()
+        setQuery((prevQuery) => ({
+            ...prevQuery,
+            keyword: ""
+        }));
+        console.log("RELOAD DATA")
         setExpandedItemId(null)
         closeExpand()
     }

@@ -43,9 +43,6 @@ export const CrossBorderPayments = (
     }
 ) => {
 
-    console.log("🚀 ~ PaymentsDialog ~ type:", type)
-    console.log("🚀 ~ PaymentsDialog ~ open:", open)
-    console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId)
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
     const [clientSecret, setClientSecret] = useState("");
     const [totalAmount, setTotalAmount] = useState(0);
@@ -190,7 +187,7 @@ export const CrossBorderPayments = (
                 dataToSend
             );
             console.log('Response:', response);
-            setOpen(false);
+            // setOpen(false);
         } catch (error) {
             console.log('Error', error);
         }
