@@ -247,7 +247,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Origin</FormLabel>
-                                        <Popover className="w-full" open={openOrigin} onOpenChange={setOpenOrigin}>
+                                        <Popover className="w-full" open={openOrigin} onOpenChange={setOpenOrigin} modal={true}>
                                             <PopoverTrigger asChild>
                                                 <FormControl className="w-full">
                                                     <Button
@@ -322,7 +322,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Destination</FormLabel>
-                                        <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen}>
+                                        <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen} modal={true} >
                                             <PopoverTrigger asChild>
                                                 <FormControl className="w-full">
                                                     <Button
@@ -338,7 +338,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-[250px] p-0">
+                                            <PopoverContent className="w-[250px] p-0" >
                                                 <Command className="w-full">
                                                     <CommandInput
                                                         placeholder="Search Country..."
