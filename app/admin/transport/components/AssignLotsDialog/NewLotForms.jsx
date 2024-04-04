@@ -74,6 +74,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
         index: 0,
     })
 
+    console.log("🚀 ~ NewLotsFrom ~ countryQuery:", countryQuery)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -103,12 +104,11 @@ export const NewLotsFrom = ({ close, data = null }) => {
 
     const handleCommandChange = (e) => {
         console.log("🚀 ~ handleCommandChange ~ e:", e)
-        setCountryQuery(e);
-        setCountryQuery({ ...countryQuery, keyword: e });
+        setCountryQuery({ keyword: e });
     }
     const handleDestinationChange = (e) => {
-        console.log("🚀 ~ handleCommandChange ~ e:", e)
-        setCountryQuery({ ...countryQuery, keyword: e });
+        console.log("🚀 ~ handleDestinationChange countryQuery~ e:", e)
+        setCountryQuery({ keyword: e });
     }
 
 
@@ -365,6 +365,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                                 setSelectDestination(item.country_name)
                                                                                 field.onChange(item.country_code); // Perbarui nilai field.value
                                                                                 setCountryQuery({
+
                                                                                     keyword: ""
                                                                                 })
                                                                                 setPopOverOpen(false)
