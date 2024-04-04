@@ -69,6 +69,7 @@ export const CrossBorderPayments = (
     // }, [open])
 
     console.log("BROKER: ", forms?.watch("warehouse"))
+    console.log("BROKER: ", forms?.watch("broker"))
     const appearance = {
         theme: 'stripe',
     };
@@ -102,9 +103,14 @@ export const CrossBorderPayments = (
             }
         }
 
+
+
         const handleCrossBorder = async () => {
             console.log("running")
             try {
+                if (forms.watch("broker") === "Use Shiplink Broker") {
+                    console.log("Running PARS")
+                }
                 const response = await axios.post(
                     '/api/admin/actions/cross_border',
                     {
@@ -141,10 +147,28 @@ export const CrossBorderPayments = (
         }
     }, [open, type, forms, selectedBroker, trackingId]);
 
+    const handlePARS = async () => {
+        console.log("🚀 ~ handlePARS ~ trackingId:", trackingId)
+        try {
+            const response = await axios.post(`/api/admin/packages/assign_pars`,
+                {
+                    data: trackingId,
+                }
+            );
+            const responseData = response.data;
+            console.log("🚀 ~ handlePARS ~ responseData:", responseData);
+        } catch (error) {
+            console.log("Erorr : ", error);
+        }
+    };
 
     console.log("WATHCING :", forms?.watch("package_content"))
     const handleSubmitForms = () => {
         try {
+            if (forms.watch("broker") === "Use Shiplink Broker") {
+                console.log("RUNNING PARS")
+                handlePARS();
+            }
             const dataToSend = forms?.watch("package_content").map((item) => {
                 console.log("🚀 ~ dataToSend ~ item:", item)
                 const qty = parseInt(item.qty);
@@ -160,8 +184,7 @@ export const CrossBorderPayments = (
                     made_in: item.made_in,
                     subtotal: item.subtotal
                 };
-            });
-
+            })
             const response = axios.post(
                 `/api/admin/verification/register_package_content`,
                 dataToSend
