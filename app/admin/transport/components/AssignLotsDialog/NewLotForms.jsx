@@ -201,11 +201,9 @@ export const NewLotsFrom = ({ close, data = null }) => {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleSave)}
-                    className='flex gap-4 flex-col'
+                    className="flex gap-4 flex-col"
                     action=""
-
                 >
-
                     <div className="profile flex flex-col gap-4 w-full">
                         {/* <FormField
                             className="w-full"
@@ -231,10 +229,15 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Lots Labels</FormLabel>
-                                        <FormControl >
-                                            <Input type="text" id="LotsLabel" placeholder="Regular Daily Move"  {...field} />
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                id="LotsLabel"
+                                                placeholder="Regular Daily Move"
+                                                autoComplete="off"
+                                                {...field}
+                                            />
                                         </FormControl>
-
                                     </FormItem>
                                 </>
                             )}
@@ -247,7 +250,12 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Origin</FormLabel>
-                                        <Popover className="w-full" open={openOrigin} onOpenChange={setOpenOrigin} modal={true}>
+                                        <Popover
+                                            className="w-full"
+                                            open={openOrigin}
+                                            onOpenChange={setOpenOrigin}
+                                            modal={true}
+                                        >
                                             <PopoverTrigger asChild>
                                                 <FormControl className="w-full">
                                                     <Button
@@ -255,9 +263,10 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                         variant="outline"
                                                         role="combobox"
                                                         type="button"
-                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"
+                                                            }`}
                                                     >
-                                                        <span className='text-xs px-2'>
+                                                        <span className="text-xs px-2">
                                                             {selectOrigin ? selectOrigin : "Select Origin"}
                                                         </span>
                                                     </Button>
@@ -270,9 +279,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                         className="h-9 w-full text-xs"
                                                         onValueChange={(e) => handleCommandChange(e)}
                                                     />
-                                                    <CommandEmpty
-                                                        className="w-full text-xs text-center py-2"
-                                                    >
+                                                    <CommandEmpty className="w-full text-xs text-center py-2">
                                                         No Country found.
                                                     </CommandEmpty>
                                                     <CommandGroup className="h-[200]">
@@ -282,23 +289,24 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                 <>
                                                                     <PopoverClose asChild>
                                                                         <CommandItem
-
                                                                             value={item.country_name}
                                                                             key={item.country_id}
                                                                             className="text-xs"
                                                                             onSelect={() => {
-                                                                                setSelectOrigin(item.country_name)
+                                                                                setSelectOrigin(item.country_name);
                                                                                 field.onChange(item.country_code); // Perbarui nilai field.value
-                                                                                setOpenOrigin(false)
+                                                                                setOpenOrigin(false);
                                                                                 setCountryQuery({
-                                                                                    keyword: ""
-                                                                                })
+                                                                                    keyword: "",
+                                                                                });
                                                                             }}
                                                                         >
-
                                                                             {item.country_name}
                                                                             <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                    }`}
                                                                             />
                                                                         </CommandItem>
                                                                     </PopoverClose>
@@ -309,7 +317,6 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                 </Command>
                                             </PopoverContent>
                                         </Popover>
-
                                     </FormItem>
                                 </>
                             )}
@@ -322,7 +329,12 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Destination</FormLabel>
-                                        <Popover className="w-full" open={popOverOpen} onOpenChange={setPopOverOpen} modal={true} >
+                                        <Popover
+                                            className="w-full"
+                                            open={popOverOpen}
+                                            onOpenChange={setPopOverOpen}
+                                            modal={true}
+                                        >
                                             <PopoverTrigger asChild>
                                                 <FormControl className="w-full">
                                                     <Button
@@ -330,24 +342,25 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                         variant="outline"
                                                         role="combobox"
                                                         type="button"
-                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"}`}
+                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"
+                                                            }`}
                                                     >
-                                                        <span className='text-xs px-2'>
-                                                            {selectDestination ? selectDestination : "Select Destination"}
+                                                        <span className="text-xs px-2">
+                                                            {selectDestination
+                                                                ? selectDestination
+                                                                : "Select Destination"}
                                                         </span>
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-[250px] p-0" >
+                                            <PopoverContent className="w-[250px] p-0">
                                                 <Command className="w-full">
                                                     <CommandInput
                                                         placeholder="Search Country..."
                                                         className="h-9 w-full text-xs"
                                                         onValueChange={(e) => handleDestinationChange(e)}
                                                     />
-                                                    <CommandEmpty
-                                                        className="w-full text-xs text-center py-2"
-                                                    >
+                                                    <CommandEmpty className="w-full text-xs text-center py-2">
                                                         No Country found.
                                                     </CommandEmpty>
                                                     <CommandGroup className="h-[200]">
@@ -357,24 +370,26 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                                 <>
                                                                     <PopoverClose asChild>
                                                                         <CommandItem
-
                                                                             value={item.country_name}
                                                                             key={item.country_id}
                                                                             className="text-xs"
                                                                             onSelect={() => {
-                                                                                setSelectDestination(item.country_name)
+                                                                                setSelectDestination(
+                                                                                    item.country_name
+                                                                                );
                                                                                 field.onChange(item.country_code); // Perbarui nilai field.value
                                                                                 setCountryQuery({
-
-                                                                                    keyword: ""
-                                                                                })
-                                                                                setPopOverOpen(false)
-
+                                                                                    keyword: "",
+                                                                                });
+                                                                                setPopOverOpen(false);
                                                                             }}
                                                                         >
                                                                             {item.country_name}
                                                                             <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value ? "opacity-100" : "opacity-0"}`}
+                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                    }`}
                                                                             />
                                                                         </CommandItem>
                                                                     </PopoverClose>
@@ -385,7 +400,6 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                 </Command>
                                             </PopoverContent>
                                         </Popover>
-
                                     </FormItem>
                                 </>
                             )}
@@ -401,7 +415,8 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                             <FormControl>
                                                 <Button
                                                     variant={"outline"}
-                                                    className={`pl-4 w-full text-xs px-4 shadow-none text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                                                    className={`pl-4 w-full text-xs px-4 shadow-none text-left font-normal ${!field.value && "text-muted-foreground"
+                                                        }`}
                                                 >
                                                     {field.value ? (
                                                         format(field.value, "yyyy-MM-dd")
@@ -417,8 +432,9 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                 mode="single"
                                                 selected={field.value}
                                                 onSelect={field.onChange}
-                                                disabled={(date) =>
-                                                    date <= new Date(new Date().setHours(0, 0, 0, 0)) // Disable dates before or equal to today
+                                                disabled={
+                                                    (date) =>
+                                                        date <= new Date(new Date().setHours(0, 0, 0, 0)) // Disable dates before or equal to today
                                                 }
                                                 initialFocus
                                             />
@@ -427,7 +443,6 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 </FormItem>
                             )}
                         />
-
                     </div>
                     <FormField
                         name="TripNumber"
@@ -437,8 +452,14 @@ export const NewLotsFrom = ({ close, data = null }) => {
                             <>
                                 <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                     <FormLabel className="w-[40%]">Trip Number</FormLabel>
-                                    <FormControl >
-                                        <Input type="text" id="TripNumber" placeholder="ABC12345678" {...field} />
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            id="TripNumber"
+                                            placeholder="ABC12345678"
+                                            {...field}
+                                            autoComplete="off"
+                                        />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -452,24 +473,30 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                 <FormLabel className="w-[40%]">Select Status</FormLabel>
                                 <Select
                                     onValueChange={(value) => {
-                                        const selectedStatus = statusList.find(item => item.status === value);
-                                        field.onChange(selectedStatus ? selectedStatus.id_status : ''); // Set id_status as value if found, otherwise empty string
+                                        const selectedStatus = statusList.find(
+                                            (item) => item.status === value
+                                        );
+                                        field.onChange(
+                                            selectedStatus ? selectedStatus.id_status : ""
+                                        ); // Set id_status as value if found, otherwise empty string
                                     }}
                                     defaultValue={field.value}
                                 >
-                                    <FormControl className='text-xs'>
+                                    <FormControl className="text-xs">
                                         <SelectTrigger>
-                                            <SelectValue className='text-xs' placeholder="Status" />
+                                            <SelectValue className="text-xs" placeholder="Status" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {
-                                            statusList?.map((item, index) => (
-                                                <SelectItem className='text-xs' key={index} value={item.status}>
-                                                    {item.status}
-                                                </SelectItem>
-                                            ))
-                                        }
+                                        {statusList?.map((item, index) => (
+                                            <SelectItem
+                                                className="text-xs"
+                                                key={index}
+                                                value={item.status}
+                                            >
+                                                {item.status}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
                             </FormItem>
@@ -487,11 +514,15 @@ export const NewLotsFrom = ({ close, data = null }) => {
                             <>
                                 <FormItem className="w-full flex flex-col gap-1">
                                     <FormLabel className="text-xs">Upload Documents</FormLabel>
-                                    <FormControl >
+                                    <FormControl>
                                         <Input
                                             multiple
-                                            className=" file:w-[100px] file:text-xs  file:h-full file:p-0 text-center last:text-center last:w-full file:bg-myBlue  bg-zinc-400/50 px-0 pl-2 py-2 p-0 file:text-white"
-                                            type="file" id="" placeholder="" accept="application/pdf" onChange={handleFileChange}
+                                            className=" file:w-[100px] file:text-xs  file:h-full file:p-0 text-center last:text-center last:w-full file:bg-myBlue  bg-zinc-400/50 px-0 pl-2 py-2 p-0 file:text-white cursor-pointer hover:bg-zinc-200"
+                                            type="file"
+                                            id=""
+                                            placeholder=""
+                                            accept="application/pdf"
+                                            onChange={handleFileChange}
                                             capture="environment"
                                         />
                                     </FormControl>
@@ -509,16 +540,12 @@ export const NewLotsFrom = ({ close, data = null }) => {
                         >
                             Cancel
                         </Button>
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            variant="destructive"
-                        >
+                        <Button type="submit" className="w-full" variant="destructive">
                             <p>Save changes</p>
                         </Button>
                     </div>
                 </form>
-            </Form >
+            </Form>
         </>
-    )
+    );
 }
