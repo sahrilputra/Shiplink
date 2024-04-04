@@ -90,7 +90,6 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     });
 
     const [selectedBroker, setSelectedBroker] = useState("Use Shiplink Broker");
-    console.log("🚀 ~ TableDashboard ~ selectedBroker:", selectedBroker)
     const handleSelectBroker = (value) => {
         form.setValue('broker', value)
         setSelectedBroker(value);
@@ -132,10 +131,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
             }
         });
     }
-    console.log("Declare Content : ", form.watch('package_content'));
-    console.log("PARS : ", form.watch('pars'));
-    console.log("PARS : ", form.watch('invoice'));
-    console.log("WATCH ERORRS : ", form.formState.errors);
+  
 
     return (
         <>

@@ -1,9 +1,6 @@
 import React from 'react'
 
 export const PackageIndicator = ({ status, status_forcustomer, packageID }) => {
-    console.log("🚀 ~ PackageIndicator ~ packageID:", packageID)
-    console.log("🚀 ~ PackageIndicator ~ status:", status)
-    console.log("🚀 ~ PackageIndicator ~ status_forcustomer:", status_forcustomer)
     return (
         <>
             {

@@ -77,25 +77,26 @@ export default function CheckoutForm(
 
         setDisplayForm(false);
         if (error) {
-            setMessage(error.message);
+            // setMessage(error.message);
             setPaymentStatus("failed");
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
             console.log("🚀 ~ handleSubmit ~ paymentIntent:", paymentIntent)
-            setMessage("Payment succeeded!");
+            // setMessage("Payment succeeded!");
             setPaymentStatus("succeeded");
             confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
             if (type === "CrossBorder") {
                 console.log("Running Cross Border")
                 handleSubmitForms();
             }
-            reload();
+           
             toggleExpanded();
             toast({
                 title: `Success!`,
                 description: `Your payment was successful.`,
                 status: 'success',
             });
-            setIsLoading(false);
+            reload();
+            // setIsLoading(false);
         } else {
             setMessage("Your payment was not successful, please try again.");
             setPaymentStatus("failed");
@@ -105,8 +106,12 @@ export default function CheckoutForm(
                 description: `Your payment was not successful, please try again.`,
                 status: 'Error',
             });
-            setIsLoading(false);
+
         }
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 4000);
     };
 
     const paymentElementOptions = {

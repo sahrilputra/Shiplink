@@ -163,7 +163,7 @@ export const CrossBorderPayments = (
     };
 
     console.log("WATHCING :", forms?.watch("package_content"))
-    const handleSubmitForms = () => {
+    const handleSubmitForms = async () => {
         try {
             if (forms.watch("broker") === "Use Shiplink Broker") {
                 console.log("RUNNING PARS")
@@ -185,7 +185,7 @@ export const CrossBorderPayments = (
                     subtotal: item.subtotal
                 };
             })
-            const response = axios.post(
+            const response = await axios.post(
                 `/api/admin/verification/register_package_content`,
                 dataToSend
             );

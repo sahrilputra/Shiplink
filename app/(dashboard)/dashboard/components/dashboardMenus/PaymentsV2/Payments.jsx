@@ -41,9 +41,6 @@ export const PaymentsDialog = ({
   selectedBroker,
   toggleExpanded,
 }) => {
-  console.log("🚀 ~ PaymentsDialog ~ type:", type);
-  console.log("🚀 ~ PaymentsDialog ~ open:", open);
-  console.log("🚀 ~ PaymentsDialog ~ trackingId:", trackingId);
   const toggleSelect = (selectedButtons) => {
     isSelected(selectedButtons);
   };
@@ -65,8 +62,6 @@ export const PaymentsDialog = ({
   //     handlePayemnt();
   // }, [open])
 
-  console.log("BROKER: ", forms?.watch("warehouse"));
-  console.log("Watching broker : ", forms?.watch("broker"));
   const appearance = {
     theme: "stripe",
   };
@@ -140,7 +135,7 @@ export const PaymentsDialog = ({
   
 
   console.log("WATHCING :", forms?.watch("package_content"));
-  const handleSubmitForms = () => {
+  const handleSubmitForms = async () => {
     try {
       const dataToSend = forms?.watch("package_content").map((item) => {
         console.log("🚀 ~ dataToSend ~ item:", item);
@@ -159,7 +154,7 @@ export const PaymentsDialog = ({
         };
       });
 
-      const response = axios.post(
+      const response = await axios.post(
         `/api/admin/verification/register_package_content`,
         dataToSend
       );

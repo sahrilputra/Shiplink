@@ -21,7 +21,6 @@ export const ExpandItems = (
     const [openHoldPickup, setOpenHoldPickup] = useState(false)
     const formattedDate = format(new Date(item?.updated_at), 'dd MMM yyyy');
     const countryCode = item?.country_code_destination?.slice(0, 2).toLowerCase() || "";
-    console.log("🚀 ~ countryCode:", countryCode)
     return (
         <>
             <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} reload={reload} type={"Hold Pickup"} toggleExpanded={toggleExpanded}  />
