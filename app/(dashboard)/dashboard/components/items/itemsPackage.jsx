@@ -59,7 +59,8 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
         country_code_destination,
         country_name_destination,
     } = item;
-    console.log("🚀 ~ ItemsPackage ~ status_forcustomer:", status_forcustomer)
+    console.log("🚀 ~ ItemsPackage ~ status:", status, tracking_id)
+    console.log("🚀 ~ ItemsPackage ~ status_forcustomer:", status_forcustomer, tracking_id)
     // console.log("🚀 ~ ItemsPackage ~ status:", status)
 
     const formattedDate = format(new Date(updated_at), 'dd MMM yyyy');
@@ -194,7 +195,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                             </div>
                             <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
-                                <PackageIndicator status={status} status_forcustomer={status_forcustomer} />
+                                <PackageIndicator status={status} status_forcustomer={status_forcustomer} packageID={tracking_id} />
                                 <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {formattedDate}</span></div>
                             </div>
                         </div>
@@ -242,7 +243,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                             <div className="w-[100%] flex justify-center align-middle mx-auto ">
                                 {
-                                    status_forcustomer === "Process" ? (
+                                    status_forcustomer === "Process" || status_forcustomer === "" || status === "Declared" ? (
                                         null
                                     ) : (
                                         <>
