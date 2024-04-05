@@ -59,6 +59,11 @@ export const PaymentForms = () => {
 
     }, [data])
 
+    const handleCancel = () => {
+        form.reset();
+    }
+
+
     const { handleSubmit, formState, register, setError, setValue } = form
     const { errors } = formState
     const onSubmit = async (data) => {
@@ -156,6 +161,8 @@ export const PaymentForms = () => {
                                 variant="redOutline"
                                 size="xs"
                                 className="px-4 text-xs"
+                                type="button"
+                                onClick={handleCancel}
                             >
                                 Cancel
                             </Button>
