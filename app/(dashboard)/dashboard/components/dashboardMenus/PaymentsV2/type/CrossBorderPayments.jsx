@@ -14,6 +14,8 @@ import axios from 'axios'
 import CheckoutForm from '../CheckoutForm';
 import { SucessPayemnts } from '../../../notif/Sucess';
 import { set } from 'date-fns';
+import { CheckCircle, XCircleIcon, Loader2 } from "lucide-react";
+
 
 const GetPayments = async () => {
     try {
@@ -51,6 +53,9 @@ export const CrossBorderPayments = (
     const [isSucess, setIsSucess] = useState(false);
     const [openSucess, setOpenSucess] = useState(false);
 
+    const [openInformation, setOpenInformation] = useState(false);
+    const [paymentStatus, setPaymentStatus] = React.useState(null);
+    const [message, setMessage] = React.useState(null);
     // const stripePromise = loadStripe(paymentPublic);
 
     // useEffect(() => {
@@ -216,11 +221,38 @@ export const CrossBorderPayments = (
                                     reload={reload}
                                     handleSubmitForms={handleSubmitForms}
                                     toggleExpanded={toggleExpanded}
+                                    setPaymentStatus={setPaymentStatus}
+                                    setOpenInformation={setOpenInformation}
+                                    setMessage={setMessage}
                                     type={type}
-                                    setIsSucess={setIsSucess}
-                                    setOpenSucess={setOpenSucess}
                                 />
                             </Elements>
+                        )}
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={openInformation} onOpenChange={setOpenInformation}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <p>Confirm Payments</p>
+                    </DialogHeader>
+                    <div className="App">
+                        {paymentStatus === "succeeded" && (
+                            <div className="flex flex-col gap-3 items-center">
+                                <CheckCircle width={100} height={100} className="text-greenStatus " />
+                                <p className="text-2xl">Success</p>
+                                <p className="text-xs">{message}</p>
+                            </div>
+                        )}
+                        {paymentStatus === "failed" && (
+                            <div className="modal">
+                                <div className="flex flex-col gap-3 items-center">
+                                    <XCircleIcon width={100} height={100} className="text-red-700 " />
+                                    <p className="text-2xl">Failed</p>
+                                    <p className="text-xs">{message}</p>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </DialogContent>

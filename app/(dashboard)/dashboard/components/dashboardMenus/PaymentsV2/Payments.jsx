@@ -1,12 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
 import * as yup from 'yup'
 import { Toast } from '@/components/ui/toast'
@@ -15,16 +15,17 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios'
 import CheckoutForm from './CheckoutForm'
+import { CheckCircle, XCircleIcon, Loader2 } from "lucide-react";
 
 const GetPayments = async () => {
-    try {
-        const response = await axios.get('/api/admin/config/payments/getData');
-        const responseData = response.data.data;
-        return responseData.publishableKey;
-    } catch (error) {
-        console.error("Error fetching publishable key:", error);
-        throw error; // Re-throw the error to handle it at the caller level
-    }
+  try {
+    const response = await axios.get('/api/admin/config/payments/getData');
+    const responseData = response.data.data;
+    return responseData.publishableKey;
+  } catch (error) {
+    console.error("Error fetching publishable key:", error);
+    throw error; // Re-throw the error to handle it at the caller level
+  }
 }
 
 const stripePromise = GetPayments().then((publishableKey) => loadStripe(publishableKey));
@@ -48,6 +49,11 @@ export const PaymentsDialog = ({
   const [totalAmount, setTotalAmount] = useState(0);
   const [services, setServices] = useState([]);
   const [paymentPublic, setPayemntPublic] = useState("");
+  const [openInformation, setOpenInformation] = useState(false);
+
+
+  const [paymentStatus, setPaymentStatus] = React.useState(null);
+  const [message, setMessage] = React.useState(null);
   // const stripePromise = loadStripe(paymentPublic);
 
   // useEffect(() => {
@@ -132,7 +138,7 @@ export const PaymentsDialog = ({
     }
   }, [open, type, forms, selectedBroker, trackingId]);
 
-  
+
 
   console.log("WATHCING :", forms?.watch("package_content"));
   const handleSubmitForms = async () => {
@@ -159,7 +165,7 @@ export const PaymentsDialog = ({
         dataToSend
       );
       console.log("Response:", response);
-      setOpen(false);
+      // setOpen(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -185,8 +191,36 @@ export const PaymentsDialog = ({
                   reload={reload}
                   handleSubmitForms={handleSubmitForms}
                   toggleExpanded={toggleExpanded}
+                  setPaymentStatus={setPaymentStatus}
+                  setOpenInformation={setOpenInformation}
+                  setMessage={setMessage}
                 />
               </Elements>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openInformation} onOpenChange={setOpenInformation}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <p>Confirm Payments</p>
+          </DialogHeader>
+          <div className="App">
+            {paymentStatus === "succeeded" && (
+              <div className="flex flex-col gap-3 items-center">
+                <CheckCircle width={100} height={100} className="text-greenStatus " />
+                <p className="text-2xl">Success</p>
+                <p className="text-xs">{message}</p>
+              </div>
+            )}
+            {paymentStatus === "failed" && (
+              <div className="modal">
+                <div className="flex flex-col gap-3 items-center">
+                  <XCircleIcon width={100} height={100} className="text-red-700 " />
+                  <p className="text-2xl">Failed</p>
+                  <p className="text-xs">{message}</p>
+                </div>
+              </div>
             )}
           </div>
         </DialogContent>
