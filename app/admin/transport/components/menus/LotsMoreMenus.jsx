@@ -14,10 +14,17 @@ import { EditLotsDialog } from '../AssignLotsDialog/EditLotsDialog'
 import { Dialog } from '@/components/ui/dialog'
 
 import NextLink from "next/link"
-export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, dataID, lots_docs }) => {
+export const LotsMoreMenusDropDrown = ({
+    getSelectedItem,
+    dataIDhandler,
+    data,
+    dataID,
+    lots_docs,
+    handleDeleteLost,
+}) => {
     const handleItemClick = (item) => {
-        getSelectedItem(item)
-        dataIDhandler(data)
+        getSelectedItem(item);
+        dataIDhandler(data);
     };
 
     // https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/doc-240226092117490001-0.pdf
@@ -25,9 +32,15 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
 
     const render = () => {
         if (editModalOpen) {
-            return <EditLotsDialog open={editModalOpen} setOpen={setEditModalOpen} data={data} />
+            return (
+                <EditLotsDialog
+                    open={editModalOpen}
+                    setOpen={setEditModalOpen}
+                    data={data}
+                />
+            );
         }
-    }
+    };
     return (
         <>
             <Dialog>
@@ -42,9 +55,8 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                         </Button>
                     </DropdownMenuTrigger>
 
-
                     <DropdownMenuContent side={"left"} sideOffset={2}>
-                        <DropdownMenuItem >
+                        <DropdownMenuItem>
                             <p className="text-xs text-myBlue">Download Package List</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -58,18 +70,29 @@ export const LotsMoreMenusDropDrown = ({ getSelectedItem, dataIDhandler, data, d
                         >
                             <p className="text-xs">Edit Lots</p>
                         </DropdownMenuItem>
-                        <NextLink href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${lots_docs}`} passHref target='_blank' rel='noopener noreferrer'>
+                        <NextLink
+                            href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${lots_docs}`}
+                            passHref
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <DropdownMenuItem>
                                 <p
                                     className="text-xs"
                                 // onClick={() => setIsDownload(true)}
-                                >Download Documents</p>
+                                >
+                                    Download Documents
+                                </p>
                             </DropdownMenuItem>
                         </NextLink>
+
+                        <DropdownMenuItem onClick={() => handleDeleteLost(dataID)}>
+                            <p className="text-xs text-red-700">Delete Lots</p>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
                 {render()}
             </Dialog>
         </>
     );
-}
+};

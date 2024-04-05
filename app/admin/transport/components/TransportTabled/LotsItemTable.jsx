@@ -39,7 +39,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
-
+import { DeleteLotsDialog } from "../DeleteDialog/DeleteLotsDialog";
 
 export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const [isEditDialog, setEditDialog] = useState(false);
@@ -52,6 +52,9 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
     const [lots, setLots] = useState([]);
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [dataLots, setDataLots] = useState({})
+    const [lotsIDs, setLotIDs] = useState();
+    const [openDelete, setOpenDelete] = useState(false);
+
     const [date, setDate] = useState({
         from: "",
         to: "",
@@ -250,17 +253,29 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
                         >
                             <p className="text-[11px]">Edit Lots</p>
                         </Button>
-                        <LotsMoreMenusDropDrown data={row.original} dataID={row.original.lots_id} lots_docs={row.original.documents} />
+                        <LotsMoreMenusDropDrown
+                            key={row.original.lots_id}
+                            data={row.original}
+                            dataID={row.original.lots_id}
+                            lots_docs={row.original.documents}
+                            handleDeleteLost={handleDeleteLost}
+                        />
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => toggleRow(row.id)}
+
                         >
-                            <ArrowDownV2Icons width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[row.id] ? 'rotate-180' : ''}`} />
+                            <ArrowDownV2Icons
+                                width={15}
+                                height={15}
+                                className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[row.id] ? "rotate-180" : ""
+                                    }`}
+                            />
                         </Button>
                     </div>
-                )
+                );
             },
         },
     ]
@@ -322,11 +337,17 @@ export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
         }
     }
 
+    const handleDeleteLost = (lotsID) => {
+        setOpenDelete(true)
+        setLotIDs(lotsID)
+    }
+
     const toggleOpenChange = () => {
         setOpen(true)
     }
     return (
         <>
+            <DeleteLotsDialog setOpen={setOpenDelete} open={openDelete} deleteId={lotsIDs} reload={reloadData} />
             <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} data={dataLots} reload={reloadData} />
             <div className="">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center pb-3">
