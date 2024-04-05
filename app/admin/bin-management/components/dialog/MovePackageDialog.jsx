@@ -39,8 +39,8 @@ const formSchema = yup.object().shape({
     confirm_overide: yup.boolean()
 })
 
-export function MovePackageDialog({ open, setOpen, data, setRowSelection }) {
-console.log("🚀 ~ MovePackageDialog ~ data:", data)
+export function MovePackageDialog({ open, setOpen, data, setRowSelection, reload }) {
+    console.log("🚀 ~ MovePackageDialog ~ data:", data)
 
     const { toast } = useToast()
     const form = useForm({
@@ -95,6 +95,7 @@ console.log("🚀 ~ MovePackageDialog ~ data:", data)
                 description: response.data.message,
                 status: 'success',
             });
+            reload();
             setLoading(false)
             setRowSelection({});
             close();

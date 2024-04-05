@@ -132,6 +132,10 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         }
     };
 
+    const reload = () => {
+        fetchData();
+        setRowSelection({});
+    }
     useEffect(() => {
         fetchData();
     }, [searchKeyword, setPackageTotal, selectedBinID, query]);
@@ -188,7 +192,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         {
             accessorKey: "country_code_destination",
             header: "Destination",
-            size:50,
+            size: 50,
             cell: ({ row }) => {
                 const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
@@ -279,7 +283,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
 
     return (
         <>
-            <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} data={selectedItemsID} setRowSelection={setRowSelection} />
+            <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} data={selectedItemsID} setRowSelection={setRowSelection} reload={reload} />
             <div className="text-sm bg-transparent py-2">
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
@@ -383,7 +387,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
             </Table>
             <div className="flex justify-between w-full items-center mt-3 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
-                    {/* <strong>
+                    <strong>
                         {table.getFilteredSelectedRowModel().rows.length}
                     </strong>
                     of{" "}
@@ -392,7 +396,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                             {table.getFilteredRowModel().rows.length}
                         </strong>
                         <p className="text-nowrap"> row(s) selected.</p>
-                    </div> */}
+                    </div>
                 </div>
                 <Pagination className={"flex justify-end w-full items-center gap-2"}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">
