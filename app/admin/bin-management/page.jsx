@@ -11,7 +11,7 @@ import data from '../../../data/admin/BinManagerData.json'
 import Image from 'next/image'
 import { BinTableList } from './components/BinTable/BinTableList'
 import { CreateNewBinDialog } from './components/dialog/CreateNewBinDialog'
-
+import NextLink from 'next/link'
 export default function BinManagementPage() {
 
     const [creteNewDialog, setCreateNewDialog] = useState(false)
@@ -103,14 +103,16 @@ export default function BinManagementPage() {
                                     <p className=" text-blue-900 text-sm font-light ">{selectedBinID ? selectedBinID : "Unassigned"} | {pakcageTotal} Items  </p>
                                 </div>
                                 <div className="icon px-3">
-                                    {/* <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        className="flex flex-row gap-2"
-                                    >
-                                        <HistoryIcon width={15} height={15} />
-                                        <p className='text-xs'>History</p>
-                                    </Button> */}
+                                    <NextLink href={'/admin/bin-management/history'} passHref>
+                                        <Button
+                                            variant="secondary"
+                                            size="sm"
+                                            className="flex flex-row gap-2"
+                                        >
+                                            <HistoryIcon width={15} height={15} />
+                                            <p className='text-xs'>History</p>
+                                        </Button>
+                                    </NextLink>
                                 </div>
                             </div>
                         </div>

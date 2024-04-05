@@ -38,9 +38,9 @@ import NextLink from 'next/link';
 import { MovePackageDialog } from "../dialog/MovePackageDialog";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
-export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackageTotal }) {
 
-    console.log("SELECETED BIN ID : ", selectedBinID)
+export function HistoryTableList({ selectedBinID = "Undefined", setPackageTotal }) {
+
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([]);
     const [expandedRows, setExpandedRows] = useState([]);
@@ -55,7 +55,6 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         date_start: "",
         date_end: "",
         tracking_id: "",
-        bins_id: `${selectedBinID}`,
         page: 1,
         limit: 10,
         index: 0,
@@ -104,14 +103,14 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         setIsSkeleton(true)
         try {
             const response = await axios.post(
-                `/api/admin/bin_manager/packageList`,
+                `/api/admin/bin_manager/history`,
                 {
                     ...query,
-                    bins_id: `${selectedBinID}`,
                     keyword: searchKeyword,
                 }
             );
             const data = await response.data;
+            console.log("🚀 ~ fetchData ~ data history:", data)
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -121,10 +120,10 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                 ...prevPagination,
                 pageSize: data.page_limit,
             }));
-            const filteredDataByID = data.package_info.filter((item) => item.bin_location === selectedBinID);
-            console.log("🚀 ~ fetchData ~ filteredDataByID:", filteredDataByID)
-            setData(filteredDataByID);
-            setPackageTotal(filteredDataByID.length || 0)
+            // const filteredDataByID = data.package_info.filter((item) => item.bin_location === selectedBinID);
+            // console.log("🚀 ~ fetchData ~ filteredDataByID:", filteredDataByID)
+            setData(data.history);
+            // setPackageTotal(filteredDataByID.length || 0)
             setIsSkeleton(false);
         } catch (error) {
             fetchData();
@@ -134,39 +133,9 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
 
     useEffect(() => {
         fetchData();
-    }, [searchKeyword, setPackageTotal, selectedBinID, query]);
+    }, [searchKeyword, query]);
 
     const columns = [
-        {
-            accessorKey: "select",
-            id: "select",
-            size: 20,
-            header: ({ table }) => {
-                return (
-                    <div className="w-full items-center justify-center flex pr-2 px-0">
-                        <Checkbox
-                            checked={
-                                table.getIsAllPageRowsSelected() ||
-                                (table.getIsSomePageRowsSelected() && "indeterminate")
-                            }
-                            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                            aria-label="Select all"
-                        />
-                    </div>
-                )
-            },
-            cell: ({ row }) => {
-                return (
-                    <div className="w-full items-center justify-center flex pr-2 px-0">
-                        <Checkbox
-                            checked={row.getIsSelected()}
-                            onCheckedChange={(value) => row.toggleSelected(!!value)}
-                            aria-label="Select row"
-                        />
-                    </div>
-                )
-            },
-        },
         {
             accessorKey: "tracking_id",
             header: "Tracking ID",
@@ -182,54 +151,40 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
             }
         },
         {
-            accessorKey: "customer_name",
-            header: "Customer",
+            accessorKey: "type",
+            header: "Type",
         },
         {
-            accessorKey: "country_code_destination",
-            header: "Destination",
-            size:50,
+            accessorKey: "bin_destination",
+            header: "Bin ID",
+            className: "text-xs",
+            size: 50,
             cell: ({ row }) => {
-                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
-                    <>
-                        {
-                            row.original.country_code_destination === null && row.original.country_code_destination === null ?
-                                (
-                                    <>
-                                        -
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
-                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
-                                            <span>-</span>
-                                            <span className='text-nowrap'>{`${row.original.country_code_destination}`}</span>
-                                        </div>
-                                    </>
-                                )
-                        }
-                    </>
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.bin_destination}`}
+                    </span>
                 )
             }
         },
         {
-            accessorKey: "status",
-            header: "Status",
-        },
-        {
-            accessorKey: "dimension",
-            header: "Dimension",
+            accessorKey: "row_destination",
+            header: "Row",
+            className: "text-xs",
+            size: 50,
             cell: ({ row }) => {
                 return (
-                    <div className="flex flex-row gap-1" style={{ fontFamily: 'roboto' }}>
-                        <p className="text-xs">{row?.original.package_witdth} </p> x
-                        <p className="text-xs">{row?.original.package_height} </p> x
-                        <p className="text-xs">{row?.original.package_length}</p>
-                        <p className="text-xs">{row?.original.package_height_unit}</p>
-                    </div>
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.row_destination}`}
+                    </span>
                 )
             }
+        },
+        {
+            accessorKey: "created_at",
+            header: "Update At",
         },
     ]
 
@@ -295,7 +250,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                             </Button>
                         </div>
                         <div className="">
-                            <Button
+                            {/* <Button
                                 variant="destructive"
                                 size="sm"
                                 className="px-[20px]"
@@ -303,7 +258,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                                 onClick={() => toggleOpenChange(selectedItemsId)}
                             >
                                 <p className=" text-xs">Move Package</p>
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                 </div>

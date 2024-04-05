@@ -130,7 +130,7 @@ export function BinTableList({ data, isBinSelect, handleSelect, setCreateNewDial
                         checked={row.getIsSelected()}
                         onCheckedChange={(value) => row.toggleSelected(!!value)}
                         aria-label="Select row"
-                        
+
                     />
                 )
             },
@@ -140,18 +140,50 @@ export function BinTableList({ data, isBinSelect, handleSelect, setCreateNewDial
             header: "ID",
             className: "text-xs",
             isSortable: true,
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.bins_id}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "row",
             header: "Row",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.row}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "section",
             header: "Section",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.section}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "level",
             header: "Level",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.level}`}
+                    </span>
+                )
+            }
         },
     ]
 
