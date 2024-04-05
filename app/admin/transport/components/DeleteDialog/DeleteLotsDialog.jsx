@@ -51,7 +51,7 @@ export const DeleteLotsDialog = ({
         <>
             {
                 loading && <Loaders />
-            },
+            }
             <AlertDialog open={open} onOpenChange={setOpen} >
                 <AlertDialogContent className='w-[500px]' >
                     <AlertDialogHeader>

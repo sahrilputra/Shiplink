@@ -41,7 +41,7 @@ import {
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 import { DeleteLotsDialog } from "../DeleteDialog/DeleteLotsDialog";
 
-export function LotsItemsTable({ data, isOpen, setOpen, setOpenNewDialog }) {
+export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     const [isEditDialog, setEditDialog] = useState(false);
 
     const [rowSelection, setRowSelection] = React.useState({})
