@@ -146,7 +146,7 @@ export function PARSTable({ isReload, setIsReload }) {
                 return (
                     <span
                         style={{ fontFamily: 'roboto', }}
-                        className='uppercase'>{`${row.original.sequence_range}`}
+                        className='uppercase'>{`${row.original.type}`}
                     </span>
                 )
             }
