@@ -6,6 +6,7 @@ import axios from 'axios'
 export default function LotsDetails({ params }) {
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [open, setOpen] = useState(false);
+    const lostId = params.slug
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",
@@ -49,16 +50,23 @@ export default function LotsDetails({ params }) {
         });
     };
     return (
-        <>
-            <div className={styles.carrier}>
-                <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
+      <>
+        <div className={styles.carrier}>
+          <div
+            className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}
+          ></div>
 
-                </div>
-
-                <div className={`${styles.listTable} flex flex-col gap-1`}>
-                    <LotsDetailsTable data={data} setOpen={setOpen} handleSearchChange={handleSearchChange} isSkeleton={isSkeleton} />
-                </div>
-            </div>
-        </>
-    )
+          <div className={`${styles.listTable} flex flex-col gap-1`}>
+            <LotsDetailsTable
+              data={data}
+              setOpen={setOpen}
+              handleSearchChange={handleSearchChange}
+              isSkeleton={isSkeleton}
+              lostId={lostId}
+              reload={reload}
+            />
+          </div>
+        </div>
+      </>
+    );
 }
