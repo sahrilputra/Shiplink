@@ -18,21 +18,24 @@ import { MoreHorizontalIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import axios from 'axios'
 import { useToast } from "@/components/ui/use-toast"
-export function CustomBrokerDropdownMenus({ dataID, setIsSkeleton, reload }) {
-    const { toast } = useToast()
-    console.log("DataID", dataID)
+export function CustomBrokerDropdownMenus({
+    dataID,
+    setIsSkeleton,
+    reload,
+    documents,
+}) {
+    const { toast } = useToast();
+    console.log("DataID", dataID);
     const [statusList, setStatusList] = useState([]);
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(
-                `/api/admin/transport/lots/status/list`,
-            );
-            console.log(response)
+            const response = await axios.get(`/api/admin/transport/lots/status/list`);
+            console.log(response);
             const data = await response.data.data;
             setStatusList(data);
         } catch (error) {
-            console.log('Error:', error);
+            console.log("Error:", error);
         }
     };
 
@@ -41,8 +44,8 @@ export function CustomBrokerDropdownMenus({ dataID, setIsSkeleton, reload }) {
     }, []);
 
     const handleSave = async (id) => {
-        console.log("dikirim", id)
-        setIsSkeleton(true)
+        console.log("dikirim", id);
+        setIsSkeleton(true);
         try {
             const response = await axios.post(
                 `/api/admin/custom_clearance/setLotsStatus`,
@@ -54,24 +57,24 @@ export function CustomBrokerDropdownMenus({ dataID, setIsSkeleton, reload }) {
             toast({
                 title: `Success New Status For ${dataID} !`,
                 description: response.data.message,
-                status: 'success',
+                status: "success",
             });
-            setIsSkeleton(false)
+            setIsSkeleton(false);
             reload();
         } catch (error) {
-            setIsSkeleton(false)
-            console.log('Error', error);
+            setIsSkeleton(false);
+            console.log("Error", error);
             toast({
-                title: 'Error While Assign Status!',
+                title: "Error While Assign Status!",
                 description: `Error : ${error.message}`,
-                status: 'error',
+                status: "error",
             });
         }
-    }
+    };
 
-    console.log("StatusList", statusList)
+    console.log("StatusList", statusList);
     return (
-        <DropdownMenu >
+        <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="tableBlue"
@@ -81,31 +84,36 @@ export function CustomBrokerDropdownMenus({ dataID, setIsSkeleton, reload }) {
                 >
                     <MoreHorizontalIcon width={15} height={15} />
                 </Button>
-
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="text-xs text-myBlue">
-                        Download Lots Documents
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-xs">
-                        <NextLink href={`/admin/transport/lots/${dataID}`}>
+                    <NextLink
+                        href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${documents}`}
+                        passHref
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <DropdownMenuItem className="text-xs text-myBlue">
+                            View Lots Documents
+                        </DropdownMenuItem>
+                    </NextLink>
+
+                    <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
+                        <DropdownMenuItem className="text-xs">
                             Lots Details
-                        </NextLink>
-                    </DropdownMenuItem>
-                    {
-                        statusList.map((status, index) => (
-                            <DropdownMenuItem
-                                key={index}
-                                className="text-xs"
-                                onClick={() => handleSave(status.id_status)}
-                            >
-                                Status : {status.status}
-                            </DropdownMenuItem>
-                        ))
-                    }
+                        </DropdownMenuItem>
+                    </NextLink>
+                    {statusList.map((status, index) => (
+                        <DropdownMenuItem
+                            key={index}
+                            className="text-xs"
+                            onClick={() => handleSave(status.id_status)}
+                        >
+                            Status : {status.status}
+                        </DropdownMenuItem>
+                    ))}
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

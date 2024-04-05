@@ -39,11 +39,12 @@ import { useToast } from "@/components/ui/use-toast"
 
 
 const formSchema = yup.object().shape({
+    status_name: yup.string(),
     status_id: yup.number(),
     lots_id: yup.string(),
 })
 
-export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
+export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
 
     const { toast } = useToast()
     const [loading, setLoading] = useState(false)
@@ -52,6 +53,7 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
         resolver: yupResolver(formSchema),
         defaultValues: {
             status_id: 0,
+            status_name: data?.status || '',
             lots_id: dataID || '',
         },
         mode: "onChange",
@@ -150,17 +152,23 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload }) {
                                                             const selectedStatus = statusList.find(item => item.status === value);
                                                             field.onChange(selectedStatus ? selectedStatus.id_status : ''); // Set id_status as value if found, otherwise empty string
                                                         }}
-                                                        defaultValue={field.value}
+                                                        defaultValue={`${field.value ? field.value : "Select Status"}`}
+
                                                     >
                                                         <FormControl className='text-xs'>
                                                             <SelectTrigger>
-                                                                <SelectValue className='text-xs' placeholder="Status" />
+                                                                <SelectValue className='text-xs' placeholder={field.value} />
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
                                                             {
                                                                 statusList?.map((item, index) => (
-                                                                    <SelectItem className='text-xs' key={index} value={item.status}>
+                                                                    <SelectItem
+                                                                        className='text-xs'
+                                                                        key={index}
+                                                                        value={item.status}
+                                                                        onClick={() => form.setValue('status_id', item.id_status)}
+                                                                    >
                                                                         {item.status}
                                                                     </SelectItem>
                                                                 ))

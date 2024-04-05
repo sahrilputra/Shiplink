@@ -183,10 +183,15 @@ export function CustomClearanceTable({ data }) {
                             >
                                 <p className="text-[11px]">Update</p>
                             </Button>
-                            <CustomBrokerDropdownMenus dataID={row.original.lots_id} setIsSkeleton={setIsSkeleton} reload={reload} />
+                            <CustomBrokerDropdownMenus
+                                dataID={row.original.lots_id}
+                                setIsSkeleton={setIsSkeleton}
+                                reload={reload}
+                                documents={row.original.documents}
+                            />
                         </div>
                     </div>
-                )
+                );
             },
         },
     ]
@@ -213,9 +218,22 @@ export function CustomClearanceTable({ data }) {
 
     const handleSearchChange = (event) => {
         setQuery({
-            ...query,
-            keyword: event.target.value
+            keyword: event.target.value,
+            page: 1,
+            limit: 10,
+            index: 0,
         });
+
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
     };
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -255,20 +273,27 @@ export function CustomClearanceTable({ data }) {
 
     return (
         <>
-            <UpdateDialog open={open} setOpen={setOpen} dataID={dataID} reload={reload} />
+            <UpdateDialog
+                open={open}
+                setOpen={setOpen}
+                dataID={dataID}
+                reload={reload}
+                // status={status}
+                data={lots}
+                key={dataID}
+            />
             <div className="">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center py-2 px-2">
-                    <SearchBar />
+                    <SearchBar handleSearch={handleSearchChange} />
                     <Button
                         variant="filter"
                         size="filter"
-                        className='border border-zinc-300 flex items-center rounded'>
-                        <FilterIcons
-                            className=""
-                            fill="#CC0019" />
+                        className="border border-zinc-300 flex items-center rounded"
+                    >
+                        <FilterIcons className="" fill="#CC0019" />
                     </Button>
                 </div>
-            </div >
+            </div>
 
             <Table className=" rounded-md">
                 <TableHeader className="text-sm">
@@ -280,7 +305,12 @@ export function CustomClearanceTable({ data }) {
                                 return (
                                     <TableHead
                                         key={header.id}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        className={`${isLastHeader
+                                                ? "w-[30px] "
+                                                : isFirstHeader
+                                                    ? "w-[50px]"
+                                                    : ""
+                                            } text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -295,26 +325,35 @@ export function CustomClearanceTable({ data }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-
                     {isSkeleton || !table.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
-                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
-                                    <TableRow key={index}>
-                                        {columns.map((column, columnIndex) => (
-                                            <TableCell
-                                                key={columnIndex}
-                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
-                                            >
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                [...Array(table.getRowModel().rows?.length || 5)].map(
+                                    (_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1
+                                                            ? "w-[30px]"
+                                                            : columnIndex === 0
+                                                                ? "w-[50px]"
+                                                                : ""
+                                                        } text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    )
+                                )}
 
                             {!isSkeleton && !table.getRowModel().rows?.length && (
                                 <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className="h-24 text-center"
+                                    >
                                         No results.
                                     </TableCell>
                                 </TableRow>
@@ -327,14 +366,26 @@ export function CustomClearanceTable({ data }) {
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                    className={
+                                        row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200"} `}
+                                            className={`${cell.isLast
+                                                    ? "w-[30px]"
+                                                    : cell.isFirst
+                                                        ? "w-[50px]"
+                                                        : ""
+                                                } text-xs ${expandedRows[row.id] &&
+                                                "bg-blue-200 hover:bg-blue-200"
+                                                } `}
                                         >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -342,7 +393,6 @@ export function CustomClearanceTable({ data }) {
                         ))
                     )}
                 </TableBody>
-
             </Table>
             <div className="flex justify-between w-full items-center mt-3 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
@@ -357,11 +407,11 @@ export function CustomClearanceTable({ data }) {
                         <p className="text-nowrap"> row(s) selected.</p>
                     </div> */}
                 </div>
-                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                <Pagination className={"flex justify-end w-full items-center gap-2"}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">
                         <div>Page</div>
                         <strong>
-                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getState().pagination.pageIndex + 1} of{" "}
                             {table.getPageCount().toLocaleString()}
                         </strong>
                     </div>
@@ -402,5 +452,5 @@ export function CustomClearanceTable({ data }) {
                 </Pagination>
             </div>
         </>
-    )
+    );
 }
