@@ -33,6 +33,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { ChevronLeft, ChevronRight, ChevronsRightIcon, ChevronsLeftIcon } from "lucide-react";
 import axios from "axios";
 import {
     ColumnDef,
@@ -60,9 +61,20 @@ export function UserTable() {
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
-        limit: 0,
-        index: 0
+        limit: 10,
+        index: 0,
     });
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
 
     const fetchData = async () => {
         try {
@@ -72,10 +84,34 @@ export function UserTable() {
             );
             console.log(response)
             const data = await response.data;
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
             setUser(data.users);
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
+        }
+    };
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
         }
     };
 
@@ -184,9 +220,15 @@ export function UserTable() {
         }
     ]
 
+
+
     const table = useReactTable({
         data: user,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -195,6 +237,8 @@ export function UserTable() {
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
     });
 
@@ -216,11 +260,23 @@ export function UserTable() {
 
     const handleSearchChange = (event) => {
         setQuery({
-            ...query,
-            keyword: event.target.value
+            keyword: event.target.value,
+            page: 1,
+            limit: 10,
+            index: 0,
         });
-    };
 
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
+    };
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.user_code);
 
     return (
@@ -345,33 +401,64 @@ export function UserTable() {
                 </TableBody>
 
             </Table>
-            <div className="flex justify-end w-full items-end p-4">
-                <Pagination className={'flex justify-end w-full items-end'}>
+            <div className="flex justify-between w-full items-end mt-1 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div>
+                </div>
+                <Pagination className={'flex justify-end w-full items-end gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                     <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
+
+
                     </PaginationContent>
                 </Pagination>
             </div>
