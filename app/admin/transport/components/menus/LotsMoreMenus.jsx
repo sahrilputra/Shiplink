@@ -56,9 +56,9 @@ export const LotsMoreMenusDropDrown = ({
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent side={"left"} sideOffset={2}>
-                        <DropdownMenuItem>
+                        {/* <DropdownMenuItem>
                             <p className="text-xs text-myBlue">Download Package List</p>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem>
                             <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
                                 <p className="text-xs">View Lots Details</p>
