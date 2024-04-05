@@ -16,7 +16,7 @@ export default function PARSPage() {
 
     const [deletOpen, setDeleteOpen] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
-
+    const [isReload, setIsReload] = useState(false);
 
     const handleDelete = () => {
         setDeleteOpen(!deletOpen);
@@ -35,9 +35,9 @@ export default function PARSPage() {
             <div className={styles.carrier}>
                 <div className={`${styles.carrier__container} flex flex-row justify-between items-center w-[100%]`}>
                     <div className="flex flex-col gap-3 w-[100%]">
-                       
+
                         <div className="px-2">
-                            <PARSForms />
+                            <PARSForms setIsReload={setIsReload} />
                         </div>
                     </div>
                 </div>
@@ -45,10 +45,15 @@ export default function PARSPage() {
                     <Separator className="h-[3px]" />
                 </div>
                 <div className={`${styles.listTable} flex flex-col gap-1`}>
-                    <PARSTable  handlerEdit={handleEdit} handlerDelete={handleDelete} />
+                    <PARSTable
+                        handlerEdit={handleEdit}
+                        handlerDelete={handleDelete}
+                        isReload={isReload}
+                        setIsReload={setIsReload}
+                    />
                 </div>
                 <EditSequences open={editOpen} setOpen={setEditOpen} />
-              
+
             </div>
         </>
     )

@@ -25,7 +25,7 @@ import {
     SortingState,
     getSortedRowModel,
 } from "@tanstack/react-table";
-import { MoreHorizontalIcon } from "lucide-react";
+import { MoreHorizontalIcon, ChevronLeft, ChevronRight, ChevronsRightIcon, ChevronsLeftIcon } from "lucide-react";
 import {
     Pagination,
     PaginationContent,
@@ -39,7 +39,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import axios from 'axios'
 import { DeleteSequences } from "../dialog/DeleteSequences";
 import { EditSelectedNumber } from "../dialog/EditSelectedNumber";
-export function PARSTable({ }) {
+
+export function PARSTable({ isReload, setIsReload }) {
 
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [codeList, setCodeList] = useState([])
@@ -49,20 +50,40 @@ export function PARSTable({ }) {
     const [editID, setEditID] = useState(null)
     const [query, setQuery] = useState({
         keyword: "",
-        page: 0,
-        limit: 0,
-        index: 0
+        page: 1,
+        limit: 10,
+        index: 0,
     });
 
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
     const fetchData = async () => {
+        setIsSkeleton(true);
         try {
             const response = await axios.post(
                 `/api/admin/Pars/list`,
                 query
             );
-            console.log(response)
+            console.log("PARS RESPONSE", response)
             const data = await response.data;
             setCodeList(data.sequence);
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
@@ -71,7 +92,25 @@ export function PARSTable({ }) {
 
     useEffect(() => {
         fetchData();
-    }, [query]);
+        if (isReload) {
+            setIsReload(false)
+        }
+    }, [query, isReload]);
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
 
     const columns = [
         {
@@ -103,10 +142,26 @@ export function PARSTable({ }) {
             accessorKey: "type",
             header: "PARS / PAPS Number",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto', }}
+                        className='uppercase'>{`${row.original.sequence_range}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "sequence_range",
             header: "Code Range",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.sequence_range}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "carrier_code",
@@ -115,6 +170,14 @@ export function PARSTable({ }) {
         {
             accessorKey: "date_created",
             header: "Create Date",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.date_created}`}
+                    </span>
+                )
+            }
         },
         {
             id: "Action",
@@ -155,6 +218,10 @@ export function PARSTable({ }) {
     const table = useReactTable({
         data: codeList,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -163,6 +230,8 @@ export function PARSTable({ }) {
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
 
     })
@@ -288,33 +357,64 @@ export function PARSTable({ }) {
                     </TableBody>
 
                 </Table>
-                <div className="flex justify-end w-full items-end p-4">
-                    <Pagination className={'flex justify-end w-full items-end'}>
+                <div className="flex justify-between w-full items-end mt-1 pb-2">
+                    <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                        <strong>
+                            {table.getFilteredSelectedRowModel().rows.length}
+                        </strong>
+                        of{" "}
+                        <div className="flex flex-row gap-1">
+                            <strong>
+                                {table.getFilteredRowModel().rows.length}
+                            </strong>
+                            <p className="text-nowrap"> row(s) selected.</p>
+                        </div>
+                    </div>
+                    <Pagination className={'flex justify-end w-full items-end gap-2'}>
+                        <div className="flex items-center gap-1 text-xs text-zinc-500">
+                            <div>Page</div>
+                            <strong>
+                                {table.getState().pagination.pageIndex + 1} of{' '}
+                                {table.getPageCount().toLocaleString()}
+                            </strong>
+                        </div>
+                        <Button
+                            variant={`redOutline`}
+                            onClick={() => handlerPaginationChange(0)}
+                            className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                            disabled={!table.getCanPreviousPage()}
+                        >
+                            <ChevronsLeftIcon className="h-4 w-4" />
+                        </Button>
+
+                        <Button
+                            variant={`destructive`}
+                            className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                            onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                            disabled={!table.getCanPreviousPage()}
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                        </Button>
+
+                        <Button
+                            variant={`destructive`}
+                            className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                            onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                            disabled={!table.getCanNextPage()}
+                        >
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant={`redOutline`}
+                            className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                            onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                            disabled={!table.getCanNextPage()}
+                        >
+                            <ChevronsRightIcon className="h-4 w-4" />
+                        </Button>
                         <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(0)}
-                                    disabled={!table.getCanPreviousPage()}
-                                />
-                            </PaginationItem>
-                            {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                            <PaginationItem>
-                                <PaginationNext
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                />
-                            </PaginationItem>
+
+
                         </PaginationContent>
                     </Pagination>
                 </div>

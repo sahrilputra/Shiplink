@@ -19,7 +19,7 @@ export const SCACForm = () => {
     const [loading, setLoading] = useState(false)
     const { toast } = useToast();
     const [data, setData] = useState({
-        publishableKey: "",
+        SCAC: "",
     })
 
 
@@ -27,75 +27,74 @@ export const SCACForm = () => {
         resolver: yupResolver(formSchema),
         defaultValues: {
             SCAC: "",
-            secretKey: "",
         },
         mode: "onChange",
     })
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get(
-    //                 `/api/admin/config/payments/getData`
-    //             )
-    //             console.log("🚀 ~ fetchData ~ response:", response)
-    //             const responseData = response.data
-    //             setData({
-    //                 publishableKey: responseData.data.publishableKey,
-    //                 secretKey: responseData.data.secretKey,
-    //             })
-    //         } catch (error) {
-    //             console.error(error)
-    //         }
-    //     }
-    //     fetchData();
-    // }, [])
 
-    // useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(
+                `/api/admin/config/SCAC/getData`
+            )
+            console.log("🚀 ~ fetchData ~ SCAC response:", response)
+            const responseData = response.data
+            setData({
+                SCAC: responseData.data.scac_code,
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
-    //     form.setValue("publishableKey", data?.publishableKey || "")
-    //     form.setValue("secretKey", data?.secretKey || "")
+    useEffect(() => {
+        fetchData();
+    }, [])
 
-    // }, [data])
+    useEffect(() => {
+        form.setValue("SCAC", data?.SCAC || "")
+    }, [data])
+    const handleCancel = () => {
+        form.reset();
+        fetchData();
+    }
 
-    // const { handleSubmit, formState, register, setError, setValue } = form
-    // const { errors } = formState
-    // const onSubmit = async (data) => {
-    //     setLoading(true)
-    //     try {
-    //         const response = await axios.post(
-    //             `/api/admin/config/payments/setData`,
-    //             {
-    //                 secretKey: data.secretKey,
-    //                 publishableKey: data.publishableKey,
-    //             }
-    //         )
-    //         if (response.data.status === true || response.data.status === "true") {
-    //             toast({
-    //                 description: response.data.message,
-    //                 type: "success",
-    //             })
-    //         } else {
-    //             toast({
-    //                 title: "Error",
-    //                 description: response.data.message,
-    //                 type: "error",
-    //             })
-    //         }
-    //         setLoading(false)
-    //     }
-    //     catch (error) {
-    //         console.error(error)
-    //     }
-
-    // }
+    const { handleSubmit, formState, register, setError, setValue } = form
+    const { errors } = formState
+    const onSubmit = async (data) => {
+        setLoading(true)
+        try {
+            const response = await axios.post(
+                `/api/admin/config/SCAC/setData`,
+                {
+                    SCAC: form.watch("SCAC"),
+                }
+            )
+            if (response.data.status === true || response.data.status === "true") {
+                toast({
+                    description: response.data.message,
+                    type: "success",
+                })
+            } else {
+                toast({
+                    title: "Error",
+                    description: response.data.message,
+                    type: "error",
+                })
+            }
+            setLoading(false)
+        }
+        catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <>
-            {/* {loading && <Loaders />} */}
+            {loading && <Loaders />}
             <Form {...form}>
                 <form
-                    // onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit(onSubmit)}
                     className=''
                     action="">
                     <div className="flex flex-col gap-2 w-full mt-2 px-3">
@@ -155,6 +154,10 @@ export const SCACForm = () => {
                                 variant="redOutline"
                                 size="xs"
                                 className="px-4 text-xs"
+                                type="button"
+                                onClick={
+                                    handleCancel
+                                }
                             >
                                 Cancel
                             </Button>

@@ -31,18 +31,38 @@ import {
 } from "@/components/ui/select";
 const formSchema = yup.object().shape({
     Type: yup.string(),
-    SCAC: yup.string().required(),
+    SCAC: yup.string(),
     CodeStart: yup.string().required(),
     CodeRange: yup.string(),
 })
 
 
 
-export const PARSForms = ({ close, data = null }) => {
+export const PARSForms = ({ close, data = null, setIsReload }) => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
     const [openDialog, setOpenDialog] = useState(false)
     const [clicked, isClicked] = useState(false);
+    const [scac_code, setScacCode] = useState("");
+
+    useEffect(() => {
+        const getCode = async () => {
+            try {
+                const response = await axios.get(
+                    `/api/admin/config/SCAC/getData`
+                )
+                console.log("🚀 ~ fetchData ~ SCAC response:", response)
+                const responseData = response.data
+                setScacCode(responseData.data.scac_code)
+                form.setValue("SCAC", responseData.data.scac_code)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        getCode();
+    }, [])
+
+
 
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -80,6 +100,7 @@ export const PARSForms = ({ close, data = null }) => {
                 description: response.data.message,
                 status: 'success',
             });
+            setIsReload(true)
             setLoading(false)
         } catch (error) {
             console.log('Error', error);
@@ -238,8 +259,13 @@ export const PARSForms = ({ close, data = null }) => {
                                     <FormItem className="w-full">
                                         <FormLabel className="font-bold">SCAC Carrier Code</FormLabel>
                                         <FormControl>
-                                            <Input size="new"
-                                                id="SCAC" placeholder="AC 12312" className="px-2" {...field} />
+                                            <Input
+                                                size="new"
+                                                disabled={true}
+                                                id="SCAC"
+                                                placeholder="AC 12312"
+                                                className="px-2"
+                                                {...field} />
                                         </FormControl>
 
                                     </FormItem>
