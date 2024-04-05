@@ -41,6 +41,8 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { UpdateDialog } from "@/app/admin/custom-clearance/components/Menus/UpdateDialog";
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
+
 export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, handleData, isSelected, setTotalData }) {
     const [loading, setLLoading] = useState(false);
     const { toast } = useToast()
@@ -54,6 +56,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
     const [openAssignLotsDialog, setOpenAssignLotsDialog] = useState(false)
     const [openStatusDialog, setOpenStatusDialog] = useState(false)
     const [getLotsId, setLotsId] = useState('')
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
 
     const [query, setQuery] = useState({
@@ -63,10 +66,22 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         lots_id: "",
         status: "",
         destination: "",
-        page: 0,
-        limit: 0,
+        page: 1,
+        limit: 10,
         index: 0,
     });
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -77,6 +92,15 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             const data = await response.data;
             setLots(data.lots);
             setTotalData(data.lots.length);
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit,
+            }));
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
@@ -127,6 +151,14 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             accessorKey: "lots_id",
             header: "Lots ID",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.lots_id}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "label",
@@ -135,10 +167,41 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         {
             accessorKey: "destination_name",
             header: "Destination",
+            cell: ({ row }) => {
+                const countryCode = row.original.destination ? row.original.destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.destination === null && row.original.destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            <span className='text-nowrap'>{`${row.original.destination}`}</span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             accessorKey: "trip_number",
             header: "Trip Number",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.trip_number}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "status",
@@ -164,6 +227,10 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
     const table = useReactTable({
         data: lots,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -172,6 +239,8 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
 
     });
@@ -185,9 +254,22 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
     const handleSearchChange = (event) => {
         setQuery({
-            ...query,
-            keyword: event.target.value
+            keyword: event.target.value,
+            page: 1,
+            limit: 10,
+            index: 0,
         });
+
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
     };
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -207,6 +289,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
     const handleScanLots = async () => {
         console.log("Scan Lots", lotsNumber)
+        setIsButtonDisabled(true)
         try {
             const response = await axios.post(
                 `/api/admin/destination/loadLots`,
@@ -215,13 +298,13 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                 }
             );
             const data = await response.data;
-            console.log(data)
+            console.log("LOAD LOTS CONSOLE : ", data)
             reload();
             toast({
-                title: `{${lotsNumber}} Has been loaded!`,
+                title: `Lots ${lotsNumber} Has been loaded!`,
                 description: response.data.message,
-                status: 'success',
             });
+            setIsButtonDisabled(false)
         } catch (error) {
             toast({
                 title: 'Cannot Find The Lots!',
@@ -278,6 +361,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                             size="sm"
                             className="h-[35px] w-[100px] text-xs rounded-none rounded-r-md"
                             onClick={handleScanLots}
+                            disabled={isButtonDisabled}
                         >
                             Scan Lots
                         </Button>
@@ -371,35 +455,62 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
             </Table>
 
-            
-            <div className="flex justify-end w-full items-end p-3">
-                <Pagination className={'flex justify-end w-full items-end'}>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
+
+            <div className="flex justify-between w-full items-center mt-3 pb-1 px-4 pt-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div>
+                </div>
+                <Pagination className={"flex justify-end w-full items-center gap-2"}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{" "}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                 </Pagination>
             </div>
         </>

@@ -65,7 +65,6 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
             const response = await axios.get(
                 `/api/admin/transport/lots/status/list`,
             );
-            console.log(response)
             const data = await response.data.data;
             setStatusList(data);
         } catch (error) {
