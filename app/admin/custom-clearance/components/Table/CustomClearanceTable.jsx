@@ -26,6 +26,7 @@ import {
     getSortedRowModel,
 } from "@tanstack/react-table";
 import axios from "axios";
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon } from "lucide-react";
 import { CustomBrokerDropdownMenus } from "../Menus/DropdownMenus";
 import { UpdateDialog } from "../Menus/UpdateDialog";
 import {
@@ -60,11 +61,23 @@ export function CustomClearanceTable({ data }) {
         date_end: "",
         tracking_id: "",
         status: "",
-        page: 0,
-        limit: 0,
-        index: 0
+        page: 1,
+        limit: 10,
+        index: 0,
 
     });
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
+
     const fetchData = async () => {
         try {
             const response = await axios.post(
@@ -74,6 +87,15 @@ export function CustomClearanceTable({ data }) {
             console.log(response)
             const data = await response.data;
             setLots(data.lots);
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit,
+            }));
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
@@ -90,6 +112,14 @@ export function CustomClearanceTable({ data }) {
             accessorKey: "lots_id",
             header: "Lots ID",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.lots_id}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "label",
@@ -98,10 +128,41 @@ export function CustomClearanceTable({ data }) {
         {
             accessorKey: "trip_number",
             header: "Manifest Number",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`${row.original.trip_number}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "destination",
             header: "Destination",
+            cell: ({ row }) => {
+                const countryCode = row.original.destination ? row.original.destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.destination === null && row.original.destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>-</span>
+                                            <span className='text-nowrap'>{`${row.original.destination}`}</span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             accessorKey: "status",
@@ -122,7 +183,7 @@ export function CustomClearanceTable({ data }) {
                             >
                                 <p className="text-[11px]">Update</p>
                             </Button>
-                            <CustomBrokerDropdownMenus dataID={row.original.lots_id} setIsSkeleton={setIsSkeleton} reload={reload}/>
+                            <CustomBrokerDropdownMenus dataID={row.original.lots_id} setIsSkeleton={setIsSkeleton} reload={reload} />
                         </div>
                     </div>
                 )
@@ -132,6 +193,10 @@ export function CustomClearanceTable({ data }) {
     const table = useReactTable({
         data: lots,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -140,6 +205,8 @@ export function CustomClearanceTable({ data }) {
         state: {
             sorting,
             rowSelection,
+            pagination,
+            query,
         },
 
     });
@@ -170,6 +237,22 @@ export function CustomClearanceTable({ data }) {
         setIsSkeleton(true);
         fetchData();
     }
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
+
     return (
         <>
             <UpdateDialog open={open} setOpen={setOpen} dataID={dataID} reload={reload} />
@@ -261,34 +344,61 @@ export function CustomClearanceTable({ data }) {
                 </TableBody>
 
             </Table>
-            <div className="flex justify-end w-full items-end py-3">
-                <Pagination className={'flex justify-end w-full items-end'}>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
+            <div className="flex justify-between w-full items-center mt-3 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    {/* <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div> */}
+                </div>
+                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                 </Pagination>
             </div>
         </>
