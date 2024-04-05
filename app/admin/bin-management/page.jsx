@@ -103,14 +103,14 @@ export default function BinManagementPage() {
                                     <p className=" text-blue-900 text-sm font-light ">{selectedBinID ? selectedBinID : "Unassigned"} | {pakcageTotal} Items  </p>
                                 </div>
                                 <div className="icon px-3">
-                                    <Button
+                                    {/* <Button
                                         variant="secondary"
                                         size="sm"
                                         className="flex flex-row gap-2"
                                     >
                                         <HistoryIcon width={15} height={15} />
                                         <p className='text-xs'>History</p>
-                                    </Button>
+                                    </Button> */}
                                 </div>
                             </div>
                         </div>
