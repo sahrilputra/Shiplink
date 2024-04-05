@@ -217,7 +217,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                         className="flex w-[40px] items-center justify-center  flex-row gap-2"
                     >
                         <div className="flex flex-row gap-2">
-                            <DestinationMenus dataID={row.original.lots_id} reload={reload} />
+                            <DestinationMenus dataID={row.original.lots_id} reload={reload} documents={row.original.documents} />
                         </div>
                     </div>
                 )

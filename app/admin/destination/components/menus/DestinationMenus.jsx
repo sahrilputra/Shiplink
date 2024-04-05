@@ -15,7 +15,7 @@ import { UpdateStatusDialog } from '../Dialog/UpdateStatusDialog'
 import NextLink from "next/link"
 import { UpdateDialog } from '@/app/admin/custom-clearance/components/Menus/UpdateDialog'
 import { AssignLotsToBin } from '../Dialog/AssignLotsToBin'
-export const DestinationMenus = ({ dataID, reload }) => {
+export const DestinationMenus = ({ dataID, reload, documents }) => {
 
     const [assignOpen, setAssignOpen] = useState(false)
     const [statusOpen, setStatusOpen] = useState(false)
@@ -36,7 +36,6 @@ export const DestinationMenus = ({ dataID, reload }) => {
                         </Button>
                     </DropdownMenuTrigger>
 
-
                     <DropdownMenuContent side={"left"} sideOffset={2}>
                         <DropdownMenuItem
                             onClick={() => {
@@ -52,11 +51,22 @@ export const DestinationMenus = ({ dataID, reload }) => {
                         >
                             <p className="text-xs">Update Lots Status</p>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <NextLink href={`/admin/destination/lots//${dataID}`}>
+                        <NextLink href={`/admin/destination/lots/${dataID}`}>
+                            <DropdownMenuItem>
                                 <p className="text-xs">Load Lots Details</p>
-                            </NextLink>
-                        </DropdownMenuItem>
+                            </DropdownMenuItem>
+                        </NextLink>
+
+                        <NextLink
+                            href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${documents}`}
+                            passHref
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <DropdownMenuItem className="text-xs text-myBlue">
+                                View Lots Documents
+                            </DropdownMenuItem>
+                        </NextLink>
                     </DropdownMenuContent>
                 </DropdownMenu>
 

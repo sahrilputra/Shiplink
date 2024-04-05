@@ -16,10 +16,29 @@ export const DestinationLotsDetails = ({ data }) => {
                 </div>
 
                 <div className="content py-1 w-[100%] text-sm ">
-                    <div className="bg-zinc-100/70 border border-zinc-200 px-2 py-2 w-full text-xs">
+                    <div className="bg-zinc-100/70 border border-zinc-200 px-2 py-2 w-full text-xs leading-4 flex flex-col gap-1.5 ">
                         <p>Lots Label : {data?.label}</p>
                         <p>Total Package : {data?.total_items}</p>
                         <p>Trip Number : {data?.trip_number}</p>
+                        <p>Lots Origin : {data?.country_name}</p>
+                        <p>Lots Destination : {data?.destination_name}</p>
+                        <p>Last Update : {data?.updated_at}</p>
+                        <div className='flex flex-row'>
+                            <p>Documents :</p>
+                            {
+                                data?.documents ? (
+                                    <NextLink
+                                        href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${data?.documents}`}
+                                        passHref
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <p className='underline text-myBlue px-1'> View</p>
+                                    </NextLink>
+                                ) :
+                                    null
+                            }
+                        </div>
                     </div>
 
                     <div className="buttonGroup py-3">
@@ -47,13 +66,13 @@ export const DestinationLotsDetails = ({ data }) => {
 
                     </div>
 
-                    <div className="Footer w-full bg-white border-[2px] border-zinc-200 rounded-sm">
+                    {/* <div className="Footer w-full bg-white border-[2px] border-zinc-200 rounded-sm">
                         <div className="header text-xs text-myBlue font-bold flex flex-row gap-3 justify-between w-full bg-blue-50 border rounded-sm border-zinc-100 p-2">
                             <p className='w-[40%]'>Date</p>
                             <p className="w-[60%]">Description</p>
                         </div>
                         <div className="list text-xs  bg-white border-b border-zinc-100 p-2">
-                            {/* {
+                            {
                                 data?.History.map((item, index) => {
                                     return (
                                         <>
@@ -67,9 +86,9 @@ export const DestinationLotsDetails = ({ data }) => {
                                     )
                                 })
 
-                            } */}
+                            }
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
             </div>
