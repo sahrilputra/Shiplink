@@ -56,6 +56,11 @@ const formSchema = yup.object().shape({
     Status: yup.number().required(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string())
+        .when('lots_id', {
+            is: (lots_id) => lots_id === null,
+            then: (event) => event.array().min(1).required('Please upload at least one document'),
+            otherwise: (event) => event.notRequired()
+        }),
 })
 
 export const NewLotsFrom = ({ close, data = null, reload }) => {
@@ -188,8 +193,10 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
 
     useEffect(() => {
         if (data) {
-            form.setValue('Status', data.status)
-            setDataStatus(data.status)
+            const statusData = statusList.find((item) => item.id_status === data.status);
+            console.log("🚀 ~ useEffect ~ statusData:", statusData)
+            form.setValue('Status', statusData?.id_status)
+            setDataStatus(statusData?.status)
         }
     }, [data])
 
@@ -545,7 +552,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                     <FormField
                         control={form.control}
                         name="Status"
-                        render={({ field, formState }) => (
+                        render={({ field }) => (
                             <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                 <FormLabel className="w-[40%]">Select Status</FormLabel>
                                 <Select
@@ -576,7 +583,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <FormMessage>{ }</FormMessage>
                             </FormItem>
                         )}
                     />
