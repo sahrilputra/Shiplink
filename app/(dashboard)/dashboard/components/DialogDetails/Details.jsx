@@ -1,6 +1,6 @@
 'use-client'
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Dialog,
     DialogClose,
@@ -21,6 +21,7 @@ import Image from 'next/image'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { CopyIcons } from '@/components/icons/iconCollection'
 import { Card } from '@/components/ui/card'
+import Magnifier from "react-magnifier";
 import {
     Carousel,
     CarouselContent,
@@ -32,6 +33,21 @@ import {
 
 export const DetailsModals = ({ item, date }) => {
     const images = item?.images || null
+    const [filteredImages, setFilteredImages] = useState([]);
+    useEffect(() => {
+        const removeInvImage = () => {
+            if (images) {
+                const filtered = images.filter(image => !isInvoiceImage(image.type));
+                setFilteredImages(filtered);
+            }
+        };
+
+        removeInvImage();
+    }, [images]);
+
+    const isInvoiceImage = (type) => {
+        return type.toLowerCase() === "invoices";
+    };
 
     const [copied, setCopied] = useState(false);
 
@@ -56,23 +72,26 @@ export const DetailsModals = ({ item, date }) => {
                         </div>
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="w-max">
+                <DialogContent className="w-max" close={false} >
 
                     <DialogDescription className="font-normal text-black flex flex-row flex-wrap justify-between gap-5 w-[700px]">
                         <div className="imageContainer flex flex-col w-[400px] items-center">
                             <Carousel className="w-full ">
                                 <CarouselContent className=" ">
-                                 
+
                                     {
-                                        images?.length > 0 ? (
-                                            Array.from({ length: images?.length }).map((_, index) => (
+                                        filteredImages?.length > 0 ? (
+                                            Array.from({ length: filteredImages?.length }).map((_, index) => (
                                                 <CarouselItem key={index} className=" w-full h-full grow-1">
                                                     <div className="w-full">
                                                         <Card>
-                                                            <img
-                                                                style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
-                                                                src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
+                                                            <Magnifier
+                                                                // style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
+                                                                src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
                                                                 alt="images"
+                                                                width={"100%"}
+                                                                height={250}
+                                                                zoomFactor={1}
                                                             />
                                                         </Card>
                                                     </div>
@@ -123,19 +142,30 @@ export const DetailsModals = ({ item, date }) => {
                                     <p className='text-sm'>{item?.warehouse_name_arrival} WR, {item?.country_code_arrival}</p>
                                 </div>
                             </div>
-                            
 
-                            <div className="Action flex flex-row gap-3 mt-2">
+
+                            <div className="Action flex flex-row gap-3 mt-2 items-end">
                                 <div className="flex flex-col justify-center gap-3 items-center">
                                     <p className='text-xs text-center text-nowrap'>Request More Images</p>
                                     <Button
                                         variant="destructive"
                                         size="xs"
                                         className="w-[130px] text-xs"
+                                        disabled={true}
                                     >
                                         Request
                                     </Button>
                                 </div>
+                                <DialogClose asChild>
+                                    <Button
+                                        type="button"
+                                        variant="redOutline"
+                                        size="xs"
+                                        className="w-[130px] text-xs"
+                                    >
+                                        Close
+                                    </Button>
+                                </DialogClose>
                                 {/* <div className=" w-2 h-[60px]">
                                     <Separator orientation="vertical" />
                                 </div>
