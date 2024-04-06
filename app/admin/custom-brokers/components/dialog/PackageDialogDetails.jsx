@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     Carousel,
     CarouselContent,
@@ -20,12 +20,27 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useReactToPrint } from 'react-to-print'
-
+import Magnifier from "react-magnifier";
 export const PackageDialogDetails = ({ open, setOpen, details }) => {
     console.log("Details : ", details)
     const sizeType = details?.package_height_unit || "Ibs"
     const images = details?.images || null
     console.log("Images : ", images)
+    const [filteredImages, setFilteredImages] = useState([]);
+    useEffect(() => {
+        const removeInvImage = () => {
+            if (images) {
+                const filtered = images.filter(image => !isInvoiceImage(image.type));
+                setFilteredImages(filtered);
+            }
+        };
+
+        removeInvImage();
+    }, [images]);
+
+    const isInvoiceImage = (type) => {
+        return type.toLowerCase() === "invoices";
+    };
 
     // PDF Print
     const componentRef = useRef();
@@ -41,44 +56,39 @@ export const PackageDialogDetails = ({ open, setOpen, details }) => {
                             <Carousel className="w-full ">
                                 <CarouselContent>
                                     {
-                                        images?.length === 0 ? (
-                                            <CarouselItem key={1} className="w-full h-full grow-1">
-                                                <div className="p-1 w-full">
-                                                    <Card
-                                                        className="p-1 w-full"
-                                                    >
-                                                        <Image
-                                                            src={'/assets/img-placeholder.svg'}
-                                                            width={200}
-                                                            height={200}
-                                                            alt={`Image`}
-                                                            style={{ objectFit: "contain", width: '100%', height: '250px', }}
-                                                        />
-                                                    </Card>
-                                                </div>
+                                        filteredImages?.length > 0 ? (
+                                            Array.from({ length: filteredImages?.length }).map((_, index) => (
+                                                <CarouselItem key={index} className=" w-full h-full grow-1">
+                                                    <div className="w-full">
+                                                        <Card>
+                                                            <div className="flex">
+                                                                <Magnifier
+                                                                    className='image'
+                                                                    src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
+                                                                    alt=""
+                                                                    width={600}
+                                                                    height={250}
+                                                                />
+                                                            </div>
+                                                        </Card>
+                                                    </div>
+                                                </CarouselItem>
+                                            ))
+                                        ) : (
+                                            <CarouselItem className=" w-full h-full grow-1">
+                                                <Card>
+                                                    <Image
+                                                        src={'/assets/img-placeholder.svg'}
+                                                        alt="placeholder"
+                                                        width={400}
+                                                        height={300}
+                                                        style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
+                                                    />
+                                                </Card>
                                             </CarouselItem>
-                                        ) : null
+                                        )
                                     }
 
-                                    {Array.from({ length: images?.length }).map((_, index) => (
-                                        <CarouselItem key={index} className=" w-full h-full grow-1">
-                                            <div className="w-full">
-                                                <Card
-                                                    className="p-1 w-full"
-                                                >
-                                                    <img
-                                                        style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
-                                                        src={`https://sla.webelectron.com/api/Package/getimages?fullName=${images[index].images}`}
-                                                        alt=""
-                                                        onError={(e) => {
-                                                            e.target.src = '../../../assets/img-placeholder.svg'; // Ganti dengan URL gambar default
-                                                        }}
-                                                    />
-
-                                                </Card>
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
                                 </CarouselContent>
                                 {/* <CarouselContent className=" ">
                                     {Array.from({ length: images?.length }).map((_, index) => (
