@@ -64,12 +64,6 @@ export const LotsMoreMenusDropDrown = ({
                                 <p className="text-xs">View Lots Details</p>
                             </NextLink>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                            triggerChildren="Delete"
-                            onClick={() => setEditModalOpen(true)}
-                        >
-                            <p className="text-xs">Edit Lots</p>
-                        </DropdownMenuItem>
                         <NextLink
                             href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${lots_docs}`}
                             passHref
