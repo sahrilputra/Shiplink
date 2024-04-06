@@ -30,7 +30,6 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 
-
 export const DetailsModals = ({ item, date }) => {
     const images = item?.images || null
     const [filteredImages, setFilteredImages] = useState([]);
