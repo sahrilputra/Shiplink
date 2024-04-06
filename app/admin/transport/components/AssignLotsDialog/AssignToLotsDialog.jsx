@@ -95,11 +95,8 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
     return (
         <>
             {loading && <Loaders />}
-            <Dialog open={open} onOpenChange={setOpen} modal={true}>
-                <DialogTrigger asChild>
-                    {/* <Button variant="outline">Edit Profile</Button> */}
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[450px]">
+            <Dialog open={open} onOpenChange={setOpen} modal={true} >
+                <DialogContent className="sm:max-w-[450px]" close={false}>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(handleSave)}
@@ -124,7 +121,7 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                                         <Separator className="w-full h-[1px]" />
                                     </div>
                                     <div className="flex flex-col gap-2 pt-3">
-                                        <ExitingLotsDialog close={close} selectedLotsID={handleSelectedLotsID} lotsID={selectedLots} lotsName={lotsName}/>
+                                        <ExitingLotsDialog close={close} selectedLotsID={handleSelectedLotsID} lotsID={selectedLots} lotsName={lotsName} />
                                     </div>
                                 </div>
                             </div>

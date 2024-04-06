@@ -24,7 +24,7 @@ export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
             <DialogTrigger asChild>
                 {/* <Button variant="outline">Edit Profile</Button> */}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[450px]">
+            <DialogContent className="sm:max-w-[450px]" close={false}>
                 <DialogHeader>
                     <DialogTitle>
                         <div className="flex flex-col gap-2 font-bold">

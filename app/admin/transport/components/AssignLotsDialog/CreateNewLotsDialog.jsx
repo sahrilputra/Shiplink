@@ -25,7 +25,7 @@ export function CreateNewLotsDialog({ open, setOpen, reload }) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen} >
+        <Dialog open={open} onOpenChange={setOpen} close={false} >
             <DialogContent className="sm:max-w-[450px]">
                 <DialogHeader>
                     <DialogTitle>

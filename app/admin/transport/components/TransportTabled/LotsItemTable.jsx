@@ -421,13 +421,13 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
+                                    className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""} cursor-pointer`}
                                     onClick={() => toggleRow(row.id)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200"} `}
+                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200 "} `}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
