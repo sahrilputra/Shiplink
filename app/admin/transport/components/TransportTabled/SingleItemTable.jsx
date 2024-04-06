@@ -39,8 +39,9 @@ import {
 
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { AssingLotsDialog } from "../AssignLotsDialog/AssignToLotsDialog";
+import { CreateNewLotsDialog } from "../AssignLotsDialog/CreateNewLotsDialog";
 
-export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
+export function SingleItemsTable({ }) {
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -134,7 +135,7 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
         {
             accessorKey: "tracking_id",
-            header: "Tracking ID",
+            header: "Package ID",
             className: "text-xs",
             cell: ({ row }) => {
                 return (
@@ -346,9 +347,11 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
     const checkedItems = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
+    const [openNewDialog, setOpenNewDialog] = useState(false)
     console.log("Selected : ", selectedItemsID)
     return (
         <>
+            <CreateNewLotsDialog open={openNewDialog} setOpen={setOpenNewDialog} reload={reloadData} />
             <AssingLotsDialog open={openAssignLots} setOpen={setOpenAssignLots} dataID={selectedItemsID} reload={reloadData} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
@@ -383,7 +386,7 @@ export function SingleItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                 variant="secondary"
                                 size="sm"
                                 className="px-10"
-                                onClick={() => toggleOpenNewLots()}
+                                onClick={() => setOpenNewDialog(true)}
                             >
                                 <p className=" text-xs">New Lots</p>
                             </Button>

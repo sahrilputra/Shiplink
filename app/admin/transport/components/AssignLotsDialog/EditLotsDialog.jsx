@@ -18,7 +18,6 @@ export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
     console.log("Lots Data : ", data)
     const close = () => {
         setOpen(false)
-        reload()
     }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -40,7 +39,7 @@ export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
                             <Separator className="w-full h-[1px]" />
                         </div>
                         <div className="flex flex-col gap-2 py-4">
-                            <NewLotsFrom data={data} close={close} />
+                            <NewLotsFrom data={data} close={close} reload={reload} />
                         </div>
                     </div>
                 </div>

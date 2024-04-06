@@ -35,9 +35,8 @@ export default function TransportPage({ props }) {
                 </div>
 
                 <div className={`${styles.listTable} flex flex-col gap-1`}>
-                    <SingleItemsTable  setOpen={setOpen} isOpen={open} setOpenNewDialog={setOpenNewDialog} />
+                    <SingleItemsTable />
                 </div>
-                <CreateNewLotsDialog open={openNewDialog} setOpen={setOpenNewDialog} />
             </div>
         </>
     )

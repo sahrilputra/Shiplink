@@ -17,21 +17,15 @@ import { useState } from "react"
 import axios from "axios";
 import React from 'react'
 
-export function CreateNewLotsDialog({ open, setOpen }) {
+export function CreateNewLotsDialog({ open, setOpen, reload }) {
     const [select, setSeleceted] = useState("New");
 
     const close = () => {
         setOpen(false)
     }
-    const handleSelect = (e) => {
-        setSeleceted(e)
-    }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {/* <Button variant="outline">Edit Profile</Button> */}
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={setOpen} >
             <DialogContent className="sm:max-w-[450px]">
                 <DialogHeader>
                     <DialogTitle>
@@ -52,7 +46,7 @@ export function CreateNewLotsDialog({ open, setOpen }) {
                             <Separator className="w-full h-[1px]" />
                         </div>
                         <div className="flex flex-col gap-2 pt-3">
-                            <NewLotsFrom close={close} />
+                            <NewLotsFrom close={close} reload={reload} />
                         </div>
                     </div>
                 </div>

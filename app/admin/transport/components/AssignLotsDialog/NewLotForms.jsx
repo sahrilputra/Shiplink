@@ -51,14 +51,14 @@ const formSchema = yup.object().shape({
     LotsId: yup.string(),
     LotsLabel: yup.string().required(),
     Origin: yup.string().required(),
-    Destination_country: yup.string().required(),
+    Destination_country: yup.string(),
     TripNumber: yup.string().required(),
     Status: yup.number().required(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string())
 })
 
-export const NewLotsFrom = ({ close, data = null }) => {
+export const NewLotsFrom = ({ close, data = null, reload }) => {
     const { toast } = useToast()
     const [popOverOpen, setPopOverOpen] = useState(false);
     const [openOrigin, setOpenOrigin] = useState(false);
@@ -74,6 +74,64 @@ export const NewLotsFrom = ({ close, data = null }) => {
         index: 0,
     })
 
+
+
+    const [originWarehouse, setOriginWarehouse] = useState([])
+    const [destinationWarehouse, setDestinationWarehouse] = useState([])
+
+
+    const fetchWarehouses = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/warehouse/list`,
+                {
+                    keyword: '',
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                }
+            );
+            console.log("Warehouses:", response.data);
+            setOriginWarehouse(response.data.warehouse);
+            setDestinationWarehouse(response.data.warehouse);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const filterDestinationWarehouses = (originCountry) => {
+        return destinationWarehouse.filter(warehouse => warehouse.warehouse_id !== originCountry);
+    }
+
+
+    useEffect(() => {
+        fetchWarehouses();
+    }, [])
+
+
+    // const [warehouse, setWarehouse] = useState([])
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.post(
+    //                 `/api/admin/warehouse/list`,
+    //                 {
+    //                     keyword: '',
+    //                     page: 0,
+    //                     limit: 0,
+    //                     index: 0,
+    //                 }
+    //             );
+    //             console.log("Warehouse :", response.data);
+    //             const filteredWarehouse = response.data.warehouse.filter(item => item.country_code !== arrivalCode);
+    //             setWarehouse(filteredWarehouse);
+    //         } catch (error) {
+    //             console.log(error);
+    //             fetchData();
+    //         }
+    //     };
+    //     fetchData();
+    // }, [arrivalCode]);
     console.log("🚀 ~ NewLotsFrom ~ countryQuery:", countryQuery)
 
     useEffect(() => {
@@ -90,8 +148,9 @@ export const NewLotsFrom = ({ close, data = null }) => {
                 console.log("Country : ", responseCountry)
                 const countryData = await responseCountry.data;
                 setCountryList(countryData.country)
-
-
+                if (dataStatus) {
+                    form.setValue('Status', dataStatus)
+                }
                 const data = await response.data;
                 setStatusList(data.data);
 
@@ -126,6 +185,15 @@ export const NewLotsFrom = ({ close, data = null }) => {
         },
         mode: "onChange",
     })
+
+    useEffect(() => {
+        if (data) {
+            form.setValue('Status', data.status)
+            setDataStatus(data.status)
+        }
+    }, [data])
+
+    const [dataStatus, setDataStatus] = useState(null);
     const handleFileChange = (event) => {
         const files = event.target.files;
         const uploadedFiles = [];
@@ -174,6 +242,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
             });
             setLoading(false)
             close();
+            reload();
         } catch (error) {
             console.log('Error', error);
             setLoading(false)
@@ -275,7 +344,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                             <PopoverContent className="w-[250px] p-0">
                                                 <Command className="w-full">
                                                     <CommandInput
-                                                        placeholder="Search Country..."
+                                                        placeholder="Search Origin Warehouse..."
                                                         className="h-9 w-full text-xs"
                                                         onValueChange={(e) => handleCommandChange(e)}
                                                     />
@@ -285,27 +354,30 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                     <CommandGroup className="h-[200]">
                                                         <ScrollArea className="h-[150px]">
                                                             {console.log(field.value)}
-                                                            {countryList.map((item) => (
+                                                            {originWarehouse.map((item) => (
                                                                 <>
                                                                     <PopoverClose asChild>
                                                                         <CommandItem
-                                                                            value={item.country_name}
-                                                                            key={item.country_id}
+                                                                            value={item.warehouse_name}
+                                                                            key={item.warehouse_id}
                                                                             className="text-xs"
                                                                             onSelect={() => {
-                                                                                setSelectOrigin(item.country_name);
-                                                                                field.onChange(item.country_code); // Perbarui nilai field.value
+                                                                                setSelectOrigin(item.warehouse_name);
+                                                                                field.onChange(item.warehouse_id); // Perbarui nilai field.value
                                                                                 setOpenOrigin(false);
+                                                                                filterDestinationWarehouses(item.warehouse_id);
                                                                                 setCountryQuery({
                                                                                     keyword: "",
                                                                                 });
+                                                                                setSelectDestination('')
+                                                                                form.setValue('Destination_country', '');
                                                                             }}
                                                                         >
-                                                                            {item.country_name}
+                                                                            {item.warehouse_name} - {item.country_code}
                                                                             <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value
-                                                                                        ? "opacity-100"
-                                                                                        : "opacity-0"
+                                                                                className={`ml-auto h-4 w-4 ${item.warehouse_id === field.value
+                                                                                    ? "opacity-100"
+                                                                                    : "opacity-0"
                                                                                     }`}
                                                                             />
                                                                         </CommandItem>
@@ -325,7 +397,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                             name="Destination_country"
                             className="w-full"
                             control={form.control}
-                            render={({ field }) => (
+                            render={({ field, formState }) => (
                                 <>
                                     <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                         <FormLabel className="w-[40%]">Destination</FormLabel>
@@ -356,39 +428,41 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                             <PopoverContent className="w-[250px] p-0">
                                                 <Command className="w-full">
                                                     <CommandInput
-                                                        placeholder="Search Country..."
+                                                        placeholder="Search Warehouse..."
                                                         className="h-9 w-full text-xs"
                                                         onValueChange={(e) => handleDestinationChange(e)}
                                                     />
                                                     <CommandEmpty className="w-full text-xs text-center py-2">
-                                                        No Country found.
+                                                        No Warehouse found.
                                                     </CommandEmpty>
                                                     <CommandGroup className="h-[200]">
                                                         <ScrollArea className="h-[150px]">
                                                             {console.log(field.value)}
-                                                            {countryList.map((item) => (
+                                                            {destinationWarehouse.map((item) => (
                                                                 <>
                                                                     <PopoverClose asChild>
+
                                                                         <CommandItem
-                                                                            value={item.country_name}
-                                                                            key={item.country_id}
-                                                                            className="text-xs"
+                                                                            value={item.warehouse_name}
+                                                                            key={item.warehouse_id}
+                                                                            className={`text-xs ${form.watch('Origin') === item.warehouse_id ? "bg-slate-50 text-slate-200" : "text-xs"}`}
+                                                                            disabled={form.watch('Origin') === item.warehouse_id}
                                                                             onSelect={() => {
                                                                                 setSelectDestination(
-                                                                                    item.country_name
+                                                                                    item.warehouse_name
                                                                                 );
-                                                                                field.onChange(item.country_code); // Perbarui nilai field.value
+                                                                                field.onChange(item.warehouse_id); // Perbarui nilai field.value
                                                                                 setCountryQuery({
                                                                                     keyword: "",
                                                                                 });
                                                                                 setPopOverOpen(false);
                                                                             }}
                                                                         >
-                                                                            {item.country_name}
+                                                                            {item.warehouse_name} - {item.country_code}
                                                                             <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.country_code === field.value
-                                                                                        ? "opacity-100"
-                                                                                        : "opacity-0"
+                                                                                className={`ml-auto h-4 w-4 ${item.warehouse_id === field.value
+                                                                                    ? "opacity-100"
+                                                                                    : "opacity-0"
                                                                                     }`}
                                                                             />
                                                                         </CommandItem>
@@ -400,6 +474,9 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                                 </Command>
                                             </PopoverContent>
                                         </Popover>
+                                        {formState.errors.Destination_country && formState.errors.Destination_country.map((error, index) => (
+                                            <p key={index}>{error.message}</p>
+                                        ))}
                                     </FormItem>
                                 </>
                             )}
@@ -468,7 +545,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                     <FormField
                         control={form.control}
                         name="Status"
-                        render={({ field }) => (
+                        render={({ field, formState }) => (
                             <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                 <FormLabel className="w-[40%]">Select Status</FormLabel>
                                 <Select
@@ -499,6 +576,7 @@ export const NewLotsFrom = ({ close, data = null }) => {
                                         ))}
                                     </SelectContent>
                                 </Select>
+                                <FormMessage>{ }</FormMessage>
                             </FormItem>
                         )}
                     />
@@ -540,7 +618,11 @@ export const NewLotsFrom = ({ close, data = null }) => {
                         >
                             Cancel
                         </Button>
-                        <Button type="submit" className="w-full" variant="destructive">
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            variant="destructive"
+                        >
                             <p>Save changes</p>
                         </Button>
                     </div>
