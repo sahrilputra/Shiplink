@@ -21,7 +21,18 @@ import Image from 'next/image'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { CopyIcons } from '@/components/icons/iconCollection'
 import { Card } from '@/components/ui/card'
+
 import Magnifier from "react-magnifier";
+
+// import {
+//     Magnifier,
+//     GlassMagnifier,
+//     SideBySideMagnifier,
+//     PictureInPictureMagnifier,
+//     MOUSE_ACTIVATION,
+//     TOUCH_ACTIVATION
+//   } from "react-image-magnifiers";
+
 import {
     Carousel,
     CarouselContent,
@@ -84,14 +95,15 @@ export const DetailsModals = ({ item, date }) => {
                                                 <CarouselItem key={index} className=" w-full h-full grow-1">
                                                     <div className="w-full">
                                                         <Card>
-                                                            <Magnifier
-                                                                // style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
-                                                                src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
-                                                                alt="images"
-                                                                width={"100%"}
-                                                                height={250}
-                                                                zoomFactor={1}
-                                                            />
+                                                            <div className="flex">
+                                                                <Magnifier
+                                                                    className='image'
+                                                                    src={`https://sla.webelectron.com/api/Package/getimages?fullName=${filteredImages[index].images}`}
+                                                                    alt=""
+                                                                    width={600}
+                                                                    height={250}
+                                                                />
+                                                            </div>
                                                         </Card>
                                                     </div>
                                                 </CarouselItem>
@@ -103,7 +115,7 @@ export const DetailsModals = ({ item, date }) => {
                                                         src={'/assets/img-placeholder.svg'}
                                                         alt="placeholder"
                                                         width={400}
-                                                        height={250}
+                                                        height={300}
                                                         style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '10px' }}
                                                     />
                                                 </Card>
