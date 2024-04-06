@@ -251,7 +251,7 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
                             onClick={() => handleEditOpen(row.original)}
                         >
-                            <p className="text-[11px]">Edit Lots</p>
+                            <p className="text-[11px]">Edit Lot</p>
                         </Button>
                         <LotsMoreMenusDropDrown
                             key={row.original.lots_id}
@@ -438,7 +438,7 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                         <>
                                             <TableRow >
                                                 <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                    <ExpandedLotsData data={row.original} />
+                                                    <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id}/>
                                                 </TableCell>
                                             </TableRow>
                                         </>

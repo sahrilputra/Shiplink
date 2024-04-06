@@ -15,8 +15,18 @@ import { FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ExternalLink } from "lucide-react";
 import NextLink from "next/link";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import { Skeleton } from "@/components/ui/skeleton"
 import axios from "axios";
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 import {
     ColumnDef,
     flexRender,
@@ -28,19 +38,29 @@ import {
 } from "@tanstack/react-table";
 import { RemovePackageDialog } from "../../lots/components/RemovePackageDialog";
 import { Input } from "@/components/ui/input";
-
+import { useRouter } from "next/navigation";
 export function LotsDetailsTable({
     data,
     setOpen,
     handleSearchChange,
     isSkeleton,
     lostId,
-    reload
+    reload,
+    pagination,
+    rowTotalData,
+    handlerPaginationChange,
+    setPagination,
+    query,
 }) {
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState([]);
     const [openDelete, setOpenDelete] = useState(false);
     const [deleteID, setDeleteID] = useState([]);
+    const router = useRouter();
+
+    const handleBack = () => {
+        router.back();
+    }
 
     const columns = [
         {
@@ -222,6 +242,10 @@ export function LotsDetailsTable({
     const table = useReactTable({
         data: data,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -360,6 +384,64 @@ export function LotsDetailsTable({
                     )}
                 </TableBody>
             </Table>
+            <div className="flex justify-between w-full items-center mt-3 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px]  text-xs w-[90px]"
+                        onClick={handleBack}
+                    >
+                        <p>BACK</p>
+                    </Button>
+                </div>
+                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
+                    <PaginationContent>
+
+
+                    </PaginationContent>
+                </Pagination>
+            </div>
         </>
     );
 }

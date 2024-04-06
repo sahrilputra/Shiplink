@@ -61,7 +61,7 @@ export const LotsMoreMenusDropDrown = ({
                         </DropdownMenuItem> */}
                         <DropdownMenuItem>
                             <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
-                                <p className="text-xs">View Lots Details</p>
+                                <p className="text-xs">View Lot Details</p>
                             </NextLink>
                         </DropdownMenuItem>
                         <NextLink
@@ -75,13 +75,13 @@ export const LotsMoreMenusDropDrown = ({
                                     className="text-xs"
                                 // onClick={() => setIsDownload(true)}
                                 >
-                                    Download Documents
+                                    Download Document
                                 </p>
                             </DropdownMenuItem>
                         </NextLink>
 
                         <DropdownMenuItem onClick={() => handleDeleteLost(dataID)}>
-                            <p className="text-xs text-red-700">Delete Lots</p>
+                            <p className="text-xs text-red-700">Delete Lot</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
