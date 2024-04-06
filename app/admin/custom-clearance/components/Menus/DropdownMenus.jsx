@@ -94,13 +94,13 @@ export function CustomBrokerDropdownMenus({
                         rel="noopener noreferrer"
                     >
                         <DropdownMenuItem className="text-xs text-myBlue">
-                            View Lots Documents
+                            View Lot Documents
                         </DropdownMenuItem>
                     </NextLink>
 
                     <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
                         <DropdownMenuItem className="text-xs">
-                            Lots Details
+                            Lot Details
                         </DropdownMenuItem>
                     </NextLink>
                 </DropdownMenuGroup>
