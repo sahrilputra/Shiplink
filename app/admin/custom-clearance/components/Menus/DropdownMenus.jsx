@@ -103,15 +103,6 @@ export function CustomBrokerDropdownMenus({
                             Lots Details
                         </DropdownMenuItem>
                     </NextLink>
-                    {statusList.map((status, index) => (
-                        <DropdownMenuItem
-                            key={index}
-                            className="text-xs"
-                            onClick={() => handleSave(status.id_status)}
-                        >
-                            Status : {status.status}
-                        </DropdownMenuItem>
-                    ))}
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
