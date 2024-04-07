@@ -156,12 +156,12 @@ export default function Home() {
             {
                 loading && <Loaders />
             }
-            <div className="flex flex-col text-center pt-[90px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE] ">
+            <div className="flex flex-col text-center pt-[90px] items-center w-full min-h-[100vh] max-h-max gap-[20px] bg-[#E3E7EE] ">
                 <div className="flex flex-col gap-5 py-10">
                     <div className="text-myBlue text-lg font-bold">Welcome Back</div>
                     <div className="text-zinc-600 text-3xl font-bold">Log In to start saving!</div>
                 </div>
-                <div className="p-10 bg-white rounded-md  border shadow-md gap-8  flex flex-col sm:w-max md:w-[640px]">
+                <div className="p-10  mb-10 bg-white rounded-md  border shadow-md gap-8 w-[90%] flex flex-col sm:w-max md:w-[640px]">
                     <Form {...form}>
                         <form
                             className='gap-8  flex flex-col'
