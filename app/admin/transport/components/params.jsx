@@ -2,7 +2,9 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 export const Params = () => {
     const router = usePathname()
-    console.log(router)
+    if(router === '/admin/transport/lots/**'){
+        console.log('true')
+    }
     return (
         <>
             <div className="text-blue-900 text-xs font-normal">

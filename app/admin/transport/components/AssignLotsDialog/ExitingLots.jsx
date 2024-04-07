@@ -20,7 +20,7 @@ import axios from "axios";
 import data from '../../../../../data/admin/TransportLotsData.json'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
+export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsFormError, form }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     const [lots, setLots] = useState([]);
@@ -52,6 +52,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
         }
     };
 
+
     useEffect(() => {
         fetchData();
     }, [query]);
@@ -59,7 +60,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
         <>
             <div className="w-full">
                 <Popover open={open} onOpenChange={setOpen} modal={true}>
-                    <p>Select Lots</p>
+                    <p className={`${IsFormError ? "text-red-500" : ""}`}>Select Lot</p>
                     <PopoverTrigger asChild>
                         <Button
                             variant="outline"
@@ -67,7 +68,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
                             aria-expanded={open}
                             className="w-[100%] justify-between"
                         >
-                            {lotsName ? lotsName : "Select Lots..."}
+                            {lotsName ? lotsName : "Select Lot..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
@@ -102,13 +103,19 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName }) {
                             </ScrollArea>
                         </Command>
                     </PopoverContent>
+                    {
+                        IsFormError && <p className="text-red-500 text-xs mt-3">Please select a lot</p>
+                    }
                 </Popover>
                 <div className="flex flex-row justify-between w-full gap-3 pt-4">
                     <Button
                         type="button"
                         variant="redOutline"
                         className="w-full"
-                        onClick={close}
+                        onClick={() => {
+                            close()
+                            form.reset();
+                        }}
                     >
                         Cancel
                     </Button>

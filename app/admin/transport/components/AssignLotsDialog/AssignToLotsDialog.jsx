@@ -90,17 +90,23 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
         }
     };
 
+    console.log('FORM ERROR', form.formState.errors);
+
+    const IsFormError = () => {
+        if (form.formState.errors.lots_id) {
+            return true
+        }
+        return false
+    }
     console.log("Data ID", dataID)
     console.log("selectedLots", selectedLots)
     return (
         <>
             {loading && <Loaders />}
-            <Dialog open={open} onOpenChange={setOpen} modal={true} >
+            <Dialog open={open} onOpenChange={setOpen} modal={true}>
                 <DialogContent className="sm:max-w-[450px]" close={false}>
                     <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(handleSave)}
-                            action="#">
+                        <form onSubmit={form.handleSubmit(handleSave)} action="#">
                             <DialogHeader>
                                 <DialogTitle>
                                     <div className="flex flex-col gap-2 font-bold">
@@ -113,7 +119,11 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                                     <div className="flex flex-row gap-3 text-sm text-center">
                                         <div
                                             onClick={() => handleSelect("Exiting")}
-                                            className={`${select === "Exiting" ? "text-myBlue border-b border-myBlue" : ""} cursor-pointer`}>
+                                            className={`${select === "Exiting"
+                                                ? "text-myBlue border-b border-myBlue"
+                                                : ""
+                                                } cursor-pointer`}
+                                        >
                                             Existing Lot
                                         </div>
                                     </div>
@@ -121,7 +131,14 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                                         <Separator className="w-full h-[1px]" />
                                     </div>
                                     <div className="flex flex-col gap-2 pt-3">
-                                        <ExitingLotsDialog close={close} selectedLotsID={handleSelectedLotsID} lotsID={selectedLots} lotsName={lotsName} />
+                                        <ExitingLotsDialog
+                                            close={close}
+                                            selectedLotsID={handleSelectedLotsID}
+                                            lotsID={selectedLots}
+                                            lotsName={lotsName}
+                                            IsFormError={IsFormError}
+                                            form={form}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -130,5 +147,5 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                 </DialogContent>
             </Dialog>
         </>
-    )
+    );
 }
