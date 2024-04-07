@@ -428,6 +428,18 @@ export function SingleItemsTable({ }) {
         fetchData();
     };
 
+    const [filterOrigins, setFilterOrigins] = useState();
+
+    const handlerFilterOrigin = (e) => {
+        setFilterOrigins(e)
+        setQuery({
+            warehouse_origin: e,
+            page: 1,
+            limit: 10,
+            index: 0,
+        })
+
+    }
     const handleFilterDestination = (e) => {
         setFilterDestination(e)
         console.log("Filter Destination : ", e)
@@ -499,6 +511,27 @@ export function SingleItemsTable({ }) {
                         >
                             <FilterIcons className="" fill="#CC0019" />
                         </Button> */}
+                        <div className="">
+                            <Select onValueChange={handlerFilterOrigin} value={filterOrigins}>
+                                <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
+                                    <SelectValue placeholder="Filter By Origin" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <ScrollArea className="h-[150px]">
+                                        <SelectGroup className="text-xs">
+                                            <SelectLabel className="text-xs font-bold">Filter Origin</SelectLabel>
+                                            <>
+                                                {
+                                                    warehouseListData.map((item, index) => (
+                                                        <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
+                                                    ))
+                                                }
+                                            </>
+                                        </SelectGroup>
+                                    </ScrollArea>
+                                </SelectContent>
+                            </Select>
+                        </div>
                         <div className="">
                             <Select onValueChange={handleFilterDestination} value={filterDestination}>
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
