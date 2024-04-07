@@ -1,8 +1,31 @@
 import React from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/tableDashboard'
 import { Button } from '@/components/ui/button'
+import axios from "axios";
+import { useToast } from '@/components/ui/use-toast';
 import NextLink from 'next/link'
-export const ExpandedLotsData = ({ data, lotsID }) => {
+export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
+    const { toast } = useToast()
+    const handleDepartLots = async () => {
+        setExpandedRows([])
+        const response = await axios.post(
+            `/api/admin/transport/lots/status/departLots`,
+            {
+                LotsId: lotsID,
+            }
+        );
+        if (response.data.status === false) {
+            toast({
+                title: "Error",
+                message: response.data.message,
+            })
+        } else {
+            toast({
+                title: "Success",
+                message: response.data.message,
+            })
+        }
+    }
     return (
         <>
             <Table>
@@ -35,6 +58,8 @@ export const ExpandedLotsData = ({ data, lotsID }) => {
                             </NextLink>
                             <Button
                                 variant="destructive"
+                                type="button"
+                                onClick={handleDepartLots}
                                 size="xs"
                                 className="h-[25px] px-5 text-xs"
                             >

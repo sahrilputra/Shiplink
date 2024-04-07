@@ -11,7 +11,7 @@ export async function POST(request) {
         const tokenAccess = await getAccessToken(request)
         const {
             LotsId,
-            status_id,
+            status_id = 2,
         } = await request.json();
 
 
