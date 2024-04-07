@@ -171,7 +171,7 @@ export function SingleItemsTable({ }) {
     }
     useEffect(() => {
         warehouseList();
-    })
+    }, [])
 
     const columns = [
 
@@ -296,15 +296,15 @@ export function SingleItemsTable({ }) {
         {
             accessorKey: "status",
             header: "Customs Status",
-            size: 50,
+            size: 150,
         },
         {
             id: "Action",
             header: "Action",
-            size: 80,
+            size: 100,
             cell: ({ row }) => {
                 return (
-                    <div className="w-[80px]" key={row}>
+                    <div className="w-[100px]" key={row}>
                         <div className="flex flex-row gap-2">
                             <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                                 <Button
@@ -328,23 +328,23 @@ export function SingleItemsTable({ }) {
             },
         },
         {
-            accessorKey: "select",
+            accessorKey: "Select",
             id: "select",
             size: 30,
-            header: ({ table }) => {
-                return (
-                    <div className="w-[40px] flex items-center justify-center px-0">
-                        <Checkbox
-                            checked={
-                                table.getIsAllPageRowsSelected() ||
-                                (table.getIsSomePageRowsSelected() && "indeterminate")
-                            }
-                            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                            aria-label="Select all"
-                        />
-                    </div>
-                )
-            },
+            // header: ({ table }) => {
+            //     return (
+            //         <div className="w-[40px] flex items-center justify-center px-0">
+            //             <Checkbox
+            //                 checked={
+            //                     table.getIsAllPageRowsSelected() ||
+            //                     (table.getIsSomePageRowsSelected() && "indeterminate")
+            //                 }
+            //                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            //                 aria-label="Select all"
+            //             />
+            //         </div>
+            //     )
+            // },
             cell: ({ row }) => {
                 return (
                     <div className="w-[40px] flex items-center justify-center px-0">
@@ -352,6 +352,7 @@ export function SingleItemsTable({ }) {
                             checked={row.getIsSelected()}
                             onCheckedChange={(value) => row.toggleSelected(!!value)}
                             aria-label="Select row"
+                            disabled={row.original.status !== "Cleared Custom" ? true : false}
                         />
                     </div>
                 )
@@ -476,15 +477,15 @@ export function SingleItemsTable({ }) {
                                 <SearchIcon width={15} height={15} />
                             </div>
                         </div>
-                        <Button
+                        {/* <Button
                             variant="filter"
                             size="filter"
                             className="border border-zinc-300 flex items-center rounded"
                         >
                             <FilterIcons className="" fill="#CC0019" />
-                        </Button>
+                        </Button> */}
                         <div className="">
-                            <Select onValueChange={handleFilterDestination}>
+                            <Select onValueChange={handleFilterDestination} value={filterDestination}>
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
                                     <SelectValue placeholder="Filter By Destination" />
                                 </SelectTrigger>
@@ -493,11 +494,6 @@ export function SingleItemsTable({ }) {
                                         <SelectGroup className="text-xs">
                                             <SelectLabel className="text-xs font-bold">Filter Destination</SelectLabel>
                                             <>
-                                                {
-                                                    filterDestination !== "" || filterDestination === null ? (
-                                                        <SelectItem className="text-xs text-red-500" value={null}>Remove Filter</SelectItem>
-                                                    ) : null
-                                                }
                                                 {
                                                     warehouseListData.map((item, index) => (
                                                         <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
@@ -510,7 +506,7 @@ export function SingleItemsTable({ }) {
                             </Select>
                         </div>
                         <div className="">
-                            <Select onValueChange={handleFilterLocation} >
+                            <Select onValueChange={handleFilterLocation} value={filterLocation} >
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
                                     <SelectValue placeholder="Filter By Location" />
                                 </SelectTrigger>
@@ -530,24 +526,27 @@ export function SingleItemsTable({ }) {
                         </div>
 
                         <div className="">
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={handleRemoveFilter}
-                                            variant="destructive"
-                                            size="filter"
-                                            className="border flex items-center"
-                                        >
-                                            <XIcon className="" fill="#ffff" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Remove Filter</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-
+                            {
+                                filterDestination !== "" || filterLocation !== "" ? (
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button
+                                                    onClick={handleRemoveFilter}
+                                                    variant="destructive"
+                                                    size="filter"
+                                                    className="border flex items-center"
+                                                >
+                                                    <XIcon className="" fill="#ffff" />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>Remove Filter</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                ) : null
+                            }
                         </div>
                     </div>
                     {Object.keys(rowSelection).length === 0 ? (
