@@ -36,9 +36,9 @@ import {
     SortingState,
     getSortedRowModel,
 } from "@tanstack/react-table";
-import { RemovePackageDialog } from "../../lots/components/RemovePackageDialog";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { RemovePackageDialog } from "../../lots/components/RemovePackageDialog";
 export function LotsDetailsTable({
     data,
     setOpen,

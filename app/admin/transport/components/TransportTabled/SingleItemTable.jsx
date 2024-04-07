@@ -40,7 +40,15 @@ import {
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { AssingLotsDialog } from "../AssignLotsDialog/AssignToLotsDialog";
 import { CreateNewLotsDialog } from "../AssignLotsDialog/CreateNewLotsDialog";
-
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 export function SingleItemsTable({ }) {
 
     const [rowSelection, setRowSelection] = React.useState({})
@@ -219,15 +227,17 @@ export function SingleItemsTable({ }) {
             }
         },
         {
-            accessorKey: "updated_at",
-            header: "Last Update",
+            accessorKey: "location",
+            header: "Location",
             cell: ({ row }) => {
                 return (
                     <div
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.updated_at}</span>
+                        >
+                            {row.original.location}
+                        </span>
                     </div>
                 )
             }
@@ -351,8 +361,17 @@ export function SingleItemsTable({ }) {
     console.log("Selected : ", selectedItemsID)
     return (
         <>
-            <CreateNewLotsDialog open={openNewDialog} setOpen={setOpenNewDialog} reload={reloadData} />
-            <AssingLotsDialog open={openAssignLots} setOpen={setOpenAssignLots} dataID={selectedItemsID} reload={reloadData} />
+            <CreateNewLotsDialog
+                open={openNewDialog}
+                setOpen={setOpenNewDialog}
+                reload={reloadData}
+            />
+            <AssingLotsDialog
+                open={openAssignLots}
+                setOpen={setOpenAssignLots}
+                dataID={selectedItemsID}
+                reload={reloadData}
+            />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -362,45 +381,70 @@ export function SingleItemsTable({ }) {
                                 placeholder="Search..."
                                 className="pr-8 pl-2 text-xs border border-zinc-300"
                                 onChange={handleSearchChange}
-
                             />
-                            <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
-                                <SearchIcon
-                                    width={15}
-                                    height={15}
-                                />
+                            <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs">
+                                <SearchIcon width={15} height={15} />
                             </div>
                         </div>
                         <Button
                             variant="filter"
                             size="filter"
-                            className='border border-zinc-300 flex items-center rounded'>
-                            <FilterIcons
-                                className=""
-                                fill="#CC0019" />
+                            className="border border-zinc-300 flex items-center rounded"
+                        >
+                            <FilterIcons className="" fill="#CC0019" />
                         </Button>
+                        <div className="">
+                            <Select>
+                                <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
+                                    <SelectValue placeholder="Filter By Destination" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup className="text-xs">
+                                        <SelectItem className="text-xs" value="apple">Apple</SelectItem>
+                                        <SelectItem className="text-xs" value="banana">Banana</SelectItem>
+                                        <SelectItem className="text-xs" value="blueberry">Blueberry</SelectItem>
+                                        <SelectItem className="text-xs" value="grapes">Grapes</SelectItem>
+                                        <SelectItem className="text-xs" value="pineapple">Pineapple</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="">
+                            <Select>
+                                <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
+                                    <SelectValue placeholder="Filter By Location" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup className="text-xs">
+                                    <SelectItem className="text-xs" value="apple">Apple</SelectItem>
+                                        <SelectItem className="text-xs" value="banana">Banana</SelectItem>
+                                        <SelectItem className="text-xs" value="blueberry">Blueberry</SelectItem>
+                                        <SelectItem className="text-xs" value="grapes">Grapes</SelectItem>
+                                        <SelectItem className="text-xs" value="pineapple">Pineapple</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
-                    {
-                        Object.keys(rowSelection).length === 0 ? (
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                className="px-10"
-                                onClick={() => setOpenNewDialog(true)}
-                            >
-                                <p className=" text-xs">New Lots</p>
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                className="px-10"
-                                onClick={() => toggleOpenChange(checkedItems)}
-                            >
-                                <p className=" text-xs">Assign to Lot</p>
-                            </Button>
-                        )
-                    }
+                    {Object.keys(rowSelection).length === 0 ? (
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="px-10"
+                            onClick={() => setOpenNewDialog(true)}
+                        >
+                            <p className=" text-xs">New Lots</p>
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="px-10"
+                            onClick={() => toggleOpenChange(checkedItems)}
+                        >
+                            <p className=" text-xs">Assign to Lot</p>
+                        </Button>
+                    )}
                 </div>
             </div>
             <Table className=" rounded-md">
@@ -413,7 +457,12 @@ export function SingleItemsTable({ }) {
                                 return (
                                     <TableHead
                                         key={header.id}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        className={`${isLastHeader
+                                            ? "w-[30px] "
+                                            : isFirstHeader
+                                                ? "w-[50px]"
+                                                : ""
+                                            } text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -428,26 +477,35 @@ export function SingleItemsTable({ }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-
                     {isSkeleton || !table.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
-                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
-                                    <TableRow key={index}>
-                                        {columns.map((column, columnIndex) => (
-                                            <TableCell
-                                                key={columnIndex}
-                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
-                                            >
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                [...Array(table.getRowModel().rows?.length || 5)].map(
+                                    (_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1
+                                                        ? "w-[30px]"
+                                                        : columnIndex === 0
+                                                            ? "w-[50px]"
+                                                            : ""
+                                                        } text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    )
+                                )}
 
                             {!isSkeleton && !table.getRowModel().rows?.length && (
                                 <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className="h-24 text-center"
+                                    >
                                         No results.
                                     </TableCell>
                                 </TableRow>
@@ -463,35 +521,38 @@ export function SingleItemsTable({ }) {
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell
                                         key={cell.id}
-                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                        className={`${cell.isLast
+                                            ? "w-[30px]"
+                                            : cell.isFirst
+                                                ? "w-[50px]"
+                                                : ""
+                                            } text-xs `}
                                     >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
                                     </TableCell>
                                 ))}
                             </TableRow>
                         ))
                     )}
                 </TableBody>
-
             </Table>
             <div className="flex justify-between w-full items-center mt-3 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
-                    <strong>
-                        {table.getFilteredSelectedRowModel().rows.length}
-                    </strong>
+                    <strong>{table.getFilteredSelectedRowModel().rows.length}</strong>
                     of{" "}
                     <div className="flex flex-row gap-1">
-                        <strong>
-                            {table.getFilteredRowModel().rows.length}
-                        </strong>
+                        <strong>{table.getFilteredRowModel().rows.length}</strong>
                         <p className="text-nowrap"> row(s) selected.</p>
                     </div>
                 </div>
-                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                <Pagination className={"flex justify-end w-full items-center gap-2"}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">
                         <div>Page</div>
                         <strong>
-                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getState().pagination.pageIndex + 1} of{" "}
                             {table.getPageCount().toLocaleString()}
                         </strong>
                     </div>
@@ -529,15 +590,11 @@ export function SingleItemsTable({ }) {
                     >
                         <ChevronsRightIcon className="h-4 w-4" />
                     </Button>
-                    <PaginationContent>
-
-
-                    </PaginationContent>
+                    <PaginationContent></PaginationContent>
                 </Pagination>
             </div>
-
         </>
-    )
+    );
 }
 
 

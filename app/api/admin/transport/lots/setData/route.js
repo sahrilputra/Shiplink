@@ -21,18 +21,18 @@ export async function POST(request) {
             action,
         } = await request.json();
 
-        
+
         const response = await axios.post(
             `${process.env.API_URL}/Lots/Lots_setdata`,
             {
                 lots_id: LotsId,
                 label: LotsLabel,
-                country_origin: Origin,
-                destination: Destination_country,
+                warehouse_origin: Origin,
+                warehouse_destination: Destination_country,
                 pickup_schedule: "",
                 trip_number: TripNumber,
                 status_id: Status,
-                pickup_schedule:pickDate,
+                pickup_schedule: pickDate,
                 documents: Documents,
                 action: action,
             },
@@ -49,7 +49,7 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
                 response: response.data
             };

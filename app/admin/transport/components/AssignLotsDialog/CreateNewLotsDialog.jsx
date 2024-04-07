@@ -16,7 +16,17 @@ import { Form } from "@/components/ui/form"
 import { useState } from "react"
 import axios from "axios";
 import React from 'react'
-
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 export function CreateNewLotsDialog({ open, setOpen, reload }) {
     const [select, setSeleceted] = useState("New");
 
@@ -25,16 +35,16 @@ export function CreateNewLotsDialog({ open, setOpen, reload }) {
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen} close={false} >
-            <DialogContent className="sm:max-w-[450px]">
-                <DialogHeader>
-                    <DialogTitle>
-                        <div className="flex flex-col gap-2 font-bold">
+        <AlertDialog open={open} onOpenChange={setOpen} close={false} >
+            <AlertDialogContent className="w-[450px] gap-0">
+                <AlertDialogHeader>
+                    <AlertDialogTitle>
+                        <div className="flex flex-col gap-2 font-bold text-center">
                             <p>Create New Lots</p>
                         </div>
-                    </DialogTitle>
-                </DialogHeader>
-                <div className="py-4">
+                    </AlertDialogTitle>
+                </AlertDialogHeader>
+                <div className="py-4 ">
                     <div className="flex flex-col gap-2 ">
                         <div className="flex flex-row gap-3 text-sm text-center">
                             <div
@@ -50,7 +60,7 @@ export function CreateNewLotsDialog({ open, setOpen, reload }) {
                         </div>
                     </div>
                 </div>
-            </DialogContent>
-        </Dialog>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }

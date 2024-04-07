@@ -10,6 +10,17 @@ import {
     DialogClose,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Form } from '@/components/ui/form'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
@@ -20,19 +31,19 @@ export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
         setOpen(false)
     }
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger asChild>
                 {/* <Button variant="outline">Edit Profile</Button> */}
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[450px]" close={false}>
-                <DialogHeader>
-                    <DialogTitle>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="w-[450px] gap-0" close={false}>
+                <AlertDialogHeader>s
+                    <AlertDialogTitle>
                         <div className="flex flex-col gap-2 font-bold">
                             <p>Edit Lot</p>
                         </div>
 
-                    </DialogTitle>
-                </DialogHeader>
+                    </AlertDialogTitle>
+                </AlertDialogHeader>
                 <div className="py-4">
                     <div className="flex flex-col gap-2 ">
                         <div className="w-full">
@@ -44,7 +55,7 @@ export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
                     </div>
                 </div>
 
-            </DialogContent>
-        </Dialog >
+            </AlertDialogContent>
+        </AlertDialog >
     )
 }

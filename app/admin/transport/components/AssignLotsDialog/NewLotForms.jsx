@@ -50,7 +50,6 @@ import { format } from 'date-fns'
 const formSchema = yup.object().shape({
     LotsId: yup.string(),
     LotsLabel: yup.string().required(),
-    Origin: yup.string().required(),
     Destination_country: yup.string(),
     TripNumber: yup.string().required(),
     Status: yup.number().required(),
@@ -62,7 +61,7 @@ const formSchema = yup.object().shape({
             otherwise: (event) => event.notRequired()
         }),
 })
-
+// Origin: yup.string().required(),
 export const NewLotsFrom = ({ close, data = null, reload }) => {
     const { toast } = useToast()
     const [popOverOpen, setPopOverOpen] = useState(false);
@@ -318,7 +317,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                 </>
                             )}
                         />
-                        <FormField
+                        {/* <FormField
                             name="Origin"
                             className="w-full"
                             control={form.control}
@@ -399,7 +398,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                     </FormItem>
                                 </>
                             )}
-                        />
+                        /> */}
                         <FormField
                             name="Destination_country"
                             className="w-full"
@@ -619,14 +618,16 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                         <Button
                             type="button"
                             variant="redOutline"
-                            className="w-full"
+                            size="sm"
+                            className="w-full text-xs"
                             onClick={close}
                         >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
-                            className="w-full"
+                            size="sm"
+                            className="w-full text-xs"
                             variant="destructive"
                         >
                             <p>Save changes</p>
