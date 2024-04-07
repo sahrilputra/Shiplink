@@ -95,6 +95,7 @@ export function SingleItemsTable({ }) {
             );
             console.log(response)
             const data = await response.data;
+            console.log("🚀 ~ fetchData ~ data:", data)
             const filteredData = data.package_info.filter(item => item.lots_id === null);
             setRowTotalData({
                 page_limit: data.page_limit,
@@ -107,6 +108,7 @@ export function SingleItemsTable({ }) {
             }));
             setWarehouse(filteredData);
             setIsSkeleton(false);
+            setRowSelection({});
         } catch (error) {
             console.log('Error:', error);
         }
@@ -173,6 +175,16 @@ export function SingleItemsTable({ }) {
         warehouseList();
     }, [])
 
+
+    const isCanAssign = (origin, destination, status) => {
+        if (origin === destination) {
+            return true
+        } else if (origin !== destination && status === "Cleared Custom") {
+            return true
+        } else {
+            return false
+        }
+    }
     const columns = [
 
         {
@@ -353,7 +365,7 @@ export function SingleItemsTable({ }) {
                             checked={row.getIsSelected()}
                             onCheckedChange={(value) => row.toggleSelected(!!value)}
                             aria-label="Select row"
-                            disabled={row.original.status !== "Cleared Custom" ? true : false}
+                            disabled={isCanAssign(row.original.warehouse_name_arrival, row.original.warehouse_name_destination, row.original.status) ? false : true}
                         />
                     </div>
                 )
