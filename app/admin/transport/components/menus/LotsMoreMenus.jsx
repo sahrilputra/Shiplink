@@ -60,7 +60,7 @@ export const LotsMoreMenusDropDrown = ({
                             <p className="text-xs text-myBlue">Download Package List</p>
                         </DropdownMenuItem> */}
                         <DropdownMenuItem>
-                            <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
+                            <NextLink href={`/admin/Lots_Details/${dataID}`} passHref>
                                 <p className="text-xs">View Lot Details</p>
                             </NextLink>
                         </DropdownMenuItem>

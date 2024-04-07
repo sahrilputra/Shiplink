@@ -358,7 +358,7 @@ export function LotsDetailsTable({
                                         colSpan={columns.length}
                                         className="h-24 text-center"
                                     >
-                                        No results.
+                                        This lot is empty
                                     </TableCell>
                                 </TableRow>
                             )}

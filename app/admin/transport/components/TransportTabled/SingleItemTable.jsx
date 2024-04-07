@@ -81,6 +81,8 @@ export function SingleItemsTable({ }) {
         warehouse_position: "",
         email: "",
         status: "",
+        sort_by: "status",
+        sort_type: "asc",
         page: 1,
         limit: 10,
         index: 0,

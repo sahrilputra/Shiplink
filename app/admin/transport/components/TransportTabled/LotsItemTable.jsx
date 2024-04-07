@@ -100,6 +100,8 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
     useEffect(() => {
         fetchData();
+        const intervalId = setInterval(fetchData, 3000); // Panggil fetchData setiap 3 detik
+        return () => clearInterval(intervalId); //
     }, [query]);
 
 
@@ -438,7 +440,7 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                         <>
                                             <TableRow >
                                                 <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                    <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id}/>
+                                                    <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id} />
                                                 </TableCell>
                                             </TableRow>
                                         </>

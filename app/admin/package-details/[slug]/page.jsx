@@ -501,7 +501,7 @@ export default function VerificationPages({ params }) {
                                                             variant="destructive"
                                                             size="sm"
                                                             className="text-xs text-white w-full"
-                                                            onClick={() => setOpenStatus(true)}
+                                                            onClick={() => setOpenDelete(true)}
                                                         >
                                                             <p className=' text-xs'>Delete Package</p>
                                                         </Button>
