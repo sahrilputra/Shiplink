@@ -12,7 +12,6 @@ export async function POST(request) {
         const {
             LotsId,
             LotsLabel,
-            Origin,
             Destination_country,
             TripNumber,
             Status,
@@ -27,7 +26,6 @@ export async function POST(request) {
             {
                 lots_id: LotsId,
                 label: LotsLabel,
-                warehouse_origin: Origin,
                 warehouse_destination: Destination_country,
                 pickup_schedule: "",
                 trip_number: TripNumber,

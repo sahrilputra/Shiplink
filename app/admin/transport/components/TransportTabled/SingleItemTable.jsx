@@ -10,10 +10,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink, MoreHorizontalIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink, MoreHorizontalIcon, XIcon } from "lucide-react";
 import NextLink from "next/link";
 import { Skeleton } from "@/components/ui/skeleton"
 import axios from "axios";
@@ -31,11 +37,6 @@ import { Input } from "@/components/ui/input";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
 } from "@/components/ui/pagination"
 
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
@@ -422,7 +423,7 @@ export function SingleItemsTable({ }) {
         })
     }
     const handleFilterLocation = (e) => {
-        setFilterOrigin(e)
+        setFilterLocation(e)
         console.log("Filter Destination : ", e)
         setQuery({
             warehouse_position: e,
@@ -432,9 +433,21 @@ export function SingleItemsTable({ }) {
         })
     }
 
+    const handleRemoveFilter = () => {
+        setFilterDestination("")
+        setFilterLocation("")
+        setQuery({
+            warehouse_destination: "",
+            warehouse_position: "",
+            page: 1,
+            limit: 10,
+            index: 0,
+        })
+    }
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
     const checkedItems = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
     const [openNewDialog, setOpenNewDialog] = useState(false)
+
     console.log("Selected : ", selectedItemsID)
     return (
         <>
@@ -481,13 +494,13 @@ export function SingleItemsTable({ }) {
                                             <SelectLabel className="text-xs font-bold">Filter Destination</SelectLabel>
                                             <>
                                                 {
-                                                    filterDestination !== "" ? (
+                                                    filterDestination !== "" || filterDestination === null ? (
                                                         <SelectItem className="text-xs text-red-500" value={null}>Remove Filter</SelectItem>
                                                     ) : null
                                                 }
                                                 {
                                                     warehouseListData.map((item, index) => (
-                                                        <SelectItem key={index} className="text-xs" value={item.warehouse_name}>{item.warehouse_name}</SelectItem>
+                                                        <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
                                                     ))
                                                 }
                                             </>
@@ -497,7 +510,7 @@ export function SingleItemsTable({ }) {
                             </Select>
                         </div>
                         <div className="">
-                            <Select>
+                            <Select onValueChange={handleFilterLocation} >
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
                                     <SelectValue placeholder="Filter By Location" />
                                 </SelectTrigger>
@@ -507,13 +520,34 @@ export function SingleItemsTable({ }) {
                                             <SelectLabel className="text-xs font-bold">Filter Location</SelectLabel>
                                             {
                                                 warehouseListData.map((item, index) => (
-                                                    <SelectItem key={index} className="text-xs" value={item.warehouse_name}>{item.warehouse_name}</SelectItem>
+                                                    <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
                                                 ))
                                             }
                                         </SelectGroup>
                                     </ScrollArea>
                                 </SelectContent>
                             </Select>
+                        </div>
+
+                        <div className="">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            onClick={handleRemoveFilter}
+                                            variant="destructive"
+                                            size="filter"
+                                            className="border flex items-center"
+                                        >
+                                            <XIcon className="" fill="#ffff" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Remove Filter</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+
                         </div>
                     </div>
                     {Object.keys(rowSelection).length === 0 ? (
