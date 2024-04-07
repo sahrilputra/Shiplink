@@ -8,6 +8,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -126,17 +137,17 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data = null
     return (
         <>
             {loading && <Loaders />}
-            <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>
-                            <div className="flex flex-col gap-2 font-bold">
+            <AlertDialog open={open} onOpenChange={setOpen}>
+                <AlertDialogContent className="w-[450px] gap-0 p-0 px-8 py-5">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>
+                            <div className="flex flex-col gap-1 font-bold text-center">
                                 <p>Update Status</p>
                                 <p>For Lots #{dataID}</p>
                             </div>
 
-                        </DialogTitle>
-                    </DialogHeader>
+                        </AlertDialogTitle>
+                    </AlertDialogHeader>
                     <div className="flex flex-col gap-2">
                         <Form {...form}>
                             <form
@@ -220,8 +231,8 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data = null
                             </form>
                         </Form>
                     </div>
-                </DialogContent>
-            </Dialog>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     )
 }
