@@ -128,7 +128,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
                 formData
             );
             toast({
-                title: `New Customer ${formData.name} is created!`,
+                title: `New User ${formData.name} is created!`,
                 description: response.data.message,
                 status: `Status : ${response.data.status}`,
             });
@@ -139,7 +139,7 @@ export const CreateNewUserForms = ({ close, setLoading, reload }) => {
             console.log('Error', error);
             setLoading(false)
             toast({
-                title: 'Error creating New Customer!',
+                title: 'Error creating New User!',
                 description: `Error : ${error.message}`,
                 status: `Status : ${error.status}`,
             });

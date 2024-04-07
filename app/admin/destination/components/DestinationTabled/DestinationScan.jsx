@@ -314,7 +314,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             }
             console.log("LOAD LOTS CONSOLE : ", data)
             reload();
-
         } catch (error) {
             toast({
                 title: 'Cannot Find The Lots!',
@@ -324,6 +323,16 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             console.log('Error:', error);
         }
     }
+
+    const handleUpdateScanStatus = async () => {
+        try {
+            
+        } catch (error) {
+            console.log('Error:', error);
+        }
+
+    }
+
 
     const sortData = (field, direction) => {
         const sortedData = [...bins];
