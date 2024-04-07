@@ -53,7 +53,7 @@ const formSchema = yup.object().shape({
     Destination_country: yup.string(),
     TripNumber: yup.string().required(),
     Status: yup.number().required(),
-    Status_id: yup.number(),
+    Status_name: yup.string(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string())
         .when('lots_id', {
@@ -80,8 +80,12 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         index: 0,
     })
 
+
+
     const [originWarehouse, setOriginWarehouse] = useState([])
     const [destinationWarehouse, setDestinationWarehouse] = useState([])
+
+
     const fetchWarehouses = async () => {
         try {
             const response = await axios.post(
@@ -100,13 +104,16 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             console.log(error);
         }
     }
+
     const filterDestinationWarehouses = (originCountry) => {
         return destinationWarehouse.filter(warehouse => warehouse.warehouse_id !== originCountry);
     }
 
+
     useEffect(() => {
         fetchWarehouses();
     }, [])
+
 
     console.log("🚀 ~ NewLotsFrom ~ countryQuery:", countryQuery)
 
@@ -152,24 +159,15 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         defaultValues: {
             LotsId: data?.lots_id || "",
             LotsLabel: data?.label || "",
-            Origin: data?.country_origin || "",
             Destination_country: data?.destination || "",
             TripNumber: data?.trip_number || "",
             Status: data?.status_id || "",
+            Status_name: data?.status || "",
             pickDate: data?.pickup_schedule || "",
             Documents: data?.documents || "",
         },
         mode: "onChange",
     })
-
-    // useEffect(() => {
-    //     if (data) {
-    //         const statusData = statusList.find((item) => item.id_status === data.status);
-    //         console.log("🚀 ~ useEffect ~ statusData:", statusData)
-    //         form.setValue('Status', statusData?.id_status)
-    //         setDataStatus(statusData?.status)
-    //     }
-    // }, [data])
 
     const [dataStatus, setDataStatus] = useState(null);
     const handleFileChange = (event) => {
@@ -241,8 +239,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
     console.log('error', form.formState.errors)
 
     console.log("origin, destination", form.watch("Origin"), form.watch("Destination_country"))
-    console.log("Status", form.watch("Status"));
-    const [statusSelect, setStatusSelect] = useState("");
+    const [statusSelect, setStatusSelect] = useState("")
     return (
         <>
             {loading && <Loaders />}
@@ -426,7 +423,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                     />
                     <FormField
                         control={form.control}
-                        name="Status"
+                        name="Status_name"
                         render={({ field }) => (
                             <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                 <FormLabel className="w-[40%]">Select Status</FormLabel>
@@ -438,6 +435,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                         field.onChange(
                                             selectedStatus ? selectedStatus.id_status : ""
                                         ); // Set id_status as value if found, otherwise empty string
+                                        form.setValue('Status', selectedStatus.id_status);
                                     }}
                                     defaultValue={field.value}
                                 >
@@ -452,6 +450,9 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                 className="text-xs"
                                                 key={index}
                                                 value={item.status}
+                                                onSelect={() => {
+                                                    form.setValue('Status', item.id_status);
+                                                }}
                                             >
                                                 {item.status}
                                             </SelectItem>

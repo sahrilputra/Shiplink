@@ -19,6 +19,7 @@ export async function POST(request) {
             pickDate,
             action,
         } = await request.json();
+        console.log("🚀 ~ POST ~ action:", action)
 
 
         const response = await axios.post(

@@ -100,8 +100,8 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
 
     useEffect(() => {
         fetchData();
-        const intervalId = setInterval(fetchData, 3000); // Panggil fetchData setiap 3 detik
-        return () => clearInterval(intervalId); //
+        // const intervalId = setInterval(fetchData, 3000); 
+        // return () => clearInterval(intervalId);
     }, [query]);
 
 
