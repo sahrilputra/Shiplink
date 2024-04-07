@@ -37,14 +37,14 @@ import { Loaders } from "@/components/ui/loaders"
 import axios from 'axios'
 import { useToast } from "@/components/ui/use-toast"
 
-
 const formSchema = yup.object().shape({
     status_name: yup.string(),
     status_id: yup.number(),
     lots_id: yup.string(),
 })
 
-export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
+export function UpdateDialog({ open, setOpen, dataID = null, reload, data = null }) {
+    console.log("🚀 ~ UpdateDialog ~ data:", data)
 
     const { toast } = useToast()
     const [loading, setLoading] = useState(false)
@@ -52,7 +52,7 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            status_id: 0,
+            status_id: data?.status_id || 0,
             status_name: data?.status || '',
             lots_id: dataID || '',
         },
@@ -76,6 +76,12 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        form.setValue('status_name', data?.status || '');
+        form.setValue('status_id', data?.status_id || 0);
+    }, [data])
+
+
     const handleSave = async (formData) => {
         console.log("dikirim", formData)
         setLoading(true)
@@ -83,7 +89,10 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
         try {
             const response = await axios.post(
                 `/api/admin/custom_clearance/setLotsStatus`,
-                formData
+                {
+                    lots_id: dataID,
+                    status_id: formData.status_id,
+                }
             );
             toast({
                 title: `Success New Status For ${dataID} !`,
@@ -111,6 +120,8 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
         setSelectedStatus(e)
         const statusID = statusList.find(item => item.status === e)?.id_status;
     }
+
+    console.log("STATUS ID", form.watch('status_id'))
 
     return (
         <>
@@ -142,17 +153,21 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
                                     <div className="w-[100%]">
                                         <FormField
                                             control={form.control}
-                                            name="status_id"
+                                            name="status_name"
                                             render={({ field }) => (
                                                 <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                                     <FormLabel className="w-[40%]">Select Status</FormLabel>
                                                     <Select
+                                                        defaultValue={field.value}
                                                         onValueChange={(value) => {
-                                                            const selectedStatus = statusList.find(item => item.status === value);
-                                                            field.onChange(selectedStatus ? selectedStatus.id_status : ''); // Set id_status as value if found, otherwise empty string
+                                                            const selectedStatus = statusList.find(
+                                                                (item) => item.status === value
+                                                            );
+                                                            field.onChange(
+                                                                selectedStatus ? selectedStatus.id_status : ""
+                                                            ); // Set id_status as value if found, otherwise empty string
+                                                            form.setValue('status_id', selectedStatus.id_status);
                                                         }}
-                                                        defaultValue={`${field.value ? field.value : "Select Status"}`}
-
                                                     >
                                                         <FormControl className='text-xs'>
                                                             <SelectTrigger>
@@ -163,10 +178,16 @@ export function UpdateDialog({ open, setOpen, dataID = null, reload, data }) {
                                                             {
                                                                 statusList?.map((item, index) => (
                                                                     <SelectItem
-                                                                        className='text-xs'
+                                                                        className={`text-xs ${item.status === data?.status ? 'bg-zinc-100 text-zinc-500' : ''}`}
                                                                         key={index}
                                                                         value={item.status}
-                                                                        onClick={() => form.setValue('status_id', item.id_status)}
+                                                                        disabled={item.status === data?.status}
+                                                                        onSelect={() => {
+                                                                            form.setValue('status_id', item.id_status)
+                                                                        }}
+                                                                        onClick={() => {
+                                                                            form.setValue('status_id', item.id_status)
+                                                                        }}
                                                                     >
                                                                         {item.status}
                                                                     </SelectItem>

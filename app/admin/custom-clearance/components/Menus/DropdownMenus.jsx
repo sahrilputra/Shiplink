@@ -27,22 +27,7 @@ export function CustomBrokerDropdownMenus({
     const { toast } = useToast();
     console.log("DataID", dataID);
     const [statusList, setStatusList] = useState([]);
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`/api/admin/transport/lots/status/list`);
-            console.log(response);
-            const data = await response.data.data;
-            setStatusList(data);
-        } catch (error) {
-            console.log("Error:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
+    
     const handleSave = async (id) => {
         console.log("dikirim", id);
         setIsSkeleton(true);

@@ -14,6 +14,8 @@ export async function POST(request) {
             status_id
         } = await request.json();
 
+        console.log("lots_id", lots_id, "status_id", status_id)
+
         const response = await axios.post(
             `${process.env.API_URL}/Lots/Update_Lots_Status`,
             {

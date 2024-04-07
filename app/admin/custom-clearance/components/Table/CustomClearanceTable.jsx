@@ -179,7 +179,7 @@ export function CustomClearanceTable({ data }) {
                                 variant="secondary"
                                 size="sm"
                                 className="rounded-[3px] h-6 px-2"
-                                onClick={() => toggleOpenChange(row.original.lots_id)}
+                                onClick={() => handleOpenEdit(row.original, row.original.lots_id)}
                             >
                                 <p className="text-[11px]">Update</p>
                             </Button>
@@ -188,6 +188,7 @@ export function CustomClearanceTable({ data }) {
                                 setIsSkeleton={setIsSkeleton}
                                 reload={reload}
                                 documents={row.original.documents}
+                                key={row.original.lots_id}
                             />
                         </div>
                     </div>
@@ -271,6 +272,12 @@ export function CustomClearanceTable({ data }) {
         }
     };
 
+    const [dataUpdate, setDataUpdate] = useState({});
+    const handleOpenEdit = (data, id) => {
+        setOpen(true)
+        setDataUpdate(data);
+        setDataID(id)
+    }
     return (
         <>
             <UpdateDialog
@@ -279,8 +286,7 @@ export function CustomClearanceTable({ data }) {
                 dataID={dataID}
                 reload={reload}
                 // status={status}
-                data={lots}
-                key={dataID}
+                data={dataUpdate}
             />
             <div className="">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center py-2 px-2">
@@ -306,10 +312,10 @@ export function CustomClearanceTable({ data }) {
                                     <TableHead
                                         key={header.id}
                                         className={`${isLastHeader
-                                                ? "w-[30px] "
-                                                : isFirstHeader
-                                                    ? "w-[50px]"
-                                                    : ""
+                                            ? "w-[30px] "
+                                            : isFirstHeader
+                                                ? "w-[50px]"
+                                                : ""
                                             } text-xs`}
                                     >
                                         {header.isPlaceholder
@@ -335,10 +341,10 @@ export function CustomClearanceTable({ data }) {
                                                 <TableCell
                                                     key={columnIndex}
                                                     className={`${columnIndex === columns.length - 1
-                                                            ? "w-[30px]"
-                                                            : columnIndex === 0
-                                                                ? "w-[50px]"
-                                                                : ""
+                                                        ? "w-[30px]"
+                                                        : columnIndex === 0
+                                                            ? "w-[50px]"
+                                                            : ""
                                                         } text-xs`}
                                                 >
                                                     <Skeleton className={"w-full rounded h-[30px]"} />
@@ -374,10 +380,10 @@ export function CustomClearanceTable({ data }) {
                                         <TableCell
                                             key={cell.id}
                                             className={`${cell.isLast
-                                                    ? "w-[30px]"
-                                                    : cell.isFirst
-                                                        ? "w-[50px]"
-                                                        : ""
+                                                ? "w-[30px]"
+                                                : cell.isFirst
+                                                    ? "w-[50px]"
+                                                    : ""
                                                 } text-xs ${expandedRows[row.id] &&
                                                 "bg-blue-200 hover:bg-blue-200"
                                                 } `}
