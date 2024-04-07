@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -17,6 +17,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, Externa
 import NextLink from "next/link";
 import { Skeleton } from "@/components/ui/skeleton"
 import axios from "axios";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
     ColumnDef,
     flexRender,
@@ -59,7 +60,8 @@ export function SingleItemsTable({ }) {
     const [warehouse, setWarehouse] = useState([]);
     const [deleteID, setDeleteId] = useState(null);
     const [deleteDialog, setDeleteDialog] = useState(false);
-    const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
+    const [filterDestination, setFilterDestination] = useState("");
+    const [filterLocation, setFilterLocation] = useState("");
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [selectedItemsID, setSelectedItemsID] = useState([])
     const [openAssignLots, setOpenAssignLots] = useState(false);
@@ -68,10 +70,16 @@ export function SingleItemsTable({ }) {
         date_start: "",
         date_end: "",
         tracking_id: "",
-        status: "",
         lots_id: "",
         bins_id: "",
         customer_id: "",
+        country_origin: "",
+        country_destination: "",
+        warehouse_origin: "",
+        warehouse_destination: "",
+        warehouse_position: "",
+        email: "",
+        status: "",
         page: 1,
         limit: 10,
         index: 0,
@@ -81,7 +89,7 @@ export function SingleItemsTable({ }) {
     const fetchData = async () => {
         try {
             const response = await axios.post(
-                `/api/admin/transport/singleItem/list`,
+                `/api/admin/transport/package_list`,
                 query
             );
             console.log(response)
@@ -139,12 +147,38 @@ export function SingleItemsTable({ }) {
             }));
         }
     };
+
+    const [warehouseListData, setWarehouseData] = useState([]);
+    const warehouseList = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/warehouse/list`,
+                {
+                    keyword: "",
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                }
+            );
+            console.log(response)
+            const data = await response.data;
+            setWarehouseData(data.warehouse);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log("Erorr : ", error)
+        }
+    }
+    useEffect(() => {
+        warehouseList();
+    })
+
     const columns = [
 
         {
             accessorKey: "tracking_id",
             header: "Package ID",
             className: "text-xs",
+            size: 80,
             cell: ({ row }) => {
                 return (
                     <div
@@ -159,6 +193,7 @@ export function SingleItemsTable({ }) {
         {
             accessorKey: "customer_name",
             header: "Customer Name",
+            size: 150,
             cell: ({ row }) => {
                 return (
                     <div className="text-xs flex flex-col flex-wrap">
@@ -173,6 +208,7 @@ export function SingleItemsTable({ }) {
         {
             accessorKey: "address",
             header: "Origin",
+            size: 80,
             cell: ({ row }) => {
                 const countryCode = row.original.country_code_arrival ? row.original.country_code_arrival.substring(0, 2).toLowerCase() : '';
                 return (
@@ -185,7 +221,7 @@ export function SingleItemsTable({ }) {
                                     </>
                                 ) : (
                                     <>
-                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                        <div className="text-xs flex flex-row gap-2 items-center h-[20px] w-max flex-nowrap">
                                             <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                             <span>
                                                 {`- ${row.original.warehouse_name_arrival} WH`}
@@ -201,6 +237,7 @@ export function SingleItemsTable({ }) {
         {
             accessorKey: "Destination",
             header: "Destination",
+            size: 80,
             cell: ({ row }) => {
                 const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
@@ -213,7 +250,7 @@ export function SingleItemsTable({ }) {
                                     </>
                                 ) : (
                                     <>
-                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                        <div className="text-xs flex flex-row gap-2 items-center h-[20px] w-max flex-nowrap">
                                             <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                             <span className='text-nowrap'>
                                                 {`- ${row.original.warehouse_name_destination} WH`} {`${row.original.services === "Hold pickup" ? "- HFP" : ""}`}
@@ -227,28 +264,43 @@ export function SingleItemsTable({ }) {
             }
         },
         {
-            accessorKey: "location",
+            accessorKey: "warehouse_current_position",
             header: "Location",
+            size: 80,
             cell: ({ row }) => {
+                const countryCode = row.original.country_code_position ? row.original.country_code_position.substring(0, 2).toLowerCase() : '';
                 return (
-                    <div
-                        className="text-xs flex flex-col flex-wrap number tabular-nums">
-                        <span
-                            style={{ fontFamily: 'roboto' }}
-                        >
-                            {row.original.location}
-                        </span>
-                    </div>
+                    <>
+                        {
+                            row.original.warehouse_name_position === null && row.original.warehouse_name_position === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center h-[20px] w-max flex-nowrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span className='text-nowrap'>
+                                                {`- ${row.original.warehouse_name_position} WH`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
                 )
             }
         },
         {
             accessorKey: "status",
             header: "Customs Status",
+            size: 50,
         },
         {
             id: "Action",
             header: "Action",
+            size: 80,
             cell: ({ row }) => {
                 return (
                     <div className="w-[80px]" key={row}>
@@ -277,9 +329,10 @@ export function SingleItemsTable({ }) {
         {
             accessorKey: "select",
             id: "select",
+            size: 30,
             header: ({ table }) => {
                 return (
-                    <div className="w-[40px]">
+                    <div className="w-[40px] flex items-center justify-center px-0">
                         <Checkbox
                             checked={
                                 table.getIsAllPageRowsSelected() ||
@@ -293,7 +346,7 @@ export function SingleItemsTable({ }) {
             },
             cell: ({ row }) => {
                 return (
-                    <div className="w-[40px]">
+                    <div className="w-[40px] flex items-center justify-center px-0">
                         <Checkbox
                             checked={row.getIsSelected()}
                             onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -317,6 +370,9 @@ export function SingleItemsTable({ }) {
         getSortedRowModel: getSortedRowModel(),
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,
+        defaultColumn: {
+            size: "auto",
+        },
         state: {
             sorting,
             rowSelection,
@@ -354,6 +410,27 @@ export function SingleItemsTable({ }) {
         setRowSelection({});
         fetchData();
     };
+
+    const handleFilterDestination = (e) => {
+        setFilterDestination(e)
+        console.log("Filter Destination : ", e)
+        setQuery({
+            warehouse_destination: e,
+            page: 1,
+            limit: 10,
+            index: 0,
+        })
+    }
+    const handleFilterLocation = (e) => {
+        setFilterOrigin(e)
+        console.log("Filter Destination : ", e)
+        setQuery({
+            warehouse_position: e,
+            page: 1,
+            limit: 10,
+            index: 0,
+        })
+    }
 
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
     const checkedItems = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
@@ -394,18 +471,28 @@ export function SingleItemsTable({ }) {
                             <FilterIcons className="" fill="#CC0019" />
                         </Button>
                         <div className="">
-                            <Select>
+                            <Select onValueChange={handleFilterDestination}>
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
                                     <SelectValue placeholder="Filter By Destination" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectGroup className="text-xs">
-                                        <SelectItem className="text-xs" value="apple">Apple</SelectItem>
-                                        <SelectItem className="text-xs" value="banana">Banana</SelectItem>
-                                        <SelectItem className="text-xs" value="blueberry">Blueberry</SelectItem>
-                                        <SelectItem className="text-xs" value="grapes">Grapes</SelectItem>
-                                        <SelectItem className="text-xs" value="pineapple">Pineapple</SelectItem>
-                                    </SelectGroup>
+                                    <ScrollArea className="h-[150px]">
+                                        <SelectGroup className="text-xs">
+                                            <SelectLabel className="text-xs font-bold">Filter Destination</SelectLabel>
+                                            <>
+                                                {
+                                                    filterDestination !== "" ? (
+                                                        <SelectItem className="text-xs text-red-500" value={null}>Remove Filter</SelectItem>
+                                                    ) : null
+                                                }
+                                                {
+                                                    warehouseListData.map((item, index) => (
+                                                        <SelectItem key={index} className="text-xs" value={item.warehouse_name}>{item.warehouse_name}</SelectItem>
+                                                    ))
+                                                }
+                                            </>
+                                        </SelectGroup>
+                                    </ScrollArea>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -415,13 +502,16 @@ export function SingleItemsTable({ }) {
                                     <SelectValue placeholder="Filter By Location" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectGroup className="text-xs">
-                                    <SelectItem className="text-xs" value="apple">Apple</SelectItem>
-                                        <SelectItem className="text-xs" value="banana">Banana</SelectItem>
-                                        <SelectItem className="text-xs" value="blueberry">Blueberry</SelectItem>
-                                        <SelectItem className="text-xs" value="grapes">Grapes</SelectItem>
-                                        <SelectItem className="text-xs" value="pineapple">Pineapple</SelectItem>
-                                    </SelectGroup>
+                                    <ScrollArea className="h-[150px]">
+                                        <SelectGroup className="text-xs">
+                                            <SelectLabel className="text-xs font-bold">Filter Location</SelectLabel>
+                                            {
+                                                warehouseListData.map((item, index) => (
+                                                    <SelectItem key={index} className="text-xs" value={item.warehouse_name}>{item.warehouse_name}</SelectItem>
+                                                ))
+                                            }
+                                        </SelectGroup>
+                                    </ScrollArea>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -457,6 +547,7 @@ export function SingleItemsTable({ }) {
                                 return (
                                     <TableHead
                                         key={header.id}
+                                        style={{ width: `${header.getSize()}px` }}
                                         className={`${isLastHeader
                                             ? "w-[30px] "
                                             : isFirstHeader
@@ -470,7 +561,7 @@ export function SingleItemsTable({ }) {
                                                 header.column.columnDef.header,
                                                 header.getContext()
                                             )}
-                                    </TableHead>
+                                    </TableHead >
                                 );
                             })}
                         </>
@@ -538,7 +629,7 @@ export function SingleItemsTable({ }) {
                         ))
                     )}
                 </TableBody>
-            </Table>
+            </Table >
             <div className="flex justify-between w-full items-center mt-3 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
                     <strong>{table.getFilteredSelectedRowModel().rows.length}</strong>
