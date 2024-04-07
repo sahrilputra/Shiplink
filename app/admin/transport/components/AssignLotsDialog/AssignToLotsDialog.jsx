@@ -8,6 +8,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -42,6 +53,7 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
         },
         mode: "onChange",
     })
+
     const [select, setSeleceted] = useState("Exiting");
     const [loading, setLoading] = useState(false);
     const [selectedLots, setSelectedLots] = useState(null);
@@ -103,17 +115,17 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
     return (
         <>
             {loading && <Loaders />}
-            <Dialog open={open} onOpenChange={setOpen} modal={true}>
-                <DialogContent className="sm:max-w-[450px]" close={false}>
+            <AlertDialog open={open} onOpenChange={setOpen} modal={true}>
+                <AlertDialogContent className="w-[450px] gap-0 p-0 px-8 py-5">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(handleSave)} action="#">
-                            <DialogHeader>
-                                <DialogTitle>
-                                    <div className="flex flex-col gap-2 font-bold">
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    <div className="flex flex-col gap-2 font-bold text-center">
                                         <p>Assing To Lots</p>
                                     </div>
-                                </DialogTitle>
-                            </DialogHeader>
+                                </AlertDialogTitle>
+                            </AlertDialogHeader>
                             <div className="py-4">
                                 <div className="flex flex-col gap-2 ">
                                     <div className="flex flex-row gap-3 text-sm text-center">
@@ -144,8 +156,8 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
                             </div>
                         </form>
                     </Form>
-                </DialogContent>
-            </Dialog>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 }

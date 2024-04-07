@@ -16,8 +16,6 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import axios from "axios";
-
-import data from '../../../../../data/admin/TransportLotsData.json'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsFormError, form }) {
@@ -60,7 +58,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsF
         <>
             <div className="w-full">
                 <Popover open={open} onOpenChange={setOpen} modal={true}>
-                    <p className={`${IsFormError ? "text-red-500" : ""}`}>Select Lot</p>
+                    <p className={`${form.formState.errors.lots_id ? "text-red-500" : ""}`}>Select Lot</p>
                     <PopoverTrigger asChild>
                         <Button
                             variant="outline"
@@ -104,7 +102,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsF
                         </Command>
                     </PopoverContent>
                     {
-                        IsFormError && <p className="text-red-500 text-xs mt-3">Please select a lot</p>
+                        form.formState.errors.lots_id ? <p className="text-red-500 text-xs mt-3">Please select a lot</p> : null
                     }
                 </Popover>
                 <div className="flex flex-row justify-between w-full gap-3 pt-4">

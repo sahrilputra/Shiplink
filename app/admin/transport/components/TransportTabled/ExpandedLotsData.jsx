@@ -38,13 +38,13 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
                 <TableBody>
                     <TableRow className="text-xs bg-white">
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>{data?.updated_at || "undefined"}</p>
+                            <p>{data?.updated_at || "-"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>{data?.trip_number || "undefined"}</p>
+                            <p>{data?.trip_number || "-"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>{data?.total_items || "0"}</p>
+                            <p>{data?.total_items || "-"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0  px-5 py-2 w-max flex-row flex justify-between gap-3">
                             <NextLink passHref href={`/admin/Lots_Details/${lotsID}`}>
