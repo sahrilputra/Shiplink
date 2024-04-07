@@ -298,13 +298,23 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                 }
             );
             const data = await response.data;
+            if (response.data.message === "Lot Not Found !") {
+                setIsButtonDisabled(false)
+                return toast({
+                    title: 'Cannot Find The Lots!',
+                    description: response.data.message,
+                    status: 'error',
+                });
+            } else {
+                toast({
+                    title: `Lots ${lotsNumber} Has been loaded!`,
+                    description: response.data.message,
+                });
+                setIsButtonDisabled(false)
+            }
             console.log("LOAD LOTS CONSOLE : ", data)
             reload();
-            toast({
-                title: `Lots ${lotsNumber} Has been loaded!`,
-                description: response.data.message,
-            });
-            setIsButtonDisabled(false)
+
         } catch (error) {
             toast({
                 title: 'Cannot Find The Lots!',
