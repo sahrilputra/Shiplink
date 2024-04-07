@@ -75,9 +75,11 @@ export default function Profiles({ params }) {
                                 ) : (
                                     <div className="content py-3  bg-blue-50 border border-neutral-200 rounded-md text-sm flex flex-col gap-1 justify-center items-center h-full" >
                                         <div className="rounded-full m-3 mb-2">
-                                            <img src="https://source.boringavatars.com/beam"
+                                            <img
+                                                src={'../../../assets/user-holder.svg'}
                                                 alt="avatar"
-                                                className='w-[50px] h-[50px] rounded-full object-cover'
+                                                className="w-[50px] h-[50px] rounded-full object-cover border"
+
                                             />
                                         </div>
                                         <p className='font-bold text-sm'>{user.email ? user.email : ''}</p>
