@@ -112,6 +112,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
 
     useEffect(() => {
         fetchWarehouses();
+        setSelectDestination(data?.warehouse_destination_name || "");
     }, [])
 
 
@@ -159,7 +160,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         defaultValues: {
             LotsId: data?.lots_id || "",
             LotsLabel: data?.label || "",
-            Destination_country: data?.destination || "",
+            Destination_country: data?.warehouse_destination || "",
             TripNumber: data?.trip_number || "",
             Status: data?.status_id || "",
             Status_name: data?.status || "",
