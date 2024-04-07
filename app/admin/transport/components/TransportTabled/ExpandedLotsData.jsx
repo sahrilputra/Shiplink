@@ -24,7 +24,7 @@ export const ExpandedLotsData = ({ data, lotsID }) => {
                             <p>{data?.total_items || "0"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0  px-5 py-2 w-max flex-row flex justify-between gap-3">
-                            <NextLink passHref href={`/admin/transport/lots/${lotsID}`}>
+                            <NextLink passHref href={`/admin/Lots_Details/${lotsID}`}>
                                 <Button
                                     variant="secondary"
                                     size="xs"

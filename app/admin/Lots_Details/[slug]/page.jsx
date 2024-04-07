@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react'
 import styles from '../styles.module.scss'
 import axios from 'axios'
 import { LotsDetailsTable } from '../../transport/components/TransportTabled/LotsDetailsTable'
-
+import Image from 'next/image'
+import { Separator } from '@/components/ui/separator'
 export default function LotsDetails({ params }) {
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [open, setOpen] = useState(false);
+    const [lotsData, setLotsData] = useState([]);
+    console.log("🚀 ~ LotsDetails ~ lotsData:", lotsData)
     const lostId = params.slug
     const [query, setQuery] = useState({
         keyword: "",
@@ -19,6 +22,18 @@ export default function LotsDetails({ params }) {
         limit: 10,
         index: 0,
     });
+
+    const [lotsQuery, setLotsQuery] = useState({
+        keyword: "",
+        date_start: "",
+        date_end: "",
+        lots_id: lostId,
+        status: "",
+        destination: "",
+        page: 0,
+        limit: 0,
+        index: 0
+    })
 
 
     const [pagination, setPagination] = useState({
@@ -76,6 +91,25 @@ export default function LotsDetails({ params }) {
         fetchData();
     }, [query]);
 
+    useEffect(() => {
+        const fetchLotsDetails = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/transport/lots/list`,
+                    lotsQuery
+                );
+                const data = await response.data;
+                const filteredData = data.lots.filter(lot => lot.lots_id === lostId);
+                setLotsData(filteredData[0]);
+                console.log(data)
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        }
+
+        fetchLotsDetails();
+    }, [lotsQuery, lostId])
+
     const reload = () => {
         setIsSkeleton(true);
         fetchData();
@@ -92,24 +126,42 @@ export default function LotsDetails({ params }) {
             <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <div className={styles.configHeader}>
-                        {/* <div className={styles.banner}>
-                            <div className={styles.icon}>
+                        <div className={styles.banner}>
+                            {/* <div className={styles.icon}>
                                 <Image
                                     src={"/backoffice/transport-blue.png"}
                                     width={40}
                                     height={40}
                                     alt='config icon'
                                 />
-                            </div>
+                            </div> */}
                             <div className={`${styles.title} flex flex-col`}>
-                                <h1 className=" text-zinc-900 text-sm font-bold ">Transport Preparation</h1>
-                                <Params />
+                                <h1 className=" text-zinc-900 text-sm font-bold ">Lot ID : {lotsData?.lots_id}</h1>
+                                <div className="text-blue-900 text-xs font-normal">
+                                    <p>Origin : {lotsData?.warehouse_origin_name} WH - {lotsData?.country_name}</p>
+                                    <p>Destination : {lotsData?.warehouse_destination_name} WH - {lotsData?.destination_name}</p>
+                                    <div className="flex flex-row gap-3 pt-2">
+                                        <div className="">
+                                            <p>Status : {lotsData?.status}</p>
+                                            <p>Pickup Schedule : {lotsData?.pickup_schedule}</p>
+                                        </div>
+                                        <div className="w-[5px]">
+                                            <Separator orientation="vertical" className="w-[1.5px]" />
+                                        </div>
+                                        <div className="">
+                                            <p>Trip Number : {lotsData?.trip_number}</p>
+                                            <p>Total Items : {lotsData?.total_items}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {/* <Params /> */}
                             </div>
                         </div>
 
-                        <div className={`${styles.menus}`}>
-                            <TransportMenus />
-                        </div> */}
+                        <div className={`${styles.menus} text-xs`}>
+                            <p></p>
+                        </div>
                     </div>
 
                     <div className={styles.childContent}>

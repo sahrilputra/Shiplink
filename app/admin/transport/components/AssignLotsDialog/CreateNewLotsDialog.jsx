@@ -36,7 +36,7 @@ export function CreateNewLotsDialog({ open, setOpen, reload }) {
 
     return (
         <AlertDialog open={open} onOpenChange={setOpen} close={false} >
-            <AlertDialogContent className="w-[450px] gap-0">
+            <AlertDialogContent className="w-[450px] gap-0 p-0 px-8 py-5">
                 <AlertDialogHeader>
                     <AlertDialogTitle>
                         <div className="flex flex-col gap-2 font-bold text-center">
@@ -44,7 +44,7 @@ export function CreateNewLotsDialog({ open, setOpen, reload }) {
                         </div>
                     </AlertDialogTitle>
                 </AlertDialogHeader>
-                <div className="py-4 ">
+                <div className="py-2 ">
                     <div className="flex flex-col gap-2 ">
                         <div className="flex flex-row gap-3 text-sm text-center">
                             <div

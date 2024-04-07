@@ -53,6 +53,7 @@ const formSchema = yup.object().shape({
     Destination_country: yup.string(),
     TripNumber: yup.string().required(),
     Status: yup.number().required(),
+    Status_id: yup.number(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string())
         .when('lots_id', {
@@ -63,6 +64,7 @@ const formSchema = yup.object().shape({
 })
 // Origin: yup.string().required(),
 export const NewLotsFrom = ({ close, data = null, reload }) => {
+    console.log("🚀 ~ NewLotsFrom ~ data:", data)
     const { toast } = useToast()
     const [popOverOpen, setPopOverOpen] = useState(false);
     const [openOrigin, setOpenOrigin] = useState(false);
@@ -78,12 +80,8 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         index: 0,
     })
 
-
-
     const [originWarehouse, setOriginWarehouse] = useState([])
     const [destinationWarehouse, setDestinationWarehouse] = useState([])
-
-
     const fetchWarehouses = async () => {
         try {
             const response = await axios.post(
@@ -102,40 +100,14 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             console.log(error);
         }
     }
-
     const filterDestinationWarehouses = (originCountry) => {
         return destinationWarehouse.filter(warehouse => warehouse.warehouse_id !== originCountry);
     }
-
 
     useEffect(() => {
         fetchWarehouses();
     }, [])
 
-
-    // const [warehouse, setWarehouse] = useState([])
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.post(
-    //                 `/api/admin/warehouse/list`,
-    //                 {
-    //                     keyword: '',
-    //                     page: 0,
-    //                     limit: 0,
-    //                     index: 0,
-    //                 }
-    //             );
-    //             console.log("Warehouse :", response.data);
-    //             const filteredWarehouse = response.data.warehouse.filter(item => item.country_code !== arrivalCode);
-    //             setWarehouse(filteredWarehouse);
-    //         } catch (error) {
-    //             console.log(error);
-    //             fetchData();
-    //         }
-    //     };
-    //     fetchData();
-    // }, [arrivalCode]);
     console.log("🚀 ~ NewLotsFrom ~ countryQuery:", countryQuery)
 
     useEffect(() => {
@@ -183,21 +155,21 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             Origin: data?.country_origin || "",
             Destination_country: data?.destination || "",
             TripNumber: data?.trip_number || "",
-            Status: data?.status || "",
+            Status: data?.status_id || "",
             pickDate: data?.pickup_schedule || "",
             Documents: data?.documents || "",
         },
         mode: "onChange",
     })
 
-    useEffect(() => {
-        if (data) {
-            const statusData = statusList.find((item) => item.id_status === data.status);
-            console.log("🚀 ~ useEffect ~ statusData:", statusData)
-            form.setValue('Status', statusData?.id_status)
-            setDataStatus(statusData?.status)
-        }
-    }, [data])
+    // useEffect(() => {
+    //     if (data) {
+    //         const statusData = statusList.find((item) => item.id_status === data.status);
+    //         console.log("🚀 ~ useEffect ~ statusData:", statusData)
+    //         form.setValue('Status', statusData?.id_status)
+    //         setDataStatus(statusData?.status)
+    //     }
+    // }, [data])
 
     const [dataStatus, setDataStatus] = useState(null);
     const handleFileChange = (event) => {
@@ -269,6 +241,8 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
     console.log('error', form.formState.errors)
 
     console.log("origin, destination", form.watch("Origin"), form.watch("Destination_country"))
+    console.log("Status", form.watch("Status"));
+    const [statusSelect, setStatusSelect] = useState("");
     return (
         <>
             {loading && <Loaders />}
@@ -280,22 +254,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                     action=""
                 >
                     <div className="profile flex flex-col gap-4 w-full">
-                        {/* <FormField
-                            className="w-full"
-                            name="LotsId"
-                            control={form.control}
-                            render={({ field }) => (
-                                <>
-                                    <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
-                                        <FormLabel className="w-[40%]">Lots ID</FormLabel>
-                                        <FormControl>
-                                            <Input id="LotsId" placeholder="1231" {...field} />
-                                        </FormControl>
-
-                                    </FormItem>
-                                </>
-                            )}
-                        /> */}
                         <FormField
                             name="LotsLabel"
                             className="w-full"
@@ -317,88 +275,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                 </>
                             )}
                         />
-                        {/* <FormField
-                            name="Origin"
-                            className="w-full"
-                            control={form.control}
-                            render={({ field }) => (
-                                <>
-                                    <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
-                                        <FormLabel className="w-[40%]">Origin</FormLabel>
-                                        <Popover
-                                            className="w-full"
-                                            open={openOrigin}
-                                            onOpenChange={setOpenOrigin}
-                                            modal={true}
-                                        >
-                                            <PopoverTrigger asChild>
-                                                <FormControl className="w-full">
-                                                    <Button
-                                                        onClick={() => setOpenOrigin(true)}
-                                                        variant="outline"
-                                                        role="combobox"
-                                                        type="button"
-                                                        className={`text-xs flex flex-row shadow-none justify-start bg-slate-100 w-full px-2 gap-2 ${!field.value && "text-muted-foreground"
-                                                            }`}
-                                                    >
-                                                        <span className="text-xs px-2">
-                                                            {selectOrigin ? selectOrigin : "Select Origin"}
-                                                        </span>
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-[250px] p-0">
-                                                <Command className="w-full">
-                                                    <CommandInput
-                                                        placeholder="Search Origin Warehouse..."
-                                                        className="h-9 w-full text-xs"
-                                                        onValueChange={(e) => handleCommandChange(e)}
-                                                    />
-                                                    <CommandEmpty className="w-full text-xs text-center py-2">
-                                                        No Country found.
-                                                    </CommandEmpty>
-                                                    <CommandGroup className="h-[200]">
-                                                        <ScrollArea className="h-[150px]">
-                                                            {console.log(field.value)}
-                                                            {originWarehouse.map((item) => (
-                                                                <>
-                                                                    <PopoverClose asChild>
-                                                                        <CommandItem
-                                                                            value={item.warehouse_name}
-                                                                            key={item.warehouse_id}
-                                                                            className="text-xs"
-                                                                            onSelect={() => {
-                                                                                setSelectOrigin(item.warehouse_name);
-                                                                                field.onChange(item.warehouse_id); // Perbarui nilai field.value
-                                                                                setOpenOrigin(false);
-                                                                                filterDestinationWarehouses(item.warehouse_id);
-                                                                                setCountryQuery({
-                                                                                    keyword: "",
-                                                                                });
-                                                                                setSelectDestination('')
-                                                                                form.setValue('Destination_country', '');
-                                                                            }}
-                                                                        >
-                                                                            {item.warehouse_name} - {item.country_code}
-                                                                            <CheckIcon
-                                                                                className={`ml-auto h-4 w-4 ${item.warehouse_id === field.value
-                                                                                    ? "opacity-100"
-                                                                                    : "opacity-0"
-                                                                                    }`}
-                                                                            />
-                                                                        </CommandItem>
-                                                                    </PopoverClose>
-                                                                </>
-                                                            ))}
-                                                        </ScrollArea>
-                                                    </CommandGroup>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                    </FormItem>
-                                </>
-                            )}
-                        /> */}
                         <FormField
                             name="Destination_country"
                             className="w-full"

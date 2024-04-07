@@ -20,7 +20,6 @@ export default function TransportPage() {
                         isOpen={open}
                     />
                 </div>
-                <AssingLotsDialog open={open} setOpen={setOpen} />
             </div>
         </>
     )

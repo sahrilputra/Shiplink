@@ -32,24 +32,20 @@ export const EditLotsDialog = ({ open, setOpen, data, reload }) => {
     }
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
-            <AlertDialogTrigger asChild>
-                {/* <Button variant="outline">Edit Profile</Button> */}
-            </AlertDialogTrigger>
-            <AlertDialogContent className="w-[450px] gap-0" close={false}>
-                <AlertDialogHeader>s
+            <AlertDialogContent className="w-[450px] gap-0 p-0 px-8 py-5">
+                <AlertDialogHeader>
                     <AlertDialogTitle>
-                        <div className="flex flex-col gap-2 font-bold">
+                    <div className="flex flex-col gap-2 font-bold text-center">
                             <p>Edit Lot</p>
                         </div>
-
                     </AlertDialogTitle>
                 </AlertDialogHeader>
-                <div className="py-4">
+                <div className="py-2 ">
                     <div className="flex flex-col gap-2 ">
                         <div className="w-full">
                             <Separator className="w-full h-[1px]" />
                         </div>
-                        <div className="flex flex-col gap-2 py-4">
+                        <div className="flex flex-col gap-2 pt-3">
                             <NewLotsFrom data={data} close={close} reload={reload} />
                         </div>
                     </div>
