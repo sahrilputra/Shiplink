@@ -80,6 +80,9 @@ export function MovePackageDialog({ open, setOpen, data, setRowSelection, reload
 
     useEffect(() => {
         fetchData();
+        const timeoutId = setTimeout(() => {
+            fetchData();
+        }, 1000);
     }, [query]);
 
     const handleSave = async (formData) => {
