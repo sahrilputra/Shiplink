@@ -44,6 +44,7 @@ const formSchema = yup.object().shape({
 
 
 export const NewServicesForms = ({ close, setFormsData, data = null, reload }) => {
+    console.log("🚀 ~ NewServicesForms ~ data:", data)
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -70,7 +71,7 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
             category: "",
             category_id: "",
             description: "",
-        
+
         })
     }
     useEffect(() => {
@@ -89,13 +90,12 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
             }
         };
         fetchData();
-
-    })
+    }, [])
     useEffect(() => {
         form.setValue("service_id", data?.service_id || "")
         form.setValue("item", data?.item || "")
         form.setValue("price", data?.price || "")
-        form.setValue("category", data?.categories || "")
+        form.setValue("category", findCategoryById(data?.category_id)?.categories || (data?.categories || ""))
         form.setValue("category_id", data?.category_id || "")
         form.setValue("description", data?.description || "")
         setFormsData({
@@ -107,6 +107,12 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
             description: data?.description || "",
         })
     }, [data])
+
+    const findCategoryById = (id) => {
+        return category.find((item) => item.category_code === id);
+    }
+
+    console.log("FORM CATEGORY", form.watch('category'))
 
     useEffect(() => {
         // Simpan nilai awal formulir ke state induk
@@ -122,7 +128,7 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
             axios.post(
                 `/api/admin/service/setData`,
                 {
-                    service_id: formData.service_id,
+                    service_id: data?.service_id,
                     item: formData.item,
                     category_id: formData.category_id,
                     description: formData.description,
@@ -134,11 +140,19 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
                 setLoading(false)
                 form.reset()
                 reload()
-                toast({
-                    title: "New Services Added",
-                    desription: "Services has been added successfully",
-                    type: "success",
-                })
+                if (response.data === false) {
+                    toast({
+                        title: `${data ? "Edit" : "Add"} Services Failed`,
+                        desription: response.data.message,
+                        type: "success",
+                    })
+                } else {
+                    toast({
+                        title: `${data ? "Edit" : "Add"} Services Success`,
+                        desription: "Services has been added successfully",
+                        type: "success",
+                    })
+                }
             }).catch((error) => {
                 setLoading(false)
                 console.log("Error", error)
