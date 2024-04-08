@@ -47,7 +47,7 @@ export const ExpandedTable = ({ data, pakcage_id, setExpandedRows }) => {
                             <p>$ {data?.total_price || "-"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0  px-5 py-2 w-max flex-row flex justify-between gap-3 border-none">
-                            <NextLink passHref href={`admin/package-details/${pakcage_id}`}>
+                            <NextLink passHref href={`/admin/package-details/${pakcage_id}`}>
                                 <Button
                                     variant="secondary"
                                     size="xs"

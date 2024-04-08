@@ -83,6 +83,8 @@ export function MovePackageDialog({ open, setOpen, data, setRowSelection, reload
         const timeoutId = setTimeout(() => {
             fetchData();
         }, 1000);
+
+        return () => clearTimeout(timeoutId);
     }, [query]);
 
     const handleSave = async (formData) => {
