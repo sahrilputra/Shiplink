@@ -202,8 +202,9 @@ export function ServiceList({
                                 variant="destructive"
                                 size="sm"
                                 className="px-[20px]"
-                                disabled={Object.keys(rowSelection).length === 0}
+                                // disabled={Object.keys(rowSelection).length === 0}
                                 onClick={() => toggleOpenChange(selectedProductIds)}
+                                disabled={true}
                             >
                                 <p className=" text-xs">Remove Services</p>
                             </Button>

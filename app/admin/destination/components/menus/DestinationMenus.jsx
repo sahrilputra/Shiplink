@@ -51,7 +51,7 @@ export const DestinationMenus = ({ dataID, reload, documents }) => {
                         >
                             <p className="text-xs">Update Lots Status</p>
                         </DropdownMenuItem>
-                        <NextLink href={`/admin/destination/lots/${dataID}`}>
+                        <NextLink href={`/admin/Lots_Details/${dataID}`}>
                             <DropdownMenuItem>
                                 <p className="text-xs">Load Lots Details</p>
                             </DropdownMenuItem>

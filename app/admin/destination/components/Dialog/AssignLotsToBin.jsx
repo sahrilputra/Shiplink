@@ -122,7 +122,7 @@ export function AssignLotsToBin({ open, setOpen, data, reload }) {
                         <DialogTitle>
                             <div className="flex flex-col gap-2 font-bold">
                                 <p>Update Bin</p>
-                                <p>For Lots Selected Lots</p>
+                                <p>For Selected Lots</p>
                             </div>
 
                         </DialogTitle>

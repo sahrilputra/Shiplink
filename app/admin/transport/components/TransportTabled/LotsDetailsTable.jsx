@@ -59,7 +59,11 @@ export function LotsDetailsTable({
     const router = useRouter();
 
     const handleBack = () => {
-        router.back();
+        if (window.history.length > 1) {
+            router.back()
+        } else {
+            router.push(`/admin/transport/lots`)
+        }
     }
 
     const columns = [

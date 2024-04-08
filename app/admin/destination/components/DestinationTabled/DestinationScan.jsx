@@ -26,6 +26,15 @@ import {
     SortingState,
     getSortedRowModel,
 } from "@tanstack/react-table";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { DestinationMenus } from "../menus/DestinationMenus";
@@ -41,7 +50,14 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { UpdateDialog } from "@/app/admin/custom-clearance/components/Menus/UpdateDialog";
-import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, XIcon } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, handleData, isSelected, setTotalData }) {
     const [loading, setLLoading] = useState(false);
@@ -57,8 +73,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
     const [openStatusDialog, setOpenStatusDialog] = useState(false)
     const [getLotsId, setLotsId] = useState('')
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
-
-
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",
@@ -70,17 +84,62 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         limit: 10,
         index: 0,
     });
-
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 10,
     });
-
     const [rowTotalData, setRowTotalData] = useState({
         page_limit: 0,
         page_total: 0,
         total: 0
     })
+    const [filterDestination, setFilterDestination] = useState("");
+    const handleFilterDestination = (e) => {
+        setFilterDestination(e)
+        console.log("Filter Destination : ", e)
+        setQuery({
+            destination: e,
+            page: 1,
+            limit: 10,
+            index: 0,
+        })
+    }
+    const handleRemoveFilter = () => {
+        setFilterDestination("")
+        setFilterLocation("")
+        setQuery({
+            warehouse_destination: "",
+            warehouse_position: "",
+            page: 1,
+            limit: 10,
+            index: 0,
+        })
+    }
+    const [warehouseListData, setWarehouseData] = useState([]);
+    const warehouseList = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/warehouse/list`,
+                {
+                    keyword: "",
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                }
+            );
+            console.log(response)
+            const data = await response.data;
+            setWarehouseData(data.warehouse);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log("Erorr : ", error)
+            warehouseList();
+        }
+    }
+
+    useEffect(() => {
+        warehouseList();
+    }, [])
 
     const fetchData = async () => {
         try {
@@ -120,7 +179,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         }
     }
 
-
     const columns = [
         {
             accessorKey: "select",
@@ -149,7 +207,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         },
         {
             accessorKey: "lots_id",
-            header: "Lots ID",
+            header: "Lot ID",
             className: "text-xs",
             cell: ({ row }) => {
                 return (
@@ -163,6 +221,35 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         {
             accessorKey: "label",
             header: "Lots Label",
+        },
+        {
+            accessorKey: "location",
+            header: "Lot Origin",
+            size: 80,
+            cell: ({ row }) => {
+                const countryCode = row.original.country_origin ? row.original.country_origin.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.country_origin === null && row.original.country_origin === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>
+                                                {`- ${row.original.warehouse_origin_name}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
         },
         {
             accessorKey: "destination_name",
@@ -252,6 +339,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         handleData(id);
     }
 
+    const [searchQuery, setSearchQuery] = useState("")
     const handleSearchChange = (event) => {
         setQuery({
             keyword: event.target.value,
@@ -259,12 +347,10 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             limit: 10,
             index: 0,
         });
-
         setPagination({
             pageIndex: 0,
             pageSize: 10,
         })
-
         setRowTotalData({
             page_limit: 0,
             page_total: 0,
@@ -326,7 +412,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
     const handleUpdateScanStatus = async () => {
         try {
-            
+
         } catch (error) {
             console.log('Error:', error);
         }
@@ -356,18 +442,63 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
             <AssignLotsToBin open={openAssignLotsDialog} setOpen={setOpenAssignLotsDialog} data={selectedWarehouseIds} reload={reload} />
             <div className="flex flex-row justify-between items-center py-2 px-2">
-                <div className="wrap inline-flex gap-[10px] justify-evenly items-center ">
+                <div className="flex-nowrap flex flex-row gap-[10px] justify-evenly items-center w-[40%]">
                     <SearchBar handleSearch={handleSearchChange} />
-                    <Button
+                    {/* <Button
                         variant="filter"
                         size="filter"
                         className='border border-zinc-300 flex items-center rounded w-[40px] h-[34px] '>
                         <FilterIcons
                             className=""
-                            fill="#CC0019" />
-                    </Button>
+                            fill="#CC0019"
+                        />
+                    </Button> */}
                     {/* <DatePickerWithRange className={"text-black"} /> */}
+                    <div className="">
+                        <Select onValueChange={handleFilterDestination} value={filterDestination}>
+                            <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
+                                <SelectValue placeholder="Filter By Destination" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <ScrollArea className="h-[150px]">
+                                    <SelectGroup className="text-xs">
+                                        <SelectLabel className="text-xs font-bold">Filter Destination</SelectLabel>
+                                        <>
+                                            {
+                                                warehouseListData.map((item, index) => (
+                                                    <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
+                                                ))
+                                            }
+                                        </>
+                                    </SelectGroup>
+                                </ScrollArea>
+                            </SelectContent>
+                        </Select>
+                    </div>
 
+                    <div className="">
+                        {
+                            filterDestination !== "" ? (
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                onClick={handleRemoveFilter}
+                                                variant="destructive"
+                                                size="filter"
+                                                className="border flex items-center"
+                                            >
+                                                <XIcon className="" fill="#ffff" />
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Remove Filter</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            ) : null
+                        }
+                    </div>
                 </div>
                 <div className="flex flex-row gap-4 w-full justify-between">
                     <div className="flex w-full justify-end focus-visible:ring-1">
@@ -380,7 +511,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                             size="sm"
                             className="h-[35px] w-[100px] text-xs rounded-none rounded-r-md"
                             onClick={handleScanLots}
-                            disabled={isButtonDisabled}
+                            disabled={isButtonDisabled || lotsNumber === ""}
                         >
                             Scan Lots
                         </Button>

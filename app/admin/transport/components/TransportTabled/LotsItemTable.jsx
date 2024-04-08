@@ -195,6 +195,35 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             }
         },
         {
+            accessorKey: "location",
+            header: "Current Location",
+            size: 80,
+            cell: ({ row }) => {
+                const countryCode = row.original.country_code_position ? row.original.country_code_position.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.country_code_position === null && row.original.country_code_position === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>
+                                                {`- ${row.original.warehouse_name_position}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
+        },
+        {
             accessorKey: "pickup_schedule",
             header: "Pickup Schedule",
             size: 80,
@@ -439,8 +468,8 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                                     expandedRows[row.id] && (
                                         <>
                                             <TableRow >
-                                                <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                    <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id} setExpandedRows={setExpandedRows}/>
+                                                <TableCell colSpan={8} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
+                                                    <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id} setExpandedRows={setExpandedRows} />
                                                 </TableCell>
                                             </TableRow>
                                         </>

@@ -16,12 +16,13 @@ export const DestinationLotsDetails = ({ data }) => {
                 </div>
 
                 <div className="content py-1 w-[100%] text-sm ">
-                    <div className="bg-zinc-100/70 border border-zinc-200 px-2 py-2 w-full text-xs leading-4 flex flex-col gap-1.5 ">
-                        <p>Lots Label : {data?.label}</p>
+                    <div className="bg-white/95 border border-zinc-200 px-2 py-2 w-full text-xs leading-4 flex flex-col gap-1.5 rounded">
+                        <p>Lot Label : {data?.label}</p>
                         <p>Total Package : {data?.total_items}</p>
                         <p>Trip Number : {data?.trip_number}</p>
-                        <p>Lots Origin : {data?.country_name}</p>
-                        <p>Lots Destination : {data?.destination_name}</p>
+                        <p>Lot Origin : {data?.warehouse_origin_name} WH - {data?.country_name}</p>
+                        <p>Lot Destination : {data?.destination_name}</p>
+                        <p>Lot Location : {data?.warehouse_name_position} WH - {data?.country_name_position}</p>
                         <p>Last Update : {data?.updated_at}</p>
                         <div className='flex flex-row'>
                             <p>Documents :</p>
@@ -52,7 +53,7 @@ export const DestinationLotsDetails = ({ data }) => {
                                 <p className='text-xs'>Load Lots</p>
                             </Button>
                         ) : (
-                            <NextLink href={`/admin/destination/lots/${data?.lots_id}`}>
+                            <NextLink href={`/admin/Lots_Details/${data?.lots_id}`}>
                                 <Button
                                     variant="secondary"
                                     size="sm"

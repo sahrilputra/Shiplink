@@ -464,6 +464,7 @@ export function SingleItemsTable({ }) {
     const handleRemoveFilter = () => {
         setFilterDestination("")
         setFilterLocation("")
+        setFilterOrigins("")
         setQuery({
             warehouse_destination: "",
             warehouse_position: "",
@@ -575,7 +576,7 @@ export function SingleItemsTable({ }) {
 
                         <div className="">
                             {
-                                filterDestination !== "" || filterLocation !== "" ? (
+                                filterDestination !== "" || filterLocation !== "" || filterOrigins !== "" ? (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
