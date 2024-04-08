@@ -34,11 +34,16 @@ export async function POST(request) {
             }
         );
 
+        console.log("🚀 ~ POST ~ response:", response)
+
         if (response.status === 200) {
             const responseData = {
                 status: true,
                 message: response.data.message,
-                services: response.data.services
+                services: response.data.services,
+                page: response.data.page_total,
+                total: response.data.total,
+                page_limit: response.data.page_limit,
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

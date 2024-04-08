@@ -17,10 +17,21 @@ export default function ServicesPage() {
     const [isSkeleton, setIsSkeleton] = useState(true)
     const [query, setQuery] = useState({
         keyword: '',
-        page: 0,
-        limit: 0,
+        category_id: '',
+        page: 1,
+        limit: 10,
         index: 0,
-        category_id: ''
+    })
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
     })
 
     const [data, setData] = useState([])
@@ -34,8 +45,18 @@ export default function ServicesPage() {
                     query
                 ).then((response) => {
                     console.log("🚀 ~ ).then ~ response:", response)
-                    setIsSkeleton(false)
                     setData(response.data.services)
+                    const data = response.data
+                    setRowTotalData({
+                        page_limit: data.page_limit,
+                        page_total: data.page_total,
+                        total: data.total
+                    });
+                    setPagination(prevPagination => ({
+                        ...prevPagination,
+                        pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+                    }));
+                    setIsSkeleton(false)
                 })
             } catch (error) {
                 console.log("🚀 ~ error:", error)
@@ -44,6 +65,20 @@ export default function ServicesPage() {
         fetchData()
     }, [query])
 
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
     const reload = () => {
         setIsSkeleton(true)
         setQuery({
@@ -54,21 +89,26 @@ export default function ServicesPage() {
             category_id: ''
         })
     }
+
+    const [selectedID, setSelectedID] = useState('')
     return (
         <>
-
             <div className="flex flex-row gap-2 w-full">
                 <div className={`${styles.carrier} w-[70%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-sm font-bold'>Services Details</h1>
+                        <h1 className=" text-sm font-bold">Services Details</h1>
                         <div className="px-[5px] py-[10px]">
-                            <NewServicesForms setFormsData={setFormsData} data={selctedData} reload={reload} />
+                            <NewServicesForms
+                                setFormsData={setFormsData}
+                                data={selctedData}
+                                reload={reload}
+                            />
                         </div>
                     </div>
                 </div>
                 <div className={`${styles.carrier} w-[30%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-sm font-bold'>Services Review</h1>
+                        <h1 className=" text-sm font-bold">Services Review</h1>
                         <div className="px-[5px] py-[5px]">
                             <ServicesCards formData={formsData} />
                         </div>
@@ -77,9 +117,22 @@ export default function ServicesPage() {
             </div>
             <div className={`${styles.carrier} w-full`}>
                 <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                    <ServiceList data={data} isSkeleton={isSkeleton} reload={reload} setSelectedData={setSelectedData} />
+                    <ServiceList
+                        data={data}
+                        isSkeleton={isSkeleton}
+                        reload={reload}
+                        setSelectedData={setSelectedData}
+                        pagination={pagination}
+                        setPagination={setPagination}
+                        handlerPaginationChange={handlerPaginationChange}
+                        rowTotalData={rowTotalData}
+                        setRowTotalData={setRowTotalData}
+                        query={query}
+                        selectedID={selectedID}
+                        setSelectedID={setSelectedID}
+                    />
                 </div>
             </div>
         </>
-    )
+    );
 }

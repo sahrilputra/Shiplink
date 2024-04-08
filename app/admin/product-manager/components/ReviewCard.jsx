@@ -8,13 +8,13 @@ export const ReviewCard = ({ formsData }) => {
     const img = formsData?.image
     console.log("🚀 ~ ReviewCard ~ img:", img)
     return (
-        <div className="content  border border-neutral-200 rounded-tl-lg rounded-tr-lg shadow-sm">
-            <div className="image w-[100%] h-[130px] rounded-md">
+        <div className=" border border-neutral-200 rounded-tl-lg rounded-tr-lg shadow-sm flex flex-col justify-between">
+            <div className=" w-[100%] h-[200px] rounded-md">
                 <img
-                    src={`${img ? img : '/assets/img_placeholder.png'}`}
+                    src={`${img ? img : '../../../assets/img-placeholder.svg'}`}
                     alt=""
-                    className=' object-cover rounded-tl-lg rounded-tr-lg'
-                    style={{ objectFit: 'cover', height: '130px', width: '100%' }}
+                    className=' object-cover rounded-tl-lg rounded-tr-lg image'
+                    style={{ objectFit: 'cover', height: '200px', width: '100%', imageRendering: 'pixelated', imageRendering: 'crisp-edges', imageRendering: 'auto'}}
                 />
                 {/* <Image
                     src={`${img ? img : '/assets/img_placeholder.png'}`}

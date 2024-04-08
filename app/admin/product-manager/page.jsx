@@ -21,6 +21,7 @@ export default function Configuration() {
         image: '',
     })
 
+
     const [isSkeleton, setIsSkeleton] = useState(true)
     const [query, setQuery] = useState({
         keyword: '',
@@ -65,19 +66,22 @@ export default function Configuration() {
 
     return (
         <>
-
             <div className="flex flex-row gap-2 w-full">
                 <div className={`${styles.carrier} w-[70%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-sm font-bold'>Product Details</h1>
+                        <h1 className=" text-sm font-bold">Product Details</h1>
                         <div className="px-[5px] py-[5px]">
-                            <NewProductForms setFormsData={setFormsData} data={selctedData} reload={reload} />
+                            <NewProductForms
+                                setFormsData={setFormsData}
+                                data={selctedData}
+                                reload={reload}
+                            />
                         </div>
                     </div>
                 </div>
                 <div className={`${styles.carrier} w-[30%]`}>
                     <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                        <h1 className=' text-sm font-bold'>Product Review</h1>
+                        <h1 className=" text-sm font-bold">Product Review</h1>
                         <div className="px-[5px] py-[5px]">
                             <ReviewCard formsData={formsData} />
                         </div>
@@ -86,9 +90,15 @@ export default function Configuration() {
             </div>
             <div className={`${styles.carrier} w-full`}>
                 <div className={`${styles.listTable}  flex flex-col gap-1`}>
-                    <ProductList data={data} isSkeleton={isSkeleton} setSelectedData={setSelectedData} reload={reload}/>
+                    <ProductList
+                        data={data}
+                        isSkeleton={isSkeleton}
+                        setSelectedData={setSelectedData}
+                        reload={reload}
+                        formDataId={formsData.productID}
+                    />
                 </div>
             </div>
         </>
-    )
+    );
 }

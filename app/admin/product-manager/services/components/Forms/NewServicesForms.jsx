@@ -43,7 +43,6 @@ const formSchema = yup.object().shape({
 })
 
 
-
 export const NewServicesForms = ({ close, setFormsData, data = null, reload }) => {
     const { toast } = useToast()
     const form = useForm({
@@ -62,6 +61,18 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
     const [category, setCategory] = useState([])
 
 
+    const handleCancel = () => {
+        form.reset();
+        setFormsData({
+            service_id: "",
+            item: "",
+            price: "",
+            category: "",
+            category_id: "",
+            description: "",
+        
+        })
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -87,6 +98,14 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
         form.setValue("category", data?.categories || "")
         form.setValue("category_id", data?.category_id || "")
         form.setValue("description", data?.description || "")
+        setFormsData({
+            service_id: data?.service_id || "",
+            item: data?.item || "",
+            price: data?.price || "",
+            category: data?.categories || "",
+            category_id: data?.category_id || "",
+            description: data?.description || "",
+        })
     }, [data])
 
     useEffect(() => {
@@ -324,7 +343,7 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
                             type="button"
                             className={` px-10 `}
                             onClick={() => {
-                                form.reset()
+                                handleCancel()
                             }}
                             size="xs"
                         >
