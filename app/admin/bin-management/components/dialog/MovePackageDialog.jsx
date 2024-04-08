@@ -53,6 +53,13 @@ export function MovePackageDialog({ open, setOpen, data, setRowSelection, reload
         mode: "onChange",
     })
 
+    useEffect(() => {
+        for (let i = 0; i < data.length; i++) {
+            form.setValue(`tracking_id[${i}]`, data[i])
+        }
+    }, [data])
+
+    console.log("Form trackingID", form.watch('tracking_id'))
     // var
     const [loading, setLoading] = useState(false);
     const [query, setQuery] = useState({
@@ -92,8 +99,11 @@ export function MovePackageDialog({ open, setOpen, data, setRowSelection, reload
         setLoading(true)
         try {
             const response = await axios.post(
-                `/api/admin/destination/assignPackage`,
-                formData
+                `/api/admin/bin_manager/assign_package`,
+                {
+                    bins_id: formData.bins_id,
+                    tracking_id: formData.tracking_id,
+                }
             );
             toast({
                 title: `Success Assign Package To Bin ${formData.bins_id} !`,

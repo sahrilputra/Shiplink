@@ -156,35 +156,31 @@ export function HistoryTableList({ selectedBinID = "Undefined", setPackageTotal 
         },
         {
             accessorKey: "bin_destination",
-            header: "Bin ID",
+            header: "Bin Origin",
             className: "text-xs",
             size: 50,
             cell: ({ row }) => {
                 return (
                     <span
                         style={{ fontFamily: 'roboto' }}
-                        className=''>{`${row.original.bin_destination}`}
+                        className=''>{`${row.original.bin_origin || ""} - row ${row.original.row_origin || ""} | section ${row.original.section_origin || ""} | level ${row.original.level_origin || ""} `}
                     </span>
                 )
             }
         },
         {
-            accessorKey: "row_destination",
-            header: "Row",
+            accessorKey: "bin_destination",
+            header: "Bin Destination",
             className: "text-xs",
             size: 50,
             cell: ({ row }) => {
                 return (
                     <span
                         style={{ fontFamily: 'roboto' }}
-                        className=''>{`${row.original.row_destination}`}
+                        className=''>{`${row.original.bin_destination || ""} - row ${row.original.row_destination || ""} | section ${row.original.section_destination || ""} | level ${row.original.level_destination || ""} `}
                     </span>
                 )
             }
-        },
-        {
-            accessorKey: "created_at",
-            header: "Update At",
         },
     ]
 

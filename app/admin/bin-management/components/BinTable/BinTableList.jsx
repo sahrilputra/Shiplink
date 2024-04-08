@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input";
 export function BinTableList({ data, isBinSelect, handleSelect, setCreateNewDialog, isSelected, isReloadData, setBinTotal }) {
 
     const [query, setQuery] = useState({
@@ -268,7 +269,21 @@ export function BinTableList({ data, isBinSelect, handleSelect, setCreateNewDial
                     <TableHead colSpan={5} className="p-2" >
                         <div className="flex w-full flex-row justify-between gap-1 items-center">
                             <div className=" w-full flex flex-row gap-2 items-center">
-                                <SearchBar handleSearch={handleSearchChange} />
+                                {/* <SearchBar handleSearch={handleSearchChange} /> */}
+                                <div className="relative">
+                                    <Input
+                                        type="text" placeholder="Search..."
+                                        className="pr-8 pl-2 text-xs border border-zinc-300 text-black"
+                                        onChange={handleSearchChange}
+                                        disabled={!isBinSelect}
+                                    />
+                                    <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
+                                        <SearchIcon
+                                            width={15}
+                                            height={15}
+                                        />
+                                    </div>
+                                </div>
                                 <div className="">
                                     <Dialog>
                                         <DropdownMenu>
@@ -276,6 +291,7 @@ export function BinTableList({ data, isBinSelect, handleSelect, setCreateNewDial
                                                 <Button
                                                     variant="filter"
                                                     size="filter"
+                                                    disabled={!isBinSelect}
                                                     className='border border-zinc-300 flex items-center rounded'>
                                                     <FilterIcons
                                                         className=""

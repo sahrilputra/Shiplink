@@ -110,6 +110,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
 
     const fetchData = async () => {
         setIsSkeleton(true)
+        setRowSelection({})
         try {
             const response = await axios.post(
                 `/api/admin/bin_manager/packageList`,
@@ -147,6 +148,25 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
     useEffect(() => {
         fetchData();
     }, [searchKeyword, setPackageTotal, selectedBinID, query]);
+
+    useEffect(() => {
+        if (selectedBinID === "Undefined") {
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
+            setQuery({
+                page: 1,
+                limit: 10,
+                index: 0,
+            })
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            })
+        }
+    }, [selectedBinID])
 
     const columns = [
         {
@@ -256,7 +276,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-sm w-max px-[5px] h-[25px]`}
-                            onClick={() => toggleOpenChange(row.original)}
+                            onClick={() => toggleOpenChange([row.original.tracking_id])}
                         >
                             <p className="text-[11px]">Move</p>
                         </Button>
