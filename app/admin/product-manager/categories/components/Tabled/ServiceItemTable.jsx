@@ -102,6 +102,16 @@ export function ServiceItemTable({ category_id }) {
             accessorKey: "service_id",
             header: "#",
             className: "text-xs",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                            className=''>{`${row.original.service_id}`}
+                        </span>
+                    </div>
+                )
+            },
         },
         {
             accessorKey: "item",
@@ -114,6 +124,16 @@ export function ServiceItemTable({ category_id }) {
         {
             accessorKey: "price",
             header: "Price",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                            className='text-right'>$ {`${row.original.price}`}
+                        </span>
+                    </div>
+                )
+            },
         },
     ]
 
