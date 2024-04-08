@@ -428,7 +428,7 @@ export function SingleItemsTable({ }) {
         fetchData();
     };
 
-    const [filterOrigins, setFilterOrigins] = useState();
+    const [filterOrigins, setFilterOrigins] = useState("");
 
     const handlerFilterOrigin = (e) => {
         setFilterOrigins(e)

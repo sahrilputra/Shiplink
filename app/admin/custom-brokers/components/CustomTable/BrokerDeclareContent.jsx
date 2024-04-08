@@ -83,11 +83,21 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                 `/api/admin/customs_broker/setData`,
                 formData
             );
-            toast({
-                title: `Succes New Status For ${TrackingID}!`,
-                description: response.data.message,
-                status: 'success',
-            });
+            console.log("🚀 ~ handleSave ~ response:", response)
+
+            if (response.data.status === false) {
+                toast({
+                    title: `Error ${TrackingID}!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            } else {
+                toast({
+                    title: `Succes Added Entry Number For ${TrackingID}!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            }
             setLoading(false)
             reload();
         } catch (error) {
@@ -177,7 +187,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                         <DropdownMenuTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2 flex flex-row">
                                             <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Invoice</p>
                                             <div className='text-xs flex h-full border pl-3 w-[250px] bg-white  rounded-tr rounded-br focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 items-center justify-between px-2  border-slate-300 ring-offset-white text-slate-500" ' >
-                                                {filterInvoice.length <= 0 ? "No Invoice" : "View Invoice" }
+                                                {filterInvoice.length <= 0 ? "No Invoice" : "View Invoice"}
                                                 <ChevronDown width={15} height={15} className={`${openInv ? "transition-transform rotate-180" : ""} transition-transform`} />
                                             </div>
                                         </DropdownMenuTrigger>
@@ -227,6 +237,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                                 variant="secondary"
                                                 className="px-3"
                                                 size="xs"
+                                                disabled={form.watch('entry_number') === ""}
                                             >
                                                 <p className='text-xs'>Save</p>
                                             </Button>
