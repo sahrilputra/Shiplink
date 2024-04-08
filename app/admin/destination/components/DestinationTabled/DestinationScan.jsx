@@ -79,7 +79,9 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         date_end: "",
         lots_id: "",
         status: "",
-        destination: "",
+        warehouse_origin: "",
+        warehouse_destination: "",
+        warehouse_current_position: "",
         page: 1,
         limit: 10,
         index: 0,
@@ -93,12 +95,14 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         page_total: 0,
         total: 0
     })
+
     const [filterDestination, setFilterDestination] = useState("");
+
     const handleFilterDestination = (e) => {
         setFilterDestination(e)
         console.log("Filter Destination : ", e)
         setQuery({
-            destination: e,
+            warehouse_destination: e,
             page: 1,
             limit: 10,
             index: 0,
@@ -106,7 +110,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
     }
     const handleRemoveFilter = () => {
         setFilterDestination("")
-        setFilterLocation("")
         setQuery({
             warehouse_destination: "",
             warehouse_position: "",
@@ -269,7 +272,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                                         <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
                                             <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
                                             <span>-</span>
-                                            <span className='text-nowrap'>{`${row.original.destination}`}</span>
+                                            <span className='text-nowrap'>{`${row.original.warehouse_destination_name}`}</span>
                                         </div>
                                     </>
                                 )
@@ -442,7 +445,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
             <AssignLotsToBin open={openAssignLotsDialog} setOpen={setOpenAssignLotsDialog} data={selectedWarehouseIds} reload={reload} />
             <div className="flex flex-row justify-between items-center py-2 px-2">
-                <div className="flex-nowrap flex flex-row gap-[10px] justify-evenly items-center w-[40%]">
+                <div className="flex-nowrap flex flex-row gap-[10px] justify-start items-center  w-[50%]">
                     <SearchBar handleSearch={handleSearchChange} />
                     {/* <Button
                         variant="filter"
@@ -500,7 +503,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                         }
                     </div>
                 </div>
-                <div className="flex flex-row gap-4 w-full justify-between">
+                <div className="flex flex-row gap-4 justify-between w-[40%]">
                     <div className="flex w-full justify-end focus-visible:ring-1">
                         <Input
                             onChange={(event) => { setLotsNumber(event.target.value) }}

@@ -8,7 +8,21 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { keyword, date_start, date_end, lots_id, destination, status, page, limit, index, token } = await request.json();
+        const {
+            keyword,
+            date_start,
+            date_end,
+            lots_id,
+            status,
+            warehouse_origin,
+            warehouse_destination,
+            warehouse_current_position,
+            page,
+            limit,
+            index,
+        } = await request.json();
+        
+        console.log("🚀 ~ POST ~ warehouse_destination:", warehouse_destination)
 
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
@@ -19,7 +33,9 @@ export async function POST(request) {
                 date_end: date_end,
                 lots_id: lots_id,
                 status: status,
-                destination: destination,
+                warehouse_origin: warehouse_origin,
+                warehouse_destination: warehouse_destination,
+                warehouse_current_position: warehouse_current_position,
                 page: page,
                 limit: limit,
                 index: index,
