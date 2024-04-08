@@ -29,6 +29,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { ExpandedTable } from "./ExpandedTable";
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
 import { ExternalLink, MoreHorizontalIcon, Plus } from "lucide-react";
@@ -81,9 +82,16 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
     }
 
     const toggleRow = (index) => {
-        const newExpandedRows = [...expandedRows];
-        newExpandedRows[index] = !newExpandedRows[index];
-        setExpandedRows(newExpandedRows);
+        // const newExpandedRows = [...expandedRows];
+        // newExpandedRows[index] = !newExpandedRows[index];
+        // setExpandedRows(newExpandedRows);
+        const newExpandedRows = {};
+        if (expandedRows[index]) {
+            setExpandedRows({});
+        } else {
+            newExpandedRows[index] = true;
+            setExpandedRows(newExpandedRows);
+        }
     };
 
     const handleRowSelectionChange = (selectedRows) => {
@@ -188,6 +196,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         {
             accessorKey: "customer_name",
             header: "Customer",
+            size: 80,
         },
         {
             accessorKey: "country_code_destination",
@@ -224,6 +233,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         {
             accessorKey: "dimension",
             header: "Dimension",
+            size: 80,
             cell: ({ row }) => {
                 return (
                     <div className="flex flex-row gap-1" style={{ fontFamily: 'roboto' }}>
@@ -234,6 +244,39 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                     </div>
                 )
             }
+        },
+        {
+            size: 40,
+            id: "Action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex flex-row gap-2">
+                        <Button
+                            variant="tableBlue"
+                            size="tableIcon"
+                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                            onClick={() => toggleOpenChange(row.original)}
+                        >
+                            <p className="text-[11px]">Move</p>
+                        </Button>
+                        <Button
+                            variant="tableBlue"
+                            size="tableIcon"
+                            className={`rounded-sm w-max px-[5px] h-[25px]`}
+                            onClick={() => toggleRow(row.id)}
+
+                        >
+                            <ArrowDownV2Icons
+                                width={15}
+                                height={15}
+                                className={` text-myBlue outline-myBlue fill-myBlue ${expandedRows[row.id] ? "rotate-180" : ""
+                                    }`}
+                            />
+                        </Button>
+                    </div>
+                );
+            },
         },
     ]
 
@@ -285,7 +328,7 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
         <>
             <MovePackageDialog open={openMoveDialog} setOpen={setOpenMoveDialog} data={selectedItemsID} setRowSelection={setRowSelection} reload={reload} />
             <div className="text-sm bg-transparent py-2">
-                <div className="px-2 py-3 " >
+                <div className="px-2  " >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                             <SearchBar handleSearch={handleSearchChange} />
@@ -367,21 +410,38 @@ export function ItemTable({ isBinSelect, selectedBinID = "Undefined", setPackage
                     ) : (
                         // Jika data telah dimuat, render data aktual
                         table.getRowModel().rows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                data-state={row.getIsSelected() && "selected"}
-                                className={`${row.isLast ? "w-[50px]" : row.isFirst ? "w-[50px]" : ""}`}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell
-                                        key={cell.id}
-                                        className={`${cell.isLast ? "w-[50px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
-                                    >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
+                            <>
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className={`${row.isLast ? "w-[50px]" : row.isFirst ? "w-[50px]" : ""} cursor-pointer`}
+                                    onClick={() => toggleRow(row.id)}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200 "} `}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+
+                                    ))}
+                                </TableRow>
+                                {
+                                    expandedRows[row.id] && (
+                                        <>
+                                            <TableRow >
+                                                <TableCell colSpan={7} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
+                                                    {/* <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id} setExpandedRows={setExpandedRows} /> */}
+                                                    <ExpandedTable data={row.original} pakcage_id={row.original.tracking_id} key={row.original.tracking_id} setExpandedRows={setExpandedRows} />
+                                                </TableCell>
+                                            </TableRow>
+                                        </>
+                                    )
+                                }
+                            </>
                         ))
+
                     )}
                 </TableBody>
             </Table>

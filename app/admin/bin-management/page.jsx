@@ -34,8 +34,6 @@ export default function BinManagementPage() {
         itemsData = filteredData[0].items;
     }
 
-
-
     console.log("selectedID : ", selectedBinID);
 
     return (
