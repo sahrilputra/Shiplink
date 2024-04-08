@@ -62,10 +62,8 @@ export function ServiceItemTable({ category_id }) {
     const reload = () => {
         setIsSkeleton(true)
         setQuery({
-            ...query,
             category_id: category_id,
         })
-
     }
 
     useEffect(() => {

@@ -53,7 +53,7 @@ export function ProductItemTable({ category_id }) {
             setIsSkeleton(false)
         }
         fetchData();
-    }, [query])
+    }, [query, category_id]);
 
 
     const columns = [

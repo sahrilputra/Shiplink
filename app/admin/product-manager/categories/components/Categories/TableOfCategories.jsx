@@ -29,7 +29,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { NewCategory } from "../dialog/NewCategory";
 import { DeleteCategory } from "../dialog/DeleteCategory";
 
-export function TableOfCategories({ data, reload, setItemID, itemID }) {
+export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton }) {
 
     console.log("🚀 ~ TableOfCategories ~ data:", data)
 
@@ -199,7 +199,7 @@ export function TableOfCategories({ data, reload, setItemID, itemID }) {
                             </>
                         ))}
                     </TableHeader>
-                    <TableBody>
+                    {/* <TableBody>
                         {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
@@ -221,6 +221,55 @@ export function TableOfCategories({ data, reload, setItemID, itemID }) {
                                 </TableRow>
                             ))
                         }
+                    </TableBody> */}
+
+                    <TableBody>
+
+                        {isSkeleton || !table.getRowModel().rows?.length ? (
+                            <>
+                                {isSkeleton &&
+                                    [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+
+                                {!isSkeleton && !table.getRowModel().rows?.length && (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </>
+                        ) : (
+                            // Jika data telah dimuat, render data aktual
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className={`${row.isFirst && "w-[30px]"} text-xs ${itemID === row.original.category_code ? "bg-blue-100" : "bg-white"} `}
+                                    onClick={() => setItemID(row.original.category_code)}
+
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </div>

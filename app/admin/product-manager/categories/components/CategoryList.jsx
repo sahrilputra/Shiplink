@@ -50,25 +50,28 @@ export const CategoryList = ({ setSelected, selected, setItemID, itemID }) => {
                 <div className={` flex flex-row gap-[15px]`}>
                     <div className="">
                         <button
-                            className={`${selected === "Product" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            className={`${selected === "Product"
+                                    ? "text-myBlue border-b border-myBlue"
+                                    : "text-black border-none"
+                                } text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                             onClick={() => {
-                                setSelected('Product')
-                                reload()
-                            }
-                            }
+                                setSelected("Product");
+                                reload();
+                            }}
                         >
                             Product
                         </button>
                     </div>
                     <div className="">
                         <button
-                            className={`${selected === "Services" ? 'text-myBlue border-b border-myBlue' : "text-black border-none"} text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+                            className={`${selected === "Services"
+                                    ? "text-myBlue border-b border-myBlue"
+                                    : "text-black border-none"
+                                } text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                             onClick={() => {
-                                setSelected('Services')
-                                reload()
-                            }
-                            }
-
+                                setSelected("Services");
+                                reload();
+                            }}
                         >
                             Services
                         </button>
@@ -81,10 +84,16 @@ export const CategoryList = ({ setSelected, selected, setItemID, itemID }) => {
                     </div>
                 </div> */}
                 <div className="w-full ">
-                    <TableOfCategories data={category} setItemID={setItemID} itemID={itemID} reload={reload} />
+                    <TableOfCategories
+                        data={category}
+                        setItemID={setItemID}
+                        itemID={itemID}
+                        reload={reload}
+                        isSkeleton={skeleton}
+                    />
                 </div>
             </div>
         </>
-    )
+    );
 }
 // <ListData key={index} data={item} />

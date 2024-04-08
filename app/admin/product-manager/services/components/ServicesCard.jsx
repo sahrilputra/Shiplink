@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 
 export const ServicesCards = ({ formData }) => {
+    console.log("🚀 ~ ServicesCards ~ formData:", formData)
     return (
         <div className="content  border border-neutral-200 rounded-md shadow">
             <div className="product flex flex-col text-xs gap-2 px-3 py-3">
