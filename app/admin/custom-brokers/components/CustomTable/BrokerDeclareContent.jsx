@@ -165,9 +165,15 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                     <p className=' text-sm font-semibold'>${details?.total_price || "-"} </p>
 
                                 </div>
-                                <div className="flex flex-row gap-4">
-                                    <p className=' text-sm font-bold text-myBlue'>PARS : </p>
-                                    <p className=' text-sm font-semibold'>{details?.parspaps_number || "-"}</p>
+                                <div className="flex flex-row gap-4 justify-between">
+                                    <div className="flex flex-row gap-2">
+                                        <p className=' text-sm font-bold text-myBlue'>PARS : </p>
+                                        <p className=' text-sm font-semibold'>{details?.parspaps_number || "-"}</p>
+                                    </div>
+                                    <div className="flex flex-row gap-2">
+                                        <p className=' text-sm font-bold text-myBlue'>Entry Number : </p>
+                                        <p className=' text-sm font-semibold'>{details?.entry_number || "-"}</p>
+                                    </div>
                                 </div>
                             </div>
                         </TableCell>
