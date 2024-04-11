@@ -5,6 +5,8 @@ import axios from 'axios'
 import { LotsDetailsTable } from '../../transport/components/TransportTabled/LotsDetailsTable'
 import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
+import NextLink from 'next/link'
 export default function LotsDetails({ params }) {
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [open, setOpen] = useState(false);
@@ -122,7 +124,6 @@ export default function LotsDetails({ params }) {
     };
     return (
         <>
-
             <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <div className={styles.configHeader}>
@@ -135,27 +136,50 @@ export default function LotsDetails({ params }) {
                                     alt='config icon'
                                 />
                             </div> */}
-                            <div className={`${styles.title} flex flex-col`}>
-                                <h1 className=" text-zinc-900 text-sm font-bold ">Lot ID : {lotsData?.lots_id}</h1>
-                                <div className="text-blue-900 text-xs font-normal">
-                                    <p>Origin : {lotsData?.warehouse_origin_name} WH - {lotsData?.country_name}</p>
-                                    <p>Destination : {lotsData?.warehouse_destination_name} WH - {lotsData?.destination_name}</p>
-                                    <div className="flex flex-row gap-3 pt-2">
-                                        <div className="">
-                                            <p>Status : {lotsData?.status}</p>
-                                            <p>Pickup Schedule : {lotsData?.pickup_schedule}</p>
-                                        </div>
-                                        <div className="w-[5px]">
-                                            <Separator orientation="vertical" className="w-[1.5px]" />
-                                        </div>
-                                        <div className="">
-                                            <p>Trip Number : {lotsData?.trip_number}</p>
-                                            <p>Total Items : {lotsData?.total_items}</p>
+                            <div className="flex flex-row justify-between w-full">
+                                <div className={`${styles.title} flex flex-col`}>
+                                    <h1 className=" text-zinc-900 text-sm font-bold ">
+                                        Lot ID : {lotsData?.lots_id}
+                                    </h1>
+                                    <div className="text-blue-900 text-xs font-normal">
+                                        <p>
+                                            Origin : {lotsData?.warehouse_origin_name} WH -{" "}
+                                            {lotsData?.country_name}
+                                        </p>
+                                        <p>
+                                            Destination : {lotsData?.warehouse_destination_name} WH
+                                            - {lotsData?.destination_name}
+                                        </p>
+                                        <div className="flex flex-row gap-3 pt-2">
+                                            <div className="">
+                                                <p>Status : {lotsData?.status}</p>
+                                                <p>Pickup Schedule : {lotsData?.pickup_schedule}</p>
+                                            </div>
+                                            <div className="w-[5px]">
+                                                <Separator
+                                                    orientation="vertical"
+                                                    className="w-[1.5px]"
+                                                />
+                                            </div>
+                                            <div className="">
+                                                <p>Trip Number : {lotsData?.trip_number}</p>
+                                                <p>Total Items : {lotsData?.total_items}</p>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
-                                {/* <Params /> */}
+                                <div className="px-3">
+                                    <NextLink
+                                        href={`/admin/Lots_Details/view?lots_id=${lostId}`}
+                                        passHref
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <Button variant="secondary" size="sm">
+                                            <span className="text-xs">Print Lots</span>
+                                        </Button>
+                                    </NextLink>
+                                </div>
                             </div>
                         </div>
 
@@ -190,7 +214,6 @@ export default function LotsDetails({ params }) {
                     </div>
                 </div>
             </div>
-
         </>
     );
 }
