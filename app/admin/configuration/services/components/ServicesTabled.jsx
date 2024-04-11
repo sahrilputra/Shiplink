@@ -28,7 +28,7 @@ import {
 import { MoreHorizontalIcon } from "lucide-react";
 
 
-export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDelete }) {
+export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDelete, id }) {
 
     const columns = [
         {

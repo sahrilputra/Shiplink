@@ -28,13 +28,13 @@ export const CatergoryList = ({ Category, data, selectedData }) => {
                                     <div
                                         key={index}
                                         onClick={() => {
-                                            handleSelect(item.id);
-                                            selectedData(item.id);
+                                            handleSelect(item.idconf);
+                                            selectedData(item.idconf);
                                         }}
                                         className={`${isSelected ? "bg-blue-100" : null}items cursor-pointer w-full hover:bg-blue-100 rounded`}
                                     >
                                         <div className="px-6 py-2 w-full font-medium text-xs">
-                                            {item.name}
+                                            {item.subservice}
                                         </div>
                                     </div>
                                 )
