@@ -445,41 +445,30 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
             <AssignLotsToBin open={openAssignLotsDialog} setOpen={setOpenAssignLotsDialog} data={selectedWarehouseIds} reload={reload} />
             <div className="flex flex-row justify-between items-center py-2 px-2">
-                <div className="flex-nowrap flex flex-row gap-[10px] justify-start items-center  w-[50%]">
-                    <SearchBar handleSearch={handleSearchChange} />
-                    {/* <Button
-                        variant="filter"
-                        size="filter"
-                        className='border border-zinc-300 flex items-center rounded w-[40px] h-[34px] '>
-                        <FilterIcons
-                            className=""
-                            fill="#CC0019"
-                        />
-                    </Button> */}
-                    {/* <DatePickerWithRange className={"text-black"} /> */}
-                    <div className="">
-                        <Select onValueChange={handleFilterDestination} value={filterDestination}>
-                            <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
-                                <SelectValue placeholder="Filter By Destination" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <ScrollArea className="h-[150px]">
-                                    <SelectGroup className="text-xs">
-                                        <SelectLabel className="text-xs font-bold">Filter Destination</SelectLabel>
-                                        <>
-                                            {
-                                                warehouseListData.map((item, index) => (
-                                                    <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
-                                                ))
-                                            }
-                                        </>
-                                    </SelectGroup>
-                                </ScrollArea>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="">
+                <div className="flex-nowrap flex flex-row gap-[10px] justify-start items-center  w-[100%]">
+                    <div className="flex flex-row gap-[10px] w-[50%]">
+                        <SearchBar handleSearch={handleSearchChange} />
+                        <div className="">
+                            <Select onValueChange={handleFilterDestination} value={filterDestination}>
+                                <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
+                                    <SelectValue placeholder="Filter By Destination" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <ScrollArea className="h-[150px]">
+                                        <SelectGroup className="text-xs">
+                                            <SelectLabel className="text-xs font-bold">Filter Destination</SelectLabel>
+                                            <>
+                                                {
+                                                    warehouseListData.map((item, index) => (
+                                                        <SelectItem key={index} className="text-xs" value={item.warehouse_id}>{item.warehouse_name}</SelectItem>
+                                                    ))
+                                                }
+                                            </>
+                                        </SelectGroup>
+                                    </ScrollArea>
+                                </SelectContent>
+                            </Select>
+                        </div>
                         {
                             filterDestination !== "" ? (
                                 <TooltipProvider>
@@ -502,34 +491,37 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                             ) : null
                         }
                     </div>
-                </div>
-                <div className="flex flex-row gap-4 justify-between w-[40%]">
-                    <div className="flex w-full justify-end focus-visible:ring-1">
-                        <Input
-                            onChange={(event) => { setLotsNumber(event.target.value) }}
-                            className="w-[200px] h-[35px] text-xs rounded-r-none focus-visible:ring-0"
-                        />
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            className="h-[35px] w-[100px] text-xs rounded-none rounded-r-md"
-                            onClick={handleScanLots}
-                            disabled={isButtonDisabled || lotsNumber === ""}
-                        >
-                            Scan Lots
-                        </Button>
-                    </div>
+                    <div className="w-[50%]">
+                        <div className="flex flex-row gap-4 justify-between ">
+                            <div className="flex w-full justify-end focus-visible:ring-1">
+                                <Input
+                                    onChange={(event) => { setLotsNumber(event.target.value) }}
+                                    className="w-[200px] h-[35px] text-xs rounded-r-none focus-visible:ring-0"
+                                />
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    className="h-[35px] w-[100px] text-xs rounded-none rounded-r-md"
+                                    onClick={handleScanLots}
+                                    disabled={isButtonDisabled || lotsNumber === ""}
+                                >
+                                    Scan Lots
+                                </Button>
+                            </div>
 
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        className={`h-[35px] w-[100px] text-xs rounded-md }`}
-                        disabled={Object.keys(rowSelection).length === 0}
-                        onClick={handleOpenLots}
-                    >
-                        Assign Lots
-                    </Button>
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                className={`h-[35px] w-[100px] text-xs rounded-md }`}
+                                disabled={Object.keys(rowSelection).length === 0}
+                                onClick={handleOpenLots}
+                            >
+                                Assign Lots
+                            </Button>
+                        </div>
+                    </div>
                 </div>
+
             </div >
 
             <Table className=" rounded-md">
