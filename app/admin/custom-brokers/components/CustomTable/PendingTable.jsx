@@ -177,6 +177,18 @@ export function PendingTable
         {
             accessorKey: "status",
             header: "Customs Status",
+            cell: ({ row }) => {
+                return (
+                    <>
+                        {row.original.status === "Cleared Custom" ?
+                            "Border Cleared"
+                            : row.original.status === "Verified" ?
+                                "Pending"
+                                : row.original.status
+                        }
+                    </>
+                )
+            }
         },
         {
             id: "Action",
