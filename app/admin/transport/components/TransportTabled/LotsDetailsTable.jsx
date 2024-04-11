@@ -52,6 +52,7 @@ export function LotsDetailsTable({
     handlerPaginationChange,
     setPagination,
     query,
+    lots_status,
 }) {
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState([]);
@@ -275,7 +276,7 @@ export function LotsDetailsTable({
     return (
         <>
             <RemovePackageDialog open={openDelete} setOpen={setOpenDelete} lotsId={lostId} deleteId={deleteID} reload={reload} />
-            <BinDialog open={openBin} setOpen={setOpenBin} data={selectedItemsID} reload={reload} />
+            <BinDialog open={openBin} setOpen={setOpenBin} data={selectedItemsID} reload={reload} status={lots_status} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">

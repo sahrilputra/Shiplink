@@ -183,6 +183,7 @@ export default function LotsDetails({ params }) {
                                     handlerPaginationChange={handlerPaginationChange}
                                     query={query}
                                     setPagination={setPagination}
+                                    lots_status={lotsData?.status}
                                 />
                             </div>
                         </div>

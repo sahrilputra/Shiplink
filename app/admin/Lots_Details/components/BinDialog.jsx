@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client'
-import React, { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
+"use client";
+import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -9,79 +9,75 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogClose
-} from "@/components/ui/dialog"
+    DialogClose,
+} from "@/components/ui/dialog";
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+} from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import axios from 'axios'
-import { useToast } from "@/components/ui/use-toast"
-import { Loaders } from "@/components/ui/loaders"
+} from "@/components/ui/select";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
+import { Loaders } from "@/components/ui/loaders";
 
 const formSchema = yup.object().shape({
     bins_id: yup.string(),
     tracking_id: yup.array().of(yup.string()),
-    confirm_overide: yup.boolean()
-})
+    confirm_overide: yup.boolean(),
+});
 
-export function BinDialog({ open, setOpen, data, reload }) {
-    console.log("🚀 ~ MovePackageDialog ~ data:", data)
+export function BinDialog({ open, setOpen, data, reload, status }) {
+    console.log("🚀 ~ MovePackageDialog ~ data:", data);
 
-    const { toast } = useToast()
+    const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             bins_id: "",
             tracking_id: data || [],
-            confirm_overide: true
+            confirm_overide: true,
         },
         mode: "onChange",
-    })
+    });
 
     useEffect(() => {
         for (let i = 0; i < data.length; i++) {
-            form.setValue(`tracking_id[${i}]`, data[i])
+            form.setValue(`tracking_id[${i}]`, data[i]);
         }
-    }, [data])
+    }, [data]);
 
-    console.log("Form trackingID", form.watch('tracking_id'))
+    console.log("Form trackingID", form.watch("tracking_id"));
     // var
     const [loading, setLoading] = useState(false);
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
         limit: 0,
-        index: 0
+        index: 0,
     });
     const [bins, setBins] = useState([]);
-
 
     // Fetch Data
     const fetchData = async () => {
         try {
-            const response = await axios.post(
-                `/api/admin/bin_manager/list`,
-                query
-            );
+            const response = await axios.post(`/api/admin/bin_manager/list`, query);
             const data = await response.data;
             setBins(data.bins);
         } catch (error) {
-            console.log('Error:', error);
+            console.log("Error:", error);
         }
     };
 
@@ -95,8 +91,8 @@ export function BinDialog({ open, setOpen, data, reload }) {
     }, [query]);
 
     const handleSave = async (formData) => {
-        console.log("dikirim", formData)
-        setLoading(true)
+        console.log("dikirim", formData);
+        setLoading(true);
         try {
             const response = await axios.post(
                 `/api/admin/bin_manager/assign_package`,
@@ -107,33 +103,52 @@ export function BinDialog({ open, setOpen, data, reload }) {
             );
             if (response.status === false) {
                 toast({
-                    title: 'Error While Assign Package To Bin!',
+                    title: "Error While Assign Package To Bin!",
                     description: response.data.message,
-                    status: 'error',
+                    status: "error",
                 });
             } else {
                 toast({
                     title: `Success Assign Package To Bin ${formData.bins_id} !`,
                     description: response.data.message,
-                    status: 'success',
+                    status: "success",
                 });
+
+                if (status === "Arrived at Destination") {
+                    await handleStatusChange();
+                }
             }
             reload();
-            setLoading(false)
+            setLoading(false);
             close();
         } catch (error) {
-            console.log('Error', error);
-            setLoading(false)
+            console.log("Error", error);
+            setLoading(false);
             toast({
-                title: 'Error While Assign Package To Bins!',
+                title: "Error While Assign Package To Bins!",
                 description: `Error : ${error.message}`,
-                status: 'error',
+                status: "error",
             });
         }
     };
-    const close = () => {
-        setOpen(false)
+
+    const handleStatusChange = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/packages/setStatus`,
+                {
+                    tracking_id: data,
+                    status: "Ready for Pickup",
+                }
+            )
+            console.log("🚀 ~ handleStatusChange ~ response:", response)
+        } catch (error) {
+
+        }
     }
+    const close = () => {
+        setOpen(false);
+    };
     return (
         <>
             {loading && <Loaders />}
@@ -152,9 +167,9 @@ export function BinDialog({ open, setOpen, data, reload }) {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(handleSave)}
-                            className='flex gap-4 flex-col'
-                            action="">
-
+                            className="flex gap-4 flex-col"
+                            action=""
+                        >
                             <div className="flex flex-col gap-2">
                                 <div className="w-[50px] text-myBlue border-b border-myBlue text-sm text-center">
                                     <p>Bin</p>
@@ -170,24 +185,33 @@ export function BinDialog({ open, setOpen, data, reload }) {
                                             <FormLabel className=" text-sm">Select Bins</FormLabel>
                                             <Select
                                                 onValueChange={(value) => {
-                                                    const selectedStatus = bins.find(item => item.bins_id === value);
-                                                    field.onChange(selectedStatus ? selectedStatus.bins_id : ''); // Set id_status as value if found, otherwise empty string
+                                                    const selectedStatus = bins.find(
+                                                        (item) => item.bins_id === value
+                                                    );
+                                                    field.onChange(
+                                                        selectedStatus ? selectedStatus.bins_id : ""
+                                                    ); // Set id_status as value if found, otherwise empty string
                                                 }}
                                                 defaultValue={field.value}
                                             >
-                                                <FormControl className='text-xs'>
+                                                <FormControl className="text-xs">
                                                     <SelectTrigger>
-                                                        <SelectValue className='text-xs' placeholder="Select Bin" />
+                                                        <SelectValue
+                                                            className="text-xs"
+                                                            placeholder="Select Bin"
+                                                        />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    {
-                                                        bins?.map((item, index) => (
-                                                            <SelectItem className='text-xs' key={index} value={item.bins_id}>
-                                                                {`Row ${item.row} - Section ${item.section} - Level ${item.level} `}
-                                                            </SelectItem>
-                                                        ))
-                                                    }
+                                                    {bins?.map((item, index) => (
+                                                        <SelectItem
+                                                            className="text-xs"
+                                                            key={index}
+                                                            value={item.bins_id}
+                                                        >
+                                                            {`Row ${item.row} - Section ${item.section} - Level ${item.level} `}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                         </FormItem>
@@ -203,11 +227,7 @@ export function BinDialog({ open, setOpen, data, reload }) {
                                 >
                                     Cancel
                                 </Button>
-                                <Button
-                                    type="submit"
-                                    className="w-full"
-                                    variant="destructive"
-                                >
+                                <Button type="submit" className="w-full" variant="destructive">
                                     Save changes
                                 </Button>
                             </div>
@@ -216,5 +236,5 @@ export function BinDialog({ open, setOpen, data, reload }) {
                 </DialogContent>
             </Dialog>
         </>
-    )
+    );
 }
