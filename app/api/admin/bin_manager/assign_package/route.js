@@ -11,6 +11,7 @@ export async function POST(request) {
         const {
             bins_id,
             tracking_id,
+            confirm_overide = true,
         } = await request.json();
 
         // console.log("token from country", token);
@@ -20,6 +21,7 @@ export async function POST(request) {
             {
                 bins_id: bins_id,
                 tracking_id: tracking_id,
+                confirm_overide: confirm_overide,
             },
             {
                 httpsAgent: agent,

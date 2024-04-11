@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { EventTabled } from './components/EventTable'
 import { Dialog } from '@/components/ui/dialog'
 import { useRouter } from 'next/navigation'
+import { MoveBinDialog } from './components/dialog/MoveBinDialog'
 import {
     Carousel,
     CarouselContent,
@@ -35,6 +36,7 @@ export default function VerificationPages({ params }) {
     }
     console.log("Helo", params.slug)
     const { toast } = useToast()
+    const [openBin, setOpenBin] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
     const [openStatus, setOpenStatus] = useState(false);
     const [openInternal, setOpenInternal] = useState(false);
@@ -150,6 +152,7 @@ export default function VerificationPages({ params }) {
     console.log("🚀 ~ VerificationPages ~ profileImg:", profileImg)
     return (
         <>
+            <MoveBinDialog open={openBin} setOpen={setOpenBin} data={[data?.tracking_id]} reload={reloadData} />
             <DeletePackage open={openDelete} setOpen={setOpenDelete} deleteID={[data?.tracking_id]} />
             <UpdateStatus open={openStatus} setOpen={setOpenStatus} dataID={data?.tracking_id} statusNow={data?.status} reload={reloadData} />
             <PackageDialogDetails open={openPackage} setOpen={setOpenPackage} details={data} />
@@ -250,143 +253,43 @@ export default function VerificationPages({ params }) {
                                         <p>Destination</p>
                                         {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : (
                                             <div className="flex flex-row gap-1 items-center">
-                                                <img src={`https://flagcdn.com/${countryCodeArrival}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
-                                                <p className='text-sm font-bold text-nowrap'>
-                                                    {data?.warehouse_name_destination} WH
-                                                </p>
+                                                {
+                                                    data?.warehouse_name_destination !== null ? (
+                                                        <>
+                                                            <img src={`https://flagcdn.com/${countryCodeArrival}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                                            <p className='text-sm font-bold text-nowrap'>
+                                                                {data?.warehouse_name_destination} WH
+                                                            </p>
+                                                        </>
+                                                    ) : (
+                                                        <p>-</p>
+                                                    )
+                                                }
+
                                             </div>
                                         )
                                         }
                                     </div>
-                                    <div className="flex flex-col text-xs text-zinc-500">
-                                        <p>Bin Location</p>
-                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.bin_location === "undefined" || data?.bin_location === "Undefined" ? "-" : data?.bin_location}</p>}
+                                    <div className="flex flex-row gap-2 justify-between">
+                                        <div className="flex flex-col text-xs text-zinc-500">
+                                            <p>Bin Location</p>
+                                            {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : <p className='text-sm font-bold'>{data?.bin_location === "undefined" || data?.bin_location === "Undefined" ? "-" : data?.bin_location}</p>}
+                                        </div>
+                                        <div className="">
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                className="text-xs text-white"
+                                                onClick={() => setOpenBin(true)}
+                                            >
+                                                <p>Move to Bin</p>
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="PackageInformation w-full border border-neutral-200 rounded-md px-3 py-2 flex flex-col gap-5">
-                            {/* <div className="flex flex-row gap-3 justify-between items-center">
-                                <div className="head">
-                                    <p className=' text-myBlue font-base font-bold'>Package Information</p>
-                                </div>
-                                <div className="flex flex-row gap-2">
-                                    <NextLink href={`/admin/package-details/edit/${data?.tracking_id}`}>
-                                        <Button
-                                            variant="secondary"
-                                            size="sm"
-                                        >
-                                            <p className=' text-xs'>Edit Package</p>
-                                        </Button>
-                                    </NextLink>
-                                    <div className="">
-                                        <Dialog>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        className="flex flex-row gap-3 "
-                                                    >
-                                                        <p className=' text-xs'>More Action</p>
-                                                        <MoreHorizontalIcon width={15} height={15} />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent side={"bottom"} align={"end"} sideOffset={2}>
-                                                    <DropdownMenuItem
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
-                                                        onClick={markDelivered}
-                                                        disabled={data?.status === "Complete"}
-                                                    >
-                                                        <p className=' text-xs'>Mark As Delivered</p>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => setOpenStatus(true)}
-                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
-                                                    >
-                                                        <p className=' text-xs'>Update Status</p>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        className="text-xs cursor-pointer"
-                                                    >
-                                                        <p className=' text-xs'>Send Invoice To User</p>
-                                                    </DropdownMenuItem>
-                                                    {
-                                                        filterInvoice.length > 0 ? (
-                                                            filterInvoice.map((item, index) => (
-                                                                <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
-                                                                    <DropdownMenuItem
-                                                                        key={index}
-                                                                        className="text-xs w-[200px] cursor-pointer"
-                                                                        value={index}
-
-                                                                    >
-                                                                        Donwload Invoice {index > 1 && index + 1}
-                                                                    </DropdownMenuItem>
-                                                                </NextLink>
-                                                            ))
-                                                        ) : (
-                                                            <DropdownMenuItem
-                                                                disabled={true}
-                                                                className="text-xs text-myBlue w-[200px] cursor-pointer "
-                                                            >
-                                                                No Invoice
-                                                            </DropdownMenuItem>
-                                                        )
-                                                    }
-
-                                                    <DropdownMenuItem
-                                                        onClick={() => setOpenInternal(true)}
-                                                    >
-                                                        <p className=' text-xs cursor-pointer'>Download Internal Code</p>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => setOpenPackage(true)}
-                                                        className="text-xs cursor-pointer">
-                                                        <p className=' text-xs'>Download Package Information</p>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => setOpenDelete(true)}
-                                                        className="text-xs text-red-700 cursor-pointer hover:bg-red-50 focus:bg-red-50 focus:text-red-700"
-                                                    >
-                                                        Delete Package
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </Dialog>
-                                        <div className="flex flex-col gap-3">
-                                            <Button
-                                                variant="secondary"
-                                                size="sm"
-                                                className="flex flex-row gap-3 "
-                                            >
-                                                <p className=' text-xs'>More Action</p>
-                                                <MoreHorizontalIcon width={15} height={15} />
-                                            </Button>
-                                            <Button
-                                                variant="secondary"
-                                                size="sm"
-                                                className="text-xs text-white"
-                                                onClick={markDelivered}
-                                                disabled={data?.status === "Complete"}
-                                            >
-                                                <p className=' text-xs'>Mark As Delivered</p>
-                                            </Button>
-                                            <Button
-                                                variant="secondary"
-                                                size="sm"
-                                                className="text-xs text-white"
-                                                onClick={() => setOpenStatus(true)}
-                                            >
-                                                <p className=' text-xs'>Update Status</p>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
                             <div className="grid grid-cols-2">
                                 <div className="col-span-1">
                                     <div className="flex flex-row">
@@ -568,8 +471,6 @@ export default function VerificationPages({ params }) {
                                                             </Button>
                                                         </NextLink>
 
-
-
                                                         <Button
                                                             variant="secondary"
                                                             size="sm"
@@ -579,82 +480,7 @@ export default function VerificationPages({ params }) {
                                                         >
                                                             <p className=' text-xs'>Mark Delivered</p>
                                                         </Button>
-                                                        {/* <Dialog>
-                                                            <DropdownMenu>
-                                                                <DropdownMenuTrigger asChild>
-                                                                    <Button
-                                                                        variant="secondary"
-                                                                        size="sm"
-                                                                        className="flex flex-row gap-3 "
-                                                                    >
-                                                                        <p className=' text-xs'>More Action</p>
-                                                                        <MoreHorizontalIcon width={15} height={15} />
-                                                                    </Button>
-                                                                </DropdownMenuTrigger>
-                                                                <DropdownMenuContent side={"bottom"} align={"end"} sideOffset={2}>
-                                                                    <DropdownMenuItem
-                                                                        variant="secondary"
-                                                                        size="sm"
-                                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
-                                                                        onClick={markDelivered}
-                                                                        disabled={data?.status === "Complete"}
-                                                                    >
-                                                                        <p className=' text-xs'>Mark As Delivered</p>
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuItem
-                                                                        onClick={() => setOpenStatus(true)}
-                                                                        className="text-xs text-myBlue cursor-pointer hover:bg-blue-50  focus:bg-blue-50 focus:text-myBlue"
-                                                                    >
-                                                                        <p className=' text-xs'>Update Status</p>
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuItem
-                                                                        className="text-xs cursor-pointer"
-                                                                    >
-                                                                        <p className=' text-xs'>Send Invoice To User</p>
-                                                                    </DropdownMenuItem>
-                                                                    {
-                                                                        filterInvoice.length > 0 ? (
-                                                                            filterInvoice.map((item, index) => (
-                                                                                <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
-                                                                                    <DropdownMenuItem
-                                                                                        key={index}
-                                                                                        className="text-xs w-[200px] cursor-pointer"
-                                                                                        value={index}
 
-                                                                                    >
-                                                                                        Donwload Invoice {index > 1 && index + 1}
-                                                                                    </DropdownMenuItem>
-                                                                                </NextLink>
-                                                                            ))
-                                                                        ) : (
-                                                                            <DropdownMenuItem
-                                                                                disabled={true}
-                                                                                className="text-xs text-myBlue w-[200px] cursor-pointer "
-                                                                            >
-                                                                                No Invoice
-                                                                            </DropdownMenuItem>
-                                                                        )
-                                                                    }
-
-                                                                    <DropdownMenuItem
-                                                                        onClick={() => setOpenInternal(true)}
-                                                                    >
-                                                                        <p className=' text-xs cursor-pointer'>Download Internal Code</p>
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuItem
-                                                                        onClick={() => setOpenPackage(true)}
-                                                                        className="text-xs cursor-pointer">
-                                                                        <p className=' text-xs'>Download Package Information</p>
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuItem
-                                                                        onClick={() => setOpenDelete(true)}
-                                                                        className="text-xs text-red-700 cursor-pointer hover:bg-red-50 focus:bg-red-50 focus:text-red-700"
-                                                                    >
-                                                                        Delete Package
-                                                                    </DropdownMenuItem>
-                                                                </DropdownMenuContent>
-                                                            </DropdownMenu>
-                                                        </Dialog> */}
 
                                                     </div>
                                                 </div>
@@ -663,19 +489,6 @@ export default function VerificationPages({ params }) {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* <CarouselItem key={index} className=" w-full h-full grow-1">
-                                                                <div className="w-full">
-                                                                    <Card>
-                                                                        <img
-                                                                            style={{ objectFit: "cover", width: '100%', height: '250px', borderRadius: '8px' }}
-                                                                            src={`https://sla.webelectron.com/api/Package/getimages?fullName=${data?.images[index].images}`}
-                                                                            alt=""
-                                                                        />
-                                                                    </Card>
-
-                                                                </div>
-                                                            </CarouselItem> */}
 
                         </div>
                     </div>
