@@ -10,7 +10,7 @@ export const TransportMenus = () => {
     <Menus>
       <MenuItems
         isActive={router === "/admin/transport"}
-        title="Single Item"
+        title="Single Items"
         href="/admin/transport"
       />
       <MenuItems

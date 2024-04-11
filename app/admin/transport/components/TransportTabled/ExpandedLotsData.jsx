@@ -32,7 +32,7 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
                 <TableHeader className="bg-sky-50 ">
                     <TableHead className=" text-myBlue font-bold text-xs p-0 h-7 px-5 py-2">Last Update</TableHead>
                     <TableHead className=" text-myBlue font-bold text-xs p-0 h-7 px-5 py-2">Trip Number</TableHead>
-                    <TableHead className="text-myBlue font-bold text-xs p-0 h-7 px-5 py-2">Total Items</TableHead>
+                    <TableHead className="text-myBlue font-bold text-xs p-0 h-7 px-5 py-2">Documents</TableHead>
                     <TableHead className="text-myBlue font-bold text-xs p-0 h-7 px-5 py-2 w-[150px]"></TableHead>
                 </TableHeader>
                 <TableBody>
@@ -44,7 +44,25 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
                             <p>{data?.trip_number || "-"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2">
-                            <p>{data?.total_items || "-"}</p>
+                            {
+                                data.documents ?
+                                    (
+                                        <NextLink
+                                            href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${data.documents}`}
+                                            passHref
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <p className="text-xs underline text-myBlue">
+                                                View
+                                            </p>
+                                        </NextLink>
+                                    ) : (
+                                        <p>No Documents</p>
+                                    )
+                            }
+
+
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0  px-5 py-2 w-max flex-row flex justify-between gap-3">
                             <NextLink passHref href={`/admin/Lots_Details/${lotsID}`}>
@@ -68,6 +86,6 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
                         </TableCell>
                     </TableRow>
                 </TableBody>
-            </Table></>
+            </Table ></>
     )
 }

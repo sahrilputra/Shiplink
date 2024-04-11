@@ -50,6 +50,7 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     const [isEdit, setIsEdit] = useState(false);
     const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
     const [lots, setLots] = useState([]);
+    console.log("🚀 ~ LotsItemsTable ~ lots:", lots)
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [dataLots, setDataLots] = useState({})
     const [lotsIDs, setLotIDs] = useState();
@@ -166,35 +167,6 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             header: "Lots Labels",
         },
         {
-            accessorKey: "destination",
-            header: "Destination",
-            size: 80,
-            cell: ({ row }) => {
-                const countryCode = row.original.destination ? row.original.destination.substring(0, 2).toLowerCase() : '';
-                return (
-                    <>
-                        {
-                            row.original.destination === null && row.original.destination === null ?
-                                (
-                                    <>
-                                        -
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
-                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
-                                            <span>
-                                                {`- ${row.original.destination}`}
-                                            </span>
-                                        </div>
-                                    </>
-                                )
-                        }
-                    </>
-                )
-            }
-        },
-        {
             accessorKey: "location",
             header: "Current Location",
             size: 80,
@@ -224,6 +196,35 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             }
         },
         {
+            accessorKey: "destination",
+            header: "Destination",
+            size: 80,
+            cell: ({ row }) => {
+                const countryCode = row.original.destination ? row.original.destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.destination === null && row.original.destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-2 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span>
+                                                {`- ${row.original.destination}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
+        },
+        {
             accessorKey: "pickup_schedule",
             header: "Pickup Schedule",
             size: 80,
@@ -239,29 +240,18 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
             }
         },
         {
-            accessorKey: "documents",
-            header: "Documents",
+            accessorKey: "total_items",
+            header: "Package",
             size: 30,
             cell: ({ row }) => {
-                // Memeriksa apakah data documents ada dan tidak kosong
-                if (row.original.documents && row.original.documents.trim() !== "") {
-                    // Memisahkan string berdasarkan tanda koma dan mengambil panjang array
-                    const documentCount = row.original.documents.split(',').length;
-                    return (
-                        <div className="text-xs"
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
                             style={{ fontFamily: 'roboto' }}
-                        >
-                            {documentCount}
-                        </div>
-                    )
-                } else {
-                    // Menampilkan pesan jika tidak ada data documents atau kosong
-                    return (
-                        <div className="text-xs">
-                            -
-                        </div>
-                    )
-                }
+                        >{row.original.total_items !== 0 ? row.original.total_items : '-'}</span>
+                    </div>
+                )
             }
         },
         {
