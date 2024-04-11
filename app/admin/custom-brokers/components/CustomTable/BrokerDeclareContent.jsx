@@ -111,8 +111,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
         }
     };
     const [openInv, setOpenInv] = useState(false)
-
-
+    const [editForm, setEditForm] = useState(false);
 
     return (
         <>
@@ -217,7 +216,66 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                     </DropdownMenu>
                                 </div>
                             </div>
-                            <div className={`${status === "Cleared Custom" ? "hidden" : "flex"} w-[50%] flex flex-row gap-2 justify-end`}>
+
+                            <div className="">
+                                <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(handleSave)} className="w-[80%] flex flex-row gap-2 justify-end">
+                                        {
+                                            status !== "Cleared Custom" || editForm ? (
+
+                                                <>
+                                                    <div className="w-full flex flex-row gap-2">
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="entry_number"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormControl>
+                                                                        <div className="flex flex-row gap-[-3px] w-max border border-zinc-300 rounded-md h-8 items-center ">
+                                                                            <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Entry Number</p>
+                                                                            <Input
+                                                                                type="text"
+                                                                                className="h-full border-none pl-3 w-[150px] rounded-tl-none rounded-bl-none rounded-tr-md rounded-br-md focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+                                                                                {...field}
+                                                                            />
+                                                                        </div>
+                                                                    </FormControl>
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <div className="flex flex-row justify-end items-ends gap-4  ">
+                                                            <Button
+                                                                variant="secondary"
+                                                                className="px-3"
+                                                                size="xs"
+                                                                disabled={form.watch('entry_number') === ""}
+                                                            >
+                                                                <p className='text-xs'>Save</p>
+                                                            </Button>
+
+                                                        </div>
+                                                    </div>
+                                                </>
+
+                                            ) : (
+                                                <Button
+                                                    variant="secondary"
+
+                                                    className={`${editForm ? "hidden" : ""} px-3`}
+                                                    size="xs"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setEditForm(true)
+                                                    }}
+                                                >
+                                                    <p className='text-xs'>Edit</p>
+                                                </Button>
+                                            )
+                                        }
+                                    </form>
+                                </Form>
+                            </div>
+                            {/* <div className={`${status === "Cleared Custom" ? "hidden" : "flex"} w-[50%] flex flex-row gap-2 justify-end`}>
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSave)} className="w-[50%] flex flex-row gap-2 justify-end">
                                         <FormField
@@ -251,7 +309,8 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                         </div>
                                     </form>
                                 </Form>
-                            </div>
+                            </div> */}
+
                         </TableCell>
                     </TableRow>
                 </TableBody>

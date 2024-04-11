@@ -123,7 +123,7 @@ export default function CustomBrokerPage() {
         setIsSkeleton(true);
         if (tab === 'Pending') {
             setQuery({
-                status: "",
+                status: "Verified",
                 page: 1,
                 limit: 10,
                 index: 0,
@@ -145,7 +145,24 @@ export default function CustomBrokerPage() {
                 pageIndex: 0,
                 pageSize: 10,
             });
-        } else {
+        } else if (tab === 'All') {
+            setQuery({
+                page: 1,
+                limit: 10,
+                index: 0,
+                status: "",
+            })
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
+        }
+        else {
             setQuery({
                 page: 1,
                 limit: 10,

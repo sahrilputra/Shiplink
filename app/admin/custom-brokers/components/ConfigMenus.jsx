@@ -11,8 +11,8 @@ export const CustomMenus = ({ selectedTab, isSelected, handlerSelectedTab }) => 
     <Menus>
       <div className="">
         <button
-          className={`${isSelected === "" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
-          onClick={() => handlerSelectedTab("")}
+          className={`${isSelected === "Pending" ? "border-b border-blue-900 font-bold   text-myBlue" : "text-sm  text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+          onClick={() => handlerSelectedTab("Pending")}
         >
           <div className="">Pending</div>
         </button>
@@ -23,6 +23,14 @@ export const CustomMenus = ({ selectedTab, isSelected, handlerSelectedTab }) => 
           className={`${isSelected === "Cleared Custom" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
         >
           <div className="">Cleared</div>
+        </button>
+      </div>
+      <div className="">
+        <button
+          onClick={() => handlerSelectedTab("")}
+          className={`${isSelected === "" ? "border-b border-blue-900 font-bold  text-myBlue" : "text-zinc-800 font-light"} text-sm  px-[15px] h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
+        >
+          <div className="">All</div>
         </button>
       </div>
     </Menus>
