@@ -89,11 +89,20 @@ export function AssignLotsToBin({ open, setOpen, data, reload }) {
                 `/api/admin/destination/assignLots`,
                 formData
             );
-            toast({
-                title: `Success Assign Lots To Bin ${formData.bins_id} !`,
-                description: response.data.message,
-                status: 'success',
-            });
+            console.log("🚀 ~ handleSave ~ response:", response)
+            if (response.status === false) {
+                toast({
+                    title: 'Error While Assign Lots To Bins!',
+                    description: response.data.message,
+                    status: 'error',
+                });
+            } else {
+                toast({
+                    title: `Success Assign Lots To Bin ${formData.bins_id} !`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            }
             setLoading(false)
             close();
             reload()
@@ -155,7 +164,7 @@ export function AssignLotsToBin({ open, setOpen, data, reload }) {
                                             >
                                                 <FormControl className='text-xs'>
                                                     <SelectTrigger>
-                                                        <SelectValue className='text-xs' placeholder="Status" />
+                                                        <SelectValue className='text-xs' placeholder="Select Bin" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
