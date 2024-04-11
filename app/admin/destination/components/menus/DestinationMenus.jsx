@@ -42,18 +42,18 @@ export const DestinationMenus = ({ dataID, reload, documents }) => {
                                 setAssignOpen(true)
                             }}
                         >
-                            <p className="text-xs text-myBlue">Assign This Lots</p>
+                            <p className="text-xs text-myBlue">Assign to Bin</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => {
                                 setStatusOpen(true)
                             }}
                         >
-                            <p className="text-xs">Update Lots Status</p>
+                            <p className="text-xs">Update Lot Status</p>
                         </DropdownMenuItem>
                         <NextLink href={`/admin/Lots_Details/${dataID}`}>
                             <DropdownMenuItem>
-                                <p className="text-xs">Load Lots Details</p>
+                                <p className="text-xs">Load Lot Details</p>
                             </DropdownMenuItem>
                         </NextLink>
 
@@ -64,7 +64,7 @@ export const DestinationMenus = ({ dataID, reload, documents }) => {
                             rel="noopener noreferrer"
                         >
                             <DropdownMenuItem className="text-xs text-myBlue">
-                                View Lots Documents
+                                View Lot Documents
                             </DropdownMenuItem>
                         </NextLink>
                     </DropdownMenuContent>
