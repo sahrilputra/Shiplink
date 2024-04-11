@@ -170,7 +170,7 @@ export default function LotsDetails({ params }) {
                                 </div>
                                 <div className="px-3">
                                     <NextLink
-                                        href={`/admin/Lots_Details/view?lots_id=${lostId}`}
+                                        href={`/view/lots?lots_id=${lostId}`}
                                         passHref
                                         target="_blank"
                                         rel="noopener noreferrer"
