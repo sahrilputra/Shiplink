@@ -9,6 +9,7 @@ import { Status } from '@/components/status/Status'
 import { SearchBar } from '@/components/ui/searchBar'
 import { Button } from '@/components/ui/button'
 import { ServicesTabled } from './components/ServicesTabled'
+import axios from 'axios';
 export default function Services() {
     const [selectedDataID, setSelectedDataID] = useState(null)
     const [selectedData, setSelectedData] = useState(null)
@@ -25,17 +26,38 @@ export default function Services() {
     }, [selectedDataID]);
 
     // Cek jika selectedDataID adalah array sebelum memanggil map()
-    console.log("Anda memilih data:", Array.isArray(selectedDataID) ? selectedDataID.map(item => item.id) : selectedDataID);
+    console.log("Anda memilih data:", selectedDataID);
     // Cek jika selectedData tidak null sebelum mencetak deskripsi
     console.log("Deskripsi:", selectedData ? selectedData.description : "Tidak ada data yang dipilih");
+
+
+    const [tableData, setTableData] = useState([]);
+    console.log("🚀 ~ Services ~ tableData:", tableData)
+    useEffect(() => {
+        const fetchDataListTable = async () => {
+            try {
+                const response = await axios.get(
+                    `/api/admin/config/services/setting_list`,
+                    { id: selectedDataID }
+                )
+                console.log("🚀 ~ fetchDataListTable ~ response:", response)
+                const responseData = await response.data;
+                setTableData(responseData);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchDataListTable();
+    }, [selectedDataID]);
 
     return (
         <div className={styles.container}>
             <div className={styles.category}>
-                <ServicesCategory data={data} selectedData={handleSelectedData} />
+                <ServicesCategory selectedData={handleSelectedData} />
             </div>
             <div className={styles.content}>
-                <ServicesTabled data={selectedData} />
+                <ServicesTabled data={selectedData} id={selectedDataID} />
             </div>
         </div>
     )
