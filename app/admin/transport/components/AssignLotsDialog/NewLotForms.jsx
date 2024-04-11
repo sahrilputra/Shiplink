@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { useForm } from 'react-hook-form'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Separator } from '@/components/ui/separator'
+import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 import {
     Select,
     SelectContent,
@@ -19,7 +19,7 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
     Form,
     FormControl,
@@ -28,32 +28,32 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useToast } from '@/components/ui/use-toast'
-import { Loaders } from '@/components/ui/loaders'
-import Image from 'next/image'
-import axios from 'axios'
-import NextLink from 'next/link'
+} from "@/components/ui/form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useToast } from "@/components/ui/use-toast";
+import { Loaders } from "@/components/ui/loaders";
+import Image from "next/image";
+import axios from "axios";
+import NextLink from "next/link";
 import {
     Command,
     CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import { PopoverClose } from '@radix-ui/react-popover'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { CalendarIcon, CheckIcon } from 'lucide-react'
-import { Files, X } from 'lucide-react'
-import { Calendar } from '@/components/ui/calendar'
-import { format } from 'date-fns'
+} from "@/components/ui/popover";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CalendarIcon, CheckIcon } from "lucide-react";
+import { Files, X } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 const formSchema = yup.object().shape({
     LotsId: yup.string(),
     LotsLabel: yup.string().required(),
@@ -64,16 +64,17 @@ const formSchema = yup.object().shape({
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string()),
     // Documents: yup.array().of(yup.string()).notRequired(),
-})
+});
 // Origin: yup.string().required(),
 export const NewLotsFrom = ({ close, data = null, reload }) => {
-    console.log("🚀 ~ NewLotsFrom ~ data:", data)
-    const { toast } = useToast()
+    console.log("🚀 ~ NewLotsFrom ~ data:", data);
+    const { toast } = useToast();
     const [popOverOpen, setPopOverOpen] = useState(false);
     const [openOrigin, setOpenOrigin] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [openDate, setOpenDate] = useState(false);
     const [statusList, setStatusList] = useState([]);
-    const [countryList, setCountryList] = useState([])
+    const [countryList, setCountryList] = useState([]);
     const [selectDestination, setSelectDestination] = useState("");
     const [selectOrigin, setSelectOrigin] = useState("");
     const [countryQuery, setCountryQuery] = useState({
@@ -81,82 +82,74 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         page: 0,
         limit: 0,
         index: 0,
-    })
+    });
 
-
-
-    const [originWarehouse, setOriginWarehouse] = useState([])
-    const [destinationWarehouse, setDestinationWarehouse] = useState([])
-
+    const [originWarehouse, setOriginWarehouse] = useState([]);
+    const [destinationWarehouse, setDestinationWarehouse] = useState([]);
 
     const fetchWarehouses = async () => {
         try {
-            const response = await axios.post(
-                `/api/admin/warehouse/list`,
-                {
-                    keyword: '',
-                    page: 0,
-                    limit: 0,
-                    index: 0,
-                }
-            );
+            const response = await axios.post(`/api/admin/warehouse/list`, {
+                keyword: "",
+                page: 0,
+                limit: 0,
+                index: 0,
+            });
             console.log("Warehouses:", response.data);
             setOriginWarehouse(response.data.warehouse);
             setDestinationWarehouse(response.data.warehouse);
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     const filterDestinationWarehouses = (originCountry) => {
-        return destinationWarehouse.filter(warehouse => warehouse.warehouse_id !== originCountry);
-    }
-
+        return destinationWarehouse.filter(
+            (warehouse) => warehouse.warehouse_id !== originCountry
+        );
+    };
 
     useEffect(() => {
         fetchWarehouses();
         setSelectDestination(data?.warehouse_destination_name || "");
-    }, [])
+    }, []);
 
-
-    console.log("🚀 ~ NewLotsFrom ~ countryQuery:", countryQuery)
+    console.log("🚀 ~ NewLotsFrom ~ countryQuery:", countryQuery);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `/api/admin/transport/lots/status/list`,
+                    `/api/admin/transport/lots/status/list`
                 );
                 const responseCountry = await axios.post(
                     `/api/admin/config/countries/list`,
                     countryQuery
-                )
-                console.log(response)
-                console.log("Country : ", responseCountry)
+                );
+                console.log(response);
+                console.log("Country : ", responseCountry);
                 const countryData = await responseCountry.data;
-                setCountryList(countryData.country)
+                setCountryList(countryData.country);
                 if (dataStatus) {
-                    form.setValue('Status', dataStatus)
+                    form.setValue("Status", dataStatus);
                 }
                 const data = await response.data;
                 setStatusList(data.data);
-
             } catch (error) {
-                console.log('Error:', error);
+                console.log("Error:", error);
             }
         };
         fetchData();
     }, [countryQuery]);
 
     const handleCommandChange = (e) => {
-        console.log("🚀 ~ handleCommandChange ~ e:", e)
+        console.log("🚀 ~ handleCommandChange ~ e:", e);
         setCountryQuery({ keyword: e });
-    }
+    };
     const handleDestinationChange = (e) => {
-        console.log("🚀 ~ handleDestinationChange countryQuery~ e:", e)
+        console.log("🚀 ~ handleDestinationChange countryQuery~ e:", e);
         setCountryQuery({ keyword: e });
-    }
-
+    };
 
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -171,7 +164,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             Documents: data?.documents || [],
         },
         mode: "onChange",
-    })
+    });
 
     const [dataStatus, setDataStatus] = useState(null);
     const handleFileChange = (event) => {
@@ -183,11 +176,11 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             const reader = new FileReader();
 
             reader.onloadend = () => {
-                const base64String = reader.result.split(',')[1]; // Get the Base64 string excluding the data URL part
+                const base64String = reader.result.split(",")[1]; // Get the Base64 string excluding the data URL part
                 uploadedFiles.push(base64String);
 
                 if (uploadedFiles.length === files.length) {
-                    form.setValue('Documents', uploadedFiles);
+                    form.setValue("Documents", uploadedFiles);
                 }
             };
 
@@ -195,15 +188,15 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         }
     };
     const handleSave = async (formData) => {
-        setLoading(true)
-        console.log("dikirim", formData)
+        setLoading(true);
+        console.log("dikirim", formData);
 
         if (formData.Origin === formData.Destination_country) {
             setLoading(false);
             toast({
-                title: 'Error',
-                description: 'Origin and destination cannot be the same.',
-                status: 'error',
+                title: "Error",
+                description: "Origin and destination cannot be the same.",
+                status: "error",
             });
             return; // Prevent form submission
         }
@@ -216,35 +209,40 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                 formData
             );
             toast({
-                title: `New Lots ${formData.LotsLabel} ${data ? "Edited!" : "created!"}`,
+                title: `New Lots ${formData.LotsLabel} ${data ? "Edited!" : "created!"
+                    }`,
                 description: response.data.message,
-                status: 'success',
+                status: "success",
             });
-            setLoading(false)
+            setLoading(false);
             close();
             reload();
         } catch (error) {
-            console.log('Error', error);
-            setLoading(false)
+            console.log("Error", error);
+            setLoading(false);
             toast({
-                title: 'Error creating new Lots',
-                description: 'An error occurred while creating the Lots.',
-                status: 'error',
+                title: "Error creating new Lots",
+                description: "An error occurred while creating the Lots.",
+                status: "error",
             });
         }
     };
 
-    console.log("DATE SELLECTED : ", form.watch("pickDate"))
+    console.log("DATE SELLECTED : ", form.watch("pickDate"));
     const handleSelectDestination = (code, name) => {
         setSelectedCountry({
             Destination_country: code,
         });
-    }
-    console.log('error', form.formState.errors)
+    };
+    console.log("error", form.formState.errors);
 
-    console.log("origin, destination", form.watch("Origin"), form.watch("Destination_country"))
-    const [statusSelect, setStatusSelect] = useState("")
-    console.log("Documents", form.getValues('Documents'));
+    console.log(
+        "origin, destination",
+        form.watch("Origin"),
+        form.watch("Destination_country")
+    );
+    const [statusSelect, setStatusSelect] = useState("");
+    console.log("Documents", form.getValues("Documents"));
     return (
         <>
             {loading && <Loaders />}
@@ -325,12 +323,18 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                             {destinationWarehouse.map((item) => (
                                                                 <>
                                                                     <PopoverClose asChild>
-
                                                                         <CommandItem
                                                                             value={item.warehouse_name}
                                                                             key={item.warehouse_id}
-                                                                            className={`text-xs ${form.watch('Origin') === item.warehouse_id ? "bg-slate-50 text-slate-200" : "text-xs"}`}
-                                                                            disabled={form.watch('Origin') === item.warehouse_id}
+                                                                            className={`text-xs ${form.watch("Origin") ===
+                                                                                item.warehouse_id
+                                                                                ? "bg-slate-50 text-slate-200"
+                                                                                : "text-xs"
+                                                                                }`}
+                                                                            disabled={
+                                                                                form.watch("Origin") ===
+                                                                                item.warehouse_id
+                                                                            }
                                                                             onSelect={() => {
                                                                                 setSelectDestination(
                                                                                     item.warehouse_name
@@ -342,7 +346,8 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                                                 setPopOverOpen(false);
                                                                             }}
                                                                         >
-                                                                            {item.warehouse_name} - {item.country_code}
+                                                                            {item.warehouse_name} -{" "}
+                                                                            {item.country_code}
                                                                             <CheckIcon
                                                                                 className={`ml-auto h-4 w-4 ${item.warehouse_id === field.value
                                                                                     ? "opacity-100"
@@ -368,7 +373,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                             render={({ field }) => (
                                 <FormItem className="w-full flex flex-row gap-3 items-center justify-between">
                                     <FormLabel className="w-[40%]">Pickup Date</FormLabel>
-                                    <Popover>
+                                    <Popover >
                                         <PopoverTrigger asChild>
                                             <FormControl>
                                                 <Button
@@ -386,16 +391,18 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                             </FormControl>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={
-                                                    (date) =>
-                                                        date <= new Date(new Date().setHours(0, 0, 0, 0)) // Disable dates before or equal to today
-                                                }
-                                                initialFocus
-                                            />
+                                            <PopoverClose>
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={field.value}
+                                                    onSelect={field.onChange}
+                                                    disabled={
+                                                        (date) =>
+                                                            date <= new Date(new Date().setHours(0, 0, 0, 0)) // Disable dates before or equal to today
+                                                    }
+                                                    initialFocus
+                                                />
+                                            </PopoverClose>
                                         </PopoverContent>
                                     </Popover>
                                 </FormItem>
@@ -437,7 +444,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                         field.onChange(
                                             selectedStatus ? selectedStatus.id_status : ""
                                         ); // Set id_status as value if found, otherwise empty string
-                                        form.setValue('Status', selectedStatus.id_status);
+                                        form.setValue("Status", selectedStatus.id_status);
                                     }}
                                     defaultValue={field.value}
                                 >
@@ -454,7 +461,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                     key={index}
                                                     value={item.status}
                                                     onSelect={() => {
-                                                        form.setValue('Status', item.id_status);
+                                                        form.setValue("Status", item.id_status);
                                                     }}
                                                 >
                                                     {item.status}
@@ -496,10 +503,16 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                     />
 
                     <div className="flex flex-col gap-2">
-                        {
-                            form.getValues('Documents') && form.getValues('Documents').length > 0 && (
-                                form.getValues('Documents').split(',').map((document, index) => (
-                                    <div key={index} className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded">
+                        {form.getValues("Documents") &&
+                            form.getValues("Documents").length > 0 &&
+                            form
+                                .getValues("Documents")
+                                .split(",")
+                                .map((document, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded"
+                                    >
                                         <div className="flex flex-row gap-2 items-center">
                                             <Files className="h-5 w-5 text-myBlue" />
                                             <NextLink
@@ -508,7 +521,9 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
-                                                <p className='hover:underline hover:text-myBlue'>{document}</p>
+                                                <p className="hover:underline hover:text-myBlue">
+                                                    {document}
+                                                </p>
                                             </NextLink>
                                         </div>
 
@@ -533,9 +548,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
 
                                         </div> */}
                                     </div>
-                                ))
-                            )
-                        }
+                                ))}
                     </div>
                     {/* <div className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded">
                         <div className="flex flex-row gap-2 items-center">
@@ -587,4 +600,4 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             </Form>
         </>
     );
-}
+};
