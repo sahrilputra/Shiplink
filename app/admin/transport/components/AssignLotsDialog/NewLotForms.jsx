@@ -59,8 +59,8 @@ const formSchema = yup.object().shape({
     LotsLabel: yup.string().required(),
     Destination_country: yup.string().required(),
     TripNumber: yup.string().required(),
-    Status: yup.number().required(),
-    Status_name: yup.string().required(),
+    Status: yup.number(),
+    Status_name: yup.string(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string()),
     // Documents: yup.array().of(yup.string()).notRequired(),
@@ -158,7 +158,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             LotsLabel: data?.label || "",
             Destination_country: data?.warehouse_destination || "",
             TripNumber: data?.trip_number || "",
-            Status: data?.status_id || "",
+            Status: data?.status_id || 0,
             Status_name: data?.status || "",
             pickDate: data?.pickup_schedule || "",
             Documents: data?.documents || [],
@@ -526,56 +526,9 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                 </p>
                                             </NextLink>
                                         </div>
-
-                                        {/* <div className="">
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <Button
-                                                            type="button"
-                                                            variant="destructive"
-                                                            size="xs"
-                                                            className="p-1.5 py-0 px-2"
-                                                        >
-                                                            <X className="h-4 w-4 text-white" />
-                                                        </Button>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent>
-                                                        <p className='text-xs'>Remove</p>
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </TooltipProvider>
-
-                                        </div> */}
                                     </div>
                                 ))}
                     </div>
-                    {/* <div className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded">
-                        <div className="flex flex-row gap-2 items-center">
-                            <Files className="h-5 w-5 text-myBlue" />
-                            <p>{form.getValues('Documents')}</p>
-                        </div>
-
-                        <div className="">
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            variant="destructive"
-                                            size="xs"
-                                            className="p-1.5 py-0 px-2"
-                                        >
-                                            <X className="h-4 w-4 text-white" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p className='text-xs'>Remove</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-
-                        </div>
-                    </div> */}
 
                     <div className="flex flex-row justify-between w-full gap-3 py-2">
                         <Button
