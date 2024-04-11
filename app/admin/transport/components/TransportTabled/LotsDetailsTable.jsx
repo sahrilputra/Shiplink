@@ -24,6 +24,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { BinDialog } from "@/app/admin/Lots_Details/components/BinDialog";
 import { Skeleton } from "@/components/ui/skeleton"
 import axios from "axios";
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
@@ -270,9 +271,11 @@ export function LotsDetailsTable({
     }
     const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
 
+    const [openBin, setOpenBin] = useState(false);
     return (
         <>
             <RemovePackageDialog open={openDelete} setOpen={setOpenDelete} lotsId={lostId} deleteId={deleteID} reload={reload} />
+            <BinDialog open={openBin} setOpen={setOpenBin} data={selectedItemsID} reload={reload} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -295,14 +298,26 @@ export function LotsDetailsTable({
                             <FilterIcons className="" fill="#CC0019" />
                         </Button>
                     </div>
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
-                        onClick={handleRemovedPackage}
-                    >
-                        <span className="text-xs">Remove Package</span>
-                    </Button>
+                    <div className="flex flex-row gap-3">
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
+                            onClick={() => {
+                                setOpenBin(true);
+                            }}
+                        >
+                            <span className="text-xs">Move Package</span>
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
+                            onClick={handleRemovedPackage}
+                        >
+                            <span className="text-xs">Remove Package</span>
+                        </Button>
+                    </div>
 
                 </div>
             </div>
