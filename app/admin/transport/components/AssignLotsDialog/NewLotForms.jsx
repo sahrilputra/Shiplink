@@ -6,6 +6,12 @@ import { useForm } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
 import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
     Select,
     SelectContent,
     SelectGroup,
@@ -29,6 +35,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
 import Image from 'next/image'
 import axios from 'axios'
+import NextLink from 'next/link'
 import {
     Command,
     CommandEmpty,
@@ -44,23 +51,19 @@ import {
 import { PopoverClose } from '@radix-ui/react-popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { CalendarIcon, CheckIcon } from 'lucide-react'
+import { Files, X } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
 import { format } from 'date-fns'
-
 const formSchema = yup.object().shape({
     LotsId: yup.string(),
     LotsLabel: yup.string().required(),
-    Destination_country: yup.string(),
+    Destination_country: yup.string().required(),
     TripNumber: yup.string().required(),
     Status: yup.number().required(),
-    Status_name: yup.string(),
+    Status_name: yup.string().required(),
     pickDate: yup.string().required(),
-    Documents: yup.array().of(yup.string())
-        .when('lots_id', {
-            is: (lots_id) => lots_id === null,
-            then: (event) => event.array().min(1).required('Please upload at least one document'),
-            otherwise: (event) => event.notRequired()
-        }),
+    Documents: yup.array().of(yup.string()),
+    // Documents: yup.array().of(yup.string()).notRequired(),
 })
 // Origin: yup.string().required(),
 export const NewLotsFrom = ({ close, data = null, reload }) => {
@@ -165,7 +168,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             Status: data?.status_id || "",
             Status_name: data?.status || "",
             pickDate: data?.pickup_schedule || "",
-            Documents: data?.documents || "",
+            Documents: data?.documents || [],
         },
         mode: "onChange",
     })
@@ -241,6 +244,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
 
     console.log("origin, destination", form.watch("Origin"), form.watch("Destination_country"))
     const [statusSelect, setStatusSelect] = useState("")
+    console.log("Documents", form.getValues('Documents'));
     return (
         <>
             {loading && <Loaders />}
@@ -354,9 +358,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                 </Command>
                                             </PopoverContent>
                                         </Popover>
-                                        {formState.errors.Destination_country && formState.errors.Destination_country.map((error, index) => (
-                                            <p key={index}>{error.message}</p>
-                                        ))}
                                     </FormItem>
                                 </>
                             )}
@@ -446,18 +447,20 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {statusList?.map((item, index) => (
-                                            <SelectItem
-                                                className="text-xs"
-                                                key={index}
-                                                value={item.status}
-                                                onSelect={() => {
-                                                    form.setValue('Status', item.id_status);
-                                                }}
-                                            >
-                                                {item.status}
-                                            </SelectItem>
-                                        ))}
+                                        <ScrollArea className="h-[150px]">
+                                            {statusList?.map((item, index) => (
+                                                <SelectItem
+                                                    className="text-xs"
+                                                    key={index}
+                                                    value={item.status}
+                                                    onSelect={() => {
+                                                        form.setValue('Status', item.id_status);
+                                                    }}
+                                                >
+                                                    {item.status}
+                                                </SelectItem>
+                                            ))}
+                                        </ScrollArea>
                                     </SelectContent>
                                 </Select>
                             </FormItem>
@@ -491,6 +494,75 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                             </>
                         )}
                     />
+
+                    <div className="flex flex-col gap-2">
+                        {
+                            form.getValues('Documents') && form.getValues('Documents').length > 0 && (
+                                form.getValues('Documents').split(',').map((document, index) => (
+                                    <div key={index} className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded">
+                                        <div className="flex flex-row gap-2 items-center">
+                                            <Files className="h-5 w-5 text-myBlue" />
+                                            <NextLink
+                                                href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${document}`}
+                                                passHref
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <p className='hover:underline hover:text-myBlue'>{document}</p>
+                                            </NextLink>
+                                        </div>
+
+                                        {/* <div className="">
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button
+                                                            type="button"
+                                                            variant="destructive"
+                                                            size="xs"
+                                                            className="p-1.5 py-0 px-2"
+                                                        >
+                                                            <X className="h-4 w-4 text-white" />
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <p className='text-xs'>Remove</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+
+                                        </div> */}
+                                    </div>
+                                ))
+                            )
+                        }
+                    </div>
+                    {/* <div className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded">
+                        <div className="flex flex-row gap-2 items-center">
+                            <Files className="h-5 w-5 text-myBlue" />
+                            <p>{form.getValues('Documents')}</p>
+                        </div>
+
+                        <div className="">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="destructive"
+                                            size="xs"
+                                            className="p-1.5 py-0 px-2"
+                                        >
+                                            <X className="h-4 w-4 text-white" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p className='text-xs'>Remove</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+
+                        </div>
+                    </div> */}
 
                     <div className="flex flex-row justify-between w-full gap-3 py-2">
                         <Button

@@ -40,8 +40,9 @@ import {
 } from "@/components/ui/pagination"
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 import { DeleteLotsDialog } from "../DeleteDialog/DeleteLotsDialog";
+import { CreateNewLotsDialog } from "../AssignLotsDialog/CreateNewLotsDialog";
 
-export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
+export function LotsItemsTable({ isOpen, setOpen }) {
     const [isEditDialog, setEditDialog] = useState(false);
 
     const [rowSelection, setRowSelection] = React.useState({})
@@ -49,6 +50,7 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     const [expandedRows, setExpandedRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
+    const [openNewDialog, setOpenNewDialog] = useState(false)
     const [lots, setLots] = useState([]);
     console.log("🚀 ~ LotsItemsTable ~ lots:", lots)
     const [isSkeleton, setIsSkeleton] = useState(true);
@@ -103,6 +105,7 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
         fetchData();
         // const intervalId = setInterval(fetchData, 3000); 
         // return () => clearInterval(intervalId);
+        setExpandedRows([])
     }, [query]);
 
 
@@ -157,7 +160,9 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.lots_id}</span>
+                        >
+                            {row.original.lots_id}
+                        </span>
                     </div>
                 )
             }
@@ -368,9 +373,14 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
     }
     return (
         <>
+            <CreateNewLotsDialog
+                open={openNewDialog}
+                setOpen={setOpenNewDialog}
+                reload={reloadData}
+            />
             <DeleteLotsDialog setOpen={setOpenDelete} open={openDelete} deleteId={lotsIDs} reload={reloadData} />
             <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} data={dataLots} reload={reloadData} />
-            <div className="">
+            <div className="w-full flex flex-row justify-between">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center pb-3">
                     <SearchBar handleSearch={handleSearchChange} />
                     <Button
@@ -382,6 +392,17 @@ export function LotsItemsTable({ isOpen, setOpen, setOpenNewDialog }) {
                             fill="#CC0019" />
                     </Button>
                     <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
+                </div>
+
+                <div className="">
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        className="px-10"
+                        onClick={() => setOpenNewDialog(true)}
+                    >
+                        <p className=" text-xs">New Lots</p>
+                    </Button>
                 </div>
             </div >
 
