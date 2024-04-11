@@ -22,7 +22,7 @@ export const DestinationLotsDetails = ({ data }) => {
                         <p>Trip Number : {data?.trip_number}</p>
                         <p>Lot Origin : {data?.warehouse_origin_name} WH - {data?.country_name}</p>
                         <p>Lot Destination : {data?.destination_name}</p>
-                        <p>Lot Location : {data?.warehouse_name_position} WH - {data?.country_name_position}</p>
+                        <p>Lot Location : {data?.warehouse_name_position} WH - {data?.country_code_position}</p>
                         <p>Last Update : {data?.updated_at}</p>
                         <div className='flex flex-row'>
                             <p>Documents :</p>
