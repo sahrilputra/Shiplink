@@ -49,6 +49,7 @@ export function CustomClearanceTable({ data }) {
     const [isEdit, setIsEdit] = useState(false);
     const [openNewWarehouse, setOpenNewWarehouse] = useState(false);
     const [lots, setLots] = useState([]);
+    console.log("🚀 ~ CustomClearanceTable ~ lots:", lots)
     const [deleteID, setDeleteId] = useState(null);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [deleteMuchDialog, setDeleteMuchDialog] = useState(false);
