@@ -53,7 +53,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CalendarIcon, CheckIcon, XIcon } from "lucide-react";
 import { Files, X } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
+import Router from "next/router";
 const formSchema = yup.object().shape({
     LotsId: yup.string(),
     LotsLabel: yup.string().required(),
@@ -63,20 +64,32 @@ const formSchema = yup.object().shape({
     Status_name: yup.string(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string()),
-    // Documents: yup.array().of(yup.string()).notRequired(),
 });
-// Origin: yup.string().required(),
 export const NewLotsFrom = ({ close, data = null, reload }) => {
+    const form = useForm({
+        resolver: yupResolver(formSchema),
+        defaultValues: {
+            LotsId: data?.lots_id || "",
+            LotsLabel: data?.label || "",
+            Destination_country: data?.warehouse_destination || "",
+            TripNumber: data?.trip_number || "",
+            Status: data?.status_id || 0,
+            Status_name: data?.status || "",
+            pickDate: data?.pickup_schedule || "",
+            Documents: [],
+        },
+        mode: "onChange",
+    });
+
+
+    const useRouter = Router;
     console.log("🚀 ~ NewLotsFrom ~ data:", data);
     const { toast } = useToast();
     const [popOverOpen, setPopOverOpen] = useState(false);
-    const [openOrigin, setOpenOrigin] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [openDate, setOpenDate] = useState(false);
     const [statusList, setStatusList] = useState([]);
     const [countryList, setCountryList] = useState([]);
     const [selectDestination, setSelectDestination] = useState("");
-    const [selectOrigin, setSelectOrigin] = useState("");
     const [countryQuery, setCountryQuery] = useState({
         keyword: "",
         page: 0,
@@ -101,12 +114,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const filterDestinationWarehouses = (originCountry) => {
-        return destinationWarehouse.filter(
-            (warehouse) => warehouse.warehouse_id !== originCountry
-        );
     };
 
     useEffect(() => {
@@ -142,34 +149,62 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         fetchData();
     }, [countryQuery]);
 
-    const handleCommandChange = (e) => {
-        console.log("🚀 ~ handleCommandChange ~ e:", e);
-        setCountryQuery({ keyword: e });
-    };
     const handleDestinationChange = (e) => {
         console.log("🚀 ~ handleDestinationChange countryQuery~ e:", e);
         setCountryQuery({ keyword: e });
     };
 
-    const form = useForm({
-        resolver: yupResolver(formSchema),
-        defaultValues: {
-            LotsId: data?.lots_id || "",
-            LotsLabel: data?.label || "",
-            Destination_country: data?.warehouse_destination || "",
-            TripNumber: data?.trip_number || "",
-            Status: data?.status_id || 0,
-            Status_name: data?.status || "",
-            pickDate: data?.pickup_schedule || "",
-            Documents: data?.documents || [],
-        },
-        mode: "onChange",
-    });
+    const [documentsData, setDocumentsData] = useState([]);
+    console.log("🚀 ~ NewLotsFrom ~ documentsData:", documentsData)
+    // useState(() => {
+    //     if (data?.documents) {
+    //         console.log("🚀 ~ useState ~ data?.documents:", data?.documents)
+    //         setDocumentsData(data.documents.split(","))
+    //     } else {
+    //         setDocumentsData([]);
+    //     }
+    // }, [])
+
+    // const fetchDocuments = async (data) => {
+    //     console.log("🚀 ~ fetchDocuments ~ data:", data)
+    //     try {
+    //         const response = await axios.post(`/api/admin/transport/lots/get_documents`, {
+    //             data: data
+    //         });
+    //         console.log("🚀 ~ fetchDocuments ~ response:", response)
+    //         const documentsArray = Array.isArray(form.getValues("Documents")) ? form.getValues("Documents") : [];
+    //         documentsArray.push(response.data.base64Document);
+    //         form.setValue("Documents", documentsArray);
+    //         return response.data.base64Document;
+    //     } catch (error) {
+    //         console.log("🚀 ~ fetchDocuments ~ error:", error)
+    //     }
+    // }
+
 
     const [dataStatus, setDataStatus] = useState(null);
+    // const handleFileChange = (event) => {
+    //     const files = event.target.files;
+    //     const uploadedFiles = [];
+
+    //     for (let i = 0; i < files.length; i++) {
+    //         const file = files[i];
+    //         const reader = new FileReader();
+
+    //         reader.onloadend = () => {
+    //             const base64String = reader.result.split(",")[1]; // Get the Base64 string excluding the data URL part
+    //             uploadedFiles.push(base64String);
+
+    //             if (uploadedFiles.length === files.length) {
+    //                 form.setValue("Documents", uploadedFiles);
+    //             }
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
     const handleFileChange = (event) => {
         const files = event.target.files;
-        const uploadedFiles = [];
+        const uploadedFiles = [...documentsData];
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -178,15 +213,25 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             reader.onloadend = () => {
                 const base64String = reader.result.split(",")[1]; // Get the Base64 string excluding the data URL part
                 uploadedFiles.push(base64String);
-
-                if (uploadedFiles.length === files.length) {
-                    form.setValue("Documents", uploadedFiles);
-                }
+                setDocumentsData(uploadedFiles);
+                form.setValue("Documents", uploadedFiles);
             };
-
             reader.readAsDataURL(file);
         }
     };
+    const handlePreviewDocument = (document) => {
+        const byteCharacters = atob(document);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+
+        window.open(url, '_blank');
+    };
+
     const handleSave = async (formData) => {
         setLoading(true);
         console.log("dikirim", formData);
@@ -241,26 +286,21 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         form.watch("Origin"),
         form.watch("Destination_country")
     );
-    const [statusSelect, setStatusSelect] = useState("");
-    console.log("Documents", form.getValues("Documents"));
-
-    const [documentsData, setDocumentsData] = useState([]);
-    console.log("🚀 ~ NewLotsFrom ~ documentsData:", documentsData)
-
-    useState(() => {
-        if (data?.documents) {
-            console.log("🚀 ~ useState ~ data?.documents:", data?.documents)
-            setDocumentsData(data.documents.split(","))
-        } else {
-            setDocumentsData([]);
-        }
-    }, [])
 
     const removeDocuments = (index) => {
         const newDocuments = documentsData.filter((_, i) => i !== index);
+        console.log("🚀 ~ removeDocuments ~ newDocuments:", newDocuments)
         setDocumentsData(newDocuments);
+        if (newDocuments.length === 0) {
+            form.setValue("Documents", [])
+            document.getElementById("Documents").value = "";
+        } else {
+            form.setValue("Documents", newDocuments);
+        }
     }
-    
+
+    console.log("DOCUMENTS", form.watch("Documents"))
+
     return (
         <>
             {loading && <Loaders />}
@@ -508,7 +548,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                             multiple
                                             className=" file:w-[100px] file:text-xs  file:h-full file:p-0 text-center last:text-center last:w-full file:bg-myBlue  bg-zinc-400/50 px-0 pl-2 py-2 p-0 file:text-white cursor-pointer hover:bg-zinc-200"
                                             type="file"
-                                            id=""
+                                            id="Documents"
                                             placeholder=""
                                             accept="application/pdf"
                                             onChange={handleFileChange}
@@ -527,26 +567,26 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                 (documentsData.map((document, index) => (
                                     <div
                                         key={index}
-                                        className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded"
+                                        className="flex flex-row gap-2 justify-between text-xs items-center p-1 border border-zinc-200 rounded"
                                     >
                                         <div className="flex flex-row gap-2 items-center justify-between w-full">
-                                            <div className="flex flex-row gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="flex flex-row gap-2 w-full text-xs justify-start h-[30px]"
+                                                type="button"
+                                                onClick={() => handlePreviewDocument(document)}
+                                            >
                                                 <Files className="h-5 w-5 text-myBlue" />
-                                                <NextLink
-                                                    href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${document}`}
-                                                    passHref
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <p className="hover:underline hover:text-myBlue">
-                                                        {document}
-                                                    </p>
-                                                </NextLink>
-                                            </div>
+                                                <p className="">
+                                                    Document {index + 1}
+                                                </p>
+                                            </Button>
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
-                                                className="p-1 py-0.5"
+                                                type="button"
+                                                className="h-[30px] w-[30px] p-1"
                                                 onClick={() => removeDocuments(index)}
                                             >
                                                 <XIcon className="w-5 h-5 text-white" />
@@ -617,7 +657,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                         </Button>
                     </div>
                 </form>
-            </Form>
+            </Form >
         </>
     );
 };
