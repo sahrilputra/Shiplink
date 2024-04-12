@@ -50,7 +50,7 @@ import {
 } from "@/components/ui/popover";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CalendarIcon, CheckIcon } from "lucide-react";
+import { CalendarIcon, CheckIcon, XIcon } from "lucide-react";
 import { Files, X } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
@@ -200,6 +200,11 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             });
             return; // Prevent form submission
         }
+
+        // if (documentsData.length > 0) {
+        //     formData.Documents = documentsData.join(",");
+        // }
+
         formData.pickDate = format(new Date(formData.pickDate), "yyyy-MM-dd");
 
         try {
@@ -243,6 +248,33 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
     );
     const [statusSelect, setStatusSelect] = useState("");
     console.log("Documents", form.getValues("Documents"));
+
+    const [documentsData, setDocumentsData] = useState([]);
+    const [documentsBase64, setDocumentsBase64] = useState([]);
+    console.log("🚀 ~ NewLotsFrom ~ documentsData:", documentsData)
+
+    useState(() => {
+        if (data?.documents) {
+            console.log("🚀 ~ useState ~ data?.documents:", data?.documents)
+            setDocumentsData(data.documents.split(","))
+        } else {
+            setDocumentsData([]);
+        }
+    }, [])
+
+
+    const removeDocuments = (index) => {
+        const newDocuments = documentsData.filter((_, i) => i !== index);
+        setDocumentsData(newDocuments);
+    }
+
+    const appendData = (data) => {
+        // form.setValue("Documents", ...data);
+        form.setValue('Documents', ...data);
+
+    }
+
+    console.log('Form Data', form.getValues("Documents"));
     return (
         <>
             {loading && <Loaders />}
@@ -502,7 +534,47 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                         )}
                     />
 
+
                     <div className="flex flex-col gap-2">
+                        {
+                            documentsData.length > 0 ?
+                                (documentsData.map((document, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded"
+                                    >
+                                        <div className="flex flex-row gap-2 items-center justify-between w-full">
+                                            <div className="flex flex-row gap-2">
+                                                <Files className="h-5 w-5 text-myBlue" />
+                                                <NextLink
+                                                    href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${document}`}
+                                                    passHref
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <p className="hover:underline hover:text-myBlue">
+                                                        {document}
+                                                    </p>
+                                                </NextLink>
+                                            </div>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                className="p-1 py-0.5"
+                                                onClick={() => removeDocuments(index)}
+                                            >
+                                                <XIcon className="w-5 h-5 text-white" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))
+                                ) : (
+                                    <p className="text-xs text-center text-slate-200">No documents uploaded</p>
+                                )
+                        }
+                    </div>
+
+                    {/* <div className="flex flex-col gap-2">
                         {form.getValues("Documents") &&
                             form.getValues("Documents").length > 0 &&
                             form
@@ -513,22 +585,31 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                         key={index}
                                         className="flex flex-row gap-2 justify-between text-xs items-center p-1.5 border border-zinc-200 rounded"
                                     >
-                                        <div className="flex flex-row gap-2 items-center">
-                                            <Files className="h-5 w-5 text-myBlue" />
-                                            <NextLink
-                                                href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${document}`}
-                                                passHref
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                        <div className="flex flex-row gap-2 items-center justify-between w-full">
+                                            <div className="flex flex-row gap-2">
+                                                <Files className="h-5 w-5 text-myBlue" />
+                                                <NextLink
+                                                    href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${document}`}
+                                                    passHref
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <p className="hover:underline hover:text-myBlue">
+                                                        {document}
+                                                    </p>
+                                                </NextLink>
+                                            </div>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                className="p-1"
                                             >
-                                                <p className="hover:underline hover:text-myBlue">
-                                                    {document}
-                                                </p>
-                                            </NextLink>
+                                                <XIcon className="w-5 h-5 text-white" />
+                                            </Button>
                                         </div>
                                     </div>
                                 ))}
-                    </div>
+                    </div> */}
 
                     <div className="flex flex-row justify-between w-full gap-3 py-2">
                         <Button
