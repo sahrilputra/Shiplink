@@ -200,11 +200,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
             });
             return; // Prevent form submission
         }
-
-        // if (documentsData.length > 0) {
-        //     formData.Documents = documentsData.join(",");
-        // }
-
         formData.pickDate = format(new Date(formData.pickDate), "yyyy-MM-dd");
 
         try {
@@ -250,7 +245,6 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
     console.log("Documents", form.getValues("Documents"));
 
     const [documentsData, setDocumentsData] = useState([]);
-    const [documentsBase64, setDocumentsBase64] = useState([]);
     console.log("🚀 ~ NewLotsFrom ~ documentsData:", documentsData)
 
     useState(() => {
@@ -262,19 +256,11 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         }
     }, [])
 
-
     const removeDocuments = (index) => {
         const newDocuments = documentsData.filter((_, i) => i !== index);
         setDocumentsData(newDocuments);
     }
-
-    const appendData = (data) => {
-        // form.setValue("Documents", ...data);
-        form.setValue('Documents', ...data);
-
-    }
-
-    console.log('Form Data', form.getValues("Documents"));
+    
     return (
         <>
             {loading && <Loaders />}
