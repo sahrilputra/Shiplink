@@ -100,6 +100,10 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
     const [originWarehouse, setOriginWarehouse] = useState([]);
     const [destinationWarehouse, setDestinationWarehouse] = useState([]);
 
+    // Documents
+    const [documentsData, setDocumentsData] = useState([]);
+    console.log("🚀 ~ NewLotsFrom ~ documentsData:", documentsData)
+
     const fetchWarehouses = async () => {
         try {
             const response = await axios.post(`/api/admin/warehouse/list`, {
@@ -154,8 +158,35 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
         setCountryQuery({ keyword: e });
     };
 
-    const [documentsData, setDocumentsData] = useState([]);
-    console.log("🚀 ~ NewLotsFrom ~ documentsData:", documentsData)
+
+    const fetchDocuments = async (data) => {
+        console.log("🚀 ~ fetchDocuments ~ data:", data)
+        try {
+            const response = await axios.post(`/api/admin/transport/lots/get_documents`, {
+                data: data
+            });
+            console.log("🚀 ~ fetchDocuments ~ response:", response)
+            const documentsArray = Array.isArray(form.getValues("Documents")) ? form.getValues("Documents") : [];
+            documentsArray.push(response.data.base64Document);
+            setDocumentsData(documentsArray);
+            // form.setValue("Documents", documentsArray);
+            return response.data.base64Document;
+        } catch (error) {
+            console.log("🚀 ~ fetchDocuments ~ error:", error)
+        }
+    }
+
+    useState(() => {
+        if (data?.documents) {
+            console.log("🚀 ~ useState ~ data?.documents:", data?.documents)
+            data?.documents.split(",").forEach(async (document) => {
+                await fetchDocuments(document);
+            });
+        }
+    }, [])
+
+
+
     // useState(() => {
     //     if (data?.documents) {
     //         console.log("🚀 ~ useState ~ data?.documents:", data?.documents)
