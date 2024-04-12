@@ -62,6 +62,7 @@ export function CustomClearanceTable({ data }) {
         date_end: "",
         tracking_id: "",
         status: "",
+        status_id: "2",
         page: 1,
         limit: 10,
         index: 0,

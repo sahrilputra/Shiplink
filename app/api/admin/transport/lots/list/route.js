@@ -9,7 +9,7 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
-        const { keyword, date_start, date_end, tracking_id, status, page, limit, index, token } = await request.json();
+        const { keyword, date_start, date_end, tracking_id, status, page, limit, index, status_id, token } = await request.json();
 
         const response = await axios.post(
             `${process.env.API_URL}/Lots/Lots_list`,
@@ -21,6 +21,7 @@ export async function POST(request) {
                 status: status,
                 page: page,
                 limit: limit,
+                status_id: status_id,
                 index: index,
             },
             {
