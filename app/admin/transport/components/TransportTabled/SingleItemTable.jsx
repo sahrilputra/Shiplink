@@ -331,7 +331,7 @@ export function SingleItemsTable({ }) {
                             <Button
                                 variant="tableBlue"
                                 size="tableIcon"
-                                disabled={row.original.status !== "Cleared Custom" ? true : false}
+                                disabled={row.original.status === "Cleared Custom" || row.original.status === "Clearance Received" ? false : true}
                                 className={`w-max px-[10px] h-[25px]`}
                                 onClick={() => toggleOpenChange([row.original.tracking_id])}
                             >
