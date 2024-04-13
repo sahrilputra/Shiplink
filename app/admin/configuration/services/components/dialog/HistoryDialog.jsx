@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import axios from 'axios';
 export const HistoryDialog = ({ open, setOpen, id }) => {
+    console.log("🚀 ~ HistoryDialog ~ id:", id)
 
     const onClose = () => {
         setOpen(false);
@@ -30,13 +31,14 @@ export const HistoryDialog = ({ open, setOpen, id }) => {
                 )
                 console.log("🚀 ~ fetchHistory ~ response:", response)
                 const responseData = await response.data;
-                setHistoryList(responseData);
+                setHistoryList(responseData.data);
             } catch (error) {
                 console.log(error)
             }
         }
         fetchHistory();
     }, [id]);
+
     return (
         <>
             <AlertDialog open={open} onOpenChange={setOpen} modal={true}
@@ -49,11 +51,27 @@ export const HistoryDialog = ({ open, setOpen, id }) => {
                             <p className='text-[14px]'>#{id}</p>
                         </AlertDialogTitle>
                     </AlertDialogHeader>
-                    <ScrollArea className="h-max max-h-[300px]">
-                        <div className="flex mx-auto w-full items-center justify-start flex-col gap-2">
-                            <div className="border border-zinc-200 rounded p-2">
-                                Edited
-                            </div>
+                    <ScrollArea className="h-[300px] min-h-max w-[350px] flex flex-col gap-2">
+                        <div className="flex mx-auto items-center justify-start flex-col gap-2 w-[350px]">
+                            {
+                                historyList?.length > 0 ?
+                                    historyList?.map((item, index) => {
+                                        return (
+                                            <div key={index} className="w-full flex border border-zinc-200 rounded p-2 text-xs flex-col">
+                                                <div className="text-myBlue text-[14px] font-semibold ">{item.action}</div>
+                                                <div className="">ID {item.service_id}</div>
+                                                <div className=" ">{item.status}</div>
+                                                <div className=" ">{item.updated_at}</div>
+                                                <div className="w-1/3 ">{item.updated_by}</div>
+                                            </div>
+                                        )
+                                    }) :
+                                    (
+                                        <div className="w-full flex items-center border border-zinc-200 rounded p-2">
+                                            <div className="w-full text-center text-[14px]">No history available</div>
+                                        </div>
+                                    )
+                            }
                         </div>
                     </ScrollArea>
                     <AlertDialogFooter>
@@ -73,7 +91,7 @@ export const HistoryDialog = ({ open, setOpen, id }) => {
                         </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>
-            </AlertDialog>
+            </AlertDialog >
         </>
     )
 }
