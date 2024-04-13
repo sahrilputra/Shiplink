@@ -36,37 +36,42 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
     console.log("🚀 ~ ServicesTabled ~ tableData:", tableData)
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [openService, setOpenService] = useState(false);
-    useEffect(() => {
-        const fetchDataList = async () => {
-            setIsSkeleton(true);
-            try {
-                const response = await axios.post(
-                    `/api/admin/config/services/setting_list`,
-                    {
-                        id: id
-                    }
-                )
-                console.log("🚀 ~ fetchDataList ~ response:", response.data)
-                const responseData = await response.data.data;
-                setTableData(responseData);
-                setIsSkeleton(false);
-            } catch (error) {
-                console.log(error)
-            }
+    const fetchDataList = async () => {
+        setIsSkeleton(true);
+        try {
+            const response = await axios.post(
+                `/api/admin/config/services/setting_list`,
+                {
+                    id: id
+                }
+            )
+            console.log("🚀 ~ fetchDataList ~ response:", response.data)
+            const responseData = await response.data.data;
+            setTableData(responseData);
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log(error)
         }
+    }
+    useEffect(() => {
         fetchDataList();
     }, [id])
 
+    const reloadTable = () => {
+        fetchDataList();
+    }
+
     const columns = [
         {
-            accessorKey: "idconf",
+            accessorKey: "service_id",
             header: "ID",
             className: "text-xs",
+            size: 50,
             cell: ({ row }) => {
                 return (
                     <span
                         style={{ fontFamily: 'roboto' }}
-                        className=''>{row.original.idconf}
+                        className=''>{row.original.service_id}
                     </span>
                 )
             }
@@ -78,6 +83,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
         {
             accessorKey: "price",
             header: "Price",
+            size: 50,
             cell: ({ row }) => {
                 return (
                     <span
@@ -93,7 +99,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
             cell: ({ row }) => {
                 return (
                     <div className="flex flex-row gap-2 items-center">
-                        <div className={`w-3 h-3 rounded-full  ${row.original.status === "Active" ? "bg-green-200/90 border border-green-600" : "bg-red-500"}`}></div>
+                        <div className={`w-3 h-3 rounded-full  ${row.original.status === "Active" ? "bg-green-200/90 border border-green-600" : "bg-red-300/90 border border-red-800"}`}></div>
                         <p className="text-xs">{row.original.status}</p>
                     </div>
                 )
@@ -102,6 +108,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
         {
             id: "Action",
             header: "Action",
+            size: 30,
             cell: ({ value }) => {
                 return (
                     <div className="flex flex-row gap-2">
@@ -116,7 +123,6 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-[3px] w-max px-[5px] h-[25px]`}
-                        
                         >
                             <MoreHorizontalIcon width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
                         </Button>
@@ -161,7 +167,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
     };
     return (
         <>
-            <AddService open={openService} setOpen={setOpenService} />
+            <AddService open={openService} setOpen={setOpenService} id={id} reload={reloadTable} />
             <div className=" w-full px-[15px] pt-5 pb-5 bg-white rounded border border-neutral-200 flex-col justify-start items-start inline-flex gap-[10px]">
                 <div className="w-full items-center flex flex-row justify-between gap-2">
                     <div className="">
@@ -246,7 +252,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
                                     <TableRow
                                         key={row.id}
                                         data-state={row.getIsSelected() && "selected"}
-                                        className={`${row.isLast ? "w-[50px]" : row.isFirst ? "w-[50px]" : ""} cursor-pointer`}
+                                        className={`${row.isLast ? "w-[50px]" : row.isFirst ? "w-[50px]" : ""} `}
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <TableCell

@@ -12,18 +12,18 @@ import { ServicesTabled } from './components/ServicesTabled'
 import axios from 'axios';
 export default function Services() {
     const [selectedDataID, setSelectedDataID] = useState(null)
-    const [selectedData, setSelectedData] = useState(null)
+    const [selectedData, setSelectedData] = useState("C001")
 
     const handleSelectedData = (id) => {
         setSelectedDataID(id)
     }
 
-    useEffect(() => {
-        if (selectedDataID !== null) {
-            const newData = data.find(item => item.service.some(service => service.id === selectedDataID));
-            setSelectedData(newData);
-        }
-    }, [selectedDataID]);
+    // useEffect(() => {
+    //     if (selectedDataID !== null) {
+    //         const newData = data.find(item => item.service.some(service => service.id === selectedDataID));
+    //         setSelectedData(newData);
+    //     }
+    // }, [selectedDataID]);
 
     // Cek jika selectedDataID adalah array sebelum memanggil map()
     console.log("Anda memilih data:", selectedDataID);

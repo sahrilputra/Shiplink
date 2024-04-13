@@ -1,15 +1,16 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Loaders } from '@/components/ui/loaders'
 import { Button } from "@/components/ui/button"
 import {
@@ -41,25 +42,27 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { CheckIcon } from 'lucide-react'
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useToast } from '@/components/ui/use-toast'
 const formSchema = yup.object().shape({
     id: yup.string(),
     idconf: yup.string(),
-    price: yup.string(),
+    price: yup.number(),
     service_id: yup.string(),
     status: yup.string(),
     action: yup.string(),
 });
 
-export const AddService = ({ open, setOpen }) => {
+export const AddService = ({ open, setOpen, id, reload }) => {
+    console.log("🚀 ~ AddService ~ id:", id)
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
             id: "",
-            idconf: "",
-            price: "",
+            idconf: id || "",
+            price: 0,
             service_id: "",
-            status: "",
-            action: "",
+            status: "Disabled",
+            action: "add",
         },
         mode: "onChange",
     });
@@ -67,11 +70,13 @@ export const AddService = ({ open, setOpen }) => {
         setOpen(false)
         setService(null)
     }
+    const { toast } = useToast();
     const [loading, setLoading] = useState(false)
     const [openCommand, setOpenCommand] = React.useState(false)
     const [serviceList, setServiceList] = useState([]);
     const [selectedServices, setSelectedServices] = useState("")
     const [service, setService] = useState(null)
+    console.log("🚀 ~ AddService ~ service:", service)
     const [query, setQuery] = useState({
         keyword: "",
         category_id: "",
@@ -79,7 +84,9 @@ export const AddService = ({ open, setOpen }) => {
         limit: 0,
         index: 0,
     });
+
     const [value, setValue] = React.useState("")
+
     useEffect(() => {
         const fetchDataListTable = async () => {
             try {
@@ -103,30 +110,74 @@ export const AddService = ({ open, setOpen }) => {
             keyword: e,
         })
     }
+
+    const handleSave = async (formData) => {
+        console.log("🚀 ~ handleSave ~ Dikirim:", formData)
+        setLoading(true)
+        try {
+            const response = await axios.post(
+                `/api/admin/config/services/set_data`,
+                formData
+            )
+            console.log("🚀 ~ handleSave ~ response", response)
+            if (response.data.status === true) {
+                toast({
+                    title: `Sucess adding new service!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+                onClose();
+            } else {
+                toast({
+                    title: `Error!`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            }
+            setLoading(false)
+            reload();
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+            toast({
+                title: `Something Went Wrong!`,
+                description: error,
+            });
+        }
+    }
+
+    console.log("Watch form")
+    useEffect(() => {
+        form.setValue('service_id', service?.service_id)
+        form.setValue('price', service?.price)
+        form.setValue('idconf', id)
+    }, [service])
     return (
         <>
             {
                 loading ? (
                     <Loaders />
                 ) : (
-                    <Dialog open={open} onOpenChange={setOpen} modal={true}
+                    <AlertDialog open={open} onOpenChange={setOpen} modal={true}
                         className="w-max"
                     >
-                        <DialogContent className="sm:max-w-md">
-                            <DialogHeader>
-                                <DialogTitle className="font-bold">
+                        <AlertDialogContent className="sm:max-w-md">
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className="font-bold text-center">
                                     <p>Adding New Service</p>
-                                </DialogTitle>
-                            </DialogHeader>
+                                    <p className='text-[14px]'>#{id}</p>
+                                </AlertDialogTitle>
+                            </AlertDialogHeader>
                             <div className="flex mx-auto w-full items-center justify-center">
                                 <Form {...form}>
                                     <form
                                         className="flex gap-4 flex-col"
                                         action=""
+                                        onSubmit={form.handleSubmit(handleSave)}
                                     >
 
                                         <FormField
-                                            name="idconf"
+                                            name="service_id"
                                             className="w-full"
                                             control={form.control}
                                             render={({ field, formState }) => (
@@ -176,7 +227,7 @@ export const AddService = ({ open, setOpen }) => {
                                                                                             value={item.item}
                                                                                             key={item.service_id}
                                                                                             className={`text-xs 
-                                                                                            ${form.watch("idconf") === item.service_id
+                                                                                            ${form.watch("service_id") === item.service_id
                                                                                                     ? "bg-slate-50 text-slate-500"
                                                                                                     : "text-xs"
                                                                                                 }`}
@@ -215,30 +266,31 @@ export const AddService = ({ open, setOpen }) => {
                             </div>
 
                             <div className={`bg-slate-100 rounded border border-slate-300 w-[350px] py-1 px-2 mx-auto text-xs ${!service ? "hidden" : "block"}`}>
-                                <p>Category : {service?.categories}</p>
-                                <p>ID : {service?.service_id}</p>
                                 <p>Service : {service?.item}</p>
+                                <p>ID : {service?.service_id}</p>
                                 <p>Price : $ {service?.price}</p>
                                 <p>Description : {service?.description}</p>
+                                <p>Category : {service?.categories}</p>
                             </div>
-                            <DialogFooter>
+                            <AlertDialogFooter>
                                 <Button
                                     onClick={onClose}
                                     className={"w-full mt-2 text-xs"}
                                     variant="redOutline"
+                                    type="button"
                                 >
                                     Cancel
                                 </Button>
                                 <Button
-                                    onClick={onClose}
+                                    onClick={form.handleSubmit(handleSave)}
                                     variant="destructive"
                                     className={"w-full mt-2 text-xs"}
                                 >
                                     Add Service
                                 </Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 )
             }
 
