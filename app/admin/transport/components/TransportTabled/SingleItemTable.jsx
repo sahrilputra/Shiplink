@@ -181,7 +181,7 @@ export function SingleItemsTable({ }) {
     const isCanAssign = (origin, destination, status) => {
         if (origin === destination) {
             return true
-        } else if (origin !== destination && status === "Cleared Custom") {
+        } else if (origin !== destination && status === "Cleared Custom" || status === "Clearance Received") {
             return true
         } else {
             return false
