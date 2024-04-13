@@ -221,7 +221,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSave)} className="w-[80%] flex flex-row gap-2 justify-end">
                                         {
-                                            status !== "Cleared Custom" || editForm ? (
+                                            status !== "Clearance Received" || editForm ? (
 
                                                 <>
                                                     <div className="w-full flex flex-row gap-2">
