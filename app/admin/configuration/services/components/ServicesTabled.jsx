@@ -10,13 +10,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import { DropdownMenus } from "./menus/DropdownMenus";
 import { Button } from "@/components/ui/button"
-import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
-import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
 import { AddService } from "./dialog/AddService";
+import { HistoryDialog } from "./dialog/HistoryDialog";
 import {
     ColumnDef,
     flexRender,
@@ -35,6 +34,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
     const [tableData, setTableData] = useState([]);
     console.log("🚀 ~ ServicesTabled ~ tableData:", tableData)
     const [isSkeleton, setIsSkeleton] = useState(true);
+    const [openHistory, setOpenHistory] = useState(false);
     const [openService, setOpenService] = useState(false);
     const fetchDataList = async () => {
         setIsSkeleton(true);
@@ -108,24 +108,20 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
         {
             id: "Action",
             header: "Action",
-            size: 30,
-            cell: ({ value }) => {
+            size: 20,
+            cell: ({ row }) => {
                 return (
                     <div className="flex flex-row gap-2">
                         <Button
+                            disabled={row.original.status === "Active" ? true : false}
                             variant="tableBlue"
                             size="tableIcon"
-                            className={`rounded-[3px] w-max px-[6px] h-[25px]`}
+                            className={`rounded-[3px] w-max  px-[5px] h-[20px]`}
+                            onClick={() => handleActive(row.original.service_id)}
                         >
                             <p className="text-[11px]">Active</p>
                         </Button>
-                        <Button
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-[3px] w-max px-[5px] h-[25px]`}
-                        >
-                            <MoreHorizontalIcon width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
-                        </Button>
+                        <DropdownMenus key={row.original.service_id} serviceID={row.original.service_id} reload={reloadTable} />
 
                     </div>
                 )
@@ -142,6 +138,9 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
     const table = useReactTable({
         data: tableData,
         columns,
+        defaultColumn: {
+            width: "auto",
+        },
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -165,8 +164,36 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
+
+    const handleActive = (itemID) => {
+        console.log("🚀 ~ handleActive ~ itemID:", itemID)
+        tableData.map(async (item, index) => {
+            console.log("🚀 ~ handleActive ~ item:", item.service_id, item.status)
+            console.log("🚀 ~ handleActive ~ item:", index)
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/services/set_data`, {
+                    id: item.id,
+                    idconf: item.idconf,
+                    service_id: item.service_id,
+                    price: item.price,
+                    status: item.service_id === itemID ? "Active" : "Disabled",
+                    action: "edit"
+                }
+                );
+                console.log("🚀 ~ handleActive ~ response", response)
+
+            } catch (error) {
+                console.log(error)
+            }
+            reloadTable();
+        });
+
+    }
+
     return (
         <>
+            <HistoryDialog id={id} setOpen={setOpenHistory} open={openHistory} />
             <AddService open={openService} setOpen={setOpenService} id={id} reload={reloadTable} />
             <div className=" w-full px-[15px] pt-5 pb-5 bg-white rounded border border-neutral-200 flex-col justify-start items-start inline-flex gap-[10px]">
                 <div className="w-full items-center flex flex-row justify-between gap-2">
@@ -178,6 +205,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
                             variant="secondary"
                             size="xs"
                             className="text-xs flex flex-row gap-2"
+                            onClick={() => setOpenHistory(true)}
                         >
                             <History height={12} width={12} />
                             <p>History</p>

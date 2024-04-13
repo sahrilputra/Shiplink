@@ -131,7 +131,6 @@ export const AddService = ({ open, setOpen, id, reload }) => {
                 toast({
                     title: `Error!`,
                     description: response.data.message,
-                    status: 'success',
                 });
             }
             setLoading(false)
