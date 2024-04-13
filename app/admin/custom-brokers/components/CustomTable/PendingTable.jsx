@@ -180,11 +180,9 @@ export function PendingTable
             cell: ({ row }) => {
                 return (
                     <>
-                        {row.original.status === "Cleared Custom" ?
-                            "Border Cleared"
-                            : row.original.status === "Verified" ?
-                                "Pending"
-                                : row.original.status
+                        {row.original.status === "Verified" ?
+                            "Pending"
+                            : row.original.status
                         }
                     </>
                 )

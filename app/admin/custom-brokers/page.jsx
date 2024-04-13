@@ -46,8 +46,8 @@ export default function CustomBrokerPage() {
             console.log(response)
             const data = await response.data;
             const filterData = selectedTab !== 'Cleared Custom'
-                ? data.package_info.filter(item => item.status !== 'Cleared Custom')
-                : data.package_info.filter(item => item.status === 'Cleared Custom');
+                ? data.package_info.filter(item => item.status !== 'Clearance Received')
+                : data.package_info.filter(item => item.status === 'Clearance Received');
             setData(filterData);
             setRowTotalData({
                 page_limit: data.page_limit,
@@ -134,7 +134,7 @@ export default function CustomBrokerPage() {
                 page: 1,
                 limit: 10,
                 index: 0,
-                status: "Cleared Custom",
+                status: "Clearance Received",
             })
             setRowTotalData({
                 page_limit: 0,
