@@ -1,8 +1,8 @@
 'use client'
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { ArrowDownIcon } from '@/components/icons/iconCollection'
-export const CatergoryList = ({ Category, data, selectedData, id }) => {
+export const CatergoryList = ({ Category, data, selectedData, id = "C001" }) => {
     console.log("🚀 ~ CatergoryList ~ id:", id)
     const [open, setOpen] = useState(false)
     const [isSelected, setIsSelected] = useState(false)
@@ -13,6 +13,14 @@ export const CatergoryList = ({ Category, data, selectedData, id }) => {
         setIsSelected(index === isSelected ? false : true)
     }
 
+    useEffect(() => {
+        if (id === "C001") {
+            setOpen(true)
+            setIsSelected(true)
+            handleSelect("C001");
+            selectedData("C001");
+        }
+    }, [])
     return (
         <>
             <div className="flex flex-col gap-1">

@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { ServicesTabled } from './components/ServicesTabled'
 import axios from 'axios';
 export default function Services() {
-    const [selectedDataID, setSelectedDataID] = useState(null)
+    const [selectedDataID, setSelectedDataID] = useState("C001")
     const [selectedData, setSelectedData] = useState("C001")
 
     const handleSelectedData = (id) => {
