@@ -31,33 +31,33 @@ export default function Services() {
     console.log("Deskripsi:", selectedData ? selectedData.description : "Tidak ada data yang dipilih");
 
 
-    const [tableData, setTableData] = useState([]);
-    console.log("🚀 ~ Services ~ tableData:", tableData)
-    useEffect(() => {
-        const fetchDataListTable = async () => {
-            try {
-                const response = await axios.get(
-                    `/api/admin/config/services/setting_list`,
-                    { id: selectedDataID }
-                )
-                console.log("🚀 ~ fetchDataListTable ~ response:", response)
-                const responseData = await response.data;
-                setTableData(responseData);
-            } catch (error) {
-                console.log(error)
-            }
-        }
+    // const [tableData, setTableData] = useState([]);
+    // console.log("🚀 ~ Services ~ tableData:", tableData)
+    // useEffect(() => {
+    //     const fetchDataListTable = async () => {
+    //         try {
+    //             const response = await axios.get(
+    //                 `/api/admin/config/services/setting_list`,
+    //                 { id: selectedDataID }
+    //             )
+    //             console.log("🚀 ~ fetchDataListTable ~ response:", response)
+    //             const responseData = await response.data;
+    //             setTableData(responseData);
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
 
-        fetchDataListTable();
-    }, [selectedDataID]);
+    //     fetchDataListTable();
+    // }, [selectedDataID]);
 
     return (
         <div className={styles.container}>
             <div className={styles.category}>
-                <ServicesCategory selectedData={handleSelectedData} />
+                <ServicesCategory selectedData={handleSelectedData} id={selectedDataID} />
             </div>
             <div className={styles.content}>
-                <ServicesTabled data={selectedData} id={selectedDataID} />
+                <ServicesTabled id={selectedDataID} />
             </div>
         </div>
     )

@@ -8,7 +8,7 @@ import { SearchBar } from '@/components/ui/searchBar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import axios from 'axios'
 
-export const ServicesCategory = ({ selectedData }) => {
+export const ServicesCategory = ({ selectedData, id }) => {
 
     const [data, setData] = useState([]);
     console.log("🚀 ~ ServicesCategory ~ data:", data)
@@ -40,7 +40,7 @@ export const ServicesCategory = ({ selectedData }) => {
                         {
                             data?.map((item, index) => {
                                 return (
-                                    <CatergoryList key={index} Category={item.main} data={item.subservice} selectedData={selectedData} />
+                                    <CatergoryList key={index} Category={item.main} data={item.subservice} selectedData={selectedData} id={id}/>
                                 )
                             })
                         }

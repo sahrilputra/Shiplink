@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
 import { DeleteIcons } from "@/components/icons/iconCollection";
+import { AddService } from "./dialog/AddService";
 import {
     ColumnDef,
     flexRender,
@@ -25,53 +26,78 @@ import {
     SortingState,
     getSortedRowModel,
 } from "@tanstack/react-table";
-import { MoreHorizontalIcon } from "lucide-react";
+import { MoreHorizontalIcon, History } from "lucide-react";
+import axios from 'axios';
+import { Skeleton } from "@/components/ui/skeleton";
 
+export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDelete, id = "C001" }) {
 
-export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDelete, id }) {
+    const [tableData, setTableData] = useState([]);
+    console.log("🚀 ~ ServicesTabled ~ tableData:", tableData)
+    const [isSkeleton, setIsSkeleton] = useState(true);
+    const [openService, setOpenService] = useState(false);
+    useEffect(() => {
+        const fetchDataList = async () => {
+            setIsSkeleton(true);
+            try {
+                const response = await axios.post(
+                    `/api/admin/config/services/setting_list`,
+                    {
+                        id: id
+                    }
+                )
+                console.log("🚀 ~ fetchDataList ~ response:", response.data)
+                const responseData = await response.data.data;
+                setTableData(responseData);
+                setIsSkeleton(false);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchDataList();
+    }, [id])
 
     const columns = [
         {
-            accessorKey: "select",
-            id: "select",
-            header: ({ table }) => {
-                return (
-                    <Checkbox
-                        checked={
-                            table.getIsAllPageRowsSelected() ||
-                            (table.getIsSomePageRowsSelected() && "indeterminate")
-                        }
-                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                        aria-label="Select all"
-                    />
-                )
-            },
+            accessorKey: "idconf",
+            header: "ID",
+            className: "text-xs",
             cell: ({ row }) => {
                 return (
-                    <Checkbox
-                        checked={row.getIsSelected()}
-                        onCheckedChange={(value) => row.toggleSelected(!!value)}
-                        aria-label="Select row"
-                    />
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{row.original.idconf}
+                    </span>
                 )
-            },
+            }
         },
         {
-            accessorKey: "description",
+            accessorKey: "service",
             header: "Description",
-            className: "text-xs",
+        },
+        {
+            accessorKey: "price",
+            header: "Price",
+            cell: ({ row }) => {
+                return (
+                    <span
+                        style={{ fontFamily: 'roboto' }}
+                        className=''>{`$ ${row.original.price}`}
+                    </span>
+                )
+            }
         },
         {
             accessorKey: "status",
-            header: "status",
-        },
-        {
-            accessorKey: "fee",
-            header: "fee",
-        },
-        {
-            accessorKey: "date",
-            header: "Last Change",
+            header: "Status",
+            cell: ({ row }) => {
+                return (
+                    <div className="flex flex-row gap-2 items-center">
+                        <div className={`w-3 h-3 rounded-full  ${row.original.status === "Active" ? "bg-green-200/90 border border-green-600" : "bg-red-500"}`}></div>
+                        <p className="text-xs">{row.original.status}</p>
+                    </div>
+                )
+            }
         },
         {
             id: "Action",
@@ -83,15 +109,14 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-[3px] w-max px-[6px] h-[25px]`}
-                            onClick={() => handlerEdit()}
                         >
-                            <p className="text-[11px]">Edit</p>
+                            <p className="text-[11px]">Active</p>
                         </Button>
                         <Button
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-[3px] w-max px-[5px] h-[25px]`}
-                            onClick={() => handlerDelete()}
+                        
                         >
                             <MoreHorizontalIcon width={15} height={15} className={` text-myBlue outline-myBlue fill-myBlue rounded-sm  `} />
                         </Button>
@@ -109,7 +134,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
     const [isEdit, setIsEdit] = useState(false);
 
     const table = useReactTable({
-        data,
+        data: tableData,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -120,7 +145,6 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
             sorting,
             rowSelection,
         },
-
     })
 
 
@@ -135,124 +159,112 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
         newExpandedRows[index] = !newExpandedRows[index];
         setExpandedRows(newExpandedRows);
     };
-    // return (
-    //     <Table className=" rounded-md ">
-    //         <TableHeader className="text-sm bg-white text-black rounded-md ">
-    //             <TableHead colSpan={7} className="py-4 rounded-md" >
-    //                 <div className="flex flex-row justify-between rounded-md">
-    //                     <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
-    //                         <SearchBar />
-    //                         <Button
-    //                             variant="filter"
-    //                             size="filter"
-    //                             className='border border-zinc-300 flex items-center rounded'>
-    //                             <FilterIcons
-    //                                 className=""
-    //                                 fill="#CC0019" />
-    //                         </Button>
-    //                     </div>
-    //                     <div className="">
-    //                         <Button
-    //                             variant="secondary"
-    //                             size="sm"
-    //                             className="px-5"
-    //                         >
-    //                             <p className=" text-xs">Services History</p>
-    //                         </Button>
-    //                     </div>
-    //                 </div>
-    //             </TableHead>
-    //         </TableHeader>
-    //         <TableHeader className="text-sm">
-    //             {table.getHeaderGroups().map((headerGroup) => (
-    //                 <>
-    //                     {headerGroup.headers.map((header, index) => {
-    //                         const isLastHeader = index === headerGroup.headers.length - 1;
-    //                         const isFirstHeader = index === 0;
-    //                         return (
-    //                             <TableHead
-    //                                 key={header.id}
-    //                                 className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
-    //                             >
-    //                                 {header.isPlaceholder
-    //                                     ? null
-    //                                     : flexRender(
-    //                                         header.column.columnDef.header,
-    //                                         header.getContext()
-    //                                     )}
-
-    //                                 {console.log(header.column.columnDef.header)}
-    //                             </TableHead>
-    //                         );
-    //                     })}
-    //                 </>
-    //             ))}
-    //         </TableHeader>
-    //         <TableBody>
-    //             {table.getRowModel().rows?.length ? (
-    //                 table.getRowModel().rows.map((row) => (
-    //                     <TableRow
-    //                         key={row.id}
-    //                         data-state={row.getIsSelected() && "selected"}
-    //                         className={row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}
-    //                     >
-    //                         {row.getVisibleCells().map((cell) => (
-    //                             <TableCell key={cell.id} className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}>
-    //                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-    //                             </TableCell>
-    //                         ))}
-    //                     </TableRow>
-    //                 ))
-    //             ) : (
-    //                 <TableRow>
-    //                     <TableCell colSpan={columns.length} className="h-24 text-center">
-    //                         No results.
-    //                     </TableCell>
-    //                 </TableRow>
-    //             )}
-    //         </TableBody>
-
-    //     </Table>
-    // )
-
     return (
-        <Table className="rounded-md">
-            <TableHeader className="text-sm bg-white text-black rounded-md">
-                <TableHead colSpan={7} className="py-4 rounded-md">
-                    <div className="flex flex-row justify-between rounded-md">
-                        <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
-                            <SearchBar />
-                        </div>
-                        <div className="">
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                                className="px-5"
-                            >
-                                <p className="text-xs">Services History</p>
-                            </Button>
-                        </div>
+        <>
+            <AddService open={openService} setOpen={setOpenService} />
+            <div className=" w-full px-[15px] pt-5 pb-5 bg-white rounded border border-neutral-200 flex-col justify-start items-start inline-flex gap-[10px]">
+                <div className="w-full items-center flex flex-row justify-between gap-2">
+                    <div className="">
+                        <p>{id}</p>
                     </div>
-                </TableHead>
-            </TableHeader>
-            <TableHeader className="text-sm">
-                {columns.map(column => (
-                    <TableHead key={column.accessorKey} className="text-xs">
-                        {column.header}
-                    </TableHead>
-                ))}
-            </TableHeader>
-            <TableBody>
-                {data && data.service.map(service => (
-                    <TableRow key={service.id}>
-                        {columns.map(column => (
-                            <TableCell key={column.accessorKey} className="text-xs">
-                                {service[column.accessorKey]}
-                            </TableCell>
+                    <div className="w-full gap-3 flex flex-row justify-end">
+                        <Button
+                            variant="secondary"
+                            size="xs"
+                            className="text-xs flex flex-row gap-2"
+                        >
+                            <History height={12} width={12} />
+                            <p>History</p>
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            size="xs"
+                            className="text-xs"
+                            onClick={() => setOpenService(true)}
+                        >
+                            <p>Add Service</p>
+                        </Button>
+                    </div>
+
+                </div>
+                <Table>
+                    <TableHeader className="text-sm" >
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <>
+                                {headerGroup.headers.map((header, index) => {
+                                    const isLastHeader = index === headerGroup.headers.length - 1;
+                                    const isFirstHeader = index === 0;
+                                    return (
+                                        <TableHead
+                                            key={header.id}
+                                            style={{ width: header.getSize() }}
+                                            className={` text-xs`}
+                                        >
+                                            {/* ${isLastHeader ? "w-[50px] " : isFirstHeader ? "w-[50px]" : ""} */}
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )}
+                                        </TableHead>
+                                    );
+                                })}
+                            </>
                         ))}
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-    );
+                    </TableHeader>
+                    <TableBody>
+
+                        {isSkeleton || !table.getRowModel().rows?.length ? (
+                            <>
+                                {isSkeleton &&
+                                    [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1 ? "w-[50px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+
+                                {!isSkeleton && !table.getRowModel().rows?.length && (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </>
+                        ) : (
+                            // Jika data telah dimuat, render data aktual
+                            table.getRowModel().rows.map((row) => (
+                                <>
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "selected"}
+                                        className={`${row.isLast ? "w-[50px]" : row.isFirst ? "w-[50px]" : ""} cursor-pointer`}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell
+                                                key={cell.id}
+                                                className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200 "} `}
+                                            >
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+
+                                        ))}
+                                    </TableRow>
+                                </>
+                            ))
+
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+        </>
+    )
 }

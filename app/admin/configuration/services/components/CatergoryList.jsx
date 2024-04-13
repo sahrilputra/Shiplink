@@ -2,7 +2,8 @@
 import { React, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { ArrowDownIcon } from '@/components/icons/iconCollection'
-export const CatergoryList = ({ Category, data, selectedData }) => {
+export const CatergoryList = ({ Category, data, selectedData, id }) => {
+    console.log("🚀 ~ CatergoryList ~ id:", id)
     const [open, setOpen] = useState(false)
     const [isSelected, setIsSelected] = useState(false)
     const handleClick = () => {
@@ -31,7 +32,7 @@ export const CatergoryList = ({ Category, data, selectedData }) => {
                                             handleSelect(item.idconf);
                                             selectedData(item.idconf);
                                         }}
-                                        className={`${isSelected ? "bg-blue-100" : null}items cursor-pointer w-full hover:bg-blue-100 rounded`}
+                                        className={`${id === item.idconf ? "bg-blue-100" : null} items cursor-pointer w-full hover:bg-blue-50 rounded transition duration-75`}
                                     >
                                         <div className="px-6 py-2 w-full font-medium text-xs">
                                             {item.subservice}

@@ -6,7 +6,7 @@ import { getAccessToken } from "@/helpers/getAccessToken";
 const agent = new https.Agent({
     rejectUnauthorized: false
 });
-export async function GET(request) {
+export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
         const { id } = await request.json();
