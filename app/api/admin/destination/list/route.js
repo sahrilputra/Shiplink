@@ -17,11 +17,12 @@ export async function POST(request) {
             warehouse_origin,
             warehouse_destination,
             warehouse_current_position,
+            status_id,
             page,
             limit,
             index,
         } = await request.json();
-        
+
         console.log("🚀 ~ POST ~ warehouse_destination:", warehouse_destination)
 
         const tokenAccess = await getAccessToken(request)
@@ -32,6 +33,7 @@ export async function POST(request) {
                 date_start: date_start,
                 date_end: date_end,
                 lots_id: lots_id,
+                status_id: status_id,
                 status: status,
                 warehouse_origin: warehouse_origin,
                 warehouse_destination: warehouse_destination,

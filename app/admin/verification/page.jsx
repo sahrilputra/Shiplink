@@ -40,6 +40,7 @@ export default function VerificationPages() {
         index: 0,
     });
     const [data, setData] = useState([]);
+    console.log("🚀 ~ VerificationPages ~ data:", data)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 10,

@@ -80,7 +80,7 @@ export function SingleItemsTable({ }) {
         warehouse_destination: "",
         warehouse_position: "",
         email: "",
-        status: "statuss",
+        status: "",
         sort_by: "status",
         sort_type: "asc",
         page: 1,
@@ -95,7 +95,7 @@ export function SingleItemsTable({ }) {
                 `/api/admin/transport/package_list`,
                 query
             );
-            console.log(response)
+            console.log("🚀 ~ fetchData ~ response:", response)
             const data = await response.data;
             console.log("🚀 ~ fetchData ~ data:", data)
             const filteredData = data.package_info.filter(item => item.lots_id === null);
@@ -200,7 +200,9 @@ export function SingleItemsTable({ }) {
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.tracking_id}</span>
+                        >
+                            {row.original.tracking_id}
+                        </span>
                     </div>
                 )
             }
@@ -214,7 +216,9 @@ export function SingleItemsTable({ }) {
                     <div className="text-xs flex flex-col flex-wrap">
                         <span className='text-[10px] leading-3 tracking-wider  '
                             style={{ fontFamily: 'roboto' }}
-                        >{`${row.original.customer_id}`}</span>
+                        >
+                            {`${row.original.customer_id}`}
+                        </span>
                         <span>{`${row.original.customer_name}`}</span>
                     </div>
                 )

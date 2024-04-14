@@ -100,7 +100,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
 
     const handleFilterDestination = (e) => {
         setFilterDestination(e)
-        console.log("Filter Destination : ", e)
         setQuery({
             warehouse_destination: e,
             page: 1,
@@ -130,7 +129,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                     index: 0,
                 }
             );
-            console.log(response)
             const data = await response.data;
             setWarehouseData(data.warehouse);
             setIsSkeleton(false);
@@ -150,7 +148,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                 `/api/admin/destination/list`,
                 query
             );
-            console.log(response)
             const data = await response.data;
             setLots(data.lots);
             setTotalData(data.lots.length);
@@ -377,7 +374,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
     }
 
     const handleScanLots = async () => {
-        console.log("Scan Lots", lotsNumber)
         setIsButtonDisabled(true)
         try {
             const response = await axios.post(
@@ -401,7 +397,6 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                 });
                 setIsButtonDisabled(false)
             }
-            console.log("LOAD LOTS CONSOLE : ", data)
             reload();
         } catch (error) {
             toast({
