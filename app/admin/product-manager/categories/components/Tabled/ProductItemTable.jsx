@@ -181,7 +181,7 @@ export function ProductItemTable({ category_id }) {
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                             <SearchBar />
                         </div>
-                        <div className="">
+                        {/* <div className="">
                             <Button
                                 variant="destructive"
                                 size="sm"
@@ -190,7 +190,7 @@ export function ProductItemTable({ category_id }) {
                             >
                                 <p className=" text-xs">Move Items</p>
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
