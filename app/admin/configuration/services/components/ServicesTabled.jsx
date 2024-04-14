@@ -123,7 +123,8 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
                     </Button>
                     <DropdownMenus
                       key={row.original.service_id}
-                      serviceID={row.original.id}
+                      id={row.original.id}
+                      serviceID={row.original.service_id}
                       reload={reloadTable}
                     />
                   </div>

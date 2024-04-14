@@ -4,8 +4,15 @@ import styles from '../styles.module.scss'
 import { NewServicesForms } from './components/Forms/NewServicesForms'
 import { ServicesCards } from './components/ServicesCard'
 import { ServiceList } from './components/Table/ServiceList'
+import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 export default function ServicesPage() {
+    const searchParams = useSearchParams()
+    const service_id = searchParams.get('service_id') || ""
+    console.log("🚀 ~ ServicesPage ~ service_id:", service_id)
+
+
+
     const [formsData, setFormsData] = useState({
         service_id: '',
         item: '',
@@ -65,6 +72,21 @@ export default function ServicesPage() {
         fetchData()
     }, [query])
 
+    useEffect(() => {
+        if (service_id !== "") {
+            const findData = data.find((item) => item.service_id === service_id)
+            console.log("🚀 ~ useEffect ~ findData", findData)
+            setSelectedData(findData)
+            // setFormsData({
+            //     service_id: findData.service_id,
+            //     item: findData.item,
+            //     description: findData.description,
+            //     price: findData.price,
+            //     category: findData.category,
+            //     category_id: findData.category_id,
+            // })
+        }
+    }, [service_id, data])
     const handlerPaginationChange = (page) => {
         if (page >= 0) {
             console.log("🚀 ~ handlerPaginationChange ~ page:", page);

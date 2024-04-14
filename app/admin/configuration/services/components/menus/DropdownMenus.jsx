@@ -5,7 +5,8 @@ import { MoreHorizontalIcon } from 'lucide-react'
 import React from 'react'
 import axios from 'axios';
 import { useToast } from '@/components/ui/use-toast'
-export const DropdownMenus = ({ serviceID, reload }) => {
+import NextLink from 'next/link'
+export const DropdownMenus = ({ id, reload, serviceID }) => {
 
     const { toast } = useToast();
     const handleDelete = async () => {
@@ -13,7 +14,7 @@ export const DropdownMenus = ({ serviceID, reload }) => {
             const response = await axios.post(
                 `/api/admin/config/services/remove`,
                 {
-                    id: `${serviceID.toString()}`
+                    id: `${id.toString()}`
                 }
             )
             console.log("🚀 ~ handleDelete ~ response:", response)
@@ -50,6 +51,11 @@ export const DropdownMenus = ({ serviceID, reload }) => {
                 </Button>
             </DropdownMenuTrigger >
             <DropdownMenuContent side={"left"} sideOffset={2}>
+                <NextLink passHref href={`/admin/product-manager/services?service_id=${serviceID}`}>
+                    <DropdownMenuItem >
+                        <p className="text-xs">Edit</p>
+                    </DropdownMenuItem>
+                </NextLink>
                 <DropdownMenuItem
                     onClick={handleDelete}
                 >
