@@ -6,7 +6,7 @@ import React from 'react'
 import axios from 'axios';
 import { useToast } from '@/components/ui/use-toast'
 import NextLink from 'next/link'
-export const DropdownMenus = ({ id, reload, serviceID }) => {
+export const DropdownMenus = ({ id, reload, serviceID, status }) => {
 
     const { toast } = useToast();
     const handleDelete = async () => {
@@ -57,6 +57,7 @@ export const DropdownMenus = ({ id, reload, serviceID }) => {
                     </DropdownMenuItem>
                 </NextLink>
                 <DropdownMenuItem
+                    disabled={status === "Active"}
                     onClick={handleDelete}
                 >
                     <p className="text-xs text-red-700">Delete</p>
