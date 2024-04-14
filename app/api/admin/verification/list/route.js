@@ -17,10 +17,10 @@ export async function POST(request) {
             date_end,
             tracking_id,
             status,
+            status_id,
             page,
             limit,
             index,
-            status_id,
             token,
         } = await request.json();
 
@@ -31,11 +31,11 @@ export async function POST(request) {
                 date_start: date_start,
                 date_end: date_end,
                 tracking_id: tracking_id,
+                status_id: status_id,
                 status: status,
                 page: page,
                 limit: limit,
                 index: index,
-                status_id: status_id,
             },
             {
                 httpsAgent: agent,
@@ -46,7 +46,7 @@ export async function POST(request) {
             }
         );
 
-        // console.log("response from api : ", response.data); // Log the response data
+        console.log("response from api : ", response.data); // Log the response data
 
         if (response.status === 200) {
             const responseData = {

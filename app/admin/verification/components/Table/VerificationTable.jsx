@@ -202,7 +202,7 @@ export function VerificationTable(
             cell: ({ row }) => {
                 return (
                     <div className="text-center text-xs w-[] " >
-                        <VerifiedStatus param={row.original.status} />
+                        <VerifiedStatus param={row.original.status_id} />
                     </div>
                 )
             },

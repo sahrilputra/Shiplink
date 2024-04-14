@@ -1,6 +1,7 @@
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
 export const VerifiedStatus = ({ param }) => {
+    console.log("🚀 ~ VerifiedStatus ~ param:", param)
     return (
         <>
             {/* <div className="flex flex-row gap-3 items-center">
@@ -8,11 +9,11 @@ export const VerifiedStatus = ({ param }) => {
                 <p>{param}</p>
             </div> */}
             {
-                param === "Received" ? (
+                param === 1 ? (
                     <Badge variant="grayStatus">{"Pending"}</Badge>
-                ) : param === "Verified" ? (
+                ) : param === 7 ? (
                     <Badge variant="verified">{"Verified"}</Badge>
-                ) : param === "Declared" ? (
+                ) : param === 22 ? (
                     <Badge variant="unverified">{"Declared"}</Badge>
                 ) : param === "Hold For Pickup" ? (
                     <Badge variant="lightGray">{"Pickup"}</Badge>

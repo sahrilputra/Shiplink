@@ -1,15 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
-import { FilterIcons } from '@/components/icons/iconCollection'
-import { Button } from '@/components/ui/button'
 import { SearchBar } from '@/components/ui/searchBar'
-import { Input } from '@/components/ui/input'
 import { PendingTable } from './components/CustomTable/PendingTable'
-import data from '../../../data/admin/CustomBrokerData.json'
 import Image from 'next/image'
 import { CustomMenus } from './components/ConfigMenus'
 import axios from 'axios'
+
 export default function CustomBrokerPage() {
 
     const [isSkeleton, setIsSkeleton] = useState(true);
@@ -20,7 +17,7 @@ export default function CustomBrokerPage() {
         date_end: "",
         tracking_id: "",
         status: "",
-        status_id: "",
+        status_id: "0",
         page: 1,
         limit: 10,
         index: 0,
@@ -44,11 +41,11 @@ export default function CustomBrokerPage() {
                 `/api/admin/verification/list`,
                 query
             );
-            console.log(response)
+            console.log("response", response)
             const data = await response.data;
             const filterData = selectedTab !== 'Cleared Custom'
-                ? data.package_info.filter(item => item.status !== 'Clearance Received')
-                : data.package_info.filter(item => item.status === 'Clearance Received');
+                ? data.package_info.filter(item => item.status_id !== 9)
+                : data.package_info.filter(item => item.status_id === 9);
             setData(filterData);
             setRowTotalData({
                 page_limit: data.page_limit,
@@ -60,8 +57,6 @@ export default function CustomBrokerPage() {
                 pageSize: data.page_limit,
             }));
             setTotalDataLength(data.total);
-            // setclearancePendingCount(data.package_info.filter(item => item.status !== 'Cleared Custom').length);
-            // setclearanceCustomsCount(data.package_info.filter(item => item.status === 'Cleared Custom').length);
             setIsSkeleton(false);
         } catch (error) {
             setIsSkeleton(false);
@@ -83,6 +78,7 @@ export default function CustomBrokerPage() {
                         date_end: "",
                         tracking_id: "",
                         status: "",
+                        status_id: "0",
                         page: 1,
                         limit: totalDataLenght,
                         index: 0,
@@ -154,6 +150,7 @@ export default function CustomBrokerPage() {
                 limit: 10,
                 index: 0,
                 status: "",
+                status_id: "0",
             })
             setRowTotalData({
                 page_limit: 0,
@@ -170,7 +167,8 @@ export default function CustomBrokerPage() {
                 page: 1,
                 limit: 10,
                 index: 0,
-                status: ""
+                status: "",
+                status_id: "0"
             })
             setRowTotalData({
                 page_limit: 0,
@@ -196,16 +194,25 @@ export default function CustomBrokerPage() {
                                 src={"/backoffice/broker-blue.png"}
                                 width={40}
                                 height={40}
-                                alt='config icon'
+                                alt="config icon"
                             />
                         </div>
                         <div className={`${styles.title} flex flex-col`}>
-                            <h1 className=" text-zinc-900 text-sm font-bold ">Customs Broker</h1>
-                            <p className=" text-blue-900 text-xs font-normal">Pending : {clearancePendingCount} | Clearance : {clearanceCustomsCount}</p>
+                            <h1 className=" text-zinc-900 text-sm font-bold ">
+                                Customs Broker
+                            </h1>
+                            <p className=" text-blue-900 text-xs font-normal">
+                                Pending : {clearancePendingCount} | Clearance :{" "}
+                                {clearanceCustomsCount}
+                            </p>
                         </div>
                     </div>
                     <div className={`${styles.menus}`}>
-                        <CustomMenus selectedTab={setSelectedTab} isSelected={selectedTab} handlerSelectedTab={handlerSelectedTab} />
+                        <CustomMenus
+                            selectedTab={setSelectedTab}
+                            isSelected={selectedTab}
+                            handlerSelectedTab={handlerSelectedTab}
+                        />
                     </div>
                 </div>
                 <div className={styles.childContent}>
@@ -230,5 +237,5 @@ export default function CustomBrokerPage() {
                 </div>
             </div>
         </>
-    )
+    );
 }

@@ -108,6 +108,7 @@ export default function VerificationPages() {
         setIsSkeleton(true);
         if (tab === 'All') {
             setQuery({
+                status_id: "0",
                 status: "",
                 page: 1,
                 limit: 10,
