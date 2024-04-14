@@ -111,20 +111,23 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
             size: 20,
             cell: ({ row }) => {
                 return (
-                    <div className="flex flex-row gap-2">
-                        <Button
-                            disabled={row.original.status === "Active" ? true : false}
-                            variant="tableBlue"
-                            size="tableIcon"
-                            className={`rounded-[3px] w-max  px-[5px] h-[20px]`}
-                            onClick={() => handleActive(row.original.service_id)}
-                        >
-                            <p className="text-[11px]">Active</p>
-                        </Button>
-                        <DropdownMenus key={row.original.service_id} serviceID={row.original.service_id} reload={reloadTable} />
-
-                    </div>
-                )
+                  <div className="flex flex-row gap-2">
+                    <Button
+                      disabled={row.original.status === "Active" ? true : false}
+                      variant="tableBlue"
+                      size="tableIcon"
+                      className={`rounded-[3px] w-max  px-[5px] h-[20px]`}
+                      onClick={() => handleActive(row.original.service_id)}
+                    >
+                      <p className="text-[11px]">Active</p>
+                    </Button>
+                    <DropdownMenus
+                      key={row.original.service_id}
+                      serviceID={row.original.id}
+                      reload={reloadTable}
+                    />
+                  </div>
+                );
             },
         }
     ]

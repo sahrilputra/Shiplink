@@ -24,7 +24,7 @@ export const DropdownMenus = ({ serviceID, reload }) => {
                 });
             } else {
                 toast({
-                    title: `Sucess adding new service!`,
+                    title: `Removing Status!`,
                     description: response.data.message,
                     status: 'success',
                 });
