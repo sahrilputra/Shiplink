@@ -53,6 +53,7 @@ export function ServicesTabled({ data, isOpen, setOpen, handlerEdit, handlerDele
             console.log(error)
         }
     }
+
     useEffect(() => {
         fetchDataList();
     }, [id])
