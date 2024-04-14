@@ -20,6 +20,7 @@ export default function CustomBrokerPage() {
         date_end: "",
         tracking_id: "",
         status: "",
+        status_id: "",
         page: 1,
         limit: 10,
         index: 0,
@@ -68,7 +69,7 @@ export default function CustomBrokerPage() {
         }
     };
     useEffect(() => {
-        // fetchData();
+        fetchData();
     }, [query]);
 
     useEffect(() => {
@@ -104,7 +105,7 @@ export default function CustomBrokerPage() {
 
     const reload = () => {
         setIsSkeleton(true);
-        // fetchData();
+        fetchData();
     }
 
     const handleSearchChange = (event) => {
@@ -123,7 +124,8 @@ export default function CustomBrokerPage() {
         setIsSkeleton(true);
         if (tab === 'Pending') {
             setQuery({
-                status: "Verified",
+                status: "",
+                status_id: "7",
                 page: 1,
                 limit: 10,
                 index: 0,
@@ -134,7 +136,8 @@ export default function CustomBrokerPage() {
                 page: 1,
                 limit: 10,
                 index: 0,
-                status: "Clearance Received",
+                status: "",
+                status_id: "9",
             })
             setRowTotalData({
                 page_limit: 0,
