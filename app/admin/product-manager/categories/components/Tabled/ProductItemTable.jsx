@@ -34,6 +34,7 @@ export function ProductItemTable({ category_id }) {
 
     const [isSkeleton, setIsSkeleton] = useState(false)
     const [data, setData] = useState([])
+    console.log("🚀 ~ ProductItemTable ~ data:", data)
     const [query, setQuery] = useState({
         keyword: '',
         page: 0,
@@ -45,14 +46,19 @@ export function ProductItemTable({ category_id }) {
     const fetchData = async () => {
         const response = await axios.post(
             '/api/admin/product/listProduct',
-            query
+            {
+                ...query,
+                category_id: category_id
+            }
         )
+        console.log("🚀 ~ fetchData ~ query:", query)
         console.log("🚀 ~ fetchData ~ response:", response)
-        const responseData = await response.data.product_categories;
+        const responseData = await response.data.products;
         console.log("🚀 ~ fetchData ~ responseData:", responseData)
         setData(responseData)
         setIsSkeleton(false)
     }
+
 
     useEffect(() => {
         fetchData();
