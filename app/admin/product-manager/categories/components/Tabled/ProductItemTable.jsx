@@ -30,6 +30,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProductItemTable({ category_id }) {
+    console.log("🚀 ~ ProductItemTable ~ category_id:", category_id)
 
     const [isSkeleton, setIsSkeleton] = useState(false)
     const [data, setData] = useState([])
@@ -41,17 +42,19 @@ export function ProductItemTable({ category_id }) {
         category_id: category_id,
     })
 
+    const fetchData = async () => {
+        const response = await axios.post(
+            '/api/admin/product/listProduct',
+            query
+        )
+        console.log("🚀 ~ fetchData ~ response:", response)
+        const responseData = await response.data.product_categories;
+        console.log("🚀 ~ fetchData ~ responseData:", responseData)
+        setData(responseData)
+        setIsSkeleton(false)
+    }
+
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.post(
-                '/api/admin/product/listProduct',
-                query
-            )
-            const responseData = await response.data.product_categories;
-            console.log("🚀 ~ fetchData ~ responseData:", responseData)
-            setData(responseData)
-            setIsSkeleton(false)
-        }
         fetchData();
     }, [query, category_id]);
 
@@ -164,6 +167,9 @@ export function ProductItemTable({ category_id }) {
     return (
         <>
             <div className="text-sm bg-transparent py-2">
+                <div className="px-2">
+                    <p>{category_id}</p>
+                </div>
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -175,7 +181,6 @@ export function ProductItemTable({ category_id }) {
                                 size="sm"
                                 className="px-[20px]"
                                 disabled={Object.keys(rowSelection).length === 0}
-                                onClick={() => toggleOpenChange(selectedItemsId)}
                             >
                                 <p className=" text-xs">Move Items</p>
                             </Button>
@@ -209,7 +214,7 @@ export function ProductItemTable({ category_id }) {
                 </TableHeader>
                 <TableBody>
 
-                    {isSkeleton || !table.getRowModel().rows?.length ? (
+                    {isSkeleton || !table?.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
                                 [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (

@@ -10,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import { ExternalLink, Plus, Delete, ChevronsRightIcon, ChevronRight, ChevronLeft, ChevronsLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -38,7 +39,17 @@ import {
 import { DialogDeleteProduct } from "../menus/DialogDeleteProduct";
 
 
-export function ProductList({ data, isSkeleton, setSelectedData, reload }) {
+export function ProductList({
+    data,
+    isSkeleton,
+    setSelectedData,
+    reload,
+    formDataId,
+    setSelectedID,
+    selectedID,
+    handleSearch
+}) {
+    console.log("🚀 ~ ProductList ~ formDataId:", formDataId)
 
     const columns = [
         {
@@ -97,7 +108,7 @@ export function ProductList({ data, isSkeleton, setSelectedData, reload }) {
                             variant="tableBlue"
                             size="tableIcon"
                             className={`rounded-[3px] w-max px-[5px] h-[25px]`}
-                            onClick={() => { toggleOpenChange([row.original.product_id])}}
+                            onClick={() => { toggleOpenChange([row.original.product_id]) }}
                         >
                             <Trash2 width={15} height={15} className={` text-myBlue rounded-sm  `} />
                         </Button>
@@ -144,7 +155,9 @@ export function ProductList({ data, isSkeleton, setSelectedData, reload }) {
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
+                            <SearchBar
+                                handleSearch={handleSearch}
+                            />
                         </div>
                         <div className="">
                             <Button
@@ -186,79 +199,114 @@ export function ProductList({ data, isSkeleton, setSelectedData, reload }) {
                 </TableHeader>
                 <TableBody>
 
-                    {isSkeleton || !table.getRowModel().rows?.length ? (
-                        <>
-                            {isSkeleton &&
-                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
-                                    <TableRow key={index}>
-                                        {columns.map((column, columnIndex) => (
-                                            <TableCell
-                                                key={columnIndex}
-                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
-                                            >
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                    {
+                        isSkeleton || !table.getRowModel().rows?.length ? (
+                            <>
+                                {isSkeleton &&
+                                    [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
 
-                            {!isSkeleton && !table.getRowModel().rows?.length && (
-                                <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        No results.
-                                    </TableCell>
+                                {!isSkeleton && !table.getRowModel().rows?.length && (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </>
+                        ) : (
+                            // Jika data telah dimuat, render data aktual 
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                    onClick={() => {
+                                        setSelectedID(row.original.product_id)
+                                        setSelectedData(row.original)
+                                    }}
+                                    className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""} ${selectedID === row.original.product_id ? "bg-blue-100" : ""} text-xs`}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell
+                                            key={cell.id}
+                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
-                            )}
-                        </>
-                    ) : (
-                        // Jika data telah dimuat, render data aktual
-                        table.getRowModel().rows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                data-state={row.getIsSelected() && "selected"}
-                                onClick={() => { setSelectedData(row.original) }}
-                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}`}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell
-                                        key={cell.id}
-                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
-                                    >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))
-                    )}
+                            ))
+                        )}
                 </TableBody>
             </Table>
-            <div className="flex justify-end w-full items-end p-4">
-                <Pagination className={'flex justify-end w-full items-end'}>
+            <div className="flex justify-between w-full items-center mt-3 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div>
+                </div>
+                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                     <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
+
+
                     </PaginationContent>
                 </Pagination>
             </div>

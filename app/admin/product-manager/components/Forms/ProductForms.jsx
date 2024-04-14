@@ -43,12 +43,18 @@ const formSchema = yup.object().shape({
     category_id: yup.string(),
     description: yup.string().required(),
     price: yup.number().required(),
-    image: yup.string().required(),
+    image: yup.string(),
 })
 
-export const NewProductForms = ({ close, data = null, setFormsData, reload }) => {
+export const NewProductForms = ({
+    close,
+    data = null,
+    setFormsData,
+    reload,
+    setSelectedData,
+}) => {
 
-    const { toast } = useToast()
+    const { toast } = useToast();
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
@@ -63,18 +69,18 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
             image: "",
         },
         mode: "onChange",
-    })
+    });
 
-    const [category, setCategory] = useState([])
+    const [category, setCategory] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.post(`/api/admin/category/list`, {
-                    "keyword": "",
-                    "page": 0,
-                    "limit": 0,
-                    "index": 0,
-                    "category_type": "Product"
+                    keyword: "",
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                    category_type: "Product",
                 });
                 setCategory(response.data.product_categories);
             } catch (error) {
@@ -86,32 +92,36 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
 
         // Membersihkan interval saat komponen unmount
         return () => clearInterval(intervalId);
-    })
+    });
 
     useEffect(() => {
-        form.setValue("productID", data?.product_id || "")
-        form.setValue("item", data?.item || "")
-        form.setValue("brand", data?.brand || "")
-        form.setValue("model", data?.model || "")
-        form.setValue("category", data?.categories || "")
-        form.setValue("category_id", data?.category_id || "")
-        form.setValue("description", data?.description || "")
-        form.setValue("price", data?.price || "")
-    }, [data])
+        form.setValue("productID", data?.product_id || "");
+        form.setValue("item", data?.item || "");
+        form.setValue("brand", data?.brand || "");
+        form.setValue("model", data?.model || "");
+        form.setValue("category", data?.categories || "");
+        form.setValue("category_id", data?.category_id || "");
+        form.setValue("description", data?.description || "");
+        form.setValue("price", data?.price || "");
+    }, [data]);
 
     useEffect(() => {
         // Simpan nilai awal formulir ke state induk
         setFormsData(form.getValues());
     }, []);
 
-    const [loading, setLoading] = useState(false)
+    const handleResetForm = () => {
+        setSelectedData(null);
+        form.reset();
+        document.getElementById("image").value = "";
+    };
+    const [loading, setLoading] = useState(false);
     const handleSave = async (formData) => {
-        console.log("🚀 ~ handleSave ~ SENT:", formData)
-        setLoading(true)
+        console.log("🚀 ~ handleSave ~ SENT:", formData);
+        setLoading(true);
         try {
-            axios.post(
-                `/api/admin/product/setProduct`,
-                {
+            axios
+                .post(`/api/admin/product/setProduct`, {
                     product_id: formData.productID,
                     item: formData.item,
                     brand: formData.brand,
@@ -120,32 +130,40 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                     description: formData.description,
                     price: formData.price,
                     image: formData.image,
-                    action: `${data ? "edit" : "add"}`
-                }
-            ).then((response) => {
-                console.log("🚀 ~ ).then ~ response:", response)
-                setLoading(false)
-                reload()
-                form.reset()
-                toast({
-                    title: "Product Added",
-                    desription: "Product has been added successfully",
-                    type: "success",
+                    action: `${data ? "edit" : "add"}`,
                 })
-            }).catch((error) => {
-                setLoading(false)
-                console.log("Error", error)
-                toast({
-                    title: "Error",
-                    desription: `${error.message}`,
-                    type: "error",
+                .then((response) => {
+                    console.log("🚀 ~ ).then ~ response:", response);
+                    setLoading(false);
+                    reload();
+                    form.reset();
+                    if (response.data.status === true) {
+                        toast({
+                            title: "Product Added",
+                            desription: "Product has been added successfully",
+                            type: "success",
+                        });
+                    } else {
+                        toast({
+                            title: "Error",
+                            desription: `${response.data.message}`,
+                            type: "error",
+                        });
+                    }
                 })
-            })
-
+                .catch((error) => {
+                    setLoading(false);
+                    console.log("Error", error);
+                    toast({
+                        title: "Error",
+                        desription: `${error.message}`,
+                        type: "error",
+                    });
+                });
         } catch (error) {
-            console.log("error", error)
+            console.log("error", error);
         }
-    }
+    };
 
     return (
         <>
@@ -153,8 +171,9 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleSave)}
-                    className='flex gap-2 flex-col'
-                    action="">
+                    className="flex gap-2 flex-col"
+                    action=""
+                >
                     <div className="profile flex flex-row gap-2 w-full">
                         <FormField
                             className="w-full text-xs"
@@ -168,10 +187,16 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                         <FormControl>
                                             <Input
                                                 size="new"
-                                                id="productID" className="text-xs" placeholder="#1231" {...field}
+                                                id="productID"
+                                                className="text-xs"
+                                                placeholder="#1231"
+                                                {...field}
                                                 onChange={(e) => {
                                                     field.onChange(e.target.value);
-                                                    setFormsData({ ...form.getValues(), productID: e.target.value });
+                                                    setFormsData({
+                                                        ...form.getValues(),
+                                                        productID: e.target.value,
+                                                    });
                                                 }}
                                             />
                                         </FormControl>
@@ -187,13 +212,20 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                 <>
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Item #</FormLabel>
-                                        <FormControl >
+                                        <FormControl>
                                             <Input
                                                 size="new"
-                                                type="number" id="item" className="text-xs" placeholder="#2321"  {...field}
+                                                type="number"
+                                                id="item"
+                                                className="text-xs"
+                                                placeholder="#2321"
+                                                {...field}
                                                 onChange={(e) => {
                                                     field.onChange(e.target.value);
-                                                    setFormsData({ ...form.getValues(), item: e.target.value });
+                                                    setFormsData({
+                                                        ...form.getValues(),
+                                                        item: e.target.value,
+                                                    });
                                                 }}
                                             />
                                         </FormControl>
@@ -211,13 +243,20 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                 <>
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Brand *</FormLabel>
-                                        <FormControl >
+                                        <FormControl>
                                             <Input
                                                 size="new"
-                                                type="text" id="brand" className="text-xs" placeholder="Select Brand" {...field}
+                                                type="text"
+                                                id="brand"
+                                                className="text-xs"
+                                                placeholder="Select Brand"
+                                                {...field}
                                                 onChange={(e) => {
                                                     field.onChange(e.target.value);
-                                                    setFormsData({ ...form.getValues(), brand: e.target.value });
+                                                    setFormsData({
+                                                        ...form.getValues(),
+                                                        brand: e.target.value,
+                                                    });
                                                 }}
                                             />
                                         </FormControl>
@@ -233,14 +272,20 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                 <>
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Model *</FormLabel>
-                                        <FormControl >
+                                        <FormControl>
                                             <Input
                                                 size="new"
-                                                type="text" id="brand" className="text-xs" placeholder="Model"
+                                                type="text"
+                                                id="brand"
+                                                className="text-xs"
+                                                placeholder="Model"
                                                 {...field}
                                                 onChange={(e) => {
                                                     field.onChange(e.target.value);
-                                                    setFormsData({ ...form.getValues(), model: e.target.value });
+                                                    setFormsData({
+                                                        ...form.getValues(),
+                                                        model: e.target.value,
+                                                    });
                                                 }}
                                             />
                                         </FormControl>
@@ -263,8 +308,9 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                                         variant="outline"
                                                         role="combobox"
                                                         className={`w-[200px] justify-between text-xs h-[30px] shadow-none border-slate-300 px-1
-                                                        ${!field.value && "text-muted-foreground"}`
-                                                        }
+                                                        ${!field.value &&
+                                                            "text-muted-foreground"
+                                                            }`}
                                                     >
                                                         {field.value || "Select Category"}
                                                     </Button>
@@ -276,8 +322,10 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                                         placeholder="Search Category..."
                                                         className="h-9 text-xs"
                                                     />
-                                                    <CommandEmpty className="text-xs text-center py-1">No Category Found</CommandEmpty>
-                                                    <PopoverClose >
+                                                    <CommandEmpty className="text-xs text-center py-1">
+                                                        No Category Found
+                                                    </CommandEmpty>
+                                                    <PopoverClose>
                                                         <CommandGroup>
                                                             {category?.map((item) => (
                                                                 <>
@@ -286,15 +334,21 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                                                         key={item.category_code}
                                                                         className="text-xs w-full"
                                                                         onSelect={() => {
-                                                                            form.setValue("category", item.categories)
-                                                                            form.setValue("category_id", item.category_code)
+                                                                            form.setValue(
+                                                                                "category",
+                                                                                item.categories
+                                                                            );
+                                                                            form.setValue(
+                                                                                "category_id",
+                                                                                item.category_code
+                                                                            );
                                                                         }}
                                                                     >
-
                                                                         {item.categories}
                                                                         <CheckIcon
                                                                             className={`ml-auto h-4 w-4 text-xs
-                                                                    ${category.categories === field.value
+                                                                    ${category.categories ===
+                                                                                    field.value
                                                                                     ? "opacity-100"
                                                                                     : "opacity-0"
                                                                                 }
@@ -322,14 +376,20 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                 <>
                                     <FormItem className="text-xs w-full">
                                         <FormLabel className="font-bold">Description *</FormLabel>
-                                        <FormControl >
+                                        <FormControl>
                                             <Input
                                                 size="new"
-                                                type="text" id="country" className="text-xs" placeholder="Set a description for better visibility."
+                                                type="text"
+                                                id="country"
+                                                className="text-xs"
+                                                placeholder="Set a description for better visibility."
                                                 {...field}
                                                 onChange={(e) => {
                                                     field.onChange(e.target.value);
-                                                    setFormsData({ ...form.getValues(), description: e.target.value });
+                                                    setFormsData({
+                                                        ...form.getValues(),
+                                                        description: e.target.value,
+                                                    });
                                                 }}
                                             />
                                         </FormControl>
@@ -374,7 +434,7 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                         <FormItem className="w-full text-neutral-900 text-xs">
                                             <FormLabel className="font-bold">Image *</FormLabel>
                                             <FormControl>
-                                                <div className='rounded-md border border-slate-200 p-0'>
+                                                <div className="rounded-md border border-slate-200 p-0">
                                                     <Input
                                                         id="image"
                                                         type="file"
@@ -387,7 +447,10 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                                                             reader.onload = (event) => {
                                                                 const base64String = event.target.result;
                                                                 field.onChange(base64String);
-                                                                setFormsData({ ...form.getValues(), image: base64String });
+                                                                setFormsData({
+                                                                    ...form.getValues(),
+                                                                    image: base64String,
+                                                                });
                                                             };
                                                             reader.readAsDataURL(file);
                                                         }}
@@ -407,11 +470,11 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                             type="button"
                             className={` px-10 `}
                             onClick={() => {
-                                form.reset()
+                                handleResetForm();
                             }}
                             size="xs"
                         >
-                            <p className=' font-normal text-xs'>Cancel</p>
+                            <p className=" font-normal text-xs">Cancel</p>
                         </Button>
                         <Button
                             variant="destructive"
@@ -419,12 +482,11 @@ export const NewProductForms = ({ close, data = null, setFormsData, reload }) =>
                             className="px-10"
                             size="xs"
                         >
-                            <p className=' font-normal text-xs'>Save</p>
+                            <p className=" font-normal text-xs">Save</p>
                         </Button>
                     </div>
-
                 </form>
-            </Form >
+            </Form>
         </>
-    )
-}
+    );
+};

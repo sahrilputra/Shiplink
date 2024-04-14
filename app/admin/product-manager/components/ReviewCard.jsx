@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 
-export const ReviewCard = ({ formsData }) => {
+export const ReviewCard = ({ formsData, setSelectedData }) => {
 
     const img = formsData?.image
     console.log("🚀 ~ ReviewCard ~ img:", img)
@@ -14,7 +14,7 @@ export const ReviewCard = ({ formsData }) => {
                     src={`${img ? img : '../../../assets/img-placeholder.svg'}`}
                     alt=""
                     className=' object-cover rounded-tl-lg rounded-tr-lg image'
-                    style={{ objectFit: 'cover', height: '200px', width: '100%', imageRendering: 'pixelated', imageRendering: 'crisp-edges', imageRendering: 'auto'}}
+                    style={{ objectFit: 'cover', height: '200px', width: '100%', imageRendering: 'pixelated', imageRendering: 'crisp-edges', imageRendering: 'auto' }}
                 />
                 {/* <Image
                     src={`${img ? img : '/assets/img_placeholder.png'}`}
