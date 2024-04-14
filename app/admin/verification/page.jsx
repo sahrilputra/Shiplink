@@ -33,7 +33,8 @@ export default function VerificationPages() {
         date_start: "",
         date_end: "",
         tracking_id: "",
-        status: "Declared",
+        status: "",
+        status_id: "22",
         page: 1,
         limit: 10,
         index: 0,
@@ -110,6 +111,7 @@ export default function VerificationPages() {
                 page: 1,
                 limit: 10,
                 index: 0,
+
             })
             setIsSkeleton(false);
         } else if (tab === 'Unverified') {
@@ -117,7 +119,8 @@ export default function VerificationPages() {
                 page: 1,
                 limit: 10,
                 index: 0,
-                status: "Declared",
+                status: "",
+                status_id: "22",
             })
             setRowTotalData({
                 page_limit: 0,
@@ -133,7 +136,8 @@ export default function VerificationPages() {
                 page: 1,
                 limit: 10,
                 index: 0,
-                status: "Verified"
+                status: "",
+                status_id: "7",
             })
             setRowTotalData({
                 page_limit: 0,
