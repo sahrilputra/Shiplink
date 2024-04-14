@@ -80,7 +80,7 @@ export function SingleItemsTable({ }) {
         warehouse_destination: "",
         warehouse_position: "",
         email: "",
-        status: "",
+        status: "statuss",
         sort_by: "status",
         sort_type: "asc",
         page: 1,
