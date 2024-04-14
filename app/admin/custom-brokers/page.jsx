@@ -68,7 +68,7 @@ export default function CustomBrokerPage() {
         }
     };
     useEffect(() => {
-        fetchData();
+        // fetchData();
     }, [query]);
 
     useEffect(() => {
@@ -104,7 +104,7 @@ export default function CustomBrokerPage() {
 
     const reload = () => {
         setIsSkeleton(true);
-        fetchData();
+        // fetchData();
     }
 
     const handleSearchChange = (event) => {

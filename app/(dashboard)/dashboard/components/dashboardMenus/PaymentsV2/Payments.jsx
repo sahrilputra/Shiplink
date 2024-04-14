@@ -42,6 +42,7 @@ export const PaymentsDialog = ({
   selectedBroker,
   toggleExpanded,
 }) => {
+  console.log("🚀 ~ trackingId:", trackingId)
   const toggleSelect = (selectedButtons) => {
     isSelected(selectedButtons);
   };
