@@ -43,7 +43,7 @@ const formSchema = yup.object().shape({
 })
 
 
-export const NewServicesForms = ({ close, setFormsData, data = null, reload }) => {
+export const NewServicesForms = ({ close, setFormsData, data = null, reload, setSelectedID, setData, setIsCancel }) => {
     console.log("🚀 ~ NewServicesForms ~ data:", data)
     const { toast } = useToast()
     const form = useForm({
@@ -64,16 +64,21 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
 
     const handleCancel = () => {
         form.reset();
-        setFormsData({
+        form.reset({
             service_id: "",
             item: "",
-            price: "",
+            price: 0,
             category: "",
             category_id: "",
             description: "",
 
         })
+        setSelectedID(null)
+        setFormsData(null)
+        setIsCancel(true)
+        setData(null)
     }
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -140,11 +145,10 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
                 setLoading(false)
                 form.reset()
                 reload()
-                if (response.data === false) {
+                if (response.data.status === false) {
                     toast({
                         title: `${data ? "Edit" : "Add"} Services Failed`,
                         desription: response.data.message,
-                        type: "success",
                     })
                 } else {
                     toast({
@@ -167,6 +171,8 @@ export const NewServicesForms = ({ close, setFormsData, data = null, reload }) =
             console.log("error", error)
         }
     }
+
+    console.log("Service ID", form.watch('service_id'));
     return (
         <>
             {loading && <Loaders />}

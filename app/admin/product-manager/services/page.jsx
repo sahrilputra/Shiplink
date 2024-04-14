@@ -8,11 +8,9 @@ import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 export default function ServicesPage() {
     const searchParams = useSearchParams()
-    const service_id = searchParams.get('service_id') || ""
+    let service_id = searchParams.get('service_id') || ""
     console.log("🚀 ~ ServicesPage ~ service_id:", service_id)
-
-
-
+    const [isCancel, setIsCancel] = useState(false)
     const [formsData, setFormsData] = useState({
         service_id: '',
         item: '',
@@ -73,20 +71,13 @@ export default function ServicesPage() {
     }, [query])
 
     useEffect(() => {
-        if (service_id !== "") {
-            const findData = data.find((item) => item.service_id === service_id)
-            console.log("🚀 ~ useEffect ~ findData", findData)
-            setSelectedData(findData)
-            // setFormsData({
-            //     service_id: findData.service_id,
-            //     item: findData.item,
-            //     description: findData.description,
-            //     price: findData.price,
-            //     category: findData.category,
-            //     category_id: findData.category_id,
-            // })
+        if (!isCancel && service_id !== "" && data) {
+            const findData = data.find((item) => item.service_id === service_id);
+            console.log("🚀 ~ useEffect ~ findData", findData);
+            setSelectedData(findData);
         }
-    }, [service_id, data])
+    }, [service_id, data, isCancel]);
+
     const handlerPaginationChange = (page) => {
         if (page >= 0) {
             console.log("🚀 ~ handlerPaginationChange ~ page:", page);
@@ -112,6 +103,13 @@ export default function ServicesPage() {
         })
     }
 
+    const handlerSearchChange = (e) => {
+        console.log("🚀 ~ handlerSearchChange ~ e:", e.target.value)
+        setQuery({
+            keyword: e.target.value
+        })
+    }
+
     const [selectedID, setSelectedID] = useState('')
     return (
         <>
@@ -123,7 +121,10 @@ export default function ServicesPage() {
                             <NewServicesForms
                                 setFormsData={setFormsData}
                                 data={selctedData}
+                                setData={setSelectedData}
                                 reload={reload}
+                                setSelectedID={setSelectedID}
+                                setIsCancel={setIsCancel}
                             />
                         </div>
                     </div>
@@ -140,6 +141,7 @@ export default function ServicesPage() {
             <div className={`${styles.carrier} w-full`}>
                 <div className={`${styles.listTable}  flex flex-col gap-1`}>
                     <ServiceList
+                        handlerSearchChange={handlerSearchChange}
                         data={data}
                         isSkeleton={isSkeleton}
                         reload={reload}

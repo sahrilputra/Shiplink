@@ -49,7 +49,8 @@ export function ServiceList({
     setRowTotalData,
     query,
     setSelectedID,
-    selectedID
+    selectedID,
+    handlerSearchChange
 }) {
     const columns = [
         {
@@ -177,6 +178,7 @@ export function ServiceList({
     const toggleOpenChange = (deleteID) => {
         setOpenDelete(true);
         setSelectedDelete(deleteID);
+        setRowSelection({})
     };
 
     const selectedProductIds = table
@@ -195,16 +197,15 @@ export function ServiceList({
                 <div className="px-2 py-3 ">
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
-                            <SearchBar />
+                            <SearchBar handleSearch={handlerSearchChange} />
                         </div>
                         <div className="">
                             <Button
                                 variant="destructive"
                                 size="sm"
                                 className="px-[20px]"
-                                // disabled={Object.keys(rowSelection).length === 0}
                                 onClick={() => toggleOpenChange(selectedProductIds)}
-                                disabled={true}
+                                disabled={!selectedProductIds.length}
                             >
                                 <p className=" text-xs">Remove Services</p>
                             </Button>
