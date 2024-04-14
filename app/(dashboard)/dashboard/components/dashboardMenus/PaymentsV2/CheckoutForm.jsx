@@ -27,6 +27,7 @@ export default function CheckoutForm(
         setMessage
 
     }) {
+    console.log("🚀 ~ services:", services)
 
     const stripe = useStripe();
     const elements = useElements();
@@ -195,7 +196,7 @@ export default function CheckoutForm(
                 <div className="flex flex-col gap-1 pt-2">
                     {services.map((service, index) => (
                         <div key={index} className="flex flex-row w-full justify-between text-xs">
-                            <p>{service.item}</p>
+                            <p>{service.service}</p>
                             <p>{`$ ${service.price}`}</p>
                         </div>
                     ))}
