@@ -42,20 +42,29 @@ export function ServiceItemTable({ category_id }) {
         index: 0,
         category_id: category_id,
     })
-
-    useEffect(() => {
+    const fetchData = async () => {
         setIsSkeleton(true)
-        const fetchData = async () => {
+        try {
             const response = await axios.post(
                 '/api/admin/service/list',
-                query
+                {
+                    ...query,
+                    category_id: category_id,
+                }
             )
             const responseData = await response.data.services;
             const filteredData = responseData.filter(item => item.category_id === category_id);
             console.log("🚀 ~ fetchData ~ filteredData:", filteredData)
             setData(filteredData)
             setIsSkeleton(false)
+        } catch (error) {
+            console.log("🚀 ~ error:", error)
+            setIsSkeleton(false)
+
         }
+    }
+
+    useEffect(() => {
         fetchData();
     }, [query, category_id])
 
@@ -65,11 +74,6 @@ export function ServiceItemTable({ category_id }) {
             category_id: category_id,
         })
     }
-
-    useEffect(() => {
-        reload();
-    }, [category_id]);
-
     const columns = [
         {
             accessorKey: "select",
@@ -191,8 +195,8 @@ export function ServiceItemTable({ category_id }) {
                                 variant="destructive"
                                 size="sm"
                                 className="px-[20px]"
-                                disabled={true}
-                                // disabled={Object.keys(rowSelection).length === 0}
+                                // disabled={true}
+                                disabled={Object.keys(rowSelection).length === 0}
                                 onClick={() => toggleOpenChange(selectedItemsId)}
                             >
                                 <p className=" text-xs">Move Items</p>

@@ -35,26 +35,3 @@ export default function ProductCategoriesPage() {
         </>
     );
 }
-
-// <>
-
-//     <div className="flex flex-row gap-2 w-full">
-//         <div className={`${styles.carrier} w-full `}>
-//             <div className="w justify-between flex flex-row">
-//                 <SearchBar />
-//                 <Button
-//                     variant="destructive"
-//                     className="px-3 "
-//                     size="sm"
-//                 >
-//                     <p className='text-xs'>New Categories</p>
-//                 </Button>
-//             </div>
-//         </div>
-//     </div>
-//     <div className={`${styles.carrier} w-full`}>
-//         <div className={`${styles.listTable}  flex flex-col gap-1`}>
-//             <CategoriesList />
-//         </div>
-//     </div>
-// </>

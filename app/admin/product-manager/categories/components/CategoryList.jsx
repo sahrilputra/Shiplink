@@ -18,19 +18,22 @@ export const CategoryList = ({ setSelected, selected, setItemID, itemID }) => {
         category_type: selected,
     })
 
+    const fetchData = async () => {
+        const response = await axios.post(
+            '/api/admin/product/categories',
+            {
+                ...query,
+                category_type: selected,
+            }
+        )
+        const responseData = await response.data.product_categories;
+        console.log("🚀 ~ fetchData ~ responseData:", responseData)
+        setCategory(responseData)
+        setSkeleton(false)
+    }
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.post(
-                '/api/admin/product/categories',
-                query
-            )
-            const responseData = await response.data.product_categories;
-            console.log("🚀 ~ fetchData ~ responseData:", responseData)
-            setCategory(responseData)
-            setSkeleton(false)
-        }
         fetchData();
-    }, [query]);
+    }, [query, selected]);
 
     const reload = () => {
         setSkeleton(true)
@@ -51,8 +54,8 @@ export const CategoryList = ({ setSelected, selected, setItemID, itemID }) => {
                     <div className="">
                         <button
                             className={`${selected === "Product"
-                                    ? "text-myBlue border-b border-myBlue"
-                                    : "text-black border-none"
+                                ? "text-myBlue border-b border-myBlue"
+                                : "text-black border-none"
                                 } text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                             onClick={() => {
                                 setSelected("Product");
@@ -65,8 +68,8 @@ export const CategoryList = ({ setSelected, selected, setItemID, itemID }) => {
                     <div className="">
                         <button
                             className={`${selected === "Services"
-                                    ? "text-myBlue border-b border-myBlue"
-                                    : "text-black border-none"
+                                ? "text-myBlue border-b border-myBlue"
+                                : "text-black border-none"
                                 } text-sm  h-[25px] flex-col justify-center items-center gap-1 inline-flex`}
                             onClick={() => {
                                 setSelected("Services");
