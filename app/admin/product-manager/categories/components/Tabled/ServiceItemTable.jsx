@@ -15,8 +15,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
-import { DatePickerWithRange } from "@/components/date/DateRangePicker";
-import { DeleteIcons } from "@/components/icons/iconCollection";
+import { MoveService } from "../dialog/MoveService";
 import {
     ColumnDef,
     flexRender,
@@ -35,6 +34,7 @@ export function ServiceItemTable({ category_id }) {
 
     const [isSkeleton, setIsSkeleton] = useState(false)
     const [data, setData] = useState([])
+    const [openMove, setOpenMove] = useState(false);
     const [query, setQuery] = useState({
         keyword: '',
         page: 0,
@@ -178,14 +178,25 @@ export function ServiceItemTable({ category_id }) {
         });
     };
 
-
+    const toggleOpenChange = (selectedItemsId) => {
+        setOpenMove(true)
+        console.log("🚀 ~ toggleOpenChange ~ selectedItemsId", selectedItemsId)
+    }
+    const selectedItemsId = table?.getSelectedRowModel().rows.map(row => row.original.service_id);
     return (
         <>
+            <MoveService
+                open={openMove}
+                setOpen={setOpenMove}
+                serviceID={selectedItemsId}
+                category_id={category_id}
+                reloadData={reload}
+            />
             <div className="text-sm bg-transparent py-2">
                 <div className="px-2">
                     <p>{category_id}</p>
                 </div>
-                <div className="px-2 py-3 " >
+                <div className="px-2 py-3 ">
                     <div className="flex flex-row justify-between">
                         <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
                             <SearchBar handleSearch={handleSearchChange} />
@@ -215,7 +226,12 @@ export function ServiceItemTable({ category_id }) {
                                 return (
                                     <TableHead
                                         key={header.id}
-                                        className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                        className={`${isLastHeader
+                                                ? "w-[30px] "
+                                                : isFirstHeader
+                                                    ? "w-[50px]"
+                                                    : ""
+                                            } text-xs`}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -230,26 +246,35 @@ export function ServiceItemTable({ category_id }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-
                     {isSkeleton || !table.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
-                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
-                                    <TableRow key={index}>
-                                        {columns.map((column, columnIndex) => (
-                                            <TableCell
-                                                key={columnIndex}
-                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
-                                            >
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                [...Array(table.getRowModel().rows?.length || 5)].map(
+                                    (_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1
+                                                            ? "w-[30px]"
+                                                            : columnIndex === 0
+                                                                ? "w-[50px]"
+                                                                : ""
+                                                        } text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    )
+                                )}
 
                             {!isSkeleton && !table.getRowModel().rows?.length && (
                                 <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className="h-24 text-center"
+                                    >
                                         No results.
                                     </TableCell>
                                 </TableRow>
@@ -261,14 +286,23 @@ export function ServiceItemTable({ category_id }) {
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
-                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""}`}
+                                className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""
+                                    }`}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell
                                         key={cell.id}
-                                        className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                        className={`${cell.isLast
+                                                ? "w-[30px]"
+                                                : cell.isFirst
+                                                    ? "w-[50px]"
+                                                    : ""
+                                            } text-xs `}
                                     >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
                                     </TableCell>
                                 ))}
                             </TableRow>
@@ -277,6 +311,5 @@ export function ServiceItemTable({ category_id }) {
                 </TableBody>
             </Table>
         </>
-
     );
 }
