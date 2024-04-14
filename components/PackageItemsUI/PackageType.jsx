@@ -18,7 +18,7 @@ export const PackageType = ({ variant, notif }) => {
                 }
                 <div className="w-[30px] h-[30px] relative">
                     {
-                        variant === 'Received' ? (
+                        variant === 1 ? (
                             <Image
                                 src={"/assets/incomingIcon.png"}
                                 width={100}

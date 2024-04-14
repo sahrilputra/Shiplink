@@ -48,6 +48,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
         tracking_id,
         updated_at,
         status,
+        status_id,
         status_forcustomer,
         date,
         time,
@@ -108,24 +109,38 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
             <div
                 onClick={() => {
                     if (!isExpand) {
-                        toggleClicked(tracking_id)
+                        toggleClicked(tracking_id);
                     }
                 }}
                 className={`
             container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 
-            ${isExpand ? 'hover:bg-white cursor-default' : 'hover:bg-gray-300/10 cursor-pointer'}
+            ${isExpand
+                        ? "hover:bg-white cursor-default"
+                        : "hover:bg-gray-300/10 cursor-pointer"
+                    }
             `}
             >
                 <div className="flex flex-row justify-between items-center gap-5 relative">
                     <div className="justify-start items-center gap-[15px] flex">
-                        <PackageType variant={status} notif={`${status === "Received" ? "notif" : ""}`} />
+                        <PackageType
+                            variant={status_id}
+                            notif={`${status_id === 1 ? "notif" : ""}`}
+                        />
                         <div className="flex-col justify-start items-start inline-flex w-[200px]">
-                            <div className="text-black text-sm font-semiBold">{tracking_id}</div>
-                            <div className="text-sky-700 text-xs font-semiBold">Shipping Mailbox</div>
+                            <div className="text-black text-sm font-semiBold">
+                                {tracking_id}
+                            </div>
+                            <div className="text-sky-700 text-xs font-semiBold">
+                                Shipping Mailbox
+                            </div>
                             <div className="justify-start items-start inline-flex">
                                 <div className="justify-start items-center gap-2.5 flex">
-                                    <div className="text-zinc-600 text-sm font-semiBold">{carrier_code}</div>
-                                    <p className='text-red-700 text-opacity-80 text-sm font-bold'>{barcode_tracking}</p>
+                                    <div className="text-zinc-600 text-sm font-semiBold">
+                                        {carrier_code}
+                                    </div>
+                                    <p className="text-red-700 text-opacity-80 text-sm font-bold">
+                                        {barcode_tracking}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -136,73 +151,103 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                             className="w-[30px] h-[30px]"
                             size="icon"
                             onClick={() => {
-                                handleCopy(tracking_id)
+                                handleCopy(tracking_id);
                                 toast({
                                     title: "Copied!",
                                     description: `Copy Tracking Number ${tracking_id}.`,
-                                })
+                                });
                             }}
                         >
                             <CopyIcons width={15} height={15} />
                         </Button>
-
                     </div>
                     <div className=" w-2/3 justify-start items-center gap-[10px] flex">
                         <div className="w-[36.14px] h-[50px]">
-                            <Separator orientation="vertical" className="px-[1px] h-[100%] bg-zinc-600/50 " />
+                            <Separator
+                                orientation="vertical"
+                                className="px-[1px] h-[100%] bg-zinc-600/50 "
+                            />
                         </div>
                         <div className="flex flex-row items-center gap-3">
                             <div className="w-[36.14px] h-[23.55px] relative">
-                                {
-                                    country_code_arrival === "USA" ? (
-                                        <>
-                                            <Image
-                                                src={"/assets/country/USA-flag.png"}
-                                                width={66}
-                                                height={70}
-                                                className='left-[-10.19px] top-[-23.55px]'
-                                                alt='USA icon'
-                                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                                            />
-                                        </>
-                                    ) : country_code_arrival === "CAN" ? (
-                                        <>
-                                            <Image
-                                                src={"/assets/country/cad-flag.png"}
-                                                width={66}
-                                                height={70}
-                                                className='left-[-10.19px] top-[-23.55px]'
-                                                alt='USA icon'
-                                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                                            />
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Image
-                                                src={"/assets/country/USA-flag.png"}
-                                                width={66}
-                                                height={70}
-                                                className='left-[-10.19px] top-[-23.55px]'
-                                                alt='USA icon'
-                                                style={{ width: '25px', height: '15px', objectFit: 'cover' }}
-                                            />
-                                        </>
-                                    )
-                                }
-
+                                {country_code_arrival === "USA" ? (
+                                    <>
+                                        <Image
+                                            src={"/assets/country/USA-flag.png"}
+                                            width={66}
+                                            height={70}
+                                            className="left-[-10.19px] top-[-23.55px]"
+                                            alt="USA icon"
+                                            style={{
+                                                width: "25px",
+                                                height: "15px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                    </>
+                                ) : country_code_arrival === "CAN" ? (
+                                    <>
+                                        <Image
+                                            src={"/assets/country/cad-flag.png"}
+                                            width={66}
+                                            height={70}
+                                            className="left-[-10.19px] top-[-23.55px]"
+                                            alt="USA icon"
+                                            style={{
+                                                width: "25px",
+                                                height: "15px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Image
+                                            src={"/assets/country/USA-flag.png"}
+                                            width={66}
+                                            height={70}
+                                            className="left-[-10.19px] top-[-23.55px]"
+                                            alt="USA icon"
+                                            style={{
+                                                width: "25px",
+                                                height: "15px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                    </>
+                                )}
                             </div>
                             <div className="flex-col w-full justify-start items-start gap-[5px] inline-flex">
-                                <PackageIndicator status={status} status_forcustomer={status_forcustomer} packageID={tracking_id} />
-                                <div><span className=" w-[150px] text-zinc-600 text-[13px] font-b">Shipped</span><span className="text-zinc-600 text-xs font-normal">, {formattedDate}</span></div>
+                                <PackageIndicator
+                                    status_id={status_id}
+                                    status={status}
+                                    status_forcustomer={status_forcustomer}
+                                    packageID={tracking_id}
+                                />
+                                <div>
+                                    <span className=" w-[150px] text-zinc-600 text-[13px] font-b">
+                                        Shipped
+                                    </span>
+                                    <span className="text-zinc-600 text-xs font-normal">
+                                        , {formattedDate}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="rightItems gap-5 flex flex-row  w-2/3 justify-end relative">
                         <div className="flex flex-col justify-end items-end ">
-                            <PackageStatus variant={status} />
+                            <PackageStatus variant={status} status_id={status_id} />
                             <div className="h-[30px]  justify-end items-center gap-2.5 flex">
-                                <div className="text-right text-zinc-600 text-xs ">{warehouse_destination ? (`WR ${warehouse_destination}, `) : ""} {country_code_destination ? (`${country_code_destination}`) : ""}</div>
+                                <div className="text-right text-zinc-600 text-xs ">
+                                    {warehouse_destination
+                                        ? `WR ${warehouse_destination}, `
+                                        : ""}{" "}
+                                    {country_code_destination
+                                        ? `${country_code_destination}`
+                                        : ""}
+                                </div>
                             </div>
                         </div>
                         <div className="flex flex-col justify-end items-center ">
@@ -211,13 +256,17 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                             </div>
                             <div className="w-[30px] h-[30px]">
                                 {/* <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
-                             */}
+                   */}
                                 <Button
                                     aria-label="arrow"
                                     variant="ghost"
-                                    size='small'
-                                    className={`w-[30px] h-[30px] ${isExpand ? 'rotate-180' : ''}`}
-                                    onClick={(e) => { e.stopPropagation(); toggleExpanded(); }}
+                                    size="small"
+                                    className={`w-[30px] h-[30px] ${isExpand ? "rotate-180" : ""
+                                        }`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleExpanded();
+                                    }}
                                 >
                                     <ArrowDownIcon />
                                 </Button>
@@ -226,55 +275,59 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                     </div>
                 </div>
 
-                {
-                    isExpand ? (
-                        <div className="expanded transition-transform ease-in-out ">
-                            <ExpandItems
-                                tracking_id={tracking_id}
-                                handleButtonClick={handleButtonClick}
-                                item={item} selectedButton={selectedButton}
-                                buttonEnabled={buttonEnabled}
-                                reload={reload}
-                                toggleExpanded={toggleExpanded}
-                            />
+                {isExpand ? (
+                    <div className="expanded transition-transform ease-in-out ">
+                        <ExpandItems
+                            tracking_id={tracking_id}
+                            handleButtonClick={handleButtonClick}
+                            item={item}
+                            selectedButton={selectedButton}
+                            buttonEnabled={buttonEnabled}
+                            reload={reload}
+                            toggleExpanded={toggleExpanded}
+                        />
 
-                            <div className="w-[100%] flex justify-center align-middle mx-auto ">
-                                {
-                                    status_forcustomer === "Process" || status_forcustomer === "" || status === "Declared" ? (
-                                        null
-                                    ) : (
+                        <div className="w-[100%] flex justify-center align-middle mx-auto ">
+                            {status_forcustomer === "Process" ||
+                                status_forcustomer === "" ||
+                                status === "Declared" ? null : (
+                                <>
+                                    {selectedButton === "Cross Border Forward" ? (
+                                        <CrossBorderTable
+                                            toggleExpanded={toggleExpanded}
+                                            tracking_id={tracking_id}
+                                            reload={reload}
+                                            arrivalCode={country_code_arrival}
+                                        />
+                                    ) : selectedButton === "Cross Border Pickup" ? (
                                         <>
-                                            {
-                                                selectedButton === "Cross Border Forward" ? (
-                                                    <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
-                                                ) : selectedButton === "Cross Border Pickup" ? (
-                                                    <>
-                                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
-                                                    </>
-                                                ) : selectedButton === "Forward Package" ? (
-                                                    <>
-                                                        <CrossBorderTable toggleExpanded={toggleExpanded} tracking_id={tracking_id} reload={reload} arrivalCode={country_code_arrival} />
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                    </>
-                                                )
-                                            }
-
+                                            <CrossBorderTable
+                                                toggleExpanded={toggleExpanded}
+                                                tracking_id={tracking_id}
+                                                reload={reload}
+                                                arrivalCode={country_code_arrival}
+                                            />
                                         </>
-                                    )
-                                }
-
-                            </div>
+                                    ) : selectedButton === "Forward Package" ? (
+                                        <>
+                                            <CrossBorderTable
+                                                toggleExpanded={toggleExpanded}
+                                                tracking_id={tracking_id}
+                                                reload={reload}
+                                                arrivalCode={country_code_arrival}
+                                            />
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </>
+                            )}
                         </div>
-
-                    ) : (
-                        <></>
-                    )
-                }
-
-
-            </div >
+                    </div>
+                ) : (
+                    <></>
+                )}
+            </div>
         </>
-    )
+    );
 }

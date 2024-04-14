@@ -36,6 +36,7 @@ export default function Dashboard() {
             try {
                 const response = await axios.post(`/api/admin/packages/list`, query)
                 setData(response.data.package_info)
+                console.log("🚀 ~ fetchData ~ response:", response)
                 setIsSkeleton(false)
             } catch (error) {
                 console.log("🚀 ~ error", error)
