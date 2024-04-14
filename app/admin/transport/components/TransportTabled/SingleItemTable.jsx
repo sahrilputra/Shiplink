@@ -81,6 +81,7 @@ export function SingleItemsTable({ }) {
         warehouse_position: "",
         email: "",
         status: "",
+        status_id: "0",
         sort_by: "status",
         sort_type: "asc",
         page: 1,
@@ -322,7 +323,7 @@ export function SingleItemsTable({ }) {
             size: 100,
             cell: ({ row }) => {
                 return (
-                    <div className="w-[100px]" key={row}>
+                    <div className="w-max flex justify-center items-center" key={row}>
                         <div className="flex flex-row gap-2">
                             <NextLink href={`/admin/package-details/${row.original.tracking_id}`}>
                                 <Button
