@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import axios from "axios";
 import { useToast } from '@/components/ui/use-toast';
 import NextLink from 'next/link'
-export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
+export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload }) => {
     const { toast } = useToast()
     const handleDepartLots = async () => {
         setExpandedRows([])
@@ -25,6 +25,7 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows }) => {
                 message: response.data.message,
             })
         }
+        reload()
     }
     return (
         <>

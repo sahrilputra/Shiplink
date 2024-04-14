@@ -378,20 +378,32 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                 setOpen={setOpenNewDialog}
                 reload={reloadData}
             />
-            <DeleteLotsDialog setOpen={setOpenDelete} open={openDelete} deleteId={lotsIDs} reload={reloadData} />
-            <EditLotsDialog open={isEditDialog} setOpen={setEditDialog} data={dataLots} reload={reloadData} />
+            <DeleteLotsDialog
+                setOpen={setOpenDelete}
+                open={openDelete}
+                deleteId={lotsIDs}
+                reload={reloadData}
+            />
+            <EditLotsDialog
+                open={isEditDialog}
+                setOpen={setEditDialog}
+                data={dataLots}
+                reload={reloadData}
+            />
             <div className="w-full flex flex-row justify-between">
                 <div className="wrap inline-flex gap-[10px] justify-evenly items-center pb-3">
                     <SearchBar handleSearch={handleSearchChange} />
                     <Button
                         variant="filter"
                         size="filter"
-                        className='border border-zinc-300 flex items-center rounded'>
-                        <FilterIcons
-                            className=""
-                            fill="#CC0019" />
+                        className="border border-zinc-300 flex items-center rounded"
+                    >
+                        <FilterIcons className="" fill="#CC0019" />
                     </Button>
-                    <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
+                    <DatePickerWithRange
+                        className={"text-black"}
+                        mySetdate={handleSetDate}
+                    />
                 </div>
 
                 <div className="">
@@ -404,7 +416,7 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                         <p className=" text-xs">New Lots</p>
                     </Button>
                 </div>
-            </div >
+            </div>
 
             <Table className=" rounded-md">
                 <TableHeader className="text-sm">
@@ -432,26 +444,35 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                     ))}
                 </TableHeader>
                 <TableBody>
-
                     {isSkeleton || !table?.getRowModel().rows?.length ? (
                         <>
                             {isSkeleton &&
-                                [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
-                                    <TableRow key={index}>
-                                        {columns.map((column, columnIndex) => (
-                                            <TableCell
-                                                key={columnIndex}
-                                                className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
-                                            >
-                                                <Skeleton className={"w-full rounded h-[30px]"} />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                [...Array(table.getRowModel().rows?.length || 5)].map(
+                                    (_, index) => (
+                                        <TableRow key={index}>
+                                            {columns.map((column, columnIndex) => (
+                                                <TableCell
+                                                    key={columnIndex}
+                                                    className={`${columnIndex === columns.length - 1
+                                                        ? "w-[30px]"
+                                                        : columnIndex === 0
+                                                            ? "w-[50px]"
+                                                            : ""
+                                                        } text-xs`}
+                                                >
+                                                    <Skeleton className={"w-full rounded h-[30px]"} />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    )
+                                )}
 
                             {!isSkeleton && !table.getRowModel().rows?.length && (
                                 <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className="h-24 text-center"
+                                    >
                                         No results.
                                     </TableCell>
                                 </TableRow>
@@ -463,43 +484,59 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""} cursor-pointer`}
+                                    className={`${row.isLast ? "w-[30px]" : row.isFirst ? "w-[50px]" : ""
+                                        } cursor-pointer`}
                                     onClick={() => toggleRow(row.id)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs ${expandedRows[row.id] && "bg-blue-200 hover:bg-blue-200 "} `}
+                                            className={`${cell.isLast
+                                                ? "w-[30px]"
+                                                : cell.isFirst
+                                                    ? "w-[50px]"
+                                                    : ""
+                                                } text-xs ${expandedRows[row.id] &&
+                                                "bg-blue-200 hover:bg-blue-200 "
+                                                } `}
                                         >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
-                                {
-                                    expandedRows[row.id] && (
-                                        <>
-                                            <TableRow >
-                                                <TableCell colSpan={8} className="w-full p-1 px-[10px] py-[10px] bg-blue-100">
-                                                    <ExpandedLotsData data={row.original} lotsID={row.original.lots_id} key={row.original.lots_id} setExpandedRows={setExpandedRows} />
-                                                </TableCell>
-                                            </TableRow>
-                                        </>
-                                    )
-                                }
+                                {expandedRows[row.id] && (
+                                    <>
+                                        <TableRow>
+                                            <TableCell
+                                                colSpan={8}
+                                                className="w-full p-1 px-[10px] py-[10px] bg-blue-100"
+                                            >
+                                                <ExpandedLotsData
+                                                    reload={reloadData}
+                                                    data={row.original}
+                                                    lotsID={row.original.lots_id}
+                                                    key={row.original.lots_id}
+                                                    setExpandedRows={setExpandedRows}
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    </>
+                                )}
                             </>
                         ))
                     )}
                 </TableBody>
-
             </Table>
             <div className="flex justify-between w-full items-center mt-3 pb-2">
-                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
-                </div>
-                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3"></div>
+                <Pagination className={"flex justify-end w-full items-center gap-2"}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">
                         <div>Page</div>
                         <strong>
-                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getState().pagination.pageIndex + 1} of{" "}
                             {table.getPageCount().toLocaleString()}
                         </strong>
                     </div>
@@ -537,13 +574,9 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                     >
                         <ChevronsRightIcon className="h-4 w-4" />
                     </Button>
-                    <PaginationContent>
-
-
-                    </PaginationContent>
+                    <PaginationContent></PaginationContent>
                 </Pagination>
             </div>
-
         </>
-    )
+    );
 }
