@@ -19,6 +19,7 @@ import { EditLotsDialog } from "../AssignLotsDialog/EditLotsDialog";
 import { LotsMoreMenusDropDrown } from "../menus/LotsMoreMenus";
 import { ExpandedLotsData } from "./ExpandedLotsData";
 import { Skeleton } from "@/components/ui/skeleton";
+import moment from "moment";
 import {
     ColumnDef,
     flexRender,
@@ -41,10 +42,11 @@ import {
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 import { DeleteLotsDialog } from "../DeleteDialog/DeleteLotsDialog";
 import { CreateNewLotsDialog } from "../AssignLotsDialog/CreateNewLotsDialog";
+import { useTimeFormat } from '@/context/TimeFormatProvider'
 
 export function LotsItemsTable({ isOpen, setOpen }) {
     const [isEditDialog, setEditDialog] = useState(false);
-
+    const { timeFormat, dateFormat } = useTimeFormat();
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [expandedRows, setExpandedRows] = useState([]);
@@ -239,7 +241,9 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.pickup_schedule}</span>
+                        >
+                            {moment(row.original.pickup_schedule).format(`${dateFormat}`)}
+                        </span>
                     </div>
                 )
             }

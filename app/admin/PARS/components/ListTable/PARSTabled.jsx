@@ -39,9 +39,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import axios from 'axios'
 import { DeleteSequences } from "../dialog/DeleteSequences";
 import { EditSelectedNumber } from "../dialog/EditSelectedNumber";
-
+import { TimeFormatProvider, useTimeFormat } from '@/context/TimeFormatProvider'
+import moment from "moment";
 export function PARSTable({ isReload, setIsReload }) {
-
+    const { timeFormat, dateFormat } = useTimeFormat();
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [codeList, setCodeList] = useState([])
     const [deleteID, setDeleteID] = useState([]);
@@ -174,7 +175,8 @@ export function PARSTable({ isReload, setIsReload }) {
                 return (
                     <span
                         style={{ fontFamily: 'roboto' }}
-                        className=''>{`${row.original.date_created}`}
+                        className=''>
+                        {moment(row.original.date_created).format(`${dateFormat}, ${timeFormat}`)}
                     </span>
                 )
             }
