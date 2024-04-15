@@ -20,11 +20,11 @@ export default function BackofficeLayout({ children }) {
                     <AdminSidebar />
                 </div>
                 <AdminNavbars className={styles.nav} />
-                <TimeFormatProvider>
-                    <div className={styles.main}>
+                <div className={styles.main}>
+                    <TimeFormatProvider>
                         {children}
-                    </div>
-                </TimeFormatProvider>
+                    </TimeFormatProvider>
+                </div>
             </div>
         </>
     )

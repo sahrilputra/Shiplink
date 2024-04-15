@@ -48,7 +48,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { DeletePackage } from './components/dialog/DeletePackage'
 import { PackageMenus } from './components/menus/packageMenus'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
-import { useTimeFormat } from '@/context/TimeFormatProvider'
+import { TimeFormatProvider, useTimeFormat } from '@/context/TimeFormatProvider'
 
 export default function PackageDetails() {
     const { timeFormat, dateFormat } = useTimeFormat();
