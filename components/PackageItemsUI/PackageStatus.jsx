@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const PackageStatus = ({ variant, status_id }) => {
-    console.log("🚀 ~ PackageStatus ~ status_id:", status_id)
     return (
         <>
             {
