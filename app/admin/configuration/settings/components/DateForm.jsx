@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { FormControl, FormField, FormItem, Form, FormLabel } from '@/components/ui/form'
 import axios from 'axios'
+import { useTimeFormat } from '@/context/TimeFormatProvider'
 import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
 import {
@@ -29,31 +30,63 @@ const DateFormatList = [
     { value: "MM/DD/YYYY", label: "MM/DD/YYYY" },
     { value: "DD/MM/YYYY", label: "DD/MM/YYYY" },
     { value: "YYYY/MM/DD", label: "YYYY/MM/DD" },
+    { value: "MMMM Do YYYY", label: "MMMM Do YYYY" },
 ]
 
 const TimeFormatList = [
-    { value: "12 Hours", label: "12 Hours" },
-    { value: "24 Hours", label: "24 Hours" },
+    { value: "HH:mm:ss", label: "HH:mm:ss" },
+    { value: "HH:mm", label: "HH:mm" },
+    { value: "HH:mm A", label: "HH:mm A" },
+    { value: "HH:mm:ss A", label: "HH:mm:ss A" },
 ]
 
 export const DateForm = () => {
-
+    const { timeFormat, changeTimeFormat, changeDateFormat, dateFormat } = useTimeFormat();
+    console.log("🚀 ~ DateForm ~ dateFormat:", dateFormat)
+    console.log("🚀 ~ DateForm ~ timeFormat:", timeFormat)
     const [loading, setLoading] = useState(false)
     const { toast } = useToast();
 
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            publishableKey: "",
-            secretKey: "",
+            Date_format: dateFormat || "",
+            Time_format: timeFormat || "",
         },
         mode: "onChange",
     })
 
-
     const handleCancel = () => {
         form.reset();
     }
+
+    const handleSubmit = async () => {
+        console.log("🚀 ~ handleSubmit ~ e:")
+        setLoading(true)
+        try {
+            changeDateFormat(form.getValues('Date_format'))
+            changeTimeFormat(form.getValues('Time_format'))
+            setLoading(false)
+            toast({
+                title: "Success",
+                description: "Data saved successfully",
+                status: "success",
+            });
+
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to save data",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+            setLoading(false)
+        }
+    }
+
+
+    console.log("🚀 ~ DateForm ~ form:", form.watch('Date_format'), form.watch('Time_format'))
 
     return (
         <>
@@ -61,6 +94,10 @@ export const DateForm = () => {
             <Form {...form}>
                 <form
                     className=''
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSubmit(e);
+                    }}
                     action="">
                     <div className="flex flex-col gap-2 w-full mt-2 px-2">
                         <div className="flex flex-row gap-3 w-full px-3">
@@ -85,15 +122,13 @@ export const DateForm = () => {
                                                     {
                                                         DateFormatList.map((item, index) => {
                                                             return (
-                                                                <>
-                                                                    <SelectItem
-                                                                        className="text-xs"
-                                                                        key={index}
-                                                                        value={item.value}
-                                                                    >
-                                                                        {item.value}
-                                                                    </SelectItem>
-                                                                </>
+                                                                <SelectItem
+                                                                    className="text-xs"
+                                                                    key={index}
+                                                                    value={item.value}
+                                                                >
+                                                                    {item.value}
+                                                                </SelectItem>
                                                             );
 
                                                         })
@@ -125,15 +160,13 @@ export const DateForm = () => {
                                                     {
                                                         TimeFormatList.map((item, index) => {
                                                             return (
-                                                                <>
-                                                                    <SelectItem
-                                                                        className="w-[150px] text-xs"
-                                                                        key={index}
-                                                                        value={item.value}
-                                                                    >
-                                                                        {item.value}
-                                                                    </SelectItem>
-                                                                </>
+                                                                <SelectItem
+                                                                    className="w-[150px] text-xs"
+                                                                    key={index}
+                                                                    value={item.value}
+                                                                >
+                                                                    {item.value}
+                                                                </SelectItem>
                                                             );
 
                                                         })

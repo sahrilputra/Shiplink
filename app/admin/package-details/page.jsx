@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { addDays, format } from "date-fns";
 import axios from 'axios'
 import { Skeleton } from '@/components/ui/skeleton'
+import moment from 'moment/moment'
 import NextLink from 'next/link'
 import { Card } from '@/components/ui/card'
 import {
@@ -47,9 +48,12 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { DeletePackage } from './components/dialog/DeletePackage'
 import { PackageMenus } from './components/menus/packageMenus'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
+import { useTimeFormat } from '@/context/TimeFormatProvider'
 
 export default function PackageDetails() {
-
+    const { timeFormat, dateFormat } = useTimeFormat();
+    console.log("🚀 ~ PackageDetails ~ dateFormat:", dateFormat)
+    console.log("🚀 ~ PackageDetails ~ timeFormat:", timeFormat)
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [openDelete, setOpenDelete] = useState(false);
@@ -70,6 +74,7 @@ export default function PackageDetails() {
         limit: 10,
         index: 0,
     });
+
     const [date, setDate] = useState({
         from: "",
         to: "",
@@ -314,7 +319,9 @@ export default function PackageDetails() {
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.updated_at}</span>
+                        >
+                            {moment(row.original.updated_at).format(`${dateFormat}, ${timeFormat}`)}
+                        </span>
                     </div>
                 )
             }

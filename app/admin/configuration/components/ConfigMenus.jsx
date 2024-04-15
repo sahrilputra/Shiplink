@@ -40,7 +40,7 @@ export const ConfigMenus = () => {
       />
       <MenuItems
         isActive={router === "/admin/configuration/settings"}
-        title="Setting"
+        title="Settings"
         href="/admin/configuration/settings"
       />
     </Menus>
