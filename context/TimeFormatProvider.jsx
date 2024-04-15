@@ -4,23 +4,47 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const TimeFormatContext = createContext();
 
+
 export const TimeFormatProvider = ({ children }) => {
   const [timeFormat, setTimeFormat] = useState(() => {
-    return localStorage.getItem('timeFormat') || 'HH:mm:ss';
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('timeFormat') || '12h';
+      }
+    } catch (e) {
+      console.log(e)
+    }
   });
 
   const [dateFormat, setDateFormat] = useState(() => {
-    return localStorage.getItem('dateFormat') || 'MM/DD/YYYY';
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('dateFormat') || 'MM/DD/YYYY';
+      }
+    } catch (e) {
+      console.log(e)
+    }
+
   });
 
   const changeTimeFormat = (format) => {
     setTimeFormat(format);
-    localStorage.setItem('timeFormat', format);
+
+    try {
+      localStorage.setItem('timeFormat', format);
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   const changeDateFormat = (format) => {
     setDateFormat(format);
-    localStorage.setItem('dateFormat', format);
+    try {
+      localStorage.setItem('dateFormat', format);
+    } catch (e) {
+      console.log(e)
+    }
+
   };
 
   useEffect(() => {
