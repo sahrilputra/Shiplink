@@ -46,8 +46,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import axios from 'axios'
 import { InvoiceMenus } from "./dialog/InvoiceMenus";
 import { UpdateInvoiceStatus } from "./dialog/UpdateInvoiceStatus";
-
+import { useTimeFormat } from "@/context/TimeFormatProvider";
+import moment from "moment";
 export function InvoiceTable({ isOpen, setOpen }) {
+    const { timeFormat, dateFormat } = useTimeFormat();
 
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
@@ -207,7 +209,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                         className="text-xs"
                         style={{ fontFamily: 'roboto' }}
                     >
-                        {row.original.date}
+                        {moment(row.original.date).format(`${dateFormat}`)}
                     </p>
                 )
             },
