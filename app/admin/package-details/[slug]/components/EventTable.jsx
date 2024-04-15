@@ -23,62 +23,14 @@ import {
     VisibilityState,
 } from "@tanstack/react-table";
 import { Skeleton } from '@/components/ui/skeleton'
+import { useTimeFormat } from '@/context/TimeFormatProvider';
+import moment from 'moment';
 import axios from 'axios'
 import { Checkbox } from '@/components/ui/checkbox';
 
-const columns = [
-    {
-        accessorKey: "id",
-        header: "#",
-        size: 40,
-        cell: (row) => {
-            console.log("🚀 ~ EventTable ~ row:", row)
-            return <div>{row.row.index + 1}</div>
-        }
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
-    },
-    {
-        accessorKey: "status",
-        header: "Status",
-    },
-    {
-        accessorKey: "updated_at",
-        header: "Update At",
-        cell: ({ row }) => {
-            return (
-                <div
-                    className="text-xs flex flex-col flex-wrap number tabular-nums">
-                    <span
-                        style={{ fontFamily: 'roboto' }}
-                    >{row.original.updated_at}</span>
-                </div>
-            )
-        }
-
-    },
-    {
-        accessorKey: "updated_by",
-        header: "Update By",
-        cell: ({ row }) => {
-            return (
-                <div
-                    className="text-xs flex flex-col flex-wrap number tabular-nums">
-                    <span
-                        style={{ fontFamily: 'roboto' }}
-                    >{row.original.updated_by}</span>
-                </div>
-            )
-        }
-    },
-]
-
-
 export const EventTable = ({ id, status }) => {
     console.log("🚀 ~ EventTable ~ id:", id)
-
+    const { timeFormat, dateFormat } = useTimeFormat();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -99,6 +51,58 @@ export const EventTable = ({ id, status }) => {
         fetchData();
     }, [id, status])
 
+
+
+    const columns = [
+        {
+            accessorKey: "id",
+            header: "#",
+            size: 40,
+            cell: (row) => {
+                console.log("🚀 ~ EventTable ~ row:", row)
+                return <div>{row.row.index + 1}</div>
+            }
+        },
+        {
+            accessorKey: "description",
+            header: "Description",
+        },
+        {
+            accessorKey: "status",
+            header: "Status",
+        },
+        {
+            accessorKey: "updated_at",
+            header: "Update At",
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >
+                            {moment(row.original.updated_at).format(`${dateFormat}, ${timeFormat}`)}
+                        </span>
+                    </div>
+                )
+            }
+
+        },
+        {
+            accessorKey: "updated_by",
+            header: "Update By",
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >{row.original.updated_by}</span>
+                    </div>
+                )
+            }
+        },
+    ]
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])

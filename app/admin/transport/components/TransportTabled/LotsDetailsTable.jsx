@@ -40,6 +40,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { RemovePackageDialog } from "../../lots/components/RemovePackageDialog";
+import { useTimeFormat } from "@/context/TimeFormatProvider";
+import moment from "moment";
 export function LotsDetailsTable({
     data,
     setOpen,
@@ -54,6 +56,7 @@ export function LotsDetailsTable({
     query,
     lots_status,
 }) {
+    const { timeFormat, dateFormat } = useTimeFormat();
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState([]);
     const [openDelete, setOpenDelete] = useState(false);
@@ -198,7 +201,7 @@ export function LotsDetailsTable({
                 return (
                     <div className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span style={{ fontFamily: "roboto" }}>
-                            {row.original.updated_at}
+                            {moment(row.original.updated_at).format(`${dateFormat}, ${timeFormat}`)}
                         </span>
                     </div>
                 );

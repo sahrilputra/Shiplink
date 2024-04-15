@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button'
 import styles from '../styles.module.scss'
 import { map } from 'zod'
 import NextLink from 'next/link'
+import { useTimeFormat } from '@/context/TimeFormatProvider'
+import moment from 'moment'
 export const DestinationLotsDetails = ({ data }) => {
     console.log("DATA : ", data)
+    const { timeFormat, dateFormat } = useTimeFormat();
     const isButtonDisabled = !data || Object.keys(data).length === 0;
     return (
         <>
@@ -23,7 +26,16 @@ export const DestinationLotsDetails = ({ data }) => {
                         <p>Lot Origin : {data?.warehouse_origin_name} WH - {data?.country_name}</p>
                         <p>Lot Destination : {data?.destination_name}</p>
                         <p>Lot Location : {data?.warehouse_name_position} WH - {data?.country_code_position}</p>
-                        <p>Last Update : {data?.updated_at}</p>
+                        <div className='flex flex-row gap-1'>
+                            <p className='text-nowrap'>Last Update :</p>
+                            {
+                                data?.updated_at ? (
+                                    <p>{moment(data?.created_at).format(`${dateFormat}, ${timeFormat}`)}</p>
+                                ) : (
+                                    <p>{""}</p>
+                                )
+                            }
+                        </div>
                         <div className='flex flex-row'>
                             <p>Documents :</p>
                             {
