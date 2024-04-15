@@ -16,6 +16,7 @@ export default function Dashboard() {
     const { isOpen, openModal, closeModal } = useContext(ModalContext);
     const [selectedTab, setSelectedTab] = useState("all");
     const [isSkeleton, setIsSkeleton] = useState(true);
+    const [total, setTotal] = useState(0)
     const [data, setData] = useState([])
     const [query, setQuery] = useState({
         keyword: "",
@@ -26,24 +27,30 @@ export default function Dashboard() {
         bins_id: "",
 
         status: "",
-        page: 0,
-        limit: 0,
+        page: 1,
+        limit: 10,
         index: 0,
     })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(`/api/admin/packages/list`, query)
-                setData(response.data.package_info)
-                console.log("🚀 ~ fetchData ~ response:", response)
-                setIsSkeleton(false)
-            } catch (error) {
-                console.log("🚀 ~ error", error)
-            }
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(`/api/admin/packages/list`, query)
+            setData(response.data.package_info)
+            setTotal(response.data.total)
+            // console.log("🚀 ~ fetchData ~ response:", response.data.total)
+            setIsSkeleton(false)
+            setQuery((prevQuery) => ({
+                ...prevQuery,
+                limit: response.data.total,
+            }))
+        } catch (error) {
+            console.log("🚀 ~ error", error)
         }
-        fetchData()
+    }
 
+
+    useEffect(() => {
+        fetchData()
         const timer = setInterval(() => {
             fetchData()
         }, 2000)
@@ -107,7 +114,7 @@ export default function Dashboard() {
                                     className="justify-start items-start gap-[5px] inline-flex cursor-pointer"
                                 >
                                     <div className="text-zinc-900 text-base font-semibold ">All</div>
-                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">{dataLength || 0}</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">{total || 0}</div>
                                 </div>
                                 <div className={`${selectedTab === 'all' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
                                     <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
@@ -120,7 +127,7 @@ export default function Dashboard() {
                                     onClick={() => handleTabClick("incoming")}
                                 >
                                     <div className="text-zinc-900 text-base font-semibold ">Incoming</div>
-                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">{dataLength || 0}</div>
+                                    <div className="p-1 bg-red-700 rounded text-white text-xs font-semibold">{total || 0}</div>
                                 </div>
                                 <div className={`${selectedTab === 'incoming' ? ('w-[44.25px] h-1.5 relative') : ('hidden')}`}>
                                     <div className="w-[35.48px] h-1.5 left-0 top-0 absolute bg-red-700 rounded-sm" />
