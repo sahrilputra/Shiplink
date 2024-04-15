@@ -42,7 +42,8 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-
+import { useTimeFormat } from '@/context/TimeFormatProvider'
+import moment from "moment";
 export function PendingTable
     (
         {
@@ -61,6 +62,8 @@ export function PendingTable
             pageIndex
         }
     ) {
+
+    const { timeFormat, dateFormat } = useTimeFormat();
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
     const [isSortedDesc, setIsSortedDesc] = useState(false);
@@ -169,7 +172,9 @@ export function PendingTable
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.updated_at}</span>
+                        >
+                            {moment(row.original.updated_at).format(`${dateFormat}, ${timeFormat}`)}
+                        </span>
                     </div>
                 )
             }

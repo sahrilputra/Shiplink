@@ -42,7 +42,8 @@ import {
 } from "@/components/ui/pagination"
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 
-
+import { useTimeFormat } from '@/context/TimeFormatProvider'
+import moment from 'moment'
 export function VerificationTable(
     {
         data,
@@ -59,19 +60,9 @@ export function VerificationTable(
         pageIndex,
     }
 ) {
-    console.log("🚀 ~ pageIndex:", pageIndex)
-    console.log("🚀 ~ pagination:", pagination)
-    console.log("🚀 ~ rowTotalData:", rowTotalData)
-    console.log("🚀 ~ totalPage:", totalPage)
-    console.log("🚀 ~ VerificationTable ~ data:", data)
     // Form Init
 
-
-    // console.log("Declare Content", data.map(item => item.content.length))
-    // const [dataLength, setDataLength] = useState(data.map(item => item.content.length))
-    // console.log('dataLength', dataLength)
-    // fields.length = dataLength;
-    // fields.length = data.map(item => item.content.length);
+    const { timeFormat, dateFormat } = useTimeFormat();
 
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -174,7 +165,9 @@ export function VerificationTable(
                         className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                        >{row.original.updated_at}</span>
+                        >
+                            {moment(row.original.updated_at).format(`${dateFormat}, ${timeFormat}`)}
+                        </span>
                     </div>
                 )
             }
