@@ -43,12 +43,12 @@ export const ExpandedTable = (
     console.log("🚀 ~ status:", status)
     console.log("🚀 ~ ExpandedTable ~ image:", image)
 
-    const [filterInvoice, setVilterInvoice] = useState([]);
+    const [filterInvoice, setVilterInvoice] = useState(null);
     console.log("🚀 ~ ExpandedTable ~ filterInvoice:", filterInvoice)
     useEffect(() => {
         const removeInvImage = () => {
             if (image) {
-                const filtered = image.filter(image => isInvoiceImage(image.type));
+                const filtered = image.find(image => isInvoiceImage(image.type));
                 setVilterInvoice(filtered);
             }
         };
@@ -150,7 +150,29 @@ export const ExpandedTable = (
                             <p className='font-light text-xs'>{item?.package_length || "0"} {height_unit} x {item?.package_witdth || "0"} {height_unit} x  {item?.package_height || "0"} {height_unit} | {item?.package_weight || "0"}  {item?.package_weight_unit || "0"}</p>
                         </div>
                         <div className="">
-                            <DropdownMenu modal >
+                            {
+                                filterInvoice !== null && filterInvoice !== undefined ? (
+                                    <>
+                                        <NextLink href={`https://sla.webelectron.com/api/Package/getimages?fullName=${filterInvoice.images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                            <Button
+                                                variant="ghost"
+                                                className="h-[30px] text-xs  rounded-sm px-4 py-0 bg-white"
+                                            >
+                                                View Invoice
+                                            </Button>
+                                        </NextLink>
+                                    </>
+                                ) : (
+                                    <Button
+                                        variant="ghost"
+                                        className="h-[30px] text-xs rounded-sm px-4 py-0 bg-white"
+                                        disabled={true}
+                                    >
+                                        No Invoice
+                                    </Button>
+                                )
+                            }
+                            {/* <DropdownMenu modal >
                                 <DropdownMenuTrigger
                                     asChild
                                 >
@@ -178,7 +200,7 @@ export const ExpandedTable = (
                                         )
                                     }
                                 </DropdownMenuContent>
-                            </DropdownMenu>
+                            </DropdownMenu> */}
                         </div>
                         <div className=" flex flex-row justify-center gap-2 items-center">
                             <Button
@@ -191,7 +213,7 @@ export const ExpandedTable = (
                                 <p className='text-xs font-light'>Edit</p>
                             </Button>
                             {
-                                status === "Verified" ?
+                                status === 7 ?
                                     (
                                         <Button
                                             variant="secondary"

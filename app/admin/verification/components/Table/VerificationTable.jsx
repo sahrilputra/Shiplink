@@ -386,7 +386,7 @@ export function VerificationTable(
                                                             reloadData={reloadData}
                                                             image={row.original.images}
                                                             setExpandedRows={setExpandedRows}
-                                                            status={row.original.status}
+                                                            status={row.original.status_id}
                                                         />
                                                     )
                                                 }
