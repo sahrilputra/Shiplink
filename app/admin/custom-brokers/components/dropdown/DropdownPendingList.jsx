@@ -57,13 +57,11 @@ export const DropdownPendingList = ({ data, images }) => {
                     <DropdownMenuContent side={"left"} sideOffset={2}>
                         {
                             filterInvoice.length > 0 ? (
-                                filterInvoice.map((item, index) => (
-                                    <NextLink key={index} href={`https://sla.webelectron.com/api/Package/getimages?fullName=${item.images}`} passHref target='_blank' rel='noopener noreferrer'>
-                                        <DropdownMenuItem key={index} className="text-xs text-myBlue" value={index}>
-                                           View invoice {index + 1}
-                                        </DropdownMenuItem>
-                                    </NextLink>
-                                ))
+                                <NextLink href={`https://sla.webelectron.com/api/Package/getimages?fullName=${filterInvoice[0].images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                    <DropdownMenuItem className="text-xs text-myBlue" value={0}>
+                                        View invoice
+                                    </DropdownMenuItem>
+                                </NextLink>
                             ) : (
                                 <DropdownMenuItem
                                     disabled={true}
