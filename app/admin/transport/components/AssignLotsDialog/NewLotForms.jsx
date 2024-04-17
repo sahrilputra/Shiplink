@@ -59,12 +59,24 @@ const formSchema = yup.object().shape({
     LotsId: yup.string(),
     LotsLabel: yup.string().required(),
     Destination_country: yup.string().required(),
-    TripNumber: yup.string().required(),
+    TripNumber: yup.string().
+        when("LotsId", {
+            is: (val) => val !== "",
+            then: (schema) => schema.required("Trip Number is required"),
+            otherwise: (schema) => schema.notRequired()
+        })
+    ,
     Status: yup.number(),
     Status_name: yup.string(),
     pickDate: yup.string().required(),
     Documents: yup.array().of(yup.string()),
 });
+
+// when('LotsId', {
+//     is: (val) => val !== "",
+//     then: yup.object().shape({
+//         TripNumber: yup.string().required('Trip Number is required'),
+//     })
 export const NewLotsFrom = ({ close, data = null, reload }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),

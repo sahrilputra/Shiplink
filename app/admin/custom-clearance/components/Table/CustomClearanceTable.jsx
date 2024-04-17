@@ -62,7 +62,7 @@ export function CustomClearanceTable({ data }) {
         date_end: "",
         tracking_id: "",
         status: "",
-        status_id: "2",
+        status_id: "",
         page: 1,
         limit: 10,
         index: 0,
@@ -88,7 +88,8 @@ export function CustomClearanceTable({ data }) {
             );
             console.log(response)
             const data = await response.data;
-            setLots(data.lots);
+            const filterRemove = data.lots.filter((item) => item.status_id !== 1 && item.status_id !== 6);
+            setLots(filterRemove);
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,

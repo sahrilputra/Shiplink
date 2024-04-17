@@ -17,48 +17,62 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload, status
     console.log("🚀 ~ ExpandedLotsData ~ data:", data)
     const { toast } = useToast()
     const handleDepartLots = async () => {
-        setExpandedRows([])
-        const response = await axios.post(
-            `/api/admin/transport/lots/status/departLots`,
-            {
-                LotsId: lotsID,
-                status_id: 2
+        if (data?.trip_number !== "") {
+            setExpandedRows([])
+            const response = await axios.post(
+                `/api/admin/transport/lots/status/departLots`,
+                {
+                    LotsId: lotsID,
+                    status_id: 2
+                }
+            );
+            if (response.data.status === false) {
+                toast({
+                    title: "Error",
+                    message: response.data.message,
+                })
+            } else {
+                toast({
+                    title: "Success",
+                    message: response.data.message,
+                })
             }
-        );
-        if (response.data.status === false) {
-            toast({
-                title: "Error",
-                message: response.data.message,
-            })
+            reload()
         } else {
             toast({
-                title: "Success",
-                message: response.data.message,
+                title: "Error",
+                message: "Please add trip number first",
             })
         }
-        reload()
     }
     const handleArrivedLots = async () => {
-        setExpandedRows([])
-        const response = await axios.post(
-            `/api/admin/transport/lots/status/departLots`,
-            {
-                LotsId: lotsID,
-                status_id: 6
+        if (data?.trip_number !== "") {
+            setExpandedRows([])
+            const response = await axios.post(
+                `/api/admin/transport/lots/status/departLots`,
+                {
+                    LotsId: lotsID,
+                    status_id: 3
+                }
+            );
+            if (response.data.status === false) {
+                toast({
+                    title: "Error",
+                    message: response.data.message,
+                })
+            } else {
+                toast({
+                    title: "Success",
+                    message: response.data.message,
+                })
             }
-        );
-        if (response.data.status === false) {
-            toast({
-                title: "Error",
-                message: response.data.message,
-            })
+            reload()
         } else {
             toast({
-                title: "Success",
-                message: response.data.message,
+                title: "Error",
+                message: "Please add trip number first",
             })
         }
-        reload()
     }
     return (
         <>
