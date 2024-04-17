@@ -250,7 +250,7 @@ export function LotsItemsTable({ isOpen, setOpen }) {
         },
         {
             accessorKey: "total_items",
-            header: "Package",
+            header: "Packages",
             size: 30,
             cell: ({ row }) => {
                 return (
@@ -523,6 +523,7 @@ export function LotsItemsTable({ isOpen, setOpen }) {
                                                     data={row.original}
                                                     lotsID={row.original.lots_id}
                                                     key={row.original.lots_id}
+                                                    status_id={row.original.status_id}
                                                     setExpandedRows={setExpandedRows}
                                                 />
                                             </TableCell>

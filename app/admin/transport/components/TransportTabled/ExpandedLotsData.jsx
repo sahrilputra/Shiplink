@@ -3,8 +3,18 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { Button } from '@/components/ui/button'
 import axios from "axios";
 import { useToast } from '@/components/ui/use-toast';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import NextLink from 'next/link'
-export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload }) => {
+export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload, status_id }) => {
+    console.log("🚀 ~ ExpandedLotsData ~ data:", data)
     const { toast } = useToast()
     const handleDepartLots = async () => {
         setExpandedRows([])
@@ -12,6 +22,29 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload }) => {
             `/api/admin/transport/lots/status/departLots`,
             {
                 LotsId: lotsID,
+                status_id: 2
+            }
+        );
+        if (response.data.status === false) {
+            toast({
+                title: "Error",
+                message: response.data.message,
+            })
+        } else {
+            toast({
+                title: "Success",
+                message: response.data.message,
+            })
+        }
+        reload()
+    }
+    const handleArrivedLots = async () => {
+        setExpandedRows([])
+        const response = await axios.post(
+            `/api/admin/transport/lots/status/departLots`,
+            {
+                LotsId: lotsID,
+                status_id: 6
             }
         );
         if (response.data.status === false) {
@@ -75,15 +108,29 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload }) => {
                                     <p>View Packages</p>
                                 </Button>
                             </NextLink>
-                            <Button
-                                variant="destructive"
-                                type="button"
-                                onClick={handleDepartLots}
-                                size="xs"
-                                className="h-[25px] px-5 text-xs"
-                            >
-                                <p>Depart</p>
-                            </Button>
+                            {
+                                status_id === 2 ? (
+                                    <Button
+                                        variant="destructive"
+                                        type="button"
+                                        onClick={handleArrivedLots}
+                                        size="xs"
+                                        className="h-[25px] px-5 text-xs"
+                                    >
+                                        <p>Arrived</p>
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="destructive"
+                                        type="button"
+                                        onClick={handleDepartLots}
+                                        size="xs"
+                                        className="h-[25px] px-5 text-xs"
+                                    >
+                                        <p>Depart</p>
+                                    </Button>
+                                )
+                            }
                         </TableCell>
                     </TableRow>
                 </TableBody>

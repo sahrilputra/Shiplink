@@ -83,7 +83,6 @@ export const UploadInvoice = ({ forms }) => {
                                                 type="file"
                                                 id="myFile"
                                                 required
-                                                multiple
                                                 accept=".pdf, .doc, .docx"
                                                 placeholder="My File"
                                                 onChange={(event) => {

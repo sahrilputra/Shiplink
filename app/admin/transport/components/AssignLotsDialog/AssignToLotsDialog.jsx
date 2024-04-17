@@ -83,7 +83,7 @@ export function AssingLotsDialog({ open, setOpen, dataID, reload }) {
             );
 
             toast({
-                title: `{${dataID.length}} Package assigned successfully!`,
+                title: `${dataID.length} ${dataID.length > 1 ? "Packages" : "Package"} assigned successfully!`,
                 description: response.data.message,
                 status: 'success',
             });
