@@ -290,7 +290,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                         <div className="w-[100%] flex justify-center align-middle mx-auto ">
                             {
-                                status_forcustomer !== "Process" ||
+                                status_forcustomer === "Process" ||
                                     status_id === 1
                                     ? (
                                         <>
