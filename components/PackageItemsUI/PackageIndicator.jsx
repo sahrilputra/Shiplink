@@ -16,7 +16,7 @@ export const PackageIndicator = ({ status, status_forcustomer, packageID, status
                         <div className="w-[30px] h-[5px] bg-green-400  rounded-full" />
                         <div className="w-[30px] h-[5px] bg-green-400  rounded-full" />
                     </div>
-                ) : (status_id === 2) ? (
+                ) : (status_id === 2 || status_id === 12) ? (
                     <div className="justify-start items-start gap-[5px] inline-flex">
                         <div className="w-[30px] h-[5px] bg-green-400 rounded-full" />
                         <div className="w-[30px] h-[5px] bg-green-400  rounded-full" />
