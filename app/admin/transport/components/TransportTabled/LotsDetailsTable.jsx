@@ -55,6 +55,7 @@ export function LotsDetailsTable({
     setPagination,
     query,
     lots_status,
+    lotsStatus_id
 }) {
     const { timeFormat, dateFormat } = useTimeFormat();
     const [rowSelection, setRowSelection] = useState({});
@@ -87,6 +88,7 @@ export function LotsDetailsTable({
                             }
                             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                             aria-label="Select all"
+                            disabled={lotsStatus_id === 5}
                         />
                     </div>
                 )
@@ -98,6 +100,7 @@ export function LotsDetailsTable({
                             checked={row.getIsSelected()}
                             onCheckedChange={(value) => row.toggleSelected(!!value)}
                             aria-label="Select row"
+                            disabled={lotsStatus_id === 5}
                         />
                     </div>
                 )
@@ -407,6 +410,11 @@ export function LotsDetailsTable({
                     )}
                 </TableBody>
             </Table>
+            {
+                lotsStatus_id === 5 ? (
+                    <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, Reason : Lots in Transit</TableFooter>
+                ) : (null)
+            }
             <div className="flex justify-between w-full items-center mt-3 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
                     <Button

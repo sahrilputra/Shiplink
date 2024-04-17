@@ -48,11 +48,7 @@ const formSchema = yup.object().shape({
     entry_number: yup.string(),
     warehouse: yup.string().required("Please select a warehouse"),
 })
-// invoice: yup.array().min(1, "Please upload at least one invoice").required("Please upload an invoice")
-// .when('broker', {
-//     is: "Use Own Broker",
-//     then: (schema) => schema.notRequired(),
-// }),
+
 export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking_id, reload, arrivalCode }) => {
     const { toast } = useToast()
     const form = useForm({

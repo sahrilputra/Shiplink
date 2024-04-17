@@ -152,7 +152,7 @@ export default function LotsDetails({ params }) {
                                         </p>
                                         <div className="flex flex-row gap-3 pt-2">
                                             <div className="">
-                                                <p>Status : {lotsData?.status}</p>
+                                                <p>Status : {lotsData?.status} </p>
                                                 <p>Pickup Schedule : {lotsData?.pickup_schedule}</p>
                                             </div>
                                             <div className="w-[5px]">
@@ -208,6 +208,7 @@ export default function LotsDetails({ params }) {
                                     query={query}
                                     setPagination={setPagination}
                                     lots_status={lotsData?.status}
+                                    lotsStatus_id={lotsData?.status_id}
                                 />
                             </div>
                         </div>
