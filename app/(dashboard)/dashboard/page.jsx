@@ -186,7 +186,7 @@ export default function Dashboard() {
                                 : (
                                     data?.map((item, i) => (
                                         <ItemsPackage
-                                            key={i}
+                                            key={item.tracking_id}
                                             onClickButton={handleButtonClick}
                                             item={item}
                                             onExpand={toggleExpand}
