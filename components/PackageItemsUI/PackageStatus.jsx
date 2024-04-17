@@ -24,7 +24,7 @@ export const PackageStatus = ({ variant, status_id }) => {
                     </>
                 ) : (status_id === 13) ? (
                     <>
-                        <div className="h-[23px] px-2.5 py-[5px] bg-slate-300 rounded border border-yellowStatus justify-center items-center gap-2.5 flex">
+                        <div className="h-[23px] px-2.5 py-[5px] bg-slate-300 rounded border border-slate-700  justify-center items-center gap-2.5 flex">
                             <div className="text-center text-slate-700 text-xs ">{variant}</div>
                         </div>
                     </>
