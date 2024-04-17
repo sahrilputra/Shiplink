@@ -43,10 +43,15 @@ export default function CustomBrokerPage() {
             );
             console.log("response", response)
             const data = await response.data;
-            const filterData = selectedTab !== 'Cleared Custom'
-                ? data.package_info.filter(item => item.status_id !== 9)
-                : data.package_info.filter(item => item.status_id === 9);
-            setData(filterData);
+            // const filterData = (
+            //     selectedTab == 'Cleared Custom' ?
+            //         data.package_info.filter(item => item.status_id !== 9) :
+            //         data.package_info
+            // )
+            // const filterData = selectedTab !== 'Cleared Custom'
+            //     ? data.package_info.filter(item => item.status_id !== 9)
+            //     : data.package_info.filter(item => item.status_id === 9);
+            setData(data.package_info);
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -150,7 +155,7 @@ export default function CustomBrokerPage() {
                 limit: 10,
                 index: 0,
                 status: "",
-                status_id: "0",
+                status_id: "",
             })
             setRowTotalData({
                 page_limit: 0,

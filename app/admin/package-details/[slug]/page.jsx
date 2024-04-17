@@ -149,6 +149,7 @@ export default function VerificationPages({ params }) {
     const profileImg = `https://sla.webelectron.com/api/Users/getprofileimages_usercode?user_code=${data?.customer_id}` || "none"
     const countryCode = data?.country_code_arrival ? data?.country_code_arrival.substring(0, 2).toLowerCase() : '';
     const countryCodeArrival = data?.country_code_destination ? data?.country_code_destination.substring(0, 2).toLowerCase() : '';
+    const countryCodePosition = data?.country_code_position ? data?.country_code_position.substring(0, 2).toLowerCase() : '';
     console.log("🚀 ~ VerificationPages ~ profileImg:", profileImg)
     return (
         <>
@@ -245,6 +246,27 @@ export default function VerificationPages({ params }) {
                                                 <p className='text-sm font-bold text-nowrap'>
                                                     {data?.warehouse_name_arrival} WH
                                                 </p>
+                                            </div>
+                                        )
+                                        }
+                                    </div>
+                                    <div className="flex flex-col text-xs text-zinc-500">
+                                        <p>Current Location</p>
+                                        {skeleton ? <Skeleton className="w-[100px] h-[20px] rounded-md" /> : (
+                                            <div className="flex flex-row gap-1 items-center">
+                                                {
+                                                    data?.warehouse_name_position !== null ? (
+                                                        <>
+                                                            <img src={`https://flagcdn.com/${countryCodePosition}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                                            <p className='text-sm font-bold text-nowrap'>
+                                                                {data?.warehouse_name_position} WH
+                                                            </p>
+                                                        </>
+                                                    ) : (
+                                                        <p>-</p>
+                                                    )
+                                                }
+
                                             </div>
                                         )
                                         }
