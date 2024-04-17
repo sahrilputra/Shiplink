@@ -290,9 +290,9 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
 
                         <div className="w-[100%] flex justify-center align-middle mx-auto ">
                             {
-                                status_id === 1
-                                    ? null :
-                                    (
+                                status_forcustomer !== "Process" ||
+                                    status_id === 1
+                                    ? (
                                         <>
                                             {selectedButton === "Cross Border Forward" ? (
                                                 <CrossBorderTable
@@ -323,6 +323,8 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                                                 <></>
                                             )}
                                         </>
+                                    ) : (
+                                        null
                                     )
                             }
                         </div>
