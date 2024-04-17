@@ -15,7 +15,7 @@ import { UpdateStatusDialog } from '../Dialog/UpdateStatusDialog'
 import NextLink from "next/link"
 import { UpdateDialog } from '@/app/admin/custom-clearance/components/Menus/UpdateDialog'
 import { AssignLotsToBin } from '../Dialog/AssignLotsToBin'
-export const DestinationMenus = ({ dataID, reload, documents }) => {
+export const DestinationMenus = ({ dataID, reload, documents, status_id }) => {
 
     const [assignOpen, setAssignOpen] = useState(false)
     const [statusOpen, setStatusOpen] = useState(false)
@@ -38,12 +38,14 @@ export const DestinationMenus = ({ dataID, reload, documents }) => {
 
                     <DropdownMenuContent side={"left"} sideOffset={2}>
                         <DropdownMenuItem
+                            disabled={status_id === 5}
                             onClick={() => {
                                 setAssignOpen(true)
                             }}
                         >
                             <p className="text-xs text-myBlue">Assign to Bin</p>
                         </DropdownMenuItem>
+
                         <DropdownMenuItem
                             onClick={() => {
                                 setStatusOpen(true)

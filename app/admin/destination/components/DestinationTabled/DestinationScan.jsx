@@ -198,8 +198,14 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             cell: ({ row }) => {
                 return (
                     <Checkbox
-                        checked={row.getIsSelected()}
-                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        disabled={row.original.status_id !== 6}
+                        checked={row.original.status_id === 6 ? row.getIsSelected() : false}
+                        onCheckedChange={(value) => {
+                            // Check if the row status is enabled before toggling selection
+                            if (row.original.status_id === 6) {
+                                row.toggleSelected(!!value);
+                            }
+                        }}
                         aria-label="Select row"
                     />
                 )
@@ -304,10 +310,15 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                         className="flex w-[40px] items-center justify-center  flex-row gap-2"
                     >
                         <div className="flex flex-row gap-2">
-                            <DestinationMenus dataID={row.original.lots_id} reload={reload} documents={row.original.documents} />
+                            <DestinationMenus
+                                status_id={row.original.status_id}
+                                dataID={row.original.lots_id}
+                                reload={reload}
+                                documents={row.original.documents}
+                            />
                         </div>
                     </div>
-                )
+                );
             },
         },
     ]
