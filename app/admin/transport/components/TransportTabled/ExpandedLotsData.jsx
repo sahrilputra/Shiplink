@@ -71,7 +71,7 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload, status
                 `/api/admin/transport/lots/status/departLots`,
                 {
                     LotsId: lotsID,
-                    status_id: 3
+                    status_id: 6
                 }
             );
             if (response.data.status === false) {
