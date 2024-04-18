@@ -29,19 +29,19 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload, status
             if (response.data.status === false) {
                 toast({
                     title: "Error",
-                    message: response.data.message,
+                    description: response.data.message,
                 })
             } else {
                 toast({
                     title: "Success",
-                    message: response.data.message,
+                    description: response.data.message,
                 })
             }
             reload()
         } else {
             toast({
                 title: "Error",
-                message: "Please add trip number first",
+                description: "Please add trip number first",
             })
         }
     }
