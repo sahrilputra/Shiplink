@@ -278,11 +278,15 @@ export function LotsDetailsTable({
     }
     const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
 
+    const handleReload = () => {
+        reload();
+        setRowSelection({})
+    }
     const [openBin, setOpenBin] = useState(false);
     return (
         <>
             <RemovePackageDialog open={openDelete} setOpen={setOpenDelete} lotsId={lostId} deleteId={deleteID} reload={reload} />
-            <BinDialog open={openBin} setOpen={setOpenBin} data={selectedItemsID} reload={reload} status={lots_status} />
+            <BinDialog open={openBin} setOpen={setOpenBin} data={selectedItemsID} reload={handleReload} status={lots_status} />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -412,7 +416,7 @@ export function LotsDetailsTable({
             </Table>
             {
                 lotsStatus_id === 5 ? (
-                    <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, Reason : Lots in Transit</TableFooter>
+                    <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, While Lots in Transit</TableFooter>
                 ) : (null)
             }
             <div className="flex justify-between w-full items-center mt-3 pb-2">
