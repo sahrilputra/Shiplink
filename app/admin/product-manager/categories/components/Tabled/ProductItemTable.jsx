@@ -29,7 +29,10 @@ import axios from "axios";
 import { MoreHorizontalIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ProductItemTable({ category_id }) {
+export function ProductItemTable({
+    category_id,
+    categoryName
+}) {
     console.log("🚀 ~ ProductItemTable ~ category_id:", category_id)
 
     const [isSkeleton, setIsSkeleton] = useState(false)
@@ -174,7 +177,7 @@ export function ProductItemTable({ category_id }) {
         <>
             <div className="text-sm bg-transparent py-2">
                 <div className="px-2">
-                    <p>{category_id}</p>
+                    <p>{categoryName}</p>
                 </div>
                 <div className="px-2 py-3 " >
                     <div className="flex flex-row justify-between">

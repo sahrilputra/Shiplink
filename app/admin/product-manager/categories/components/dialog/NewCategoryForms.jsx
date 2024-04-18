@@ -26,20 +26,27 @@ import {
 } from "@/components/ui/select"
 
 const formSchema = yup.object().shape({
+    category_code: yup.string(),
     categories: yup.string().required(),
     category_type: yup.string().required(),
     action: yup.string()
 })
 
 
-export const NewCategoryForms = ({ close, data = null, setLoading, reloadData }) => {
+export const NewCategoryForms = ({
+    close,
+    data = null,
+    setLoading,
+    reloadData
+}) => {
     const { toast } = useToast()
 
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            categories: "",
-            category_type: "",
+            category_code: data?.category_code || "",
+            categories: data?.categories || "",
+            category_type: data?.category_type || "",
             action: "",
         },
         mode: "onChange",
@@ -49,17 +56,26 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
         console.log("submitting", formData)
         setLoading(true)
         try {
-            formData.action = 'add';
+            formData.action = data ? "edit" : "add";
             const response = await axios.post(
                 `/api/admin/category/setData`,
                 formData
             );
+            console.log("🚀 ~ handleSave ~ response:", response)
+            if (response.data.status === true) {
+                toast({
+                    title: `${data ? 'Category Updated!' : 'Category Created!'}`,
+                    description: response.data.message,
+                    status: 'success',
+                });
+            } else {
+                toast({
+                    title: 'Error while creating Category!',
+                    description: response.data.message,
+                    status: 'error',
+                });
 
-            toast({
-                title: 'New Category created successfully!',
-                description: response.data.message,
-                status: 'success',
-            });
+            }
             setLoading(false)
             close();
             reloadData(true)
@@ -78,10 +94,7 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
     return (
         <>
             <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(handleSave)}
-                    className=''
-                    action="">
+                <form onSubmit={form.handleSubmit(handleSave)} className="" action="">
                     <div className="flex flex-col gap-2 text-xs">
                         <div className="flex flex-col justify-between gap-3 py-3">
                             <FormField
@@ -92,8 +105,15 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
                                     <>
                                         <FormItem className="w-full text-neutral-900">
                                             <FormLabel className="text-sm">Category Name</FormLabel>
-                                            <FormControl >
-                                                <Input type="text" id="row" placeholder="Category Name" className="text-sm"  {...field} />
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    id="row"
+                                                    autoComplete="off"
+                                                    placeholder="Category Name"
+                                                    className="text-sm"
+                                                    {...field}
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     </>
@@ -106,11 +126,19 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
                                 render={({ field }) => (
                                     <>
                                         <FormItem>
-                                            <FormLabel className="w-full text-neutral-900 text-sm">Select Category Type</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormLabel className="w-full text-neutral-900 text-sm">
+                                                Select Category Type
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger className="px-3 h-[42px] rounded">
-                                                        <SelectValue defaultValue={"Product"} placeholder="Select Category Type" />
+                                                        <SelectValue
+                                                            defaultValue={"Product"}
+                                                            placeholder="Select Category Type"
+                                                        />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
@@ -122,7 +150,6 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
                                     </>
                                 )}
                             />
-
                         </div>
                         <div className=" flex flex-row justify-between gap-2 ">
                             <Button
@@ -131,11 +158,11 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
                                 type="button"
                                 className="w-full"
                                 onClick={(e) => {
-                                    e.preventDefault()
-                                    close()
+                                    e.preventDefault();
+                                    close();
                                 }}
                             >
-                                <p className=' font-normal text-xs'>Cancel</p>
+                                <p className=" font-normal text-xs">Cancel</p>
                             </Button>
                             <Button
                                 variant="destructive"
@@ -143,14 +170,12 @@ export const NewCategoryForms = ({ close, data = null, setLoading, reloadData })
                                 className="w-full"
                                 type="submit"
                             >
-                                <p className=' font-normal text-xs'>Save</p>
+                                <p className=" font-normal text-xs">Save</p>
                             </Button>
                         </div>
-
                     </div>
-
                 </form>
-            </Form >
+            </Form>
         </>
-    )
+    );
 }

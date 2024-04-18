@@ -1,5 +1,5 @@
-'use client'
-import React, { useState } from 'react'
+"use client";
+import React, { useState } from "react";
 import {
     Dialog,
     DialogClose,
@@ -8,39 +8,54 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Loaders } from '@/components/ui/loaders'
-import { NewCategoryForms } from './NewCategoryForms'
+} from "@/components/ui/dialog";
+import { Loaders } from "@/components/ui/loaders";
+import { NewCategoryForms } from "./NewCategoryForms";
 
-export const NewCategory = ({ open, setOpen, setReloadData }) => {
-    const onClose = () => {
-        setOpen(false)
-    }
-    const [loading, setLoading] = useState(false)
+export const NewCategory =
+    ({
+        data = null,
+        open,
+        setOpen,
+        setReloadData
+    }) => {
+        console.log("🚀 NewCategory ~ data:", data)
+        const onClose = () => {
+            setOpen(false);
+        };
+        const [loading, setLoading] = useState(false);
 
-    return (
-        <>
-            {
-                loading ? (
+        return (
+            <>
+                {loading ? (
                     <Loaders />
                 ) : (
-                    <Dialog open={open} onOpenChange={setOpen}
-                        className="w-max"
-                    >
+                    <Dialog open={open} onOpenChange={setOpen} className="w-max">
                         <DialogContent className="sm:max-w-md">
                             <DialogHeader>
                                 <DialogTitle className="font-bold">
-                                    <p>Create New Category</p>
+                                    {
+                                        data ? (
+                                            <>
+                                                <p>Edit {data?.categories} Category</p>
+                                            </>
+                                        ) : (
+                                            <p>Create New Category</p>
+                                        )
+                                    }
                                 </DialogTitle>
                             </DialogHeader>
                             <div className="">
-                                <NewCategoryForms close={onClose} setLoading={setLoading} reloadData={setReloadData} />
+                                <NewCategoryForms
+                                    data={data}
+                                    close={onClose}
+                                    setLoading={setLoading}
+                                    reloadData={setReloadData}
+                                />
                             </div>
                         </DialogContent>
                     </Dialog>
-                )
-            }
-
-        </>
-    )
-}
+                )}
+            </>
+        );
+    };

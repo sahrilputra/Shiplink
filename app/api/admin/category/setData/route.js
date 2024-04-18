@@ -10,6 +10,7 @@ export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
         const {
+            category_code,
             categories,
             category_type,
             action,
@@ -17,7 +18,7 @@ export async function POST(request) {
         const response = await axios.post(
             `${process.env.API_URL}/Products/ProductCategories_setdata`,
             {
-                "category_code": "",
+                "category_code": category_code,
                 "categories": categories,
                 "level": 0,
                 "parent_categories": "",
@@ -33,10 +34,10 @@ export async function POST(request) {
             }
         );
 
-        console.log(response.data)
+        console.log(response)
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });

@@ -11,6 +11,8 @@ import { ServiceItemTable } from './components/Tabled/ServiceItemTable'
 export default function ProductCategoriesPage() {
     const [selected, setSelected] = useState("Product")
     const [categoryId, setCategoryId] = useState("")
+    const [categoryName, setCategoryName] = useState("");
+    console.log("🚀 ~ ProductCategoriesPage ~ categoryName:", categoryName)
     return (
         <>
             <div className={styles.container}>
@@ -20,6 +22,7 @@ export default function ProductCategoriesPage() {
                         setSelected={setSelected}
                         setItemID={setCategoryId}
                         itemID={categoryId}
+                        setCategoryName={setCategoryName}
                     />
                 </div>
                 <div
@@ -27,9 +30,15 @@ export default function ProductCategoriesPage() {
                 >
                     {
                         selected === "Product" ? (
-                            <ProductItemTable category_id={categoryId} />
+                            <ProductItemTable
+                                categoryName={categoryName}
+                                category_id={categoryId}
+                            />
                         ) : (
-                            <ServiceItemTable category_id={categoryId} />
+                            <ServiceItemTable
+                                categoryName={categoryName}
+                                category_id={categoryId}
+                            />
                         )
                     }
                 </div>

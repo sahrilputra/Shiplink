@@ -29,7 +29,10 @@ import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 
 
-export function ServiceItemTable({ category_id }) {
+export function ServiceItemTable({
+    category_id,
+    categoryName
+}) {
     console.log("🚀 ~ ServiceItemTable ~ category_id:", category_id)
 
     const [isSkeleton, setIsSkeleton] = useState(false)
@@ -194,7 +197,7 @@ export function ServiceItemTable({ category_id }) {
             />
             <div className="text-sm bg-transparent py-2">
                 <div className="px-2">
-                    <p>{category_id}</p>
+                    <p>{categoryName}</p>
                 </div>
                 <div className="px-2 py-3 ">
                     <div className="flex flex-row justify-between">
@@ -227,10 +230,10 @@ export function ServiceItemTable({ category_id }) {
                                     <TableHead
                                         key={header.id}
                                         className={`${isLastHeader
-                                                ? "w-[30px] "
-                                                : isFirstHeader
-                                                    ? "w-[50px]"
-                                                    : ""
+                                            ? "w-[30px] "
+                                            : isFirstHeader
+                                                ? "w-[50px]"
+                                                : ""
                                             } text-xs`}
                                     >
                                         {header.isPlaceholder
@@ -256,10 +259,10 @@ export function ServiceItemTable({ category_id }) {
                                                 <TableCell
                                                     key={columnIndex}
                                                     className={`${columnIndex === columns.length - 1
-                                                            ? "w-[30px]"
-                                                            : columnIndex === 0
-                                                                ? "w-[50px]"
-                                                                : ""
+                                                        ? "w-[30px]"
+                                                        : columnIndex === 0
+                                                            ? "w-[50px]"
+                                                            : ""
                                                         } text-xs`}
                                                 >
                                                     <Skeleton className={"w-full rounded h-[30px]"} />
@@ -293,10 +296,10 @@ export function ServiceItemTable({ category_id }) {
                                     <TableCell
                                         key={cell.id}
                                         className={`${cell.isLast
-                                                ? "w-[30px]"
-                                                : cell.isFirst
-                                                    ? "w-[50px]"
-                                                    : ""
+                                            ? "w-[30px]"
+                                            : cell.isFirst
+                                                ? "w-[50px]"
+                                                : ""
                                             } text-xs `}
                                     >
                                         {flexRender(

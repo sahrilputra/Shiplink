@@ -28,18 +28,24 @@ import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { NewCategory } from "../dialog/NewCategory";
 import { DeleteCategory } from "../dialog/DeleteCategory";
+import { Pen, } from "lucide-react";
+export function TableOfCategories({
+    data,
+    reload,
+    setItemID,
+    itemID,
+    isSkeleton,
+    setCategoryName,
+}) {
+    console.log("🚀 ~ TableOfCategories ~ data:", data);
 
-export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton }) {
-
-    console.log("🚀 ~ TableOfCategories ~ data:", data)
-
-    const [rowSelection, setRowSelection] = React.useState({})
+    const [rowSelection, setRowSelection] = React.useState({});
     const [sorting, setSorting] = React.useState([]);
-    const [openNew, setOpenNew] = useState(false)
-    const [deleteOpen, setDeleteOpen] = useState(false)
-    const [categoryID, setCategoryID] = useState([])
-
-
+    const [openNew, setOpenNew] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [categoryID, setCategoryID] = useState([]);
+    const [categoryData, setCategoryData] = useState(null);
+    console.log("🚀 ~ categoryData:", categoryData)
     const columns = [
         {
             accessorKey: "select",
@@ -52,10 +58,12 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                             table.getIsAllPageRowsSelected() ||
                             (table.getIsSomePageRowsSelected() && "indeterminate")
                         }
-                        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                        onCheckedChange={(value) =>
+                            table.toggleAllPageRowsSelected(!!value)
+                        }
                         aria-label="Select all"
                     />
-                )
+                );
             },
             cell: ({ row }) => {
                 return (
@@ -63,9 +71,8 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                         checked={row.getIsSelected()}
                         onCheckedChange={(value) => row.toggleSelected(!!value)}
                         aria-label="Select row"
-
                     />
-                )
+                );
             },
         },
         {
@@ -82,19 +89,41 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                 return (
                     <div className="flex flex-row gap-2">
                         <Button
-                            variant="tableBlue"
+                            variant="secondary"
+                            size="tableIcon"
+                            className={`rounded-[3px] w-max px-[5px] h-[25px] bg-myBlue`}
+                            onClick={() => {
+                                setOpenNew(true);
+                                setCategoryData(row.original)
+                            }}
+                        >
+                            <Pen
+                                width={15}
+                                height={15}
+                                className={` text-white  `}
+                            />
+                        </Button>
+                        <Button
+                            variant="destructive"
                             size="tableIcon"
                             className={`rounded-[3px] w-max px-[5px] h-[25px]`}
-                            onClick={() => { toggleOpenChange([row.original.category_code]) }}
+                            onClick={() => {
+                                toggleOpenChange([row.original.category_code]);
+
+                            }}
                         >
-                            <Trash2 width={15} height={15} className={` text-myBlue rounded-sm  `} />
+                            <Trash2
+                                width={15}
+                                height={15}
+                                className={` text-white  `}
+                            />
                         </Button>
 
                     </div>
-                )
-            }
-        }
-    ]
+                );
+            },
+        },
+    ];
 
     const table = useReactTable({
         data: data,
@@ -108,26 +137,36 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
             sorting,
             rowSelection,
         },
-
     });
 
     const toggleOpenChange = (id) => {
-        setDeleteOpen(true)
-        setCategoryID(id)
-    }
-
+        setDeleteOpen(true);
+        setCategoryID(id);
+    };
 
     // const removeSorting = () => {
     //     setSorting([]);
     //     fetchData();
     // };
 
-    const selectedCategoryId = table.getSelectedRowModel().rows.map(row => row.original.category_code);
+    const selectedCategoryId = table
+        .getSelectedRowModel()
+        .rows.map((row) => row.original.category_code);
 
     return (
         <>
-            <DeleteCategory open={deleteOpen} setOpen={setDeleteOpen} reloadData={reload} deleteID={categoryID} />
-            <NewCategory setOpen={setOpenNew} open={openNew} setReloadData={reload} />
+            <DeleteCategory
+                open={deleteOpen}
+                setOpen={setDeleteOpen}
+                reloadData={reload}
+                deleteID={categoryID}
+            />
+            <NewCategory
+                data={categoryData}
+                setOpen={setOpenNew}
+                open={openNew}
+                setReloadData={reload}
+            />
             <div className="">
                 <div className=" flex w-full flex-row justify-between gap-1 items-center py-2">
                     <SearchBar />
@@ -137,7 +176,10 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                             <Button
                                 className="w-9 h-[35px] p-1"
                                 variant="secondary"
-                                onClick={() => setOpenNew(true)}
+                                onClick={() => {
+                                    setOpenNew(true)
+                                    setCategoryData(null)
+                                }}
                             >
                                 <PlusIcon className="text-white" width={20} height={20} />
                             </Button>
@@ -152,7 +194,6 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                             </Button>
                         )}
                     </div>
-
                 </div>
                 {/* <div className="w-[40%] flex justify-end  ">
                     {Object.keys(rowSelection).length === 0 ? (
@@ -185,7 +226,12 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className={`${isLastHeader ? "w-[30px] " : isFirstHeader ? "w-[50px]" : ""} text-xs`}
+                                            className={`${isLastHeader
+                                                ? "w-[30px] "
+                                                : isFirstHeader
+                                                    ? "w-[50px]"
+                                                    : ""
+                                                } text-xs`}
                                         >
                                             {header.isPlaceholder
                                                 ? null
@@ -224,26 +270,35 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                     </TableBody> */}
 
                     <TableBody>
-
                         {isSkeleton || !table.getRowModel().rows?.length ? (
                             <>
                                 {isSkeleton &&
-                                    [...Array(table.getRowModel().rows?.length || 5)].map((_, index) => (
-                                        <TableRow key={index}>
-                                            {columns.map((column, columnIndex) => (
-                                                <TableCell
-                                                    key={columnIndex}
-                                                    className={`${columnIndex === columns.length - 1 ? "w-[30px]" : columnIndex === 0 ? "w-[50px]" : ""} text-xs`}
-                                                >
-                                                    <Skeleton className={"w-full rounded h-[30px]"} />
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    ))}
+                                    [...Array(table.getRowModel().rows?.length || 5)].map(
+                                        (_, index) => (
+                                            <TableRow key={index}>
+                                                {columns.map((column, columnIndex) => (
+                                                    <TableCell
+                                                        key={columnIndex}
+                                                        className={`${columnIndex === columns.length - 1
+                                                            ? "w-[30px]"
+                                                            : columnIndex === 0
+                                                                ? "w-[50px]"
+                                                                : ""
+                                                            } text-xs`}
+                                                    >
+                                                        <Skeleton className={"w-full rounded h-[30px]"} />
+                                                    </TableCell>
+                                                ))}
+                                            </TableRow>
+                                        )
+                                    )}
 
                                 {!isSkeleton && !table.getRowModel().rows?.length && (
                                     <TableRow>
-                                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        <TableCell
+                                            colSpan={columns.length}
+                                            className="h-24 text-center"
+                                        >
                                             No results.
                                         </TableCell>
                                     </TableRow>
@@ -255,16 +310,29 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={`${row.isFirst && "w-[30px]"} text-xs ${itemID === row.original.category_code ? "bg-blue-100" : "bg-white"} `}
-                                    onClick={() => setItemID(row.original.category_code)}
-
+                                    className={`${row.isFirst && "w-[30px]"} text-xs ${itemID === row.original.category_code
+                                        ? "bg-blue-100"
+                                        : "bg-white"
+                                        } `}
+                                    onClick={() => {
+                                        setItemID(row.original.category_code)
+                                        setCategoryName(row.original.categories)
+                                    }}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className={`${cell.isLast ? "w-[30px]" : cell.isFirst ? "w-[50px]" : ""} text-xs `}
+                                            className={`${cell.isLast
+                                                ? "w-[30px]"
+                                                : cell.isFirst
+                                                    ? "w-[50px]"
+                                                    : ""
+                                                } text-xs `}
                                         >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -274,7 +342,7 @@ export function TableOfCategories({ data, reload, setItemID, itemID, isSkeleton 
                 </Table>
             </div>
         </>
-    )
+    );
 }
 
 // ${isSelected === row.original.bins_id ? " bg-blue-200" : ""} cursor-pointer ${isBinSelect ? "" : "hidden"}
