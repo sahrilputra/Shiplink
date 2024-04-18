@@ -2,12 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 import { ServicesCategory } from './components/ServicesCategory'
-import data from '../../../../data/admin/ConfigurationServices.json'
-import { TextInput } from 'flowbite-react'
-import { SearchIcon, OptionIcons } from '@/components/icons/iconCollection'
-import { Status } from '@/components/status/Status'
-import { SearchBar } from '@/components/ui/searchBar'
-import { Button } from '@/components/ui/button'
 import { ServicesTabled } from './components/ServicesTabled'
 import axios from 'axios';
 export default function Services() {

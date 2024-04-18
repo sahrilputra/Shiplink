@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { TextInput } from 'flowbite-react'
 import { SearchIcon } from '@/components/icons/iconCollection'
 import { CatergoryList } from './CatergoryList'
 import { SearchBar } from '@/components/ui/searchBar'
