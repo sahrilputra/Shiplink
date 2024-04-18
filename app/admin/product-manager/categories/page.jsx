@@ -10,9 +10,8 @@ import { ProductItemTable } from './components/Tabled/ProductItemTable'
 import { ServiceItemTable } from './components/Tabled/ServiceItemTable'
 export default function ProductCategoriesPage() {
     const [selected, setSelected] = useState("Product")
-    const [categoryId, setCategoryId] = useState("")
+    const [categoryId, setCategoryId] = useState("C0-002")
     const [categoryName, setCategoryName] = useState("");
-    console.log("🚀 ~ ProductCategoriesPage ~ categoryName:", categoryName)
     return (
         <>
             <div className={styles.container}>

@@ -30,7 +30,7 @@ import { MoreHorizontalIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProductItemTable({
-    category_id,
+    category_id = null,
     categoryName
 }) {
     console.log("🚀 ~ ProductItemTable ~ category_id:", category_id)
