@@ -183,7 +183,7 @@ export function SingleItemsTable({ }) {
     const isCanAssign = (origin, destination, status) => {
         if (origin === destination) {
             return true
-        } else if (origin !== destination && status === "Cleared Custom" || status === "Clearance Received") {
+        } else if (origin !== destination && status === "23" || status === "9") {
             return true
         } else {
             return false
@@ -352,20 +352,6 @@ export function SingleItemsTable({ }) {
             accessorKey: "Select",
             id: "select",
             size: 30,
-            // header: ({ table }) => {
-            //     return (
-            //         <div className="w-[40px] flex items-center justify-center px-0">
-            //             <Checkbox
-            //                 checked={
-            //                     table.getIsAllPageRowsSelected() ||
-            //                     (table.getIsSomePageRowsSelected() && "indeterminate")
-            //                 }
-            //                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            //                 aria-label="Select all"
-            //             />
-            //         </div>
-            //     )
-            // },
             cell: ({ row }) => {
                 return (
                     <div className="w-[40px] flex items-center justify-center px-0">
@@ -373,7 +359,7 @@ export function SingleItemsTable({ }) {
                             checked={row.getIsSelected()}
                             onCheckedChange={(value) => row.toggleSelected(!!value)}
                             aria-label="Select row"
-                            disabled={isCanAssign(row.original.warehouse_name_arrival, row.original.warehouse_name_destination, row.original.status) ? false : true}
+                            disabled={isCanAssign(row.original.warehouse_name_arrival, row.original.warehouse_name_destination, row.original.status_id) ? false : true}
                         />
                     </div>
                 )
@@ -447,6 +433,15 @@ export function SingleItemsTable({ }) {
             sort_type: "asc",
             asign_lot: "false",
         })
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
 
     }
     const handleFilterDestination = (e) => {
@@ -461,6 +456,15 @@ export function SingleItemsTable({ }) {
             sort_type: "asc",
             asign_lot: "false",
         })
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
     }
     const handleFilterLocation = (e) => {
         setFilterLocation(e)
@@ -473,6 +477,15 @@ export function SingleItemsTable({ }) {
             sort_by: "updated_at",
             sort_type: "asc",
             asign_lot: "false",
+        })
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
         })
     }
 
@@ -489,6 +502,15 @@ export function SingleItemsTable({ }) {
             sort_by: "updated_at",
             sort_type: "asc",
             asign_lot: "false",
+        })
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
         })
     }
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);

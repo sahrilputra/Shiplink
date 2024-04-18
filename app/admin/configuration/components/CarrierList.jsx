@@ -1,7 +1,6 @@
 'use client'
 import { React, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { ToggleSwitch } from 'flowbite-react'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 export const CarrierList = ({ data }) => {
