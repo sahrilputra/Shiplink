@@ -21,6 +21,8 @@ export async function POST(request) {
             page,
             limit,
             index,
+            sort_by,
+            sort_type,
             token,
         } = await request.json();
 
@@ -36,6 +38,8 @@ export async function POST(request) {
                 page: page,
                 limit: limit,
                 index: index,
+                sort_by: sort_by,
+                sort_type: sort_type,
             },
             {
                 httpsAgent: agent,

@@ -12,6 +12,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/tableDashboard"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -44,6 +53,7 @@ import {
 } from "@/components/ui/pagination"
 import { useTimeFormat } from '@/context/TimeFormatProvider'
 import moment from "moment";
+import { AArrowUp, AArrowDown } from "lucide-react";
 export function PendingTable
     (
         {
@@ -59,7 +69,8 @@ export function PendingTable
             rowTotalData,
             totalPage,
             setRowTotalData,
-            pageIndex
+            pageIndex,
+            selectedTab
         }
     ) {
 
@@ -282,6 +293,49 @@ export function PendingTable
         setDeleteDialog(true)
     }
 
+    const [sortAsc, setSortAsc] = useState("")
+    const handleSortChange = (sort) => {
+        setSortAsc(sort)
+        if (sort === sortAsc) {
+            setQuery({
+                status_id: selectedTab,
+                page: 1,
+                limit: 10,
+                index: 0,
+                sort_by: sort,
+                sort_type: "desc"
+            });
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
+            setSortAsc("")
+        } else {
+            setQuery({
+                status_id: selectedTab,
+                page: 1,
+                limit: 10,
+                index: 0,
+                sort_by: sort,
+                sort_type: "asc"
+            });
+            setRowTotalData({
+                page_limit: 0,
+                page_total: 0,
+                total: 0
+            });
+            setPagination({
+                pageIndex: 0,
+                pageSize: 10,
+            });
+        }
+    }
+
     const handlePageChange = (pageNumber) => {
         setQuery({ ...query, page: pageNumber });
     };
@@ -298,7 +352,6 @@ export function PendingTable
                                 placeholder="Search..."
                                 className="pr-8 pl-2 text-xs border border-zinc-300"
                                 onChange={handleSearchChange}
-
                             />
                             <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
                                 <SearchIcon
@@ -307,14 +360,80 @@ export function PendingTable
                                 />
                             </div>
                         </div>
-                        <Button
-                            variant="filter"
-                            size="filter"
-                            className='border border-zinc-300 flex items-center rounded'>
-                            <FilterIcons
-                                className=""
-                                fill="#CC0019" />
-                        </Button>
+                        <div className="">
+
+
+                            <DropdownMenu >
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="filter"
+                                        size="filter"
+                                        className='border border-zinc-300 flex items-center rounded'>
+                                        <FilterIcons
+                                            className=""
+                                            fill="#CC0019" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="border" >
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuLabel className="text-myBlue px-1 py-1">Sort By</DropdownMenuLabel>
+                                        <DropdownMenuItem className={`text-xs flex flex-row justify-between ${sortAsc === "tracking_id" && `bg-blue-100`} `}
+                                            onSelect={() => {
+                                                handleSortChange("tracking_id")
+                                            }}>
+                                            Tracking ID
+                                            {
+                                                sortAsc === "tracking_id" ? <AArrowDown className="w-4 h-4 text-myBlue" /> : ""
+                                            }
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className={`text-xs flex flex-row justify-between ${sortAsc === "customer_name" && `bg-blue-100`} `}
+                                            onSelect={() => {
+                                                handleSortChange("customer_name")
+                                            }}>
+                                            Name
+                                            {
+                                                sortAsc === "customer_name" ? <AArrowDown className="w-4 h-4 text-myBlue" /> : ""
+                                            }
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className={`text-xs flex flex-row justify-between ${sortAsc === "warehouse_destination" && `bg-blue-100`} `}
+                                            onSelect={() => {
+                                                handleSortChange("warehouse_destination")
+                                            }}>
+                                            Destination
+                                            {
+                                                sortAsc === "warehouse_destination" ? <AArrowDown className="w-4 h-4 text-myBlue" /> : ""
+                                            }
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className={`text-xs flex flex-row justify-between ${sortAsc === "updated_at" && `bg-blue-100`} `}
+                                            onSelect={() => {
+                                                handleSortChange("updated_at")
+                                            }}>
+                                            Date
+                                            {
+                                                sortAsc === "updated_at" ? <AArrowDown className="w-4 h-4 text-myBlue" /> : ""
+                                            }
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className={`text-xs flex flex-row justify-between ${sortAsc === "status_id" && `bg-blue-100`} `}
+                                            onSelect={() => {
+                                                handleSortChange("status_id")
+                                            }}>
+                                            Status
+                                            {
+                                                sortAsc === "status_id" ? <AArrowDown className="w-4 h-4 text-myBlue" /> : ""
+                                            }
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="text-xs flex flex-row justify-between text-red-700"
+                                            onSelect={() => {
+                                                handleSortChange("")
+                                            }}>
+                                            Remove Sort
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
+                        </div>
+
                     </div>
 
                 </div>

@@ -21,6 +21,8 @@ export default function CustomBrokerPage() {
         page: 1,
         limit: 10,
         index: 0,
+        sort_by: "",
+        sort_type: "",
     });
     const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({
@@ -43,14 +45,6 @@ export default function CustomBrokerPage() {
             );
             console.log("response", response)
             const data = await response.data;
-            // const filterData = (
-            //     selectedTab == 'Cleared Custom' ?
-            //         data.package_info.filter(item => item.status_id !== 9) :
-            //         data.package_info
-            // )
-            // const filterData = selectedTab !== 'Cleared Custom'
-            //     ? data.package_info.filter(item => item.status_id !== 9)
-            //     : data.package_info.filter(item => item.status_id === 9);
             setData(data.package_info);
             setRowTotalData({
                 page_limit: data.page_limit,
@@ -118,7 +112,7 @@ export default function CustomBrokerPage() {
 
     const [selectedTab, setSelectedTab] = useState("");
     console.log("parent : ", selectedTab)
-
+    const [selectedTabId, setSelectedTabId] = useState("");
     const handlerSelectedTab = async (tab) => {
         console.log("🚀 ~ handlerSelectedTab ~ tab:", tab)
         setSelectedTab(tab);
@@ -131,6 +125,7 @@ export default function CustomBrokerPage() {
                 limit: 10,
                 index: 0,
             })
+            setSelectedTabId("7");
             setIsSkeleton(false);
         } else if (tab === 'Cleared Custom') {
             setQuery({
@@ -149,6 +144,7 @@ export default function CustomBrokerPage() {
                 pageIndex: 0,
                 pageSize: 10,
             });
+            setSelectedTabId("9");
         } else if (tab === 'All') {
             setQuery({
                 page: 1,
@@ -166,6 +162,7 @@ export default function CustomBrokerPage() {
                 pageIndex: 0,
                 pageSize: 10,
             });
+            setSelectedTabId("");
         }
         else {
             setQuery({
@@ -184,6 +181,7 @@ export default function CustomBrokerPage() {
                 pageIndex: 0,
                 pageSize: 10,
             });
+            setSelectedTabId("0");
         }
         console.log("🚀 ~ handlerSelectedTab ~ query:", query)
     }
@@ -236,6 +234,7 @@ export default function CustomBrokerPage() {
                                 totalPage={rowTotalData.page_total}
                                 setRowTotalData={setRowTotalData}
                                 pageIndex={pagination.pageIndex}
+                                selectedTab={selectedTabId}
                             />
                         </div>
                     </div>
