@@ -65,7 +65,7 @@ export const LotsMoreMenusDropDrown = ({
                             </NextLink>
                         </DropdownMenuItem>
                         <NextLink
-                            href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${lots_docs}`}
+                            href={`/view/lots?lots_id=${dataID}`}
                             passHref
                             target="_blank"
                             rel="noopener noreferrer"
@@ -75,7 +75,7 @@ export const LotsMoreMenusDropDrown = ({
                                     className="text-xs"
                                 // onClick={() => setIsDownload(true)}
                                 >
-                                    Download Document
+                                    Print Lot
                                 </p>
                             </DropdownMenuItem>
                         </NextLink>
