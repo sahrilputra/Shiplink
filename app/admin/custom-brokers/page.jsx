@@ -112,7 +112,7 @@ export default function CustomBrokerPage() {
 
     const [selectedTab, setSelectedTab] = useState("");
     console.log("parent : ", selectedTab)
-    const [selectedTabId, setSelectedTabId] = useState("");
+    const [selectedTabId, setSelectedTabId] = useState("0");
     const handlerSelectedTab = async (tab) => {
         console.log("🚀 ~ handlerSelectedTab ~ tab:", tab)
         setSelectedTab(tab);
@@ -162,7 +162,7 @@ export default function CustomBrokerPage() {
                 pageIndex: 0,
                 pageSize: 10,
             });
-            setSelectedTabId("");
+            setSelectedTabId("0");
         }
         else {
             setQuery({
