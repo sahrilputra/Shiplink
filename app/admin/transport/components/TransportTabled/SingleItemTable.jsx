@@ -73,6 +73,7 @@ export function SingleItemsTable({ }) {
         tracking_id: "",
         lots_id: "",
         bins_id: "",
+        asign_lot: "false",
         customer_id: "",
         country_origin: "",
         country_destination: "",
@@ -82,7 +83,7 @@ export function SingleItemsTable({ }) {
         email: "",
         status: "",
         status_id: "0",
-        sort_by: "status",
+        sort_by: "updated_at",
         sort_type: "asc",
         page: 1,
         limit: 10,
@@ -336,7 +337,7 @@ export function SingleItemsTable({ }) {
                             <Button
                                 variant="tableBlue"
                                 size="tableIcon"
-                                disabled={row.original.status === "Cleared Custom" || row.original.status === "Clearance Received" ? false : true}
+                                disabled={row.original.status_id === "23" || row.original.status === "9" ? false : true}
                                 className={`w-max px-[10px] h-[25px]`}
                                 onClick={() => toggleOpenChange([row.original.tracking_id])}
                             >
@@ -442,6 +443,8 @@ export function SingleItemsTable({ }) {
             page: 1,
             limit: 10,
             index: 0,
+            sort_by: "updated_at",
+            sort_type: "asc",
         })
 
     }
@@ -453,6 +456,8 @@ export function SingleItemsTable({ }) {
             page: 1,
             limit: 10,
             index: 0,
+            sort_by: "updated_at",
+            sort_type: "asc",
         })
     }
     const handleFilterLocation = (e) => {
@@ -463,6 +468,8 @@ export function SingleItemsTable({ }) {
             page: 1,
             limit: 10,
             index: 0,
+            sort_by: "updated_at",
+            sort_type: "asc",
         })
     }
 
@@ -476,6 +483,8 @@ export function SingleItemsTable({ }) {
             page: 1,
             limit: 10,
             index: 0,
+            sort_by: "updated_at",
+            sort_type: "asc",
         })
     }
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
