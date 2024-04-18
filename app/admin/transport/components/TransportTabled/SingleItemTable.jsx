@@ -445,6 +445,7 @@ export function SingleItemsTable({ }) {
             index: 0,
             sort_by: "updated_at",
             sort_type: "asc",
+            asign_lot: "false",
         })
 
     }
@@ -458,6 +459,7 @@ export function SingleItemsTable({ }) {
             index: 0,
             sort_by: "updated_at",
             sort_type: "asc",
+            asign_lot: "false",
         })
     }
     const handleFilterLocation = (e) => {
@@ -470,6 +472,7 @@ export function SingleItemsTable({ }) {
             index: 0,
             sort_by: "updated_at",
             sort_type: "asc",
+            asign_lot: "false",
         })
     }
 
@@ -485,6 +488,7 @@ export function SingleItemsTable({ }) {
             index: 0,
             sort_by: "updated_at",
             sort_type: "asc",
+            asign_lot: "false",
         })
     }
     // const selectedItemsID = table.getSelectedRowModel().rows.map(row => row.original.tracking_id);
