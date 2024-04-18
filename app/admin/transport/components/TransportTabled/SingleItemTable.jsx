@@ -716,13 +716,13 @@ export function SingleItemsTable({ }) {
                                 <SearchIcon width={15} height={15} />
                             </div>
                         </div>
-                        <Button
+                        {/* <Button
                             variant="filter"
                             size="filter"
                             className="border border-zinc-300 flex items-center rounded h-[35px]"
                         >
                             <FilterIcons className="" fill="#CC0019" />
-                        </Button>
+                        </Button> */}
                         <div className="">
                             <Select onValueChange={handlerFilterOrigin} value={filterOrigins}>
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
