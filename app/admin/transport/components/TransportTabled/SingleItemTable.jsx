@@ -181,9 +181,10 @@ export function SingleItemsTable({ }) {
 
 
     const isCanAssign = (origin, destination, status) => {
+        console.log("🚀 ~ isCanAssign ~ status:", status)
         if (origin === destination) {
             return true
-        } else if (origin !== destination && status === "23" || status === "9") {
+        } else if (origin !== destination && status === 23 || status === 9) {
             return true
         } else {
             return false
@@ -337,7 +338,7 @@ export function SingleItemsTable({ }) {
                             <Button
                                 variant="tableBlue"
                                 size="tableIcon"
-                                disabled={row.original.status_id === "23" || row.original.status === "9" ? false : true}
+                                disabled={isCanAssign(row.original.warehouse_name_arrival, row.original.warehouse_name_destination, row.original.status_id) ? false : true}
                                 className={`w-max px-[10px] h-[25px]`}
                                 onClick={() => toggleOpenChange([row.original.tracking_id])}
                             >
