@@ -74,6 +74,9 @@ export function PendingTable
         }
     ) {
 
+    // setSorting([{ id: "tracking_id", desc: !isSortedDesc }]);
+    // setIsSortedDesc(!isSortedDesc);
+
     const { timeFormat, dateFormat } = useTimeFormat();
     const [rowSelection, setRowSelection] = React.useState({})
     const [sorting, setSorting] = React.useState([])
@@ -88,14 +91,13 @@ export function PendingTable
                     <div
                         className="cursor-pointer select-none"
                         onClick={() => {
-                            setSorting([{ id: "tracking_id", desc: !isSortedDesc }]);
-                            setIsSortedDesc(!isSortedDesc);
+                            handleSortChange("tracking_id")
                         }}
                     >
                         <div className="flex flex-row gap-2 items-center">
                             Tracking ID
                             <>
-                                {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                                {sortAsc === "tracking_id" ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
                             </>
                         </div>
 
@@ -122,14 +124,13 @@ export function PendingTable
                     <div
                         className="cursor-pointer select-none"
                         onClick={() => {
-                            setSorting([{ id: "tracking_id", desc: !isSortedDesc }]);
-                            setIsSortedDesc(!isSortedDesc);
+                            handleSortChange("customer_name")
                         }}
                     >
                         <div className="flex flex-row gap-2 items-center">
                             Customer Name
                             <>
-                                {isSortedDesc ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                                {sortAsc === "customer_name" ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
                             </>
                         </div>
                     </div>
@@ -149,7 +150,23 @@ export function PendingTable
         },
         {
             accessorKey: "destination",
-            header: "Destination",
+            header: () => {
+                return (
+                    <div
+                        className="cursor-pointer select-none"
+                        onClick={() => {
+                            handleSortChange("warehouse_destination")
+                        }}
+                    >
+                        <div className="flex flex-row gap-2 items-center">
+                            Destination
+                            <>
+                                {sortAsc === "warehouse_destination" ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                            </>
+                        </div>
+                    </div>
+                );
+            },
             cell: ({ row }) => {
                 const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
                 return (
@@ -176,7 +193,23 @@ export function PendingTable
         },
         {
             accessorKey: "updated_at",
-            header: "Update Date",
+            header: () => {
+                return (
+                    <div
+                        className="cursor-pointer select-none"
+                        onClick={() => {
+                            handleSortChange("updated_at")
+                        }}
+                    >
+                        <div className="flex flex-row gap-2 items-center">
+                            Update Date
+                            <>
+                                {sortAsc === "updated_at" ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                            </>
+                        </div>
+                    </div>
+                );
+            },
             cell: ({ row }) => {
                 return (
                     <div
@@ -192,7 +225,23 @@ export function PendingTable
         },
         {
             accessorKey: "status",
-            header: "Customs Status",
+            header: () => {
+                return (
+                    <div
+                        className="cursor-pointer select-none"
+                        onClick={() => {
+                            handleSortChange("status_id")
+                        }}
+                    >
+                        <div className="flex flex-row gap-2 items-center">
+                            Customs Status
+                            <>
+                                {sortAsc === "status_id" ? <ChevronDown fill="#fffff" width={15} /> : <ChevronUp fill="#fffff" width={15} />}
+                            </>
+                        </div>
+                    </div>
+                );
+            },
             cell: ({ row }) => {
                 return (
                     <>
@@ -293,11 +342,21 @@ export function PendingTable
         setDeleteDialog(true)
     }
 
+    const [sortType, setSortType] = useState({
+        tracking_id: "",
+        customer_name: "",
+        warehouse_destination: "",
+        updated_at: "",
+        status_id: ""
+    })
     const [sortAsc, setSortAsc] = useState("")
     const handleSortChange = (sort) => {
+        console.log("🚀 ~ handleSortChange ~ sort:", sort)
         setSortAsc(sort)
         if (sort === sortAsc) {
+            console.log("🚀 ~ handleSortChange ~ DESC:", sort)
             setQuery({
+                ...query,
                 status_id: selectedTab,
                 page: 1,
                 limit: 10,
@@ -316,7 +375,9 @@ export function PendingTable
             });
             setSortAsc("")
         } else {
+            console.log("🚀 ~ handleSortChange ~ ASC:", sort)
             setQuery({
+                ...query,
                 status_id: selectedTab,
                 page: 1,
                 limit: 10,
