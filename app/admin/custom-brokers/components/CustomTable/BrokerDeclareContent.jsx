@@ -64,7 +64,13 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
         const removeInvImage = () => {
             if (image) {
                 const filtered = image.filter(image => isInvoiceImage(image.type));
-                setVilterInvoice(filtered);
+                if (filtered.length > 0) {
+                    // Mengambil hanya satu data indeks pertama dari filtered
+                    const singleInvoice = [filtered[0]];
+                    setVilterInvoice(singleInvoice);
+                } else {
+                    setVilterInvoice([]);
+                }
             }
         };
 
@@ -188,7 +194,30 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                     <p className='text-xs'>Package Details</p>
                                 </Button>
                                 <div className="">
-                                    <DropdownMenu open={openInv} onOpenChange={setOpenInv}>
+
+                                    {filterInvoice?.length > 0 ? (
+                                        <>
+                                            <NextLink href={`https://sla.webelectron.com/api/Package/getimages?fullName=${filterInvoice[0].images}`} passHref target='_blank' rel='noopener noreferrer'>
+                                                <Button
+                                                    variant="secondary"
+                                                    size="xs"
+                                                >
+                                                    <p className='text-xs'>View Invoice</p>
+                                                </Button>
+                                            </NextLink>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Button
+                                                variant="secondary"
+                                                size="xs"
+                                                disabled={true}
+                                            >
+                                                <p className='text-xs'>No Invoice</p>
+                                            </Button>
+                                        </>
+                                    )}
+                                    {/* <DropdownMenu open={openInv} onOpenChange={setOpenInv}>
                                         <DropdownMenuTrigger className="p-0 px-0 h-8 text-xs focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 border-zinc-300 w-[250px] pr-2 flex flex-row">
                                             <p className='bg-blue-900 rounded-tl-sm rounded-bl-sm text-xs text-white my-auto h-full flex items-center px-3'>Invoice</p>
                                             <div className='text-xs flex h-full border pl-3 w-[250px] bg-white  rounded-tr rounded-br focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 items-center justify-between px-2  border-slate-300 ring-offset-white text-slate-500" ' >
@@ -213,7 +242,7 @@ export const BrokerDeclareContent = ({ data, details, TrackingID, reload, status
                                                 )
                                             }
                                         </DropdownMenuContent>
-                                    </DropdownMenu>
+                                    </DropdownMenu> */}
                                 </div>
                             </div>
 
