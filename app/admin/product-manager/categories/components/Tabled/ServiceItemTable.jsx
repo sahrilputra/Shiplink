@@ -27,6 +27,7 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
+import NextLink from "next/link";
 
 
 export function ServiceItemTable({
@@ -136,6 +137,25 @@ export function ServiceItemTable({
                             style={{ fontFamily: 'roboto' }}
                             className='text-right'>$ {`${row.original.price}`}
                         </span>
+                    </div>
+                )
+            },
+        },
+        {
+            accessorKey: "action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-row flex-wrap">
+                        <NextLink passHref href={`/admin/product-manager/services?service_id=${row.original.service_id}`}>
+                            <Button
+                                variant="tableBlue"
+                                size="tableIcon"
+                                className={`rounded-[3px] w-max px-[5px] h-[20px]`}
+                            >
+                                <p className="text-[11px] py-2">Edit</p>
+                            </Button>
+                        </NextLink>
                     </div>
                 )
             },
