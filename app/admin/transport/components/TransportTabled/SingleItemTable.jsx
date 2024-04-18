@@ -38,7 +38,7 @@ import {
     Pagination,
     PaginationContent,
 } from "@/components/ui/pagination"
-
+import { ChevronDown } from "lucide-react";
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { AssingLotsDialog } from "../AssignLotsDialog/AssignToLotsDialog";
 import { CreateNewLotsDialog } from "../AssignLotsDialog/CreateNewLotsDialog";
@@ -62,6 +62,7 @@ export function SingleItemsTable({ }) {
     const [deleteID, setDeleteId] = useState(null);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [filterDestination, setFilterDestination] = useState("");
+    const [filterStatus, setFilterStatus] = useState("");
     const [filterLocation, setFilterLocation] = useState("");
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [selectedItemsID, setSelectedItemsID] = useState([])
@@ -175,9 +176,27 @@ export function SingleItemsTable({ }) {
             console.log("Erorr : ", error)
         }
     }
+
+    const [statusListData, setStatusListData] = useState([]);
+    const statusList = async () => {
+        try {
+            const response = await axios.get(
+                `/api/admin/packages/status`
+            );
+            console.log("Status List : ", response)
+            const data = await response.data;
+            setStatusListData(data.data);
+        } catch (error) {
+            console.log("Erorr : ", error)
+        }
+    }
+
     useEffect(() => {
         warehouseList();
+        statusList();
     }, [])
+
+
 
 
     const isCanAssign = (origin, destination, status) => {
@@ -190,11 +209,105 @@ export function SingleItemsTable({ }) {
             return false
         }
     }
+
+    const [isASC, setIsASC] = useState({
+        tracking_id: true,
+        customer_name: true,
+        origin: true,
+        destination: true,
+        location: true,
+        status: true,
+    });
+    const handleSortPakcage_id = () => {
+        setQuery({
+            ...query,
+            sort_by: "tracking_id",
+            sort_type: isASC.tracking_id ? "asc" : "desc"
+        });
+        setIsASC({
+            tracking_id: !isASC.tracking_id,
+            customer_name: true,
+            origin: true,
+            destination: true,
+            location: true,
+            status: true,
+        });
+    }
+
+    const handleSortCustomerName = () => {
+        setQuery({
+            ...query,
+            sort_by: "customer_name",
+            sort_type: isASC.customer_name ? "asc" : "desc"
+        });
+        setIsASC({
+            tracking_id: true,
+            customer_name: !isASC.customer_name,
+            destination: true,
+            status: true,
+            location: true,
+        });
+    }
+
+    const handleSortDestination = () => {
+        setQuery({
+            ...query,
+            sort_by: "warehouse_destination",
+            sort_type: isASC.destination ? "asc" : "desc"
+        });
+        setIsASC({
+            tracking_id: true,
+            customer_name: true,
+            destination: !isASC.destination,
+            status: true,
+            location: true,
+        });
+    }
+
+    const handleSortLocation = () => {
+        setQuery({
+            ...query,
+            sort_by: "warehouse_position",
+            sort_type: isASC.location ? "asc" : "desc"
+        });
+        setIsASC({
+            tracking_id: true,
+            customer_name: true,
+            destination: true,
+            location: !isASC.location,
+            status: true,
+        });
+    }
+
+    const handleSortStatus = () => {
+        setQuery({
+            ...query,
+            sort_by: "status_id",
+            sort_type: isASC.status ? "asc" : "desc"
+        });
+        setIsASC({
+            tracking_id: true,
+            customer_name: true,
+            destination: true,
+            location: true,
+            status: !isASC.status
+        });
+    }
+
     const columns = [
 
         {
             accessorKey: "tracking_id",
-            header: "Package ID",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortPakcage_id}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Tracking ID</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.tracking_id ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             className: "text-xs",
             size: 80,
             cell: ({ row }) => {
@@ -212,7 +325,16 @@ export function SingleItemsTable({ }) {
         },
         {
             accessorKey: "customer_name",
-            header: "Customer Name",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortCustomerName}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Customer Name</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.customer_name ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             size: 150,
             cell: ({ row }) => {
                 return (
@@ -258,7 +380,16 @@ export function SingleItemsTable({ }) {
         },
         {
             accessorKey: "Destination",
-            header: "Destination",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortDestination}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Destination</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.destination ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             size: 80,
             cell: ({ row }) => {
                 const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
@@ -316,7 +447,16 @@ export function SingleItemsTable({ }) {
         },
         {
             accessorKey: "status",
-            header: "Customs Status",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortStatus}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Customs Status</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.status ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             size: 150,
         },
         {
@@ -426,6 +566,7 @@ export function SingleItemsTable({ }) {
     const handlerFilterOrigin = (e) => {
         setFilterOrigins(e)
         setQuery({
+            ...query,
             warehouse_origin: e,
             page: 1,
             limit: 10,
@@ -449,6 +590,7 @@ export function SingleItemsTable({ }) {
         setFilterDestination(e)
         console.log("Filter Destination : ", e)
         setQuery({
+            ...query,
             warehouse_destination: e,
             page: 1,
             limit: 10,
@@ -471,7 +613,32 @@ export function SingleItemsTable({ }) {
         setFilterLocation(e)
         console.log("Filter Destination : ", e)
         setQuery({
+            ...query,
+            page: 1,
+            limit: 10,
+            index: 0,
             warehouse_position: e,
+            sort_by: "updated_at",
+            sort_type: "asc",
+            asign_lot: "false",
+        })
+        setPagination({
+            pageIndex: 0,
+            pageSize: 10,
+        })
+        setRowTotalData({
+            page_limit: 0,
+            page_total: 0,
+            total: 0
+        })
+    }
+
+    const handlerStatusChange = (e) => {
+        setFilterStatus(e)
+        console.log("Filter Status : ", e)
+        setQuery({
+            ...query,
+            status: e,
             page: 1,
             limit: 10,
             index: 0,
@@ -490,13 +657,16 @@ export function SingleItemsTable({ }) {
         })
     }
 
+
     const handleRemoveFilter = () => {
         setFilterDestination("")
         setFilterLocation("")
         setFilterOrigins("")
+        setFilterStatus("")
         setQuery({
             warehouse_destination: "",
             warehouse_position: "",
+            status: "",
             page: 1,
             limit: 10,
             index: 0,
@@ -546,13 +716,13 @@ export function SingleItemsTable({ }) {
                                 <SearchIcon width={15} height={15} />
                             </div>
                         </div>
-                        {/* <Button
+                        <Button
                             variant="filter"
                             size="filter"
-                            className="border border-zinc-300 flex items-center rounded"
+                            className="border border-zinc-300 flex items-center rounded h-[35px]"
                         >
                             <FilterIcons className="" fill="#CC0019" />
-                        </Button> */}
+                        </Button>
                         <div className="">
                             <Select onValueChange={handlerFilterOrigin} value={filterOrigins}>
                                 <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
@@ -614,10 +784,29 @@ export function SingleItemsTable({ }) {
                                 </SelectContent>
                             </Select>
                         </div>
+                        <div className="">
+                            <Select onValueChange={handlerStatusChange} value={filterStatus} >
+                                <SelectTrigger className="w-[180px] text-xs h-[35px] rounded">
+                                    <SelectValue placeholder="Filter Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <ScrollArea className="h-[150px]">
+                                        <SelectGroup className="text-xs">
+                                            <SelectLabel className="text-xs font-bold">Filter Status</SelectLabel>
+                                            {
+                                                statusListData.map((item, index) => (
+                                                    <SelectItem key={index} className="text-xs" value={item.status}>{item.status}</SelectItem>
+                                                ))
+                                            }
+                                        </SelectGroup>
+                                    </ScrollArea>
+                                </SelectContent>
+                            </Select>
+                        </div>
 
                         <div className="">
                             {
-                                filterDestination !== "" || filterLocation !== "" || filterOrigins !== "" ? (
+                                filterDestination !== "" || filterLocation !== "" || filterOrigins !== "" || filterStatus !== "" ? (
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild>
