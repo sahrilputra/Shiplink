@@ -9,7 +9,18 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const tokenAccess = await getAccessToken(request)
-        const { keyword, date_start, date_end, tracking_id, lots_id, status, page, limit, index, token } = await request.json();
+        const {
+          keyword,
+          date_start,
+          date_end,
+          tracking_id,
+          lots_id,
+          status,
+          page,
+          limit,
+          index,
+          token,
+        } = await request.json();
         console.log("🚀 ~ POST ~ tracking_id:", tracking_id)
 
         const response = await axios.post(

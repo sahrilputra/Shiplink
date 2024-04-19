@@ -444,6 +444,20 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         setOpenStatusDialog(true)
         setLotsId(data)
     }
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
 
     const selectedWarehouseIds = table?.getSelectedRowModel().rows.map(row => row.original.lots_id);
     return (
