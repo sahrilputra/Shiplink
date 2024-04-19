@@ -78,33 +78,34 @@ export function CustomerTable({ data, open, setOpen }) {
         total: 0
     })
 
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/customer_manager/list`,
+                {
+                    ...query,
+                    page: pagination.pageIndex + 1,
+                    limit: pagination.pageSize,
+                }
+            );
+            const data = await response.data;
+            setCustomer(data.customer);
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
+            }));
+            setIsSkeleton(false);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(
-                    `/api/admin/customer_manager/list`,
-                    {
-                        ...query,
-                        page: pagination.pageIndex + 1,
-                        limit: pagination.pageSize,
-                    }
-                );
-                const data = await response.data;
-                setCustomer(data.customer);
-                setRowTotalData({
-                    page_limit: data.page_limit,
-                    page_total: data.page_total,
-                    total: data.total
-                });
-                setPagination(prevPagination => ({
-                    ...prevPagination,
-                    pageSize: data.page_limit, // Menyesuaikan pageSize dengan nilai page_limit dari data
-                }));
-                setIsSkeleton(false);
-            } catch (error) {
-                console.log('Error:', error);
-            }
-        };
         fetchData();
     }, [query]);
 
@@ -123,7 +124,7 @@ export function CustomerTable({ data, open, setOpen }) {
             }));
         }
     };
-    
+
 
     const handleSearchChange = (event) => {
         setQuery({
@@ -348,13 +349,7 @@ export function CustomerTable({ data, open, setOpen }) {
         setExpandedRows(newExpandedRows);
     };
     const reloadData = () => {
-        setQuery({
-            ...query,
-            keyword: "",
-            page: 1,
-            limit: 0,
-            index: 0
-        });
+        fetchData();
     };
 
     return (
