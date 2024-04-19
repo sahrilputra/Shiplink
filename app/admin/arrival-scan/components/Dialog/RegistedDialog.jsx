@@ -30,7 +30,7 @@ import { usePDF } from 'react-to-pdf';
 import ReactToPrint, { useReactToPrint } from "react-to-print"
 import axios from "axios";
 
-export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetForm }) {
+export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetForm, setResetFieldCustomer }) {
     const { toPDF, targetRef } = usePDF({ filename: `${trackingID}.pdf` });
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -97,6 +97,7 @@ export function RegisterDialog({ open, setOpen, trackingID, name, userID, resetF
 
     const handleClose = () => {
         resetForm();
+        setResetFieldCustomer(true);
         setOpen(false)
     }
 

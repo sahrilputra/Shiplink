@@ -271,27 +271,42 @@ export default function ArrivalScanPage() {
         fetchBinData();
     }, [query]);
 
+    const [resetFieldCustomer, setResetFieldCustomer] = useState(false);
     console.log("tracking from Page : ", trackingId)
     return (
         <>
+            <RegisterDialog
+                open={open}
+                setOpen={setOpen}
+                trackingID={trackingId}
+                name={userName}
+                userID={userID}
+                resetForm={handlerReset}
+                setResetFieldCustomer={setResetFieldCustomer}
+            />
             <div className={styles.forms}>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(handleSave, onError)}
-                        className='flex gap-2 flex-col text-zinc-600'
+                        className="flex gap-2 flex-col text-zinc-600"
                         action=""
                     >
                         <ArrivalForms
                             emptyMessage="No resulsts."
                             placeholder="Find something"
                             forms={form}
+                            resetFieldCustomer={resetFieldCustomer}
+                            setResetFieldCustomer={setResetFieldCustomer}
                         />
 
                         <div className="w-full py-4">
                             <Separator className="h-[2px]" />
                         </div>
 
-                        <div className={`contentImage w-[100%] bg-blue-50 mx-auto  ${allImages.length === 0 && "hidden"}`}>
+                        <div
+                            className={`contentImage w-[100%] bg-blue-50 mx-auto  ${allImages.length === 0 && "hidden"
+                                }`}
+                        >
                             <div className="flex flex-row justify-center items-center w-[50%] mx-auto">
                                 <Carousel
                                     opts={{
@@ -300,21 +315,27 @@ export default function ArrivalScanPage() {
                                     className="w-full"
                                 >
                                     <CarouselContent>
-                                        {Array.from({ length: allImages.length }).map((_, index) => (
-                                            <CarouselItem key={index} className="basis-1/3">
-                                                <div className="p-1">
-                                                    <Card className="p-1">
-                                                        <Image
-                                                            src={allImages[index]}
-                                                            width={200}
-                                                            height={200}
-                                                            alt={`Image ${index}`}
-                                                            style={{ objectFit: "cover", width: '100%', height: '130px' }}
-                                                        />
-                                                    </Card>
-                                                </div>
-                                            </CarouselItem>
-                                        ))}
+                                        {Array.from({ length: allImages.length }).map(
+                                            (_, index) => (
+                                                <CarouselItem key={index} className="basis-1/3">
+                                                    <div className="p-1">
+                                                        <Card className="p-1">
+                                                            <Image
+                                                                src={allImages[index]}
+                                                                width={200}
+                                                                height={200}
+                                                                alt={`Image ${index}`}
+                                                                style={{
+                                                                    objectFit: "cover",
+                                                                    width: "100%",
+                                                                    height: "130px",
+                                                                }}
+                                                            />
+                                                        </Card>
+                                                    </div>
+                                                </CarouselItem>
+                                            )
+                                        )}
                                     </CarouselContent>
                                     <CarouselPrevious type="button" />
                                     <CarouselNext type="button" />
@@ -323,7 +344,7 @@ export default function ArrivalScanPage() {
                         </div>
 
                         <div className="">
-                            <p className='py-1 px-2 text-sm'>Optional Declare Content</p>
+                            <p className="py-1 px-2 text-sm">Optional Declare Content</p>
                             <DeclareContet
                                 total={total}
                                 fields={fields}
@@ -333,7 +354,6 @@ export default function ArrivalScanPage() {
                                 binData={binData}
                                 reset={form.reset}
                             />
-                            <RegisterDialog open={open} setOpen={setOpen} trackingID={trackingId} name={userName} userID={userID} resetForm={handlerReset} />
                         </div>
 
                         {loading && <Loaders />}
@@ -341,5 +361,5 @@ export default function ArrivalScanPage() {
                 </Form>
             </div>
         </>
-    )
+    );
 }

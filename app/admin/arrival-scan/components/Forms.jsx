@@ -65,6 +65,8 @@ export const ArrivalForms = ({
     options,
     forms,
     isLoading = false,
+    resetFieldCustomer,
+    setResetFieldCustomer,
 }) => {
 
     const [customerID, setCustomerID] = useState('')
@@ -106,6 +108,7 @@ export const ArrivalForms = ({
         console.log("Selected Data : ", selectedData)
     }
 
+
     const handleResetCustomerData = () => {
         forms.reset();
         setCustomerID("");
@@ -142,6 +145,13 @@ export const ArrivalForms = ({
         }
     }
 
+    useEffect(() => {
+        if (resetFieldCustomer === true) {
+            handleResetCustomerData();
+            setResetFieldCustomer(false);
+        }
+
+    }, [resetFieldCustomer === true])
     const [showOtherInput, setShowOtherInput] = useState(false);
     const handleSelectChange = (event) => {
         const selectedValue = event.target.value;
@@ -228,9 +238,10 @@ export const ArrivalForms = ({
     };
 
     const handleSearchCustomer = (e) => {
+        console.log("Search Customer : ", e)
         setQuery({
             ...query,
-            keyword: e.target.value,
+            keyword: e,
         });
 
     }
