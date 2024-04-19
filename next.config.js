@@ -2,6 +2,7 @@
 const path = require('path')
 
 const nextConfig = {
+    useFileSystemPublicRoutes: false,
     reactStrictMode: true,
     swcMinify: true,
     sassOptions: {
