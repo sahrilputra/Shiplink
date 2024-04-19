@@ -43,6 +43,7 @@ import { useRouter } from "next/navigation";
 import { RemovePackageDialog } from "../../lots/components/RemovePackageDialog";
 import { useTimeFormat } from "@/context/TimeFormatProvider";
 import moment from "moment";
+import { object } from "yup";
 export function LotsDetailsTable({
     data,
     setOpen,
@@ -58,6 +59,7 @@ export function LotsDetailsTable({
     lots_status,
     lotsStatus_id
 }) {
+    console.log("🚀 ~ data:", data)
     const { timeFormat, dateFormat } = useTimeFormat();
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState([]);
@@ -72,7 +74,8 @@ export function LotsDetailsTable({
             router.push(`/admin/transport/lots`)
         }
     }
-
+    // disabled={row.origial.status_id !== 6}
+    // disabled={table.origial.status_id !== 6}
     const columns = [
         {
             accessorKey: "select",
@@ -89,7 +92,6 @@ export function LotsDetailsTable({
                             }
                             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                             aria-label="Select all"
-                            disabled={lotsStatus_id === 5}
                         />
                     </div>
                 )
@@ -101,7 +103,7 @@ export function LotsDetailsTable({
                             checked={row.getIsSelected()}
                             onCheckedChange={(value) => row.toggleSelected(!!value)}
                             aria-label="Select row"
-                            disabled={lotsStatus_id === 5}
+                        // disabled={row.original.status_id !== 6}
                         />
                     </div>
                 )
@@ -196,6 +198,11 @@ export function LotsDetailsTable({
                     </>
                 );
             },
+        },
+        {
+            accessorKey: "status",
+            header: "Status",
+            size: 60,
         },
         {
             accessorKey: "updated_at",
@@ -314,7 +321,11 @@ export function LotsDetailsTable({
                         <Button
                             variant="secondary"
                             size="sm"
-                            disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
+                            disabled={
+                                Object.keys(table.getSelectedRowModel().rows).length === 0 ||
+                                Object.values(table.getSelectedRowModel().rows).some(row => row.status_id !== 6)
+                            }
+                            // disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
                             onClick={() => {
                                 setOpenBin(true);
                             }}
@@ -418,6 +429,8 @@ export function LotsDetailsTable({
             {
                 lotsStatus_id === 5 ? (
                     <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, While Lots in Transit</TableFooter>
+                ) : Object.values(table.getSelectedRowModel().rows).some(row => row.status_id !== 6) ? (
+                    <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, While package&apos;s status is not Arrived</TableFooter>
                 ) : (null)
             }
             <div className="flex justify-between w-full items-center mt-3 pb-2">
