@@ -78,7 +78,6 @@ export function CustomerTable({ data, open, setOpen }) {
         total: 0
     })
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -124,6 +123,7 @@ export function CustomerTable({ data, open, setOpen }) {
             }));
         }
     };
+    
 
     const handleSearchChange = (event) => {
         setQuery({
