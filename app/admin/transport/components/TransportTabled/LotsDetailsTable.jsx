@@ -293,8 +293,20 @@ export function LotsDetailsTable({
     const [openBin, setOpenBin] = useState(false);
     return (
         <>
-            <RemovePackageDialog open={openDelete} setOpen={setOpenDelete} lotsId={lostId} deleteId={deleteID} reload={reload} />
-            <BinDialog open={openBin} setOpen={setOpenBin} data={selectedItemsID} reload={handleReload} status={lots_status} />
+            <RemovePackageDialog
+                open={openDelete}
+                setOpen={setOpenDelete}
+                lotsId={lostId}
+                deleteId={deleteID}
+                reload={reload}
+            />
+            <BinDialog
+                open={openBin}
+                setOpen={setOpenBin}
+                data={selectedItemsID}
+                reload={handleReload}
+                status={lots_status}
+            />
             <div className="text-sm bg-white text-black pb-3">
                 <div className="flex flex-row justify-between">
                     <div className="wrap inline-flex gap-[10px] justify-evenly items-center">
@@ -323,7 +335,9 @@ export function LotsDetailsTable({
                             size="sm"
                             disabled={
                                 Object.keys(table.getSelectedRowModel().rows).length === 0 ||
-                                Object.values(table.getSelectedRowModel().rows).some(row => row.status_id !== 6)
+                                Object.values(table.getSelectedRowModel().rows).some(
+                                    (row) => row.original.status_id !== 21
+                                )
                             }
                             // disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
                             onClick={() => {
@@ -335,13 +349,14 @@ export function LotsDetailsTable({
                         <Button
                             variant="destructive"
                             size="sm"
-                            disabled={Object.keys(table.getSelectedRowModel().rows).length === 0}
+                            disabled={
+                                Object.keys(table.getSelectedRowModel().rows).length === 0
+                            }
                             onClick={handleRemovedPackage}
                         >
                             <span className="text-xs">Remove Package</span>
                         </Button>
                     </div>
-
                 </div>
             </div>
             <Table className=" rounded-md">
@@ -353,7 +368,12 @@ export function LotsDetailsTable({
                                 const isFirstHeader = index === 0;
                                 return (
                                     <TableHead
-                                        style={{ width: header.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : header.getSize() }}
+                                        style={{
+                                            width:
+                                                header.getSize() === Number.MAX_SAFE_INTEGER
+                                                    ? "auto"
+                                                    : header.getSize(),
+                                        }}
                                         key={header.id}
                                         className={`text-xs`}
                                     >
@@ -379,12 +399,11 @@ export function LotsDetailsTable({
                                             {columns.map((column, columnIndex) => (
                                                 <TableCell
                                                     key={columnIndex}
-
                                                     className={`${columnIndex === columns.length - 1
-                                                        ? "w-[30px]"
-                                                        : columnIndex === 0
-                                                            ? "w-[50px]"
-                                                            : ""
+                                                            ? "w-[30px]"
+                                                            : columnIndex === 0
+                                                                ? "w-[50px]"
+                                                                : ""
                                                         } text-xs`}
                                                 >
                                                     <Skeleton className={"w-full rounded h-[30px]"} />
@@ -415,10 +434,18 @@ export function LotsDetailsTable({
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell
                                         key={cell.id}
-                                        style={{ width: cell.column.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : cell.column.getSize() }}
+                                        style={{
+                                            width:
+                                                cell.column.getSize() === Number.MAX_SAFE_INTEGER
+                                                    ? "auto"
+                                                    : cell.column.getSize(),
+                                        }}
                                         className={` text-xs `}
                                     >
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
                                     </TableCell>
                                 ))}
                             </TableRow>
@@ -426,13 +453,18 @@ export function LotsDetailsTable({
                     )}
                 </TableBody>
             </Table>
-            {
-                lotsStatus_id === 5 ? (
-                    <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, While Lots in Transit</TableFooter>
-                ) : Object.values(table.getSelectedRowModel().rows).some(row => row.status_id !== 6) ? (
-                    <TableFooter className="text-xs bg-transparent px-3 py-2">Unable to move package&apos;s into Bin, While package&apos;s status is not Arrived</TableFooter>
-                ) : (null)
-            }
+            {lotsStatus_id === 5 ? (
+                <TableFooter className="text-xs bg-transparent px-3 py-2">
+                    Unable to move package&apos;s into Bin, While Lots in Transit
+                </TableFooter>
+            ) : Object.values(table.getSelectedRowModel().rows).some(
+                (row) => row.original.status_id !== 21
+            ) ? (
+                <TableFooter className="text-xs bg-transparent px-3 py-2">
+                    Unable to move package&apos;s into Bin, While package&apos;s status
+                    is not Arrived
+                </TableFooter>
+            ) : null}
             <div className="flex justify-between w-full items-center mt-3 pb-2">
                 <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
                     <Button
@@ -443,11 +475,11 @@ export function LotsDetailsTable({
                         <p>BACK</p>
                     </Button>
                 </div>
-                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                <Pagination className={"flex justify-end w-full items-center gap-2"}>
                     <div className="flex items-center gap-1 text-xs text-zinc-500">
                         <div>Page</div>
                         <strong>
-                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getState().pagination.pageIndex + 1} of{" "}
                             {table.getPageCount().toLocaleString()}
                         </strong>
                     </div>
@@ -485,10 +517,7 @@ export function LotsDetailsTable({
                     >
                         <ChevronsRightIcon className="h-4 w-4" />
                     </Button>
-                    <PaginationContent>
-
-
-                    </PaginationContent>
+                    <PaginationContent></PaginationContent>
                 </Pagination>
             </div>
         </>
