@@ -23,7 +23,16 @@ export const ExpandItems = (
     const countryCode = item?.country_code_destination?.slice(0, 2).toLowerCase() || "";
     return (
         <>
-            <PaymentsDialog open={openHoldPickup} setOpen={setOpenHoldPickup} trackingId={item?.tracking_id} key={item?.lots_id} reload={reload} type={"Hold Pickup"} toggleExpanded={toggleExpanded}  />
+            <PaymentsDialog
+                open={openHoldPickup}
+                setOpen={setOpenHoldPickup}
+                trackingId={item?.tracking_id}
+                key={item?.lots_id}
+                reload={reload}
+                type={"Hold Pickup"}
+                toggleExpanded={toggleExpanded}
+            />
+            
             <div className="flex flex-row justify-between items-center gap-5 relative pt-2 ">
                 <div className="justify-start items-center gap-[15px] flex">
                     <DetailsModals item={item} date={formattedDate} />

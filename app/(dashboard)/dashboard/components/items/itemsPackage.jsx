@@ -60,7 +60,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
         country_code_destination,
         country_name_destination,
     } = item;
-    console.log("🚀 ~ ItemsPackage ~ status:", status, status_forcustomer, tracking_id)
+    // console.log("🚀 ~ ItemsPackage ~ status:", status, status_forcustomer, tracking_id)
 
     const formattedDate = format(new Date(updated_at), 'dd MMM yyyy');
     const [isExpanded, setIsExpanded] = useState(false);
@@ -256,8 +256,9 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                                 <Checkbox />
                             </div>
                             <div className="w-[30px] h-[30px]">
-                                {/* <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
-                   */}
+                                {/*
+                                 <button aria-label="arrow" size='small' className={` ${isExpanded ? 'rotate-180' : ''}`} onClick={toggleExpanded}>
+                                */}
                                 <Button
                                     aria-label="arrow"
                                     variant="ghost"

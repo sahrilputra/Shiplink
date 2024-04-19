@@ -29,7 +29,7 @@ const GetPayments = async () => {
 }
 
 const stripePromise = GetPayments().then((publishableKey) => loadStripe(publishableKey));
-console.log("🚀 ~ stripePromise:", stripePromise)
+// console.log("🚀 ~ stripePromise:", stripePromise)
 
 
 export const CrossBorderPayments = (
@@ -70,8 +70,8 @@ export const CrossBorderPayments = (
     //     handlePayemnt();
     // }, [open])
 
-    console.log("BROKER: ", forms?.watch("warehouse"))
-    console.log("BROKER: ", forms?.watch("broker"))
+    // console.log("BROKER: ", forms?.watch("warehouse"))
+    // console.log("BROKER: ", forms?.watch("broker"))
     const appearance = {
         theme: 'stripe',
     };
@@ -201,9 +201,15 @@ export const CrossBorderPayments = (
         <>
             {
                 isSucess &&
-                <SucessPayemnts open={openSucess} setOpen={setOpenSucess(true)} />
+                <SucessPayemnts
+                    open={openSucess}
+                    setOpen={setOpenSucess(true)}
+                />
             }
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog
+                open={open}
+                onOpenChange={setOpen}
+            >
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
                         <p>Confirm Payments</p>

@@ -79,7 +79,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
     })
 
 
-    console.log("🚀 ~ TableDashboard ~ Errors:", form.errors); // Fix: Removed incomplete console.log statement
+    // console.log("🚀 ~ TableDashboard ~ Errors:", form.errors); // Fix: Removed incomplete console.log statement
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "package_content",
@@ -127,7 +127,7 @@ export const TableDashboard = ({ header, body, columns, toggleExpanded, tracking
             }
         });
     }
-  
+
 
     return (
         <>

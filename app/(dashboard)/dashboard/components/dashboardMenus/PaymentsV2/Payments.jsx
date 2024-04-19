@@ -42,7 +42,7 @@ export const PaymentsDialog = ({
   selectedBroker,
   toggleExpanded,
 }) => {
-  console.log("🚀 ~ trackingId:", trackingId)
+  // console.log("🚀 ~ trackingId:", trackingId)
   const toggleSelect = (selectedButtons) => {
     isSelected(selectedButtons);
   };
@@ -81,15 +81,19 @@ export const PaymentsDialog = ({
     setOpen(false);
   };
 
+
+  // +======== REFACTOR +========+
+
   useEffect(() => {
     const handleHoldPickup = async () => {
       try {
         axios
-          .post("/api/admin/actions/holdPickup", {
-            tracking_id: trackingId,
-          })
+          .post("/api/admin/actions/holdPickup",
+            {
+              tracking_id: trackingId,
+            })
           .then((response) => {
-            console.log("🚀 ~ ).then ~ response:", response);
+            console.log("🚀 ~ ).holdPickup ~ response :", response);
             setClientSecret(response.data.clientSecret);
             setTotalAmount(response.data.total);
             setServices(response.data.services);
@@ -107,14 +111,17 @@ export const PaymentsDialog = ({
       try {
         console.log("Watching broker : ", forms?.watch("broker"));
 
-        const response = await axios.post("/api/admin/actions/cross_border", {
-          tracking_id: trackingId,
-          broker: forms?.watch("broker"),
-          file_invoices: forms?.watch("invoice"),
-          warehouse_destination: forms?.watch("warehouse"),
-          entry_number: forms?.watch("entry_number"),
-          parspaps_number: forms?.watch("pars"),
-        });
+        const response = await axios.post(
+          "/api/admin/actions/cross_border",
+          {
+            tracking_id: trackingId,
+            broker: forms?.watch("broker"),
+            file_invoices: forms?.watch("invoice"),
+            warehouse_destination: forms?.watch("warehouse"),
+            entry_number: forms?.watch("entry_number"),
+            parspaps_number: forms?.watch("pars"),
+          }
+        );
 
         console.log("🚀 ~ handleCrossBorder ~ response:", response);
         if (response.status === 200) {
@@ -140,8 +147,68 @@ export const PaymentsDialog = ({
   }, [open, type, forms, selectedBroker, trackingId]);
 
 
+  // READY +============+ 
+  // useEffect(() => {
+  //   const handleHoldPickup = async () => {
+  //     try {
+  //       axios
+  //         .post("/api/admin/actions/holdPickup", {
+  //           tracking_id: trackingId,
+  //         })
+  //         .then((response) => {
+  //           console.log("🚀 ~ ).then ~ response:", response);
+  //           setClientSecret(response.data.clientSecret);
+  //           setTotalAmount(response.data.total);
+  //           setServices(response.data.services);
+  //         })
+  //         .catch((error) => {
+  //           console.log("🚀 ~ ).catch ~ error:", error);
+  //         });
+  //     } catch (error) {
+  //       console.log("🚀 ~ ).catch ~ error:", error);
+  //     }
+  //   };
 
-  console.log("WATHCING :", forms?.watch("package_content"));
+  //   const handleCrossBorder = async () => {
+  //     console.log("running");
+  //     try {
+  //       console.log("Watching broker : ", forms?.watch("broker"));
+
+  //       const response = await axios.post("/api/admin/actions/cross_border", {
+  //         tracking_id: trackingId,
+  //         broker: forms?.watch("broker"),
+  //         file_invoices: forms?.watch("invoice"),
+  //         warehouse_destination: forms?.watch("warehouse"),
+  //         entry_number: forms?.watch("entry_number"),
+  //         parspaps_number: forms?.watch("pars"),
+  //       });
+
+  //       console.log("🚀 ~ handleCrossBorder ~ response:", response);
+  //       if (response.status === 200) {
+  //         console.log("🚀 ~ handleCrossBorder ~ SUCESS:");
+  //         setClientSecret(response.data.clientSecret);
+  //         setTotalAmount(response.data.total);
+  //         setServices(response.data.services);
+  //       } else {
+  //         console.log("🚀 ~ handleCrossBorder ~ FAIL:");
+  //       }
+  //     } catch (error) {
+  //       console.log("🚀 ~ ).catch ~ error:", error);
+  //     }
+  //   };
+
+  //   if (open === true || open === "true") {
+  //     if (type === "Hold Pickup") {
+  //       handleHoldPickup();
+  //     } else if (type === "CrossBorder") {
+  //       handleCrossBorder();
+  //     }
+  //   }
+  // }, [open, type, forms, selectedBroker, trackingId]);
+
+
+
+  // console.log("WATHCING :", forms?.watch("package_content"));
   const handleSubmitForms = async () => {
     try {
       const dataToSend = forms?.watch("package_content").map((item) => {
@@ -207,22 +274,24 @@ export const PaymentsDialog = ({
             <p>Confirm Payments</p>
           </DialogHeader>
           <div className="App">
-            {paymentStatus === "succeeded" && (
-              <div className="flex flex-col gap-3 items-center">
-                <CheckCircle width={100} height={100} className="text-greenStatus " />
-                <p className="text-2xl">Success</p>
-                <p className="text-xs">{message}</p>
-              </div>
-            )}
-            {paymentStatus === "failed" && (
-              <div className="modal">
+            {
+              paymentStatus === "succeeded" && (
                 <div className="flex flex-col gap-3 items-center">
-                  <XCircleIcon width={100} height={100} className="text-red-700 " />
-                  <p className="text-2xl">Failed</p>
+                  <CheckCircle width={100} height={100} className="text-greenStatus " />
+                  <p className="text-2xl">Success</p>
                   <p className="text-xs">{message}</p>
                 </div>
-              </div>
-            )}
+              )}
+            {
+              paymentStatus === "failed" && (
+                <div className="modal">
+                  <div className="flex flex-col gap-3 items-center">
+                    <XCircleIcon width={100} height={100} className="text-red-700 " />
+                    <p className="text-2xl">Failed</p>
+                    <p className="text-xs">{message}</p>
+                  </div>
+                </div>
+              )}
           </div>
         </DialogContent>
       </Dialog>
