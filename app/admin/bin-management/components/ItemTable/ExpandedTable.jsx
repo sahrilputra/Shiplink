@@ -4,8 +4,12 @@ import { Button } from '@/components/ui/button'
 import axios from "axios";
 import { useToast } from '@/components/ui/use-toast';
 import NextLink from 'next/link'
+import { useTimeFormat } from '@/context/TimeFormatProvider'
+import moment from "moment";
+
 export const ExpandedTable = ({ data, pakcage_id, setExpandedRows }) => {
     const { toast } = useToast()
+    const { timeFormat, dateFormat } = useTimeFormat();
     const handleDepartLots = async () => {
         setExpandedRows([])
         const response = await axios.post(
@@ -38,7 +42,7 @@ export const ExpandedTable = ({ data, pakcage_id, setExpandedRows }) => {
                 <TableBody>
                     <TableRow className="text-xs bg-white">
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2 border-none">
-                            <p>{data?.updated_at || "-"}</p>
+                            <p>{moment(data?.updated_at).format(`${dateFormat}, ${timeFormat}`) || "-"}</p>
                         </TableCell>
                         <TableCell className="font-medium text-xs p-0 h-7 px-5 py-2 border-none">
                             <p>{data?.entry_number || "-"}</p>
