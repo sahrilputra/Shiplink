@@ -111,7 +111,7 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                 formData
             );
 
-            if (response.data.message === false) {
+            if (response.data.status === false) {
                 toast({
                     title: `Error ${response.data.message}!`,
                     status: 'Error',
@@ -230,7 +230,7 @@ export const NewCustomerForms = ({ close, data = null, reload, setLoading }) => 
                                         <PopoverContent className="w-[400px] p-0">
                                             <Command className="w-full">
                                                 <CommandInput
-                                                   onValueChange={(e) => handleCommandChange(e)}
+                                                    onValueChange={(e) => handleCommandChange(e)}
                                                     placeholder="Search Country..."
                                                     className="h-9 w-full text-xs"
                                                 />

@@ -227,6 +227,14 @@ export const ArrivalForms = ({
         }
     };
 
+    const handleSearchCustomer = (e) => {
+        setQuery({
+            ...query,
+            keyword: e.target.value,
+        });
+
+    }
+
     useEffect(() => {
         fetchData();
     }, [query]);
@@ -268,6 +276,7 @@ export const ArrivalForms = ({
                                             <PopoverContent className="w-[500px] p-0">
                                                 <Command className=" bg-blue-100">
                                                     <CommandInput
+                                                        onValueChange={(e) => handleSearchCustomer(e)}
                                                         placeholder="Search..."
                                                         className="h-[30px] text-xs"
                                                     />
