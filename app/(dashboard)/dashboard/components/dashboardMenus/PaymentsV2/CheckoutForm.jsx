@@ -118,6 +118,11 @@ export default function CheckoutForm(
     //     }, 3000)
     // };
 
+    const handleClose = (e) => {
+        e.preventDefault();
+        close()
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -213,10 +218,9 @@ export default function CheckoutForm(
                         variant="redOutline"
                         size="sm"
                         className=" w-full text-xs"
-                        onClick={() => {
-                            close();
-                        }}
+                        onClick={handleClose}
                         disabled={!stripe}
+                        type="button"
                     >
                         Cancel
                     </Button>

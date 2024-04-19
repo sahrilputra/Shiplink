@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+
 import * as yup from 'yup'
 import { Toast } from '@/components/ui/toast'
 import { Button } from '@/components/ui/button'
@@ -241,7 +242,7 @@ export const PaymentsDialog = ({
 
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={setOpen} modal={true}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <p>Confirm Payments</p>
