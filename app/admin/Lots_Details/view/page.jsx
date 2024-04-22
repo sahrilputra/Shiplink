@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { PrintDocument } from '../components/Docs/PrintDocument'
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 function ViewLotsDocs() {
@@ -43,9 +44,11 @@ function ViewLotsDocs() {
     }, [lotsQuery, myParam])
 
     return (
-        <div style={{ width: "100%", height: "100vh" }} className="">
-            <PrintDocument data={lotsData} lots_id={myParam} />
-        </div>
+        <Suspense>
+            <div style={{ width: "100%", height: "100vh" }} className="">
+                <PrintDocument data={lotsData} lots_id={myParam} />
+            </div>
+        </Suspense>
     )
 }
 

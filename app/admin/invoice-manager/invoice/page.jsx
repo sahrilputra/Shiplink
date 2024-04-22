@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import styles from '../styles.module.scss'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image';
@@ -44,10 +44,12 @@ export default function NewInvoice() {
         }
     }, [query, package_id]);
     return (
-        <>
-            <div className={styles.forms}>
-                <InvoiceForms customer={myParam} data={data} />
-            </div>
-        </>
+        <Suspense>
+            <>
+                <div className={styles.forms}>
+                    <InvoiceForms customer={myParam} data={data} />
+                </div>
+            </>
+        </Suspense>
     )
 }

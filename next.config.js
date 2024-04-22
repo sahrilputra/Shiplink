@@ -2,13 +2,13 @@
 const path = require('path')
 
 const nextConfig = {
+    output: "standalone",
     reactStrictMode: true,
     swcMinify: true,
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
         prependData: `@import "base.scss";`,
     },
-    rejectUnauthorized: false,
     images: {
         remotePatterns: [
             {
@@ -19,7 +19,7 @@ const nextConfig = {
 
             },
         ],
-    }
+    },
 }
 
 module.exports = nextConfig
