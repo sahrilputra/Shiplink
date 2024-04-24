@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { signIn, useSession } from "next-auth/react";
 import { Loaders } from "@/components/ui/loaders";
 import { MailOpen } from "lucide-react";
@@ -43,7 +43,7 @@ export default function Home() {
                 `/api/customerAPI/resendVerification`,
                 {
                     email: myParam,
-                    redirect_url: 'https://slc.webelectron.com/auth/verification'
+                    redirect_url: 'https://slc.webelectron.com/admin-login/verification'
                 }
             ).then((response) => {
                 console.log("🚀 ~ ).then ~ response:", response.status)
@@ -81,7 +81,7 @@ export default function Home() {
                 loading && <Loaders />
             }
             {/* <EmailDiallog open={open} setOpen={setOpen} /> */}
-            <div className="flex flex-col text-center pt-[90px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE] ">
+            <div className="flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]">
                 <div className="flex flex-col gap-5 py-10">
                     <div className="text-myBlue text-lg font-bold">Please Check Your Email</div>
                     <div className="text-zinc-600 text-3xl font-bold">Confirmation Your Email</div>
@@ -96,7 +96,7 @@ export default function Home() {
                             <p>Please Follow the link in your email to confimation your email</p>
                         </div>
                         <div className="py-3">
-                            <p>Didnt get email yet ? <div onClick={() => handleSubmit()} className="text-red-600 cursor-pointer">Resend Email</div></p>
+                            <p>Didn&apos;t get email yet ? <div onClick={() => handleSubmit()} className="text-red-600 cursor-pointer">Resend Email</div></p>
                         </div>
                     </div>
                 </div>

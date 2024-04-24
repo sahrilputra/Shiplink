@@ -9,13 +9,14 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            email
+            email,
+            redirect_url,
         } = await request.json();
 
         console.log("🚀 ~ GET ~ email:", email)
 
         const response = await axios.get(
-            `${process.env.API_URL}/Auth/ResendVerificationUser?email=${email}`,
+            `${process.env.API_URL}/Auth/ResendVerificationUser?email=${email}&redirect_url=${redirect_url}`,
             {
                 httpsAgent: agent
             }
