@@ -66,7 +66,7 @@ export default function ResetPassword({ params }) {
                 console.log(response)
                 setLoading(false)
                 setVerificationStatus(response.data.message)
-                // router.push('/auth/login')
+                router.push('/auth/login')
             } else {
                 toast({
                     description: response.data.message,

@@ -24,10 +24,21 @@ export function CustomBrokerDropdownMenus({
     reload,
     documents,
 }) {
+    console.log("🚀 ~ documents:", documents)
+    // Menggunakan nilai awal langsung untuk useState
+    const [documentsData, setDocumentsData] = useState(documents ? documents.split(',') : []);
+
+    useEffect(() => {
+        // Periksa apakah documents adalah string sebelum membaginya menjadi array
+        if (typeof documents === 'string') {
+            setDocumentsData(documents.split(','));
+        }
+    }, [documents]);
+
     const { toast } = useToast();
     console.log("DataID", dataID);
     const [statusList, setStatusList] = useState([]);
-    
+
     const handleSave = async (id) => {
         console.log("dikirim", id);
         setIsSkeleton(true);
@@ -72,18 +83,26 @@ export function CustomBrokerDropdownMenus({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
-                    <NextLink
-                        href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${documents}`}
-                        passHref
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <DropdownMenuItem className="text-xs text-myBlue">
-                            View Lot Documents
-                        </DropdownMenuItem>
-                    </NextLink>
+                    {
+                        documentsData.map((item, index) => {
+                            return (
+                                <NextLink
+                                    key={index}
+                                    href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${item}`}
+                                    passHref
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <DropdownMenuItem className="text-xs text-myBlue">
+                                        Lot Documents {index + 1}
+                                    </DropdownMenuItem>
+                                </NextLink>
+                            )
+                        })
+                    }
 
-                    <NextLink href={`/admin/transport/lots/${dataID}`} passHref>
+
+                    <NextLink href={`/admin/Lots_Details/${dataID}`} passHref>
                         <DropdownMenuItem className="text-xs">
                             Lot Details
                         </DropdownMenuItem>
