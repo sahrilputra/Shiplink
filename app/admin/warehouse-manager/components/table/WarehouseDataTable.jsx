@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MoreHorizontalIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon } from "lucide-react";
 import { NewWarehouseDialog } from "../dialog/NewWarehouseDialog";
 import NextLink from "next/link";
 import { WarehouseMenus } from "../menus/WarehouseMenus";
@@ -69,9 +69,19 @@ export function WarehouseDataList({ setWrTotal }) {
     const [query, setQuery] = useState({
         keyword: "",
         page: 1,
-        limit: 0,
-        index: 0
+        limit: 10,
+        index: 0,
     });
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+    const [rowTotalData, setRowTotalData] = useState({
+        page_limit: 0,
+        page_total: 0,
+        total: 0
+    })
 
     const fetchData = async () => {
         try {
@@ -83,6 +93,15 @@ export function WarehouseDataList({ setWrTotal }) {
             const data = await response.data;
             setWarehouse(data.warehouse);
             setIsSkeleton(false);
+            setRowTotalData({
+                page_limit: data.page_limit,
+                page_total: data.page_total,
+                total: data.total
+            });
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageSize: data.page_limit,
+            }));
             console.log('warehouse.length()', data.total)
             setWrTotal(data.total);
         } catch (error) {
@@ -205,6 +224,10 @@ export function WarehouseDataList({ setWrTotal }) {
     const table = useReactTable({
         data: warehouse,
         columns,
+        manualPagination: true,
+        pageCount: rowTotalData.page_total,
+        rowCount: rowTotalData.page_limit,
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -216,6 +239,21 @@ export function WarehouseDataList({ setWrTotal }) {
         },
 
     });
+
+    const handlerPaginationChange = (page) => {
+        if (page >= 0) {
+            console.log("🚀 ~ handlerPaginationChange ~ page:", page);
+            setPagination(prevPagination => ({
+                ...prevPagination,
+                pageIndex: page,
+            }));
+            setQuery(prevQuery => ({
+                ...prevQuery,
+                page: page,
+                index: page * prevQuery.limit
+            }));
+        }
+    };
 
     console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.warehouse_id));
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.warehouse_id);
@@ -286,18 +324,18 @@ export function WarehouseDataList({ setWrTotal }) {
                     {
                         Object.keys(rowSelection).length === 0 ? (
                             <Button
-                                variant="destructive"
+                                variant="secondary"
                                 size="sm"
-                                className='border border-zinc-300 flex items-center rounded'
+                                className="w-[120px] text-xs"
                                 onClick={() => handleNewDilog()}
                             >
-                                <p>New Warehouse</p>
+                                <p className=" text-xs">New Warehouse</p>
                             </Button>
                         ) : (
                             <Button
                                 variant="destructive"
                                 size="sm"
-                                className="w-[100px]"
+                                className="w-[120px] text-xs"
                                 onClick={() => setDeleteMuchDialog(true)}
                             >
                                 <p className=" text-xs">Delete</p>
@@ -379,34 +417,61 @@ export function WarehouseDataList({ setWrTotal }) {
             </Table>
 
 
-            <div className="flex justify-end w-full items-end py-3">
-                <Pagination className={'flex justify-end w-full items-end'}>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"cursor-pointer"}
-                                onClick={() => table.setPageIndex(0)}
-                                disabled={!table.getCanPreviousPage()}
-                            />
-                        </PaginationItem>
-                        {/* {Array.from({ length: table.getPageCount() }, (_, i) => i + 1).map((pageNumber) => (
-                            <PaginationItem key={pageNumber}>
-                                <PaginationLink
-                                    className={"cursor-pointer"}
-                                    onClick={() => table.setPageIndex(pageNumber - 1)}
-                                >
-                                    {pageNumber}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))} */}
-                        <PaginationItem>
-                            <PaginationNext
-                                className={"cursor-pointer"}
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
+            <div className="flex justify-between w-full items-center mt-2 pb-1 px-4 ">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div>
+                </div>
+                <Pagination className={"flex justify-end w-full items-center gap-2"}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{" "}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
+                    <Button
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronsLeftIcon className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
                 </Pagination>
             </div>
         </>

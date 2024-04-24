@@ -18,6 +18,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useToast } from "@/components/ui/use-toast";
+import styles from '../../styles.module.scss'
 import { Loaders } from "@/components/ui/loaders";
 
 const agent = new https.Agent({
@@ -85,12 +86,13 @@ export default function ResetPassword({ params }) {
     return (
         <>
             {loading && <Loaders />}
-            <div className="flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]">
-                <div className="flex flex-col gap-5 py-10">
-                    {/* <div className="text-myBlue text-lg font-bold">Reset Your Password</div> */}
-                    <div className="text-myBlue text-3xl font-bold">Reset Your Password</div>
-                </div>
-                <div className="p-10 bg-white rounded-md  border shadow-md  flex flex-col sm:w-max md:w-[640px]">
+            <div className={`${styles.main} flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]`}>
+
+                <div className="py-6 px-10 bg-white rounded-md  border shadow-md  flex flex-col sm:w-max md:w-[640px]">
+                    <div className="flex flex-col gap-2 py-3">
+                        <div className="text-myBlue text-3xl font-bold">Reset Your Password</div>
+                    </div>
+
                     <div className="text-myBlue text-lg font-bold">{errorHeader}</div>
                     <Form {...form}>
                         <form
@@ -110,6 +112,7 @@ export default function ResetPassword({ params }) {
                                                 <Input
                                                     className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
                                                     type='password'
+                                                    autoComplete="off"
                                                     placeholder="Password"
                                                     {...field}
                                                 />
@@ -131,6 +134,7 @@ export default function ResetPassword({ params }) {
                                                 <Input
                                                     className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
                                                     type='password'
+                                                    autoComplete="off"
                                                     placeholder="Password"
                                                     {...field}
                                                 />
@@ -142,7 +146,7 @@ export default function ResetPassword({ params }) {
                             />
                             <div className="w-full py-2">
                                 <Button
-                                    variant="secondary"
+                                    variant="destructive"
                                     type="submit"
                                     className="w-full">
                                     <p className="text-base">Sent</p>

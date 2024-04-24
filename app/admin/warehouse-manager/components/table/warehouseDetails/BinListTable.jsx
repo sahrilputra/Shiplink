@@ -28,7 +28,8 @@ import {
 import { Pagination } from "@/components/ui/pagination";
 import { MoreHorizontalIcon } from "lucide-react";
 
-export function WarehouseBinDataList({ data, isOpen, setOpen, }) {
+export function WarehouseBinDataList({ data }) {
+console.log("🚀 ~ WarehouseBinDataList ~ data:", data)
 
 
     const columns = [

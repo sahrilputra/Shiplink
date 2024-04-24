@@ -12,6 +12,8 @@ import { signIn, useSession, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
+import styles from './styles.module.scss'
 import {
     Form,
     FormControl,
@@ -172,12 +174,12 @@ export default function Home() {
     return (
         <>
             {loading && <Loaders />}
-            <div className="flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]">
-                <div className="flex flex-col gap-5 py-10">
-                    <div className="text-myBlue text-lg font-bold">Admin Log In</div>
-                    <div className="text-zinc-600 text-3xl font-bold">Hello Admin!</div>
-                </div>
-                <div className="p-10 bg-white rounded-md w-[640px] border shadow-md ">
+            <div className={`${styles.main} flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]`}>
+                <div className="py-6 px-10 bg-white rounded-md  border shadow-md relative z-10 lg:w-[640px] md:max-w-screen ">
+                    <div className="flex flex-col gap-2 py-3">
+                        <div className="text-zinc-600 text-lg font-bold">Admin Log In</div>
+                        <div className="text-myBlue text-3xl font-bold">Hello Admin!</div>
+                    </div>
                     <Form {...form}>
                         <form
                             className='gap-8  flex flex-col'
@@ -227,7 +229,7 @@ export default function Home() {
                                 )}
                             />
 
-                            <div className="flex flex-row justify-between items-center py-2 px-1">
+                            <div className="flex flex-col gap-3 justify-between items-center flex-wrap py-2 px-1 md:flex-row">
                                 <div className="flex flex-row gap-2 ">
                                     <FormField
                                         className="w-full flex flex-row items-center py-2 px-1"
@@ -254,25 +256,24 @@ export default function Home() {
                                         <p className="text-base text-red-700 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                             Forget password?
                                         </p>
-
                                     </Link>
 
                                 </div>
                             </div>
                             <div className="w-full py-3 flex flex-col gap-2">
                                 <Button
-                                    variant="secondary"
+                                    variant="destructive"
                                     type="sumbit"
                                     className="w-full">
-                                    <p className="text-base">login</p>
+                                    <p className="text-base">Login</p>
                                 </Button>
                             </div>
                         </form>
                     </Form>
-
-
                 </div>
             </div>
+
+
         </>
     )
 }

@@ -11,6 +11,7 @@ import { getSession } from "next-auth/react";
 import { Loaders } from "@/components/ui/loaders";
 import { useForm } from 'react-hook-form'
 import axios from "axios";
+import styles from '../styles.module.scss'
 import {
     Form,
     FormControl,
@@ -87,13 +88,15 @@ export default function Home() {
             {
                 loading && <Loaders />
             }
-            <div className="flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]">
-                <div className="flex flex-col gap-5 py-10">
-                    <div className="text-myBlue text-lg font-bold">Forgot Password?</div>
-                    <div className="text-zinc-600 text-3xl font-bold">Please enter your email to get the activation code </div>
-                </div>
-                <div className="p-10 bg-white rounded-md  border shadow-md flex flex-col justify-start sm:w-max md:w-[640px]">
-                    <div className="text-myBlue text-lg font-bold">{messageStatus}</div>
+            <div className={`${styles.main} flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]`}>
+
+                <div className="py-6 px-10 bg-white rounded-md  border shadow-md flex flex-col justify-start sm:w-max md:w-[640px]">
+                    <div className="flex flex-col gap-2 py-3">
+                        <div className=" text-zinc-600 text-lg font-bold">Forgot Password?</div>
+                        <div className=" text-myBlue text-3xl font-bold">Please enter your email to get the activation code </div>
+                    </div>
+
+                    <div className="text-red-600 text-lg font-bold">{messageStatus}</div>
 
                     <Form {...form}>
                         <form
@@ -122,13 +125,25 @@ export default function Home() {
                                     </>
                                 )}
                             />
-                            <div className="w-full py-2">
+                            <div className="w-full flex flex-row gap-4 py-2">
                                 <Button
-                                    variant="secondary"
+                                    variant="redOutline"
+                                    className="w-full"
+                                    type="button"
+                                    onClick={() => router.push('/admin-login')}
+                                >
+                                    <p className="text-base">Back</p>
+                                </Button>
+
+                                <Button
+                                    variant="destructive"
                                     type="submit"
-                                    className="w-full">
+                                    className="w-full"
+                                >
                                     <p className="text-base">Sent</p>
                                 </Button>
+
+
                             </div>
                         </form>
                     </Form>

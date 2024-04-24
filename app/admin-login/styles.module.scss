@@ -7,3 +7,12 @@
     justify-content: center;
     align-items: center;
 }
+
+.main{
+    background-image: url('/assets/waveBg.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position: bottom 30px;
+    width: 100%;
+}
