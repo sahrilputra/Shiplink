@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from 'next/navigation';
 import { signIn, useSession, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
+import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast";
 import {
     Form,
@@ -79,7 +80,7 @@ export default function Home() {
                         const role = users.role
                         const role_id = users.role_id
                         const warehouse_id = users.warehouse_id
-                        const name = users.username
+                        const name = permission.user.name
                         const warehouse_name = users.warehouse_name
                         const img = users.profile_picture
                         signIn('credentials', {
@@ -95,13 +96,16 @@ export default function Home() {
                             warehouse_name: warehouse_name,
                             img: img,
                             name: name,
+                            redirect: true,
+                            callbackUrl: '/admin/package-details'
                         });
+
                         toast({
                             title: 'Login Success',
-                            description: 'Redirecting to dashboard',
+                            description: 'Redirecting to Admin Dashboard',
                             type: 'success',
                         })
-                        router.push('/admin/arrival-scan');
+                        router.push('/admin/package-details');
                     }
                     if (responseMessage === "Unverified") {
                         console.log("UNVERIFID EMAIL")
@@ -168,7 +172,7 @@ export default function Home() {
     return (
         <>
             {loading && <Loaders />}
-            <div className="flex flex-col text-center pt-[90px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]">
+            <div className="flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]">
                 <div className="flex flex-col gap-5 py-10">
                     <div className="text-myBlue text-lg font-bold">Admin Log In</div>
                     <div className="text-zinc-600 text-3xl font-bold">Hello Admin!</div>
@@ -246,9 +250,12 @@ export default function Home() {
                                     />
                                 </div>
                                 <div className="flex flex-row gap-2 items-center">
-                                    <p className="text-base text-red-700 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        Forget password?
-                                    </p>
+                                    <Link passHref href={'/admin-login/reset_password'}>
+                                        <p className="text-base text-red-700 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                            Forget password?
+                                        </p>
+
+                                    </Link>
 
                                 </div>
                             </div>

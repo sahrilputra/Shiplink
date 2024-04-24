@@ -38,11 +38,14 @@ export const AdminNavbars = () => {
     const [loading, setLoading] = useState(true);
 
     const [userimg, setUserimg] = useState(session?.user?.img);
-    const hanldeLogout = () => {
-        signOut()
-        router.push('/auth/admin')
+
+    const hanldeLogout = async (e) => {
+        await signOut({
+            redirect: true,
+            callbackUrl: '/admin-login'
+        })
     }
-    // Contoh penggunaan useEffect untuk mensimulasikan proses loading
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
@@ -185,7 +188,7 @@ export const AdminNavbars = () => {
                         <DropdownMenuPortal forceMount>
                             <DropdownMenuContent className="border border-gray-200" >
                                 <DropdownMenuItem className="flex justify-between flex-col cursor-pointer" >
-                                    <Link href="/#" passHref>
+                                    <Link href={`/admin/user-permission/profiles/${session?.user?.code}`} passHref>
                                         <div className="flex flex-row justify-between gap-2 w-[170px]">
                                             <p>Account Setting</p>
                                             <Settings width={20} height={20} />
@@ -193,16 +196,15 @@ export const AdminNavbars = () => {
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
+                                    type="button"
                                     onClick={() => hanldeLogout()}
                                     className="flex justify-between flex-col cursor-pointer"
                                 >
-                                    <div>
-                                        <div
-                                            className="flex flex-row justify-between gap-2 w-[170px]"
-                                        >
-                                            <p>Logout</p>
-                                            <LogOut width={20} height={20} />
-                                        </div>
+                                    <div
+                                        className="flex flex-row justify-between gap-2 w-[170px]"
+                                    >
+                                        <p>Logout</p>
+                                        <LogOut width={20} height={20} />
                                     </div>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>

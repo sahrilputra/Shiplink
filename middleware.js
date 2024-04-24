@@ -14,7 +14,7 @@ export async function middleware(request) {
         return NextResponse.redirect(`${url.origin}/auth/login`)
     }
     if (session?.type === 'admin') {
-        return NextResponse.redirect(`${url.origin}/admin/configuration`)
+        return NextResponse.redirect(`${url.origin}/admin/package-details`)
     }
 
     return res;

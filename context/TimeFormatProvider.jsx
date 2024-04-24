@@ -9,7 +9,7 @@ export const TimeFormatProvider = ({ children }) => {
   const [timeFormat, setTimeFormat] = useState(() => {
     try {
       if (typeof window !== 'undefined') {
-        return localStorage.getItem('timeFormat') || 'HH:mm:ss';
+        return localStorage.getItem('timeFormat') || 'hh:mm:ss A';
       }
     } catch (e) {
       console.log(e)
