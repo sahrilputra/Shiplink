@@ -55,7 +55,8 @@ export default function Home() {
             const response = await axios.post(
                 '/api/customerAPI/resetPassword',
                 {
-                    email: form.watch('email')
+                    email: form.watch('email'),
+                    redirect: 'https://slc.webelectron.com/auth/reset_password'
                 }
             )
             setLoading(false)

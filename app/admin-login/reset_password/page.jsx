@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { signIn, useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import { Loaders } from "@/components/ui/loaders";
@@ -55,7 +55,8 @@ export default function Home() {
             const response = await axios.post(
                 '/api/customerAPI/resetPassword',
                 {
-                    email: form.watch('email')
+                    email: form.watch('email'),
+                    redirect: 'https://slc.webelectron.com/admin-login/reset_password'
                 }
             )
             setLoading(false)
