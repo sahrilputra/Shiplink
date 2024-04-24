@@ -56,11 +56,11 @@ export default function ResetPassword({ params }) {
                 },
             )
             console.log("Response from API", response)
-            if (response.status === 200) {
+            if (response.data.status === true) {
                 console.log(response)
                 setLoading(false)
                 setVerificationStatus(response.data.message)
-                // router.push('/auth/login')
+                router.push('/auth/login')
             } else {
                 console.log(error)
                 setLoading(false)
