@@ -1,42 +1,16 @@
 'use client'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles.module.scss';
 import { PromoOne } from '@/components/ads/promoOne';
 import { SearchIcon } from '@/components/icons/iconCollection';
 import { ForwadPakage } from '../dashboard/components/dashboardMenus/ForwadPakage';
 import { Button } from '@/components/ui/button';
-import ItemsPackage from '../dashboard/components/items/itemsPackage';
-import { PaymentModals } from '../dashboard/components/dashboardMenus/payments/paymentModals';
-import { ModalContext } from '@/context/ModalContext';
-import data from '../../../data/dashboardData.json'
+
 import NextLink from 'next/link'
 import axios from 'axios'
 export default function ShippingLebel() {
 
-    const { isOpen, openModal, closeModal } = useContext(ModalContext);
     const [selectedTab, setSelectedTab] = useState("all");
-
-    const [data, setData] = useState([])
-    const [query, setQuery] = useState({
-        keyword: "",
-        date_start: "",
-        date_end: "",
-        tracking_id: "",
-        status: "",
-        page: 0,
-        limit: 0,
-        index: 0,
-    })
-    useEffect(() => {
-        axios.post(`/api/admin/packages/list`, query)
-            .then(response => {
-                // console.log(response.data)
-                setData(response.data.package_info)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    })
 
     const [expandedItemId, setExpandedItemId] = useState(null);
 
@@ -55,10 +29,6 @@ export default function ShippingLebel() {
     }
 
 
-    console.log("isOpen", isOpen);
-    console.log("openModal", openModal);
-    console.log("closeModal", closeModal);
-
 
     const [selectedButton, setSelectedButton] = useState(null);
     const handleButtonClick = (buttonName) => {
@@ -69,7 +39,6 @@ export default function ShippingLebel() {
     return (
         <>
 
-            <PaymentModals isOpen={isOpen} isClose={closeModal} />
             <div className={styles.main}>
                 <div className={styles.header}>
                     <div className={styles.tabs}>
@@ -88,29 +57,13 @@ export default function ShippingLebel() {
                             <NextLink href={"/shipping-lebels/new-labels"} >
                                 <Button
                                     variant="destructive"
-                                    className="h-10 px-10 text-xs"
+                                    size="xs"
+                                    className="h-10 px-5 text-xs"
                                 >
                                     <p>New Shipping label</p>
                                 </Button>
                             </NextLink>
                         </div>
-                    </div>
-                </div>
-                <div className={styles.item_container}>
-                    <div className={styles.items}>
-                        {
-                            data.map((item, i) => (
-                                <ItemsPackage
-                                    key={i}
-                                    onClickButton={handleButtonClick}
-                                    item={item}
-                                    onExpand={toggleExpand}
-                                    isExpand={expandedItemId === item.tracking_id}
-                                />
-                            ))
-                        }
-                        {/* <ItemsPackage />
-                        <ItemsPackage /> */}
                     </div>
                 </div>
             </div>
