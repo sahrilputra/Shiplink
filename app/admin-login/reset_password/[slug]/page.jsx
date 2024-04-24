@@ -87,13 +87,13 @@ export default function ResetPassword({ params }) {
         <>
             {loading && <Loaders />}
             <div className={`${styles.main} flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]`}>
+                <div className="py-6 px-10 bg-white rounded-md  border shadow-md relative z-10 w-[90%]  md:w-[540px] ">
 
-                <div className="py-6 px-10 bg-white rounded-md  border shadow-md  flex flex-col sm:w-max md:w-[640px]">
-                    <div className="flex flex-col gap-2 py-3">
-                        <div className="text-myBlue text-3xl font-bold">Reset Your Password</div>
+                    <div className="flex flex-col gap-1 py-3">
+                        <div className="text-myBlue text-lg font-bold">Reset Your Password</div>
+                        <div className="text-red-600 text-sm font-bold">{errorHeader}</div>
                     </div>
 
-                    <div className="text-myBlue text-lg font-bold">{errorHeader}</div>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(handleSave)}
@@ -110,14 +110,14 @@ export default function ResetPassword({ params }) {
                                             <FormLabel className="text-sm">New Passowrd</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
+                                                    className="text-sm h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
                                                     type='password'
                                                     autoComplete="off"
                                                     placeholder="Password"
                                                     {...field}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -132,24 +132,27 @@ export default function ResetPassword({ params }) {
                                             <FormLabel className="text-sm">Confirmation Password</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
+                                                    className="text-sm h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
                                                     type='password'
                                                     autoComplete="off"
                                                     placeholder="Password"
                                                     {...field}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
                             />
+
                             <div className="w-full py-2">
                                 <Button
                                     variant="destructive"
                                     type="submit"
-                                    className="w-full">
-                                    <p className="text-base">Sent</p>
+                                    className="text-xs w-full"
+                                    size="sm"
+                                >
+                                    <p className="text-xs">Change</p>
                                 </Button>
                             </div>
                         </form>

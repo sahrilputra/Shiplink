@@ -89,11 +89,10 @@ export default function Home() {
                 loading && <Loaders />
             }
             <div className={`${styles.main} flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]`}>
-
-                <div className="py-6 px-10 bg-white rounded-md  border shadow-md flex flex-col justify-start sm:w-max md:w-[640px]">
-                    <div className="flex flex-col gap-2 py-3">
-                        <div className=" text-zinc-600 text-lg font-bold">Forgot Password?</div>
-                        <div className=" text-myBlue text-3xl font-bold">Please enter your email to get the activation code </div>
+                <div className="py-6 px-10 bg-white rounded-md  border shadow-md relative z-10 w-[90%]  md:w-[540px] ">
+                    <div className="flex flex-col gap-2 py-3  w-[90%] items-center justify-center mx-auto">
+                        <div className=" text-zinc-600 text-sm font-bold">Forgot Password?</div>
+                        <div className=" text-myBlue text-lg font-bold leading-5">Please enter your email to get the activation code </div>
                     </div>
 
                     <div className="text-red-600 text-lg font-bold">{messageStatus}</div>
@@ -101,7 +100,7 @@ export default function Home() {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className='gap-8  flex flex-col'
+                            className='gap-4  flex flex-col'
                             action=""
                         >
                             <FormField
@@ -114,7 +113,7 @@ export default function Home() {
                                             <FormLabel className="text-sm">Email</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
+                                                    className="text-sm h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
                                                     type='email'
                                                     placeholder="Email"
                                                     {...field}
@@ -128,19 +127,21 @@ export default function Home() {
                             <div className="w-full flex flex-row gap-4 py-2">
                                 <Button
                                     variant="redOutline"
-                                    className="w-full"
+                                    className="text-xs w-full"
+                                    size="sm"
                                     type="button"
                                     onClick={() => router.push('/admin-login')}
                                 >
-                                    <p className="text-base">Back</p>
+                                    <p className="text-xs">Back</p>
                                 </Button>
 
                                 <Button
                                     variant="destructive"
                                     type="submit"
-                                    className="w-full"
+                                    className="text-xs w-full"
+                                    size="sm"
                                 >
-                                    <p className="text-base">Sent</p>
+                                    <p className="text-xs">Sent</p>
                                 </Button>
 
 

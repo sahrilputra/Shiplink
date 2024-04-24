@@ -175,14 +175,14 @@ export default function Home() {
         <>
             {loading && <Loaders />}
             <div className={`${styles.main} flex flex-col text-center justify-center pb-[30px] items-center w-full h-[100vh] gap-[20px] bg-[#E3E7EE]`}>
-                <div className="py-6 px-10 bg-white rounded-md  border shadow-md relative z-10 lg:w-[640px] md:max-w-screen ">
+                <div className="py-6 px-10 bg-white rounded-md  border shadow-md relative z-10 w-[90%]  md:w-[540px] ">
                     <div className="flex flex-col gap-2 py-3">
-                        <div className="text-zinc-600 text-lg font-bold">Admin Log In</div>
-                        <div className="text-myBlue text-3xl font-bold">Hello Admin!</div>
+                        <div className="text-zinc-600 text-sm font-bold">Admin Log In</div>
+                        <div className="text-myBlue text-2xl font-bold">Hello Admin!</div>
                     </div>
                     <Form {...form}>
                         <form
-                            className='gap-8  flex flex-col'
+                            className='gap-4  flex flex-col'
                             action=""
                             onSubmit={handleSubmit}
                         >
@@ -192,11 +192,11 @@ export default function Home() {
                                 control={form.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full text-neutral-900 flex flex-col text-left">
+                                        <FormItem className="w-full text-xs text-neutral-900 flex flex-col text-left">
                                             <FormLabel className="text-sm">Username</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
+                                                    className=" h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full text-sm"
                                                     type='text'
                                                     placeholder="Username"
                                                     {...field}
@@ -217,7 +217,7 @@ export default function Home() {
                                             <FormLabel className="text-sm">Password</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="text-base h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full"
+                                                    className="h-15 px-2 border border-zinc-200 bg-zinc-200/50 rounded-md w-full text-sm"
                                                     type='password'
                                                     placeholder="Password"
                                                     {...field}
@@ -242,7 +242,7 @@ export default function Home() {
                                                         <Checkbox
                                                             checked={field.value}
                                                             onCheckedChange={field.onChange}
-                                                            id="remember" className="w-[20px] h-[20px]" />
+                                                            id="remember" className="w-[15px] h-[15px]" />
                                                     </FormControl>
                                                     <FormLabel className="text-sm">Remember me</FormLabel>
                                                 </FormItem>
@@ -253,7 +253,7 @@ export default function Home() {
                                 </div>
                                 <div className="flex flex-row gap-2 items-center">
                                     <Link passHref href={'/admin-login/reset_password'}>
-                                        <p className="text-base text-red-700 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        <p className="text-sm text-red-700 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                             Forget password?
                                         </p>
                                     </Link>
@@ -264,8 +264,9 @@ export default function Home() {
                                 <Button
                                     variant="destructive"
                                     type="sumbit"
+                                    size="sm"
                                     className="w-full">
-                                    <p className="text-base">Login</p>
+                                    <p className="text-xs">Login</p>
                                 </Button>
                             </div>
                         </form>
