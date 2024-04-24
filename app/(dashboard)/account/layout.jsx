@@ -16,7 +16,8 @@ export default function AccountLayout({ children }) {
     const { data: session } = useSession()
     const [users, setUser] = useState([])
 
-    const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${session?.user?.img}`
+    const customerImage = `https://sla.webelectron.com/api/Users/getprofileimages?fullName=${users.profile_picture}`
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -39,9 +40,7 @@ export default function AccountLayout({ children }) {
             <div className={styles.menus}>
                 <div className={styles.profiles}>
                     <Avatar className="w-[80px] h-[80px]">
-                        {
-                            session?.user?.img ? <AvatarImage src={customerImage} alt={session?.user?.name} /> : <AvatarImage src="https://source.boringavatars.com/beam" />
-                        }
+                        <AvatarImage src={customerImage} alt={session?.user?.name} /> : <AvatarImage src="/assets/user-holder.svg" />
                         <AvatarFallback>SP</AvatarFallback>
                     </Avatar>
                     <div className="info py-5 flex flex-col justify-center items-center gap-[5px]">

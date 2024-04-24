@@ -104,6 +104,7 @@ export default function Home() {
                             warehouse_name: warehouse_name,
                             img: img,
                             name: name,
+                        
                         });
                         toast({
                             title: 'Login Success',

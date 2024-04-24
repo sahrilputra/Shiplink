@@ -129,7 +129,7 @@ export const UserForms = ({ data = null }) => {
                                     <FormItem className="w-[80px] text-sm">
                                         <div className="relative">
                                             <Avatar className="w-[80px] h-[80px]">
-                                                <AvatarImage src={field.value || "https://source.boringavatars.com/beam"} />
+                                                <AvatarImage src={field.value || "/assets/user-holder.svg"} />
                                                 <AvatarFallback>SP</AvatarFallback>
                                             </Avatar>
                                             <FormControl>
