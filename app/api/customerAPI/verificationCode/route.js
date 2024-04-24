@@ -23,7 +23,7 @@ export async function POST(request) {
         console.log("Response from API", response)
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });

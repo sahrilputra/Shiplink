@@ -9,6 +9,8 @@ const agent = new https.Agent({
 });
 export default function Verification({ params }) {
     const data = params.slug;
+    
+    const router = useRouter();
     const [verificationStatus, setVerificationStatus] = useState('');
     const [error, setError] = useState('');
     const [showDirect, setShowDirect] = useState(false);
@@ -22,8 +24,8 @@ export default function Verification({ params }) {
                 }
             ).then((response) => {
                 console.log("🚀 ~ ).then ~ response:", response)
-                if (response.data.status === 'success') {
-                    setShowDirect(true)
+                showDirect(true)
+                if (response.data.status === true) {
                     router.push('/login');
                 }
                 setVerificationStatus(response.data.message);

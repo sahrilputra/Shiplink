@@ -106,11 +106,18 @@ export default function Home() {
         try {
             axios.post(
                 `/api/customerAPI/register`,
-                formData
+                {
+                    name: formData.name,
+                    email: formData.email,
+                    country_code: formData.country_code,
+                    password: formData.password,
+                    user_plan: formData.user_plan,
+                    redirect_url: 'https://slc.webelectron.com/auth/verification'
+                }
             ).then((response) => {
                 console.log(response.data.status)
                 setLoading(false)
-                if (response.status === 200 && response.data.status === "true") {
+                if (response.data.status === true) {
                     toast({
                         title: 'Sucess!',
                         description: `Please Verified Your Email`,
@@ -234,6 +241,7 @@ export default function Home() {
                                             <PopoverContent className="w-[400px] p-0">
                                                 <Command className="w-full">
                                                     <CommandInput
+                                                        onValueChange={(value) => setQuery({ ...query, keyword: value })}
                                                         placeholder="Search Country..."
                                                         className="h-9 w-full text-xs"
                                                     />
@@ -258,18 +266,14 @@ export default function Home() {
                                                                                     item.country_code,
                                                                                     item.country_name
                                                                                 );
+                                                                                setQuery({ ...query, keyword: "" });
                                                                                 form.setValue('country_code', item.country_code);
                                                                                 form.setValue('country_name', item.country_name);
                                                                                 field.onChange(item.country_name); // Perbarui nilai field.value
                                                                                 setPopOverOpen(false)
                                                                             }}
                                                                         >
-
                                                                             {item.country_name}
-                                                                            <CheckIcon
-                                                                                className={`ml - auto h - 4 w - 4 ${item.country_name === field.value ? "opacity-100" : "opacity-0"} `}
-                                                                            />
-
                                                                         </CommandItem>
                                                                     </PopoverClose>
                                                                 </>

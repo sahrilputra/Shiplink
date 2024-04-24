@@ -14,6 +14,7 @@ export async function POST(request) {
             country_code,
             password,
             user_plan,
+            redirect_url,
         } = await request.json();
 
         const response = await axios.post(
@@ -24,6 +25,7 @@ export async function POST(request) {
                 country_code: country_code,
                 password: password,
                 user_plan: user_plan,
+                redirect_url: redirect_url,
             },
             {
                 httpsAgent: agent
@@ -32,7 +34,7 @@ export async function POST(request) {
         console.log("Response from API", response)
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });
