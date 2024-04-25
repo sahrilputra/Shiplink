@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons } from "@/components/icons/iconCollection";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
+import { TrashIcon } from "lucide-react";
 import { MoveService } from "../dialog/MoveService";
 import {
     ColumnDef,
@@ -28,7 +29,7 @@ import {
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import NextLink from "next/link";
-
+import { RemoveDialog } from "../dialog/RemoveDialog";
 
 export function ServiceItemTable({
     category_id,
@@ -38,6 +39,7 @@ export function ServiceItemTable({
 
     const [isSkeleton, setIsSkeleton] = useState(false)
     const [data, setData] = useState([])
+    const [openDelete, setOpenDelete] = useState(false);
     const [openMove, setOpenMove] = useState(false);
     const [query, setQuery] = useState({
         keyword: '',
@@ -146,17 +148,33 @@ export function ServiceItemTable({
             header: "Action",
             cell: ({ row }) => {
                 return (
-                    <div className="text-xs flex flex-row flex-wrap">
-                        <NextLink passHref href={`/admin/product-manager/services?service_id=${row.original.service_id}`}>
+                    <>
+                        <div className="text-xs flex flex-row  gap-2">
+                            <NextLink passHref href={`/admin/product-manager/services?service_id=${row.original.service_id}`}>
+                                <Button
+                                    variant="tableBlue"
+                                    size="tableIcon"
+                                    className={`rounded-[3px] w-max px-[5px] h-[20px]`}
+                                >
+                                    <p className="text-[11px] py-2">Edit</p>
+                                </Button>
+                            </NextLink>
+{/* 
                             <Button
+                                onClick={() => handleRemove(row.original.service_id)}
                                 variant="tableBlue"
                                 size="tableIcon"
                                 className={`rounded-[3px] w-max px-[5px] h-[20px]`}
                             >
-                                <p className="text-[11px] py-2">Edit</p>
-                            </Button>
-                        </NextLink>
-                    </div>
+                                <TrashIcon
+                                    height={14}
+                                    width={14}
+                                    className="text-myBlue"
+                                    strokeWidth={2}
+                                />
+                            </Button> */}
+                        </div>
+                    </>
                 )
             },
         },
@@ -181,6 +199,13 @@ export function ServiceItemTable({
         },
 
     })
+
+    const [removeId, setRemoveId] = useState("")
+    const handleRemove = (removeId) => {
+        setOpenDelete(true)
+        setRemoveId(removeId)
+
+    }
 
     const toggleEdit = () => {
         setIsEdit(!isEdit)
@@ -208,6 +233,13 @@ export function ServiceItemTable({
     const selectedItemsId = table?.getSelectedRowModel().rows.map(row => row.original.service_id);
     return (
         <>
+            <RemoveDialog
+                open={openDelete}
+                setOpen={setOpenDelete}
+                serviceID={removeId}
+                category_id={category_id}
+                reloadData={reload}
+            />
             <MoveService
                 open={openMove}
                 setOpen={setOpenMove}

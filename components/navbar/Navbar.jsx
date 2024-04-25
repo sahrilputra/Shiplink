@@ -47,7 +47,10 @@ export const Navbar = () => {
     }, []);
 
     const handleSingOut = () => {
-        signOut()
+        signOut({
+            redirect: true,
+            callbackUrl: '/auth/login'
+        })
     }
 
     console.log("IMAGES : ", session?.user?.img)
@@ -280,7 +283,7 @@ export const Navbar = () => {
                             </DropdownMenuContent>
                         </DropdownMenuPortal>
                     </DropdownMenu>
-                    
+
                     {/* 
                     <NavigationMenu>
                         <NavigationMenuList>
