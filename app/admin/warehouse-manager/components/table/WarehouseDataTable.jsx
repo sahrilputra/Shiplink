@@ -236,6 +236,9 @@ export function WarehouseDataList({ setWrTotal }) {
         state: {
             sorting,
             rowSelection,
+            rowSelection,
+            pagination,
+            query,
         },
 
     });
@@ -254,6 +257,7 @@ export function WarehouseDataList({ setWrTotal }) {
             }));
         }
     };
+
 
     console.log("ROW Select Model: ", table.getSelectedRowModel().rows.map(row => row.original.warehouse_id));
     const selectedWarehouseIds = table.getSelectedRowModel().rows.map(row => row.original.warehouse_id);
@@ -276,6 +280,7 @@ export function WarehouseDataList({ setWrTotal }) {
 
     const reloadData = () => {
         fetchData();
+        setRowSelection({})
     };
 
     const handlerEdit = (item) => {
