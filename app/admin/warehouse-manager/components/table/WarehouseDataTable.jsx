@@ -114,6 +114,7 @@ export function WarehouseDataList({ setWrTotal }) {
     }, [query]);
 
     const handleSearchChange = (event) => {
+        console.log("🚀 ~ handleSearchChange ~ event:", event)
         setQuery({
             ...query,
             keyword: event.target.value
