@@ -25,9 +25,9 @@ export default function Verification({ params }) {
                 }
             ).then((response) => {
                 console.log("🚀 ~ ).then ~ response:", response)
-                showDirect(true)
+                setShowDirect(true)
                 if (response.data.status === true) {
-                    router.push('/login');
+                    router.push('/auth/login');
                 }
                 setVerificationStatus(response.data.message);
             }).catch((error) => {
