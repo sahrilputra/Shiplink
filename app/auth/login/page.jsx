@@ -81,7 +81,7 @@ export default function Home() {
                         const { permission } = response.data
                         const id = users.user_id
                         const user = permission.user
-                        const code = user.user_code
+                        const code = "" || user.user_code
                         const email = user.email
                         const password = user.password
                         const type = user.type
@@ -104,7 +104,7 @@ export default function Home() {
                             warehouse_name: warehouse_name,
                             img: img,
                             name: name,
-                        
+
                         });
                         toast({
                             title: 'Login Success',
@@ -141,6 +141,11 @@ export default function Home() {
         } catch (error) {
             setLoading(false)
             setIsError(true)
+            toast({
+                title: 'An Error Occurred while Logging In',
+                description: `${error}`,
+                type: 'error',
+            })
             console.log('Error:', error);
         }
     }

@@ -257,7 +257,6 @@ export default function Home() {
                                             Forget password?
                                         </p>
                                     </Link>
-
                                 </div>
                             </div>
                             <div className="w-full py-3 flex flex-col gap-2">
@@ -268,6 +267,13 @@ export default function Home() {
                                     className="w-full">
                                     <p className="text-xs">Login</p>
                                 </Button>
+                            </div>
+                            <div className="flex flex-row gap-2 items-center justify-center">
+                                <Link passHref href={'/auth/login'}>
+                                    <p className="text-sm text-myBlue text-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        Not an Admin? Login as User
+                                    </p>
+                                </Link>
                             </div>
                         </form>
                     </Form>

@@ -9,6 +9,7 @@ const agent = new https.Agent({
 });
 export default function Verification({ params }) {
     const data = params.slug;
+    console.log("🚀 ~ Verification ~ data:", data)
     
     const router = useRouter();
     const [verificationStatus, setVerificationStatus] = useState('');
