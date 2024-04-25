@@ -60,7 +60,6 @@ export const SelectBroker = ({ onSelect }) => {
 }
 
 export const UploadInvoice = ({ forms }) => {
-    console.log("🚀 ~ UploadInvoice ~ forms:", forms.watch('invoice'))
     return (
         <>
             <div className=" h-9 rounded-lg justify-start items-start inline-flex">

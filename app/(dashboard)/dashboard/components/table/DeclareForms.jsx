@@ -26,20 +26,17 @@ import {
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const people = [
-    { id: 1, name: 'Wade Cooper' },
-    { id: 2, name: 'Arlene Mccoy' },
-    { id: 3, name: 'Devon Webb' },
-    { id: 4, name: 'Tom Cook' },
-    { id: 5, name: 'Tanya Fox' },
-    { id: 6, name: 'Hellen Schmidt' },
-]
 
-export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
+export const DeclareForms = ({ index, forms, handleRemoveContent, itemID, data, disabled }) => {
+    console.log("🚀 ~ DeclareForms ~ data:", data)
+
     const [countryList, setCountryList] = useState([]);
     const [openCountry, setOpenCountry] = useState(false)
     const [hsDesc, setHSDesc] = useState("");
     const [commandQuery, setCommandQuery] = useState("");
+
+    console.log("🚀 ~ watchForms ~ data:", forms.watch());
+
     const handleCommandChange = (e) => {
         console.log("🚀 ~ handleCommandChange ~ e:", e)
         setCommandQuery(e);
@@ -83,9 +80,11 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
             const total = subtotals.reduce((acc, curr) => acc + curr, 0);
             forms.setValue('total', total);
         };
+        if (data.length > 0 && data[0].desc === "" || data[0].hs_desc === "" || data[0].hs_code === "") {
+            calculateSubtotal();
+            calculateTotals();
+        }
 
-        calculateSubtotal();
-        calculateTotals();
     }, [forms.getValues(`package_content[${index}].qty`), forms.getValues(`package_content[${index}].value`)]);
 
     const [filteredHSCodes, setFilteredHSCodes] = useState([]);
@@ -155,31 +154,15 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
         }
     }
 
-    // const handle13DigitHST = (hsCode) => {
-    //     const hsItem = hsCodeList.find(item => item.htsno === hsCode);
-    //     if (hsItem) {
-    //         // Jika ditemukan, set hs_desc dengan format yang diinginkan
-    //         setIsHsOpen(false)
-    //         setHSDesc(`${rootCategory} ${hsItem.description}`);
-    //         forms.setValue(`package_content[${index}].hs_desc`, `${rootCategory} ${hsItem.description}`);
-    //     } else {
-    //         // Jika tidak ditemukan, bersihkan hs_desc
-    //         setHSDesc("");
-    //         forms.setValue(`package_content[${index}].hs_desc`, "");
-    //         setIsHsOpen(true)
-    //     }
-    // }
-
-
 
 
     const handleDescChange = (desc) => {
         setHSDesc(desc);
     }
 
-    // useEffect(() => {
-    //     forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
-    // }, [hsDesc, forms])
+    useEffect(() => {
+        forms.setValue(`package_content[${index}].hs_desc`, hsDesc);
+    }, [hsDesc, forms])
 
     console.log('HS DESC ', (`package_content[${index}].hs_desc`, hsDesc))
     return (
@@ -190,6 +173,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].qty`}
                         control={forms.control}
+                        disabled={disabled}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
@@ -216,6 +200,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].value`}
                         control={forms.control}
+                        disabled={disabled}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
@@ -240,6 +225,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].desc`}
                         control={forms.control}
+                        disabled={disabled}
                         render={({ field }) => (
                             <>
                                 <FormItem className="w-full text-sm">
@@ -255,12 +241,28 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                     />
                 </TableCell >
                 <TableCell className="p-0 h-8 px-2 py-2 ">
-                    <Input
-                        disabled={true}
-                        className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
-                        placeholder="HS Description"
-                        value={(hsDesc ? hsDesc : "")}
+                    <FormField
+                        className="w-full flex flex-row justify-center items-end bg-slate-800"
+                        name={`package_content[${index}].hs_desc`}
+                        control={forms.control}
+                        disabled={disabled}
+                        render={({ field }) => (
+                            <>
+                                <FormItem className="w-full text-sm">
+                                    <FormControl>
+                                        <Input
+                                            disabled={true}
+                                            name={`package_content[${index}].hs_desc`}
+                                            className="text-xs h-[30px] py-1 px-2 focus:ring-offset-0"
+                                            placeholder="HS Description"
+                                            value={field.value}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            </>
+                        )}
                     />
+
                 </TableCell >
                 <TableCell className="p-0 h-8 px-2 py-2  w-max overflow-visible ">
                     <FormField
@@ -279,6 +281,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                     className='text-xs h-[30px] px-2 w-[105px] '
                                                     maskChar={null}
                                                     {...field}
+                                                    disabled={disabled}
                                                     onInput={(e) => handleValueChange(e)}
                                                 >
                                                     {(inputProps) => (
@@ -287,6 +290,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                             className="text-xs h-[30px] py-1 w-[105px] px-2 focus:ring-offset-0"
                                                             id="hs_code"
                                                             type="text"
+                                                            disabled={disabled}
                                                             placeholder="0000.00.00.00"
                                                             {...inputProps}
                                                         />
@@ -337,12 +341,13 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                         className="w-full flex flex-row justify-center items-end"
                         name={`package_content[${index}].made_in`}
                         control={forms.control}
+                        disabled={disabled}
                         render={({ field }) => {
-                            // const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
+                            const defaultValue = countryList.length > 0 ? countryList[0].country_code : "CAN"; // Nilai default dari country list
 
-                            // if (!field.value) {
-                            //     forms.setValue(`${`package_content[${index}].made_in`}`, defaultValue);
-                            // }
+                            if (!field.value) {
+                                defaultValue
+                            }
                             return (
                                 <>
                                     <FormItem className="flex flex-col">
@@ -350,6 +355,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                             <PopoverTrigger asChild>
                                                 <FormControl>
                                                     <Button
+                                                        disabled={disabled}
                                                         variant="outline"
                                                         role="combobox"
                                                         className={cn(
@@ -357,12 +363,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                                             !field.value && "text-muted-foreground"
                                                         )}
                                                     >
-                                                        {field.value
-                                                            ? countryList.find(
-                                                                (language) => language.country_code === field.value
-                                                            )?.country_code
-                                                            : "Country"
-                                                        }
+                                                        {field.value ? field.value : "CAN"}
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
@@ -420,6 +421,7 @@ export const DeclareForms = ({ index, forms, handleRemoveContent, itemID }) => {
                                     size="tableIcon"
                                     className="px-1 py-1 w-6 h-6"
                                     onClick={handleRemoveContent}
+                                    disabled={disabled}
                                 >
                                     <XIcon className="w-4 h-4" />
                                 </Button>

@@ -27,12 +27,12 @@ export const ExpandItems = (
                 open={openHoldPickup}
                 setOpen={setOpenHoldPickup}
                 trackingId={item?.tracking_id}
-                key={item?.lots_id}
+                key={item?.tracking_id}
                 reload={reload}
                 type={"Hold Pickup"}
                 toggleExpanded={toggleExpanded}
             />
-            
+
             <div className="flex flex-row justify-between items-center gap-5 relative pt-2 ">
                 <div className="justify-start items-center gap-[15px] flex">
                     <DetailsModals item={item} date={formattedDate} />

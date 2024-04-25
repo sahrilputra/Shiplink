@@ -9,7 +9,6 @@ import { ModalContext } from '@/context/ModalContext';
 import { SkeletonItems } from './components/Skeleton/SkeletonItems';
 import axios from 'axios';
 import { ItemsPackage } from './components/items/itemsPackage';
-import { set } from 'date-fns';
 
 export default function Dashboard() {
 
@@ -32,33 +31,42 @@ export default function Dashboard() {
         index: 0,
     })
 
+
+    const [isFetchingPaused, setIsFetchingPaused] = useState(false);
+
+
+
     const fetchData = async () => {
         try {
             const response = await axios.post(`/api/admin/packages/list`, query)
             setData(response.data.package_info)
             setTotal(response.data.total)
-            // console.log("🚀 ~ fetchData ~ response:", response.data.total)
             setIsSkeleton(false)
-            setQuery((prevQuery) => ({
-                ...prevQuery,
-                limit: response.data.total,
-            }))
         } catch (error) {
             console.log("🚀 ~ error", error)
         }
     }
 
+    useEffect(() => {
+        let timer;
+        if (!isFetchingPaused) {
+            timer = setTimeout(() => {
+                fetchData();
+            }, 2000);
+        }
+        return () => clearTimeout(timer);
+    }, [isFetchingPaused, query]);
 
     useEffect(() => {
-        fetchData()
-        const timer = setInterval(() => {
-            fetchData()
-        }, 2000)
-
-        return () => {
-            clearInterval(timer)
+        if (total >= data.length) {
+            setQuery((prevQuery) => ({
+                ...prevQuery,
+                limit: total,
+            }))
+        } else {
+            null
         }
-    }, [query])
+    }, [total, data.length])
 
 
     const handleTabClick = (tabName) => {
@@ -86,11 +94,14 @@ export default function Dashboard() {
     const toggleExpand = (itemId) => {
         if (expandedItemId === itemId) {
             setExpandedItemId(null);
+            setIsFetchingPaused(false)
         } else {
+            setIsFetchingPaused(true)
             setExpandedItemId(itemId);
         }
     };
     const closeExpand = () => {
+        setIsFetchingPaused(false)
         setExpandedItemId(null)
     }
     const [selectedButton, setSelectedButton] = useState(null);
@@ -186,6 +197,7 @@ export default function Dashboard() {
                                 : (
                                     data?.map((item, i) => (
                                         <ItemsPackage
+                                            pauseFetch={setIsFetchingPaused}
                                             key={item.tracking_id}
                                             onClickButton={handleButtonClick}
                                             item={item}

@@ -17,8 +17,6 @@ export const LocationCard = () => {
         warehouseB: {},
     })
 
-    console.log("🚀 ~ LocationCard ~ warehouse:", warehouse)
-
     useEffect(() => {
         const fetchWarehouse = async () => {
             try {
@@ -36,7 +34,6 @@ export const LocationCard = () => {
                         keyword: "D30",
                     }
                 );
-                console.log("response from api : ", responseCAD.data); // Log the response data
                 const responseUSAData = responseUSA.data;
                 const responseData = responseCAD.data;
 

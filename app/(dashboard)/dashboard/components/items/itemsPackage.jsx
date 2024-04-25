@@ -21,7 +21,7 @@ import { ExpandItems } from './ExpandItems';
 import format from 'date-fns/format';
 
 
-export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }) => {
+export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, pauseFetch }) => {
     const { toast } = useToast();
 
     const {
@@ -85,6 +85,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
         onExpand(tracking_id); // Call onExpand to toggle expanded state in the parent component
         setIsExpanded(!isExpanded);
         onClickButton(null);
+
         if (isExpand === false) {
             setSelectedButton(null)
             setButtonEnabled(true);
@@ -278,8 +279,11 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                 </div>
 
                 {isExpand ? (
-                    <div className="expanded transition-transform ease-in-out ">
+                    <div className="expanded transition-transform ease-in-out "
+                        key={tracking_id}
+                    >
                         <ExpandItems
+                            key={tracking_id}
                             tracking_id={tracking_id}
                             handleButtonClick={handleButtonClick}
                             item={item}
@@ -297,14 +301,20 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                                         <>
                                             {selectedButton === "Cross Border Forward" ? (
                                                 <CrossBorderTable
+                                                    key={tracking_id}
+                                                    dataContent={content}
                                                     toggleExpanded={toggleExpanded}
                                                     tracking_id={tracking_id}
                                                     reload={reload}
+                                                    total_price={total_price}
                                                     arrivalCode={country_code_arrival}
                                                 />
                                             ) : selectedButton === "Cross Border Pickup" ? (
                                                 <>
                                                     <CrossBorderTable
+                                                        key={tracking_id}
+                                                        dataContent={content}
+                                                        total_price={total_price}
                                                         toggleExpanded={toggleExpanded}
                                                         tracking_id={tracking_id}
                                                         reload={reload}
@@ -314,6 +324,9 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload }
                                             ) : selectedButton === "Forward Package" ? (
                                                 <>
                                                     <CrossBorderTable
+                                                        total_price={total_price}
+                                                        key={tracking_id}
+                                                        dataContent={content}
                                                         toggleExpanded={toggleExpanded}
                                                         tracking_id={tracking_id}
                                                         reload={reload}
