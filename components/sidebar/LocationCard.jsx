@@ -83,18 +83,18 @@ export const LocationCard = () => {
 
                 <div className="w-full p-3">
                     {clicked ? (
-                        <div className="flex flex-col justify-start w-[178px] px-2">
+                        <div className="flex flex-col justify-start w-[178px] pr-2">
                             <p className='font-normal text-sm text-black '>{warehouse.warehouseA?.warehouse_name}</p>
-                            <div className="font-regular text-xs px-2">
+                            <div className="font-regular text-xs w-[140px]">
                                 <p>{warehouse.warehouseA?.address || ""}</p>
                                 {/* <p>{warehouse.warehouseA?.city}, {warehouse.warehouseA?.province_name}, {warehouse.warehouseA?.postal_code}</p> */}
                                 <p>{warehouse.warehouseA?.country_name}</p>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col justify-start w-[178px] px-2">
+                        <div className="flex flex-col justify-start w-[178px] pr-2">
                             <p className='font-normal text-sm text-black'>{warehouse.warehouseB?.warehouse_name}</p>
-                            <div className="font-regular text-xs px-2">
+                            <div className="font-regular text-xs  w-[140px]">
                                 <p>{warehouse.warehouseB?.address || ""} </p>
                                 {/* <p>{warehouse.warehouseB?.city || "-"}, {warehouse.warehouseB?.province_name || "-"}, {warehouse.warehouseB?.postal_code || "-"}</p> */}
                                 <p>{warehouse.warehouseB?.country_name}</p>
