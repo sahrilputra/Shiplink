@@ -24,7 +24,7 @@ export default function Verification({ params }) {
                 console.log("🚀 ~ ).then ~ response:", response)
                 if (response.data.status === 'success') {
                     setShowDirect(true)
-                    router.push('/login');
+                    router.push('/admin-login');
                 }
                 setVerificationStatus(response.data.message);
             }).catch((error) => {
