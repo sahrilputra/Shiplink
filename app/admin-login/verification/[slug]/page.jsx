@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import axios from 'axios'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 import https from "https";
 const agent = new https.Agent({
