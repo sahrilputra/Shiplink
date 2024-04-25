@@ -123,12 +123,11 @@ export default function Home() {
                         description: `Please Verified Your Email`,
                         status: 'success',
                     });
-                    router.push('/auth/verification')
+                    router.push(`/auth/verification?email=${formData.email}`)
                 } else {
                     toast({
                         title: 'Error while sing up!',
-                        description: `Error : ${response.data.message
-                            }`,
+                        description: `Error : ${response.data.message}`,
                         status: 'error',
                     });
                 }
