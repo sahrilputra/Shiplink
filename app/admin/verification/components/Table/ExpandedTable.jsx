@@ -69,7 +69,7 @@ export const ExpandedTable = (
         }
     }
 
-    const isCanMark = content.length <= 1 && content[0].desc === "" && content[0].hs_desc === "" && content[0].hs_code === "";
+    const isCanMark = content.length <= 1 && content[0]?.desc === "" && content[0]?.hs_desc === "" && content[0]?.hs_code === "";
     return (
         <>
             <div className="w-full">
