@@ -44,7 +44,7 @@ const formSchema = yup.object().shape({
     country: yup.string().required(),
 })
 
-export const AddressForms = () => {
+export const AddressForms = ({ userCode }) => {
     const { toast } = useToast()
     const [disable, setDisable] = useState(true);
     const form = useForm({
@@ -82,6 +82,7 @@ export const AddressForms = () => {
     const [province, setProvince] = useState([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
+        
         const fetchData = async () => {
             try {
                 const response = await axios.post(

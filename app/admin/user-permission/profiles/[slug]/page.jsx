@@ -8,14 +8,20 @@ import { Button } from '@/components/ui/button'
 import React, { useEffect, useState } from 'react'
 import { MoreUserMenus } from '../../components/menus/MoreUserMenus'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useRouter } from 'next/navigation'
 import axios from 'axios';
+import { DeleteUsersDialog } from '../../components/dialog/DeleteUsersDialog'
+import { SetNewPassword } from './components/SetNewPassword'
 
 export default function Profiles({ params }) {
+    const router = useRouter();
     const [loading, setLoading] = useState(false)
     const [skleton, setSkleton] = useState(true)
     const [disable, setDisable] = useState(true)
-
+    const [openDelete, setOpenDelete] = useState(false)
+    const [openPassword, setOpenPassword] = useState(false)
     const [user, setUser] = useState({})
+    const userID = params.slug
     const [query, setQuery] = useState({
         data: params.slug,
     });
@@ -48,11 +54,36 @@ export default function Profiles({ params }) {
         setDisable(!disable)
     }
 
+    const reloadData = () => {
+        router.back()
+    }
+
+    const reloadPage = () => {
+        router.refresh()
+        fetchData();
+    }
+
+    const copyLogin = () => {
+        navigator.clipboard.writeText(`https://slc.webelectron.com/admin-login?email=${user.email}&password=${user.password}`);
+    }
 
     console.log("User Data", user)
     console.log(params.slug)
     return (
         <>
+            <SetNewPassword
+                open={openPassword}
+                setOpen={setOpenPassword}
+                data={userID}
+                reload={reloadPage}
+            />
+
+            <DeleteUsersDialog
+                open={openDelete}
+                setOpen={setOpenDelete}
+                deleteID={[userID]}
+                reloadData={reloadData}
+            />
             <div className="w-full h-full">
                 <div className="wrapper w-full flex flex-row justify-between gap-2 h-full">
                     <div className="left w-[30%]  ">
@@ -100,7 +131,12 @@ export default function Profiles({ params }) {
                                             >
                                                 <p className='text-xs'>Edit Profiles</p>
                                             </Button>
-                                            <MoreUserMenus params={params.slug} />
+                                            <MoreUserMenus
+                                                copyLogin={copyLogin}
+                                                params={params.slug}
+                                                setOpenPassword={setOpenPassword}
+                                                setOpenDelete={setOpenDelete}
+                                            />
                                         </div>
                                     </div>
                                 )

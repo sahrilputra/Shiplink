@@ -16,14 +16,16 @@ import { useRouter } from 'next/router'
 export default function Page() {
 
     const { data: session } = useSession()
+    const [userCode, setUserCode] = useState(session?.user.code)
 
     const [cardList, setCardList] = useState([]);
+    console.log("Session ID", session?.user.code)
 
     const [skeleton, setSkeleton] = useState(true);
     const [query, setQuery] = useState({
         keyword: "",
         page: 0,
-        customer_id: `${session?.user.id}`,
+        customer_id: `${session?.user.code}`,
         limit: 0,
         index: 0
     });
@@ -52,7 +54,9 @@ export default function Page() {
                     <h1 className='text-zinc-900 text-base font-bold'>Billing Details</h1>
                 </div>
                 <div className="tableWrapper w-[90%] mx-auto">
-                    <AddressForms />
+                    <AddressForms
+                        userCode={userCode}
+                    />
                 </div>
                 <div className="separator py-3 px-5">
                     <Separator className="py-[1px]" />

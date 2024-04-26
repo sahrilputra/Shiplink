@@ -304,7 +304,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                             disabled={true}
                                                             id="InvoiceNo" className="text-xs" placeholder="Ex. C12345678" {...field} />
                                                     </FormControl>
-                                                    <FormMessage />
+                                                    <FormMessage className="text-xs" />
                                                 </FormItem>
                                             </>
                                         )}
@@ -541,7 +541,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 size="new"
                                                                 id="ShippedToZip" className="text-xs" placeholder="A1B 2C3" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -561,7 +561,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 size="new"
                                                                 id="ShippedToAddress" className="text-xs" placeholder="Address" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -579,7 +579,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 size="new"
                                                                 id="ShippedToCountry" className="text-xs" placeholder="Canada" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -606,7 +606,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         size="new"
                                                         id="note" className="text-xs" placeholder="Note" {...field} />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <FormMessage className="text-xs" />
                                             </FormItem>
                                         </>
                                     )}
@@ -702,7 +702,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         size="new"
                                                         id="userEmails" type="emails" className="text-xs" placeholder="Emails" {...field} />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <FormMessage className="text-xs" />
                                             </FormItem>
                                         </>
                                     )}

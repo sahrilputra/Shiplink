@@ -24,6 +24,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Loaders } from "@/components/ui/loaders";
+import { useSearchParams } from "next/navigation";
 
 
 const formSchema = yup.object().shape({
@@ -36,6 +37,13 @@ const formSchema = yup.object().shape({
 
 export default function Home() {
 
+    const searchParams = useSearchParams()
+    const userEmail = searchParams.get('email')
+    const userPassword = searchParams.get('password')
+    console.log("🚀 ~ Home ~ userEmail:", userEmail)
+    console.log("🚀 ~ Home ~ password:", userPassword)
+
+
     const { toast } = useToast();
     const { data: session, status } = useSession();
     console.log('Session:', session);
@@ -45,8 +53,8 @@ export default function Home() {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            username: "",
-            password: "",
+            username: userEmail || "",
+            password: userPassword || "",
             remember: false
         },
         mode: "onChange",
