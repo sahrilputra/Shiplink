@@ -3,31 +3,6 @@ import { ImageTable } from './ImageTable'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { TrashIcon } from 'lucide-react'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/tableDashboard"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import NextLink from 'next/link'
 import axios from 'axios'
 export const ExpandedTable = (
@@ -40,6 +15,7 @@ export const ExpandedTable = (
         setExpandedRows,
         status
     }) => {
+    console.log("🚀 ~ content:", content)
     console.log("🚀 ~ status:", status)
     console.log("🚀 ~ ExpandedTable ~ image:", image)
 
@@ -92,6 +68,8 @@ export const ExpandedTable = (
             console.log('Error:', error);
         }
     }
+
+    const isCanMark = content.length <= 1 && content[0].desc === "" && content[0].hs_desc === "" && content[0].hs_code === "";
     return (
         <>
             <div className="w-full">
@@ -233,6 +211,7 @@ export const ExpandedTable = (
                                             type="button"
                                             className=" h-[30px] rounded-sm px-4 py-0"
                                             size="sm"
+                                            disabled={isCanMark}
                                             onClick={() => {
                                                 setExpandedRows({})
                                                 handleSave(trackingID)
