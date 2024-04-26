@@ -149,8 +149,9 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                 query
             );
             const data = await response.data;
+            console.log("🚀 ~ fetchData ~ data:", data)
             setLots(data.lots);
-            setTotalData(data.lots.length);
+            setTotalData(data.total);
             setRowTotalData({
                 page_limit: data.page_limit,
                 page_total: data.page_total,
@@ -226,7 +227,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
         },
         {
             accessorKey: "label",
-            header: "Lots Label",
+            header: "Lot Label",
         },
         {
             accessorKey: "location",
@@ -397,13 +398,13 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             if (response.data.message === "Lot Not Found !") {
                 setIsButtonDisabled(false)
                 return toast({
-                    title: 'Cannot Find The Lots!',
+                    title: 'Cannot Find The Lot!',
                     description: response.data.message,
                     status: 'error',
                 });
             } else {
                 toast({
-                    title: `Lots ${lotsNumber} Has been loaded!`,
+                    title: `Lot ${lotsNumber} Has been loaded!`,
                     description: response.data.message,
                 });
                 setIsButtonDisabled(false)
@@ -411,7 +412,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
             reload();
         } catch (error) {
             toast({
-                title: 'Cannot Find The Lots!',
+                title: 'Cannot Find The Lot!',
                 description: `Erorr : ${error}!`,
                 status: 'error',
             });
@@ -525,7 +526,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                                     onClick={handleScanLots}
                                     disabled={isButtonDisabled || lotsNumber === ""}
                                 >
-                                    Scan Lots
+                                    Scan Lot
                                 </Button>
                             </div>
 
@@ -536,7 +537,7 @@ export function DestinationTabled({ handleSelectedRowData, isOpen, setOpen, hand
                                 disabled={Object.keys(rowSelection).length === 0}
                                 onClick={handleOpenLots}
                             >
-                                Assign Lots
+                                Assign Lot
                             </Button>
                         </div>
                     </div>

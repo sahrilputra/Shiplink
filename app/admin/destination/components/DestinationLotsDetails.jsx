@@ -14,7 +14,7 @@ export const DestinationLotsDetails = ({ data }) => {
         <>
             <div className={`${styles.detailContainerContent} p-2 px-4 bg-sky-50 w-full`}>
                 <div className="header py-3 flex flex-row justify-between items-center">
-                    <h1 className='text-base font-bold text-myBlue'>Lots Details</h1>
+                    <h1 className='text-base font-bold text-myBlue'>Lot Details</h1>
                     <p className='text-sm '>{data?.lots_id}</p>
                 </div>
 
@@ -32,7 +32,7 @@ export const DestinationLotsDetails = ({ data }) => {
                                 data?.updated_at ? (
                                     <p>{moment(data?.created_at).format(`${dateFormat}, ${timeFormat}`)}</p>
                                 ) : (
-                                    <p>{""}</p>
+                                    <p>{"-"}</p>
                                 )
                             }
                         </div>
@@ -62,7 +62,7 @@ export const DestinationLotsDetails = ({ data }) => {
                                 className="h-[30px] w-full"
                                 disabled
                             >
-                                <p className='text-xs'>Load Lots</p>
+                                <p className='text-xs'>Load Lot</p>
                             </Button>
                         ) : (
                             <NextLink href={`/admin/Lots_Details/${data?.lots_id}`}>
@@ -72,7 +72,7 @@ export const DestinationLotsDetails = ({ data }) => {
                                     className="h-[30px] w-full"
                                     disabled={isButtonDisabled}
                                 >
-                                    <p className='text-xs'>Load Lots</p>
+                                    <p className='text-xs'>Load Lot</p>
                                 </Button>
                             </NextLink>
                         )}

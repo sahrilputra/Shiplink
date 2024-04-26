@@ -24,6 +24,10 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsF
     const [lots, setLots] = useState([]);
     const [status, setStatus] = useState([]);
     const [isSkeleton, setIsSkeleton] = useState(true);
+    const [totalLots, setTotalLost] = useState(0);
+    const [filteredLost, setFilteredLost] = useState([]);
+    console.log("🚀 ~ ExitingLotsDialog ~ totalLots:", totalLots, "lots", lots.length)
+
     const [query, setQuery] = useState({
         keyword: "",
         date_start: "",
@@ -43,15 +47,37 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsF
             );
             console.log(response)
             const data = await response.data;
+            setTotalLost(data.total);
             setLots(data.lots);
+            setFilteredLost(data.lots.filter((item) => item.status_id === 1 || item.status_id === 0))
             setIsSkeleton(false);
         } catch (error) {
             console.log('Error:', error);
         }
     };
 
+    useEffect(() => {
+        if (lots.length <= totalLots) {
+            console.log("🚀 ~ ExitingLotsDialog ~ totalLots:", true)
+            setQuery({
+                ...query,
+                limit: totalLots
+            })
+        } else {
+            null
+        }
+    }, [totalLots, lots.length]);
+
 
     useEffect(() => {
+        // if (totalLots <= lots.length) {
+        //     setQuery({
+        //         ...query,
+        //         limit: totalLots
+        //     })
+        // } else {
+        //     null
+        // }
         fetchData();
     }, [query]);
     return (
@@ -76,7 +102,7 @@ export function ExitingLotsDialog({ close, selectedLotsID, lotsID, lotsName, IsF
                             <CommandEmpty>No Lots Found.</CommandEmpty>
                             <ScrollArea className="h-[200px] w-full rounded-md border p-4">
                                 <CommandGroup>
-                                    {lots?.map((lots) => (
+                                    {filteredLost?.map((lots) => (
                                         <>
                                             <CommandItem
                                                 key={lots.lots_id}

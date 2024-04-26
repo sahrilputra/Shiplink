@@ -105,7 +105,13 @@ export const ExpandedLotsData = ({ data, lotsID, setExpandedRows, reload, status
                 <TableBody>
                     <TableRow className="text-xs bg-white">
                         <TableCell className="font-medium text-xs h-7 p-0 px-5 py-2">
-                            <p>{moment(data?.updated_at).format(`${dateFormat}, ${timeFormat}`)}</p>
+                            {
+                                data?.updated_at ? (
+                                    <p>{moment(data.updated_at).format(`${dateFormat}, ${timeFormat}`)}</p>
+                                ) : (
+                                    <p>-</p>
+                                )
+                            }
                         </TableCell>
                         <TableCell className="font-medium text-xs h-7 p-0 px-5 py-2">
                             <p>{data?.trip_number || "-"}</p>
