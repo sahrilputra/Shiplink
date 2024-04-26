@@ -3,8 +3,8 @@ import { Document, Page, View, Text } from '@react-pdf/renderer'
 
 export const SubTotal = () => {
     return (
-        <View style={{ display: 'flex', padding: 10, flexDirection: 'column', gap: '5', alignItems: 'center', justifyContent: 'flex-end', width: '100%' }}>
-            <View style={{ display: 'flex', gap: 3, flexDirection: 'column', justifyContent: 'space-between', alignContent: 'flex-end', width: "100%" }}>
+        <View style={{ display: 'flex', padding: 10, flexDirection: 'column', gap: '5', alignItems: 'flex-end', justifyContent: 'cen', width: '100%'}}>
+            <View style={{ display: 'flex', gap: 3, flexDirection: 'column', justifyContent: 'space-between', alignContent: 'flex-end' }}>
                 <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px', width: '130px' }}>Subtotal </Text>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
@@ -29,7 +29,7 @@ export const SubTotal = () => {
             </View>
             <View style={{ display: 'flex', gap: 3, flexDirection: 'column', height: 5, justifyContent: 'space-between', alignContent: 'flex-end', width: "100%", borderBottomWidth: 1, borderBottomColor: '#dedede', borderBottomStyle: 'solid' }}>
             </View>
-            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignContent: 'flex-end', width: "100%" }}>
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignContent: 'flex-end'}}>
                 <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px', width: '130px' }}>Total </Text>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
@@ -38,7 +38,7 @@ export const SubTotal = () => {
             </View>
             <View style={{ display: 'flex', gap: 3, flexDirection: 'column', height: 5, justifyContent: 'space-between', alignContent: 'flex-end', width: "100%", borderBottomWidth: 1, borderBottomColor: '#dedede', borderBottomStyle: 'solid' }}>
             </View>
-            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignContent: 'flex-end', width: "100%" }}>
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignContent: 'flex-end'}}>
                 <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px', width: '130px', color: '#00509D', }}>Amount Due (CAD)  </Text>
                     <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>

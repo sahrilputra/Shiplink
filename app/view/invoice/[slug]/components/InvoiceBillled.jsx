@@ -5,7 +5,7 @@ export const InvoiceBillled = () => {
 
 
     return (
-        <View style={{ display: 'flex', flexDirection: 'column', fontSize: '12px', padding: '10px' }}>
+        <View style={{ display: 'flex', flexDirection: 'column', fontSize: '10px', padding: '10px' }}>
             <Text style={{ fontWeight: 'bold', textDecoration: 'none', width: '100px', borderBottomWidth: 1, borderBottomColor: '#dedede', borderBottomStyle: 'solid', marginBottom: 2 }}>
                 Billed To
             </Text>

@@ -248,7 +248,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
             cell: ({ row }) => {
                 return (
                     <div className="flex flex-row gap-2">
-                        <NextLink href={`/view/invoice/${row.original.invoice_id}`}>
+                        <NextLink href={`/view/invoice/${row.original.invoice_id}`} passHref target="_blank">
                             <Button
                                 variant="secondary"
                                 className=" px-[5px] h-[25px] text-[11px] flex flex-row justify-center gap-1 items-center">

@@ -3,7 +3,7 @@ import { Text, View } from '@react-pdf/renderer'
 
 export const InvoiceShippedTo = () => {
     return (
-        <View style={{ display: 'flex', flexDirection: 'column', fontSize: '12px', padding: '10px' }}>
+        <View style={{ display: 'flex', flexDirection: 'column', fontSize: '10px', padding: '10px' }}>
             <Text style={{ fontWeight: 'bold', width: '100px', borderBottomWidth: 1, borderBottomColor: '#dedede', borderBottomStyle: 'solid', marginBottom: 2 }}>
                 Shipped To
             </Text>

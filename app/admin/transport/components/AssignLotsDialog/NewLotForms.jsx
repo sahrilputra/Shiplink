@@ -418,7 +418,7 @@ export const NewLotsFrom = ({ close, data = null, reload }) => {
                                                     <CommandEmpty className="w-full text-xs text-center py-2">
                                                         No Warehouse found.
                                                     </CommandEmpty>
-                                                    <CommandGroup className="h-[200]">
+                                                    <CommandGroup className="h-[200px]">
                                                         <ScrollArea className="h-[150px]">
                                                             {console.log(field.value)}
                                                             {destinationWarehouse.map((item) => (

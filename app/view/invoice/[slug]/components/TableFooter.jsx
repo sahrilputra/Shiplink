@@ -4,7 +4,7 @@ import { SubTotal } from './SubTotal'
 
 export const TableFooter = () => {
     return (
-        <View >
+        <View style={{ width: "100%" }}>
             <SubTotal />
         </View >
     )

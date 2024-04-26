@@ -7,6 +7,7 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import styles from '../../styles.module.scss'
 import InputMask from 'react-input-mask';
 import { Calendar } from "@/components/ui/calendar"
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
     Form,
     FormControl,
@@ -136,6 +137,14 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     });
 
 
+    const handleSearchCustomer = (e) => {
+        console.log("Search Customer : ", e)
+        setQuery({
+            ...query,
+            keyword: e,
+        });
+
+    }
     const [taxQuery, setTaxQuery] = useState({
         keyword: "",
         page: 1,
@@ -261,6 +270,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         calculateTotal();
     }, [form.watch('subtotal'), form.watch('itemTax'), form.watch('itemDiscount')]);
 
+
+    const [openCustomer, setOpenCustomer] = useState(false);
     return (
         <>
             {
@@ -309,7 +320,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                     <Select
                                                         className="w-full text-xs h-[30px]"
                                                         onValueChange={field.onChange}
-                                                        defaultValue={field.value}
+                                                        defaultValue={"CAD"}
                                                     >
                                                         <FormControl>
                                                             <SelectTrigger className="text-xs h-[30px] rounded-sm">
@@ -339,18 +350,19 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                     <Select
                                                         className="w-full text-xs h-[30px]"
                                                         onValueChange={field.onChange}
-                                                        defaultValue={field.value}
+                                                        defaultValue={"Upon Receipt"}
                                                     >
                                                         <FormControl>
                                                             <SelectTrigger className="text-xs h-[30px] rounded-sm">
                                                                 <SelectValue
                                                                     className="w-full text-xs h-[30px]"
                                                                     placeholder="Select terms"
+                                                                    defaultValue={"Upon Receipt"}
                                                                 />
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
-                                                            <SelectItem className="text-xs" value="Today">Today</SelectItem>
+                                                            <SelectItem className="text-xs" value="Upon Receipt">Upon Receipt</SelectItem>
                                                             <SelectItem className="text-xs" value="Next 30 Days">Next 30 Days</SelectItem>
                                                             <SelectItem className="text-xs" value="End of the month">End Of The Month</SelectItem>
                                                         </SelectContent>
@@ -440,7 +452,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="BilledToZip" className="text-xs" placeholder="Eg. SA4S21JK21" {...field} />
+                                                                id="BilledToZip" className="text-xs" placeholder="A1B 2C3" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -460,7 +472,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="BilledToAddress" className="text-xs" placeholder="Adress" {...field} />
+                                                                id="BilledToAddress" className="text-xs" placeholder="Address" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -478,7 +490,9 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="BilledToCountry" className="text-xs" placeholder="Canada" {...field} />
+                                                                id="BilledToCountry"
+                                                                className="text-xs"
+                                                                placeholder="Country" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -525,7 +539,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="ShippedToZip" className="text-xs" placeholder="Eg. SA4S21JK21" {...field} />
+                                                                id="ShippedToZip" className="text-xs" placeholder="A1B 2C3" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -545,7 +559,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="ShippedToAddress" className="text-xs" placeholder="Adress" {...field} />
+                                                                id="ShippedToAddress" className="text-xs" placeholder="Address" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -614,10 +628,15 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col">
                                             <FormLabel>Customer </FormLabel>
-                                            <Popover>
+                                            <Popover
+                                                modal={true}
+                                                open={openCustomer}
+                                                onOpenChange={setOpenCustomer}
+                                            >
                                                 <PopoverTrigger asChild>
                                                     <FormControl>
                                                         <Button
+                                                            onClick={() => setOpenCustomer(true)}
                                                             variant="outline"
                                                             role="combobox"
                                                             size="new"
@@ -627,40 +646,44 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         </Button>
                                                     </FormControl>
                                                 </PopoverTrigger>
-                                                <PopoverContent className="w-[300px] p-0">
+                                                <PopoverContent className="w-[300px] p-0"  >
                                                     <Command>
                                                         <CommandInput
                                                             placeholder="Search Customer..."
                                                             className="h-9 text-xs w-full"
+                                                            onValueChange={(e) => handleSearchCustomer(e)}
                                                         />
                                                         <CommandEmpty className="text-xs text-center">No Customer found.</CommandEmpty>
-                                                        <CommandGroup>
-                                                            {customerData.map((item) => (
-                                                                <CommandItem
-                                                                    value={item.customer_name}
-                                                                    key={item.customer_id}
-                                                                    onSelect={() => {
-                                                                        form.setValue("userName", item.customer_name)
-                                                                        form.setValue("userID", item.customer_id)
-                                                                        form.setValue("userEmails", item.email)
-                                                                    }}
-                                                                >
-                                                                    <div className='text-xs w-full justify-between flex flex-row'>
-                                                                        <p>{item.customer_id} | </p>
-                                                                        <p>{item.customer_name}</p>
-                                                                    </div>
-                                                                    <CheckIcon
-                                                                        className={cn(
-                                                                            "ml-auto h-4 w-4",
-                                                                            item.customer_name === field.value
-                                                                                ? "opacity-100"
-                                                                                : "opacity-0"
-                                                                        )}
-                                                                    />
-                                                                </CommandItem>
-                                                            ))}
+                                                        <CommandGroup className="">
+                                                            <ScrollArea className="h-[200px] ">
+                                                                {customerData.map((item) => (
+                                                                    <CommandItem
+                                                                        value={item.customer_name}
+                                                                        key={item.customer_id}
+                                                                        onSelect={() => {
+                                                                            form.setValue("userName", item.customer_name)
+                                                                            form.setValue("userID", item.customer_id)
+                                                                            form.setValue("userEmails", item.email)
+                                                                            form.setValue("ShippedToName", item.customer_name)
+                                                                            form.setValue("ShippedToAddress", item.address)
+                                                                            form.setValue("ShippedToCountry", item.country_name || "-")
+                                                                            setQuery({
+                                                                                ...query,
+                                                                                keyword: ""
+                                                                            })
+                                                                            setOpenCustomer(false)
+                                                                        }}
+                                                                    >
+                                                                        <div className='text-xs w-full justify-between flex flex-row px-2'>
+                                                                            <p>{item.customer_id} | </p>
+                                                                            <p>{item.customer_name}</p>
+                                                                        </div>
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </ScrollArea>
                                                         </CommandGroup>
                                                     </Command>
+
                                                 </PopoverContent>
                                             </Popover>
                                         </FormItem>
@@ -685,9 +708,9 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     )}
                                 />
 
-                                <div className="button-group flex flex-col gap-2 py-2 w-full mx-auto">
-                                    <div className="flex flex-row justify-between gap-3">
-                                        {/* <Button
+                                <div className="button-group flex flex-row gap-2 py-2 w-full mx-auto">
+                                    {/* <div className="flex flex-row justify-between gap-3">
+                                        <Button
                                             variant="redOutline"
                                             type="button"
                                             className=" h-[30px] w-full rounded-sm px-4 py-0"
@@ -695,23 +718,31 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
 
                                         >
                                             <p className='text-xs'>Preview</p>
-                                        </Button> */}
-                                        {/* <Button
+                                        </Button>
+                                        <Button
                                             variant="redOutline"
                                             type="button"
                                             className=" h-[30px] w-full rounded-sm px-4 py-0"
                                             size="sm"
                                         >
                                             <p className='text-xs'>Download</p>
-                                        </Button> */}
-                                    </div>
+                                        </Button>
+                                    </div> */}
+                                    <Button
+                                        variant="redOutline"
+                                        type="submit"
+                                        className=" h-[30px] rounded-sm px-4 py-0 w-full"
+                                        size="sm"
+                                    >
+                                        <p className='text-xs'>Register Invoice</p>
+                                    </Button>
                                     <Button
                                         variant="destructive"
                                         type="submit"
-                                        className=" h-[30px] rounded-sm px-4 py-0"
+                                        className=" h-[30px] rounded-sm px-4 py-0 w-full"
                                         size="sm"
                                     >
-                                        <p className='text-xs'>Send</p>
+                                        <p className='text-xs'>Send to email</p>
                                     </Button>
                                 </div>
                             </div>
@@ -723,12 +754,12 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                     <div className="w-full">
                         <Table>
                             <TableHeader>
-                                <TableHead className="w-[100px]">#</TableHead>
-                                <TableHead>Item Name</TableHead>
-                                <TableHead className="w-[100px]">Qty</TableHead>
-                                <TableHead className="text-center w-[10%]">Price</TableHead>
-                                <TableHead className="text-center w-[10%]">Total</TableHead>
-                                <TableHead className="text-center"></TableHead>
+                                <TableHead className="text-xs w-[100px]">#</TableHead>
+                                <TableHead className="text-xs">Item Name</TableHead>
+                                <TableHead className="text-xs w-[100px]">Qty</TableHead>
+                                <TableHead className="text-xs text-center w-[10%]">Price</TableHead>
+                                <TableHead className="text-xs text-center w-[10%]">Total</TableHead>
+                                <TableHead className="text-xs text-center"></TableHead>
                             </TableHeader>
                             <TableBody>
                                 {
@@ -772,12 +803,12 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                         <div className="w-full flex justify-end py-2">
                             <div className="w-[30%] flex justify-end flex-col gap-2 px-5">
                                 <div className="flex flex-row justify-between items-center ">
-                                    <p className='font-bold text-myBlue'>Subtotal</p>
-                                    <p className='font-bold text-myBlue'>$ {form.watch('subtotal')}</p>
+                                    <p className='font-bold text-myBlue text-sm'>Subtotal</p>
+                                    <p className='font-bold text-myBlue text-sm'>$ {form.watch('subtotal')}</p>
                                 </div>
                                 <Separator className="w-full" />
                                 <div className="flex flex-row justify-between items-center ">
-                                    <p className='font-bold w-full text-myBlue'>Discount</p>
+                                    <p className='font-bold w-full text-myBlue text-sm'>Discount</p>
                                     <div className="w-[50%]">
                                         <FormField
                                             name="itemDiscount"
@@ -804,7 +835,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     </div>
                                 </div>
                                 <div className="flex flex-row justify-between items-center ">
-                                    <p className='font-bold w-full text-myBlue'>Tax</p>
+                                    <p className='font-bold w-full text-myBlue text-sm'>Tax</p>
                                     <div className="w-[50%]">
                                         <FormField
                                             className="w-full text-xs"
@@ -887,8 +918,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                 </div>
                                 <Separator className="w-full" />
                                 <div className="flex flex-row justify-between items-center ">
-                                    <p className='font-bold w-full text-myBlue'>Total Due</p>
-                                    <p className='font-bold text-myBlue text-sm px-2 w-[50%]'>$ {form.getValues('itemTotal')}</p>
+                                    <p className='font-bold w-full text-myBlue text-sm'>Total Due</p>
+                                    <p className='font-bold text-myBlue text-sm px-2 w-[50%] '>$ {form.getValues('itemTotal')}</p>
                                 </div>
                             </div>
 
