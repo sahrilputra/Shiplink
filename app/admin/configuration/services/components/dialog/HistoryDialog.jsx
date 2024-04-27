@@ -13,7 +13,11 @@ import {
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import axios from 'axios';
+import moment from 'moment';
+import { useTimeFormat } from '@/context/TimeFormatProvider';
+
 export const HistoryDialog = ({ open, setOpen, id }) => {
+    const { timeFormat, dateFormat } = useTimeFormat();
     console.log("🚀 ~ HistoryDialog ~ id:", id)
 
     const onClose = () => {
@@ -61,7 +65,7 @@ export const HistoryDialog = ({ open, setOpen, id }) => {
                                                 <div className="text-myBlue text-[14px] font-semibold ">{item.action}</div>
                                                 <div className="">ID {item.service_id}</div>
                                                 <div className=" ">{item.status}</div>
-                                                <div className=" ">{item.updated_at}</div>
+                                                <div className=" ">{moment(item.updated_at).format(`${dateFormat}, ${timeFormat}`)}</div>
                                                 <div className="w-1/3 ">{item.updated_by}</div>
                                             </div>
                                         )
@@ -77,17 +81,12 @@ export const HistoryDialog = ({ open, setOpen, id }) => {
                     <AlertDialogFooter>
                         <Button
                             className={"w-full mt-2 text-xs"}
-                            variant="redOutline"
+                            variant="destructive"
                             type="button"
+                            size="xs"
                             onClick={onClose}
                         >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            className={"w-full mt-2 text-xs"}
-                        >
-                            Add Service
+                            Close
                         </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>

@@ -100,7 +100,7 @@ export default function Tax() {
                                             className="h-9 text-xs"
                                             onValueChange={(e) => handleInputChange(e)}
                                         />
-                                        <CommandEmpty>No Country found.</CommandEmpty>
+                                        <CommandEmpty className="text-xs text-center w-full pt-3">No Country found.</CommandEmpty>
                                         <ScrollArea className="h-[200px]">
                                             <CommandGroup>
                                                 {country.map((item) => (
@@ -112,6 +112,11 @@ export default function Tax() {
                                                             setCountryCode(item.country_code)
                                                             setValue(currentValue === value ? "" : currentValue)
                                                             setOpen(false)
+                                                            setQuery({
+                                                                ...query,
+                                                                keyword: "",
+                                                            })
+
                                                         }}
                                                     >
                                                         {item.country_name}
@@ -127,7 +132,13 @@ export default function Tax() {
                             </Popover>
                         </div>
                         <div className="flex-col justify-start items-start gap-0.5 flex w-full">
-                            <ProvinceList countryName={value} handleSelect={setSeletedProvince} isSelect={seletedProvince} countryCode={countryCode} setTaxID={setTaxAssignID} />
+                            <ProvinceList
+                                countryName={value}
+                                handleSelect={setSeletedProvince}
+                                isSelect={seletedProvince}
+                                countryCode={countryCode}
+                                setTaxID={setTaxAssignID}
+                            />
                         </div>
                     </div>
                 </div>
