@@ -7,7 +7,7 @@ const agent = new https.Agent({
 });
 export async function POST(request) {
     try {
-        const { keyword, page, limit, index, country_code } = await request.json();
+        const { keyword, page, limit, index, country_code, province_code } = await request.json();
         const tokenAccess = await getAccessToken(request)
 
         // console.log("token from country", token);
@@ -20,6 +20,7 @@ export async function POST(request) {
                 limit: limit,
                 index: index,
                 country_code: country_code,
+                province_code: province_code
             },
             {
                 httpsAgent: agent,

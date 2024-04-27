@@ -26,7 +26,7 @@ const formSchema = yup.object().shape({
     tax_rate: yup.string().required(),
 });
 
-export const NewType = ({ close, data = null, selected, countryCode }) => {
+export const NewType = ({ close, data = null, selected, countryCode, provinceCode }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [clicked, isClicked] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -40,8 +40,11 @@ export const NewType = ({ close, data = null, selected, countryCode }) => {
             tax_assignment_name: "",
             abbreviation: "",
             tax_number: "",
-            country_code: countryCode,
             tax_rate: "",
+            country_code: countryCode,
+            province_code: provinceCode,
+            status: 0,
+            show_inv_status: 0,
         },
         mode: "onChange",
     });

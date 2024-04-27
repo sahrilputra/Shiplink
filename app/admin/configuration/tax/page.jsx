@@ -30,9 +30,10 @@ export default function Tax() {
     const handleClick = (isClicked) => { setClicked(isClicked) }
     const [value, setValue] = useState("")
     const [countryCode, setCountryCode] = useState("")
+    const [provinceCode, setProvinceCode] = useState("")
     const [open, setOpen] = useState(false)
     const [seletedProvince, setSeletedProvince] = useState("")
-    const [taxAssignID, setTaxAssignID] = useState("")
+    const [taxAssignID, setTaxAssignID] = useState([])
     const [query, setQuery] = useState({
         keyword: "",
         page: 0,
@@ -133,6 +134,7 @@ export default function Tax() {
                         </div>
                         <div className="flex-col justify-start items-start gap-0.5 flex w-full">
                             <ProvinceList
+                                setProvinceCode={setProvinceCode}
                                 countryName={value}
                                 handleSelect={setSeletedProvince}
                                 isSelect={seletedProvince}
@@ -158,10 +160,19 @@ export default function Tax() {
                         </div>
                         {clicked && (
                             <>
-                                <NewType selected={seletedProvince} close={handleClose} countryCode={countryCode} />
+                                <NewType
+                                    selected={seletedProvince}
+                                    close={handleClose}
+                                    countryCode={countryCode}
+                                    provinceCode={provinceCode}
+                                />
                             </>
                         )}
-                        <TaxDetails close={handleClose} taxAssignID={taxAssignID} countryCode={countryCode} />
+                        <TaxDetails close={handleClose}
+                            taxAssignID={taxAssignID}
+                            countryCode={countryCode}
+                            province_code={provinceCode}
+                        />
                     </div>
                 </div>
             </div>

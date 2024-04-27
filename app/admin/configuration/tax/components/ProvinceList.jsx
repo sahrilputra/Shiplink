@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 
-export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode, setTaxID }) => {
+export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode, setTaxID, setProvinceCode }) => {
     console.log("🚀 ~ ProvinceList ~ countryCode:", countryCode)
     const [loading, setLoading] = useState(false);
     const [query, setQuery] = useState({
@@ -29,7 +29,20 @@ export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode,
             console.log("🚀 ~ fetchData ~ response:", response)
             const data = await response.data;
             setLoading(false);
-            setProvinceData(data.tax); // Menyimpan data mentah dari server
+            const groupProvince = Object.values(data.tax.reduce((acc, item) => {
+                if (!acc[item.province_code]) {
+                    acc[item.province_code] = {
+                        province_code: item.province_code,
+                        province_name: item.province_name,
+                        data: []
+                    };
+                }
+                acc[item.province_code].data.push(item);
+                return acc;
+            }, {}));
+
+            console.log("🚀 ~ fetchData ~ groupProvince:", groupProvince);
+            setProvinceData(groupProvince);
         } catch (error) {
             setLoading(false);
             console.log('Error:', error);
@@ -62,13 +75,29 @@ export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode,
                                     <div key={index}
                                         onClick={() => {
                                             handleSelect(item.province_name)
-                                            setTaxID(item.tax_assignment_id)
+                                            setTaxID([item.data])
+                                            setProvinceCode(item.province_code)
                                         }}
                                         className={`w-full px-2.5 py-[10px]  rounded border border-zinc-300 flex-col justify-start items-start gap-3 flex cursor-pointer hover:bg-slate-100
                                 ${isSelect.toLowerCase() === item.province_name.toLowerCase() ? "bg-blue-100" : "bg-white"}`}>
                                         <div className="w-full justify-start items-center gap-2.5 inline-flex text-black text-xs ">
-                                            <p>{item.province_name} :</p>
-                                            <p className="text-black text-xs font-semibold font-['Poppins'] ">{item.tax_assignment_id} ( {item.tax_rate} % )</p>
+                                            <p className='w-[70px] flex flex-row justify-between'>
+                                                {item.province_name}
+                                                <span>
+                                                    :
+                                                </span>
+                                            </p>
+                                            <div className="text-black text-xs font-semibold font-['Poppins']  flex flex-row w-full">
+                                                {
+                                                    item.data.map((tax, index) => {
+                                                        return (
+                                                            <div key={index} className="px-1">
+                                                                {tax.tax_assignment_name} ( {tax.tax_rate} % )
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 )

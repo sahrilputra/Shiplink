@@ -5,7 +5,8 @@ import axios from "axios";
 import { DeleteDialog } from "./dialog/DeleteDialog";
 import { RefreshCcw } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
+export const TaxDetails = ({ close, taxAssignID, countryCode, province_code }) => {
+    console.log("🚀 ~ TaxDetails ~ province_code:", province_code)
     console.log("🚀 ~ TaxDetails ~ countryCode:", countryCode);
 
     const [change, setChange] = useState(false);
@@ -20,6 +21,7 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
         limit: 0,
         index: 0,
         country_code: countryCode,
+        province_code: province_code,
     });
 
     const fetchData = async () => {
@@ -31,6 +33,7 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
                 limit: 0,
                 index: 0,
                 country_code: countryCode,
+                province_code: province_code,
             });
             const responseData = response.data.taxassignment;
             console.log("response from api : ", responseData);
@@ -46,7 +49,7 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
 
     useEffect(() => {
         fetchData();
-    }, [countryCode, query]);
+    }, [countryCode, province_code, query]);
 
     const reloadData = () => {
         fetchData();
@@ -61,7 +64,7 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
         try {
             const response = await axios.get(
                 `/api/admin/config/tax/setStatus`,
-             
+
             )
 
 
@@ -105,21 +108,18 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
                             <Skeleton className={"w-[100%] h-[35px]"} />
                         </div>
                     ) : (
-                        taxList.map((item, index) => {
-                            return (
-                                <TaxDetailsList
-                                    key={index}
-                                    setChange={setChange}
-                                    data={item}
-                                    handleClick={handleDeleteClicked}
-                                    taxAssignID={taxAssignID}
-                                />
-                            );
-                        })
+                        <TaxDetailsList
+                            setChange={setChange}
+                            data={taxList}
+                            handleClick={handleDeleteClicked}
+                            taxAssignID={taxAssignID}
+                        />
+
+
                     )}
                 </div>
 
-                <div
+                {/* <div
                     className={`flex flex-row gap-5 justify-end items-end w-full ${change ? "" : "hidden"
                         }`}
                 >
@@ -134,7 +134,7 @@ export const TaxDetails = ({ close, taxAssignID, countryCode }) => {
                     <Button variant="destructive" size="xs" className="w-[80px] text-xs">
                         <p>Save</p>
                     </Button>
-                </div>
+                </div> */}
             </div>
         </>
     );

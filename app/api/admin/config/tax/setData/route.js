@@ -14,6 +14,10 @@ export async function POST(request) {
             abbreviation,
             tax_number,
             tax_rate,
+            country_code,
+            province_code,
+            status,
+            show_inv_status,
             action,
         } = await request.json();
 
@@ -25,6 +29,10 @@ export async function POST(request) {
                 abbreviation: abbreviation,
                 tax_number: tax_number,
                 tax_rate: tax_rate,
+                country_code: country_code,
+                province_code: province_code,
+                status: status,
+                show_inv_status: show_inv_status,
                 action: action
             },
             {
@@ -35,11 +43,11 @@ export async function POST(request) {
             }
         );
 
-        console.log("response from api : ", response.message); // Log the response data
+        console.log("response from api : ", response); // Log the response data
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });
