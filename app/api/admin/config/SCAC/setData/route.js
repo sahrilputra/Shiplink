@@ -11,13 +11,14 @@ export async function POST(request) {
 
         const {
             SCAC,
+            HCC,
         } = await request.json();
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
             `${process.env.API_URL}/ApiKeys/SetSCAC_Code`,
             {
                 scac_code: SCAC,
-
+                hcc_code: HCC
             },
             {
                 httpsAgent: agent,

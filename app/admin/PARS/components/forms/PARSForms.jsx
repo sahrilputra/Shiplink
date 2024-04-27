@@ -30,14 +30,25 @@ import {
     SelectItemWihtoutIndicator,
 } from "@/components/ui/select";
 const formSchema = yup.object().shape({
-    Type: yup.string(),
-    SCAC: yup.string(),
-    CodeStart: yup.string().required(),
-    CodeRange: yup.string(),
-})
-
-
-
+    id: yup.number(),
+    type: yup.string(),
+    carrier_code: yup.string(),
+    code_end: yup.string().when('code_start', (code_start, schema) =>
+        schema.test({
+            test: function (code_end) {
+                if (code_start && code_end && code_end <= code_start) {
+                    return this.createError({
+                        message: 'Code end must be greater than code start',
+                        path: 'code_end',
+                    });
+                }
+                return true;
+            }
+        })
+    ).required(),
+    code_start: yup.string(),
+    action: yup.string(),
+});
 export const PARSForms = ({ close, data = null, setIsReload }) => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
@@ -45,33 +56,15 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
     const [clicked, isClicked] = useState(false);
     const [scac_code, setScacCode] = useState("");
 
-    useEffect(() => {
-        const getCode = async () => {
-            try {
-                const response = await axios.get(
-                    `/api/admin/config/SCAC/getData`
-                )
-                console.log("🚀 ~ fetchData ~ SCAC response:", response)
-                const responseData = response.data
-                setScacCode(responseData.data.scac_code)
-                form.setValue("SCAC", responseData.data.scac_code)
-            } catch (error) {
-                console.error(error)
-            }
-        }
-        getCode();
-    }, [])
-
-
-
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            Type: "PARS",
-            SCAC: "",
-            CodeStart: "",
-            CodeRange: "",
-
+            id: 0,
+            type: "PARS",
+            carrier_code: "",
+            code_end: "",
+            code_start: "0001",
+            action: "add",
         },
         mode: "onChange",
     })
@@ -79,9 +72,9 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
     const toggleClicked = (clickedButtons) => {
         isClicked(clickedButtons);
         if (clickedButtons) {
-            form.setValue('Type', 'PAPS')
+            form.setValue('type', 'PAPS')
         } else {
-            form.setValue('Type', 'PARS')
+            form.setValue('type', 'PARS')
         }
     }
 
@@ -96,7 +89,7 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
                 formData
             );
             toast({
-                title: `${formData.Type} Number has been ${data ? "Edited!" : "created!"}`,
+                title: `Number has been created`,
                 description: response.data.message,
                 status: 'success',
             });
@@ -107,7 +100,7 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
             setLoading(false)
             toast({
                 title: 'Error!',
-                description: `An error occurred while ${data ? "Edited" : "Created"} the Number.`,
+                description: `An error occurred while Created the Number.`,
                 status: 'error',
             });
         }
@@ -137,6 +130,28 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
         }
         fetchCourrier();
     }, [queryCurrier]);
+
+    const getCode = async () => {
+        try {
+            const response = await axios.get(
+                `/api/admin/config/SCAC/getData`
+            )
+            console.log("🚀 ~ fetchData ~ SCAC response:", response)
+            const responseData = response.data
+            setScacCode(responseData.data.scac_code)
+            if (form.watch('type') === "PARS") {
+                form.setValue('carrier_code', responseData.data.hcc_code)
+            } else {
+                form.setValue('carrier_code', responseData.data.scac_code)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        getCode();
+    }, [form.watch('type')]);
 
 
     return (
@@ -173,96 +188,20 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
                     </div>
 
                     <div className="profile flex flex-row gap-4 w-full items-end text-xs justify-end">
-                        {/* <div className="">
-                        <FormField
-                                className=" text-sm space-y-0 w-[100%]"
-                                name="carrier_code"
-                                control={form.control}
-                                render={({ field, formState }) => (
-                                    <>
-                                        {console.log("field.value : ", field)}
-                                        <FormItem className="space-y-1.5  w-[30%]">
-                                            <FormLabel className="font-bold">Select Carrier</FormLabel>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                                open={isCarrierOpen}
-                                                onOpenChange={setCarrierOpen}
-                                                required
-                                            >
-                                                <FormControl className="space-y-0">
-                                                    <SelectTrigger
-                                                        className={`w-[100%] text-xs h-[30px] rounded-sm px-2 py-0 ${formState.errors.carrier_code && "border-red-500 focus:ring-red-700 text-red-800"}`}>
-                                                        <p>{field.value}</p>
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectGroup className='text-xs '>
-                                                        {carrierList.map((item, index) => (
-                                                            <SelectItemWihtoutIndicator
-                                                                className='text-xs'
-                                                                key={index}
-                                                                value={item.carrier_name}
-                                                                onValueChange={() => {
-                                                                    forms.setValue = ("carrier_code", item.carrier_name)
-                                                                    setSelectedCarrier(item.carrier_name)
-                                                                }}
-                                                                onSelect={() => {
-                                                                    setCarrierOpen(false);
-                                                                    forms.setValue = ("carrier_code", item.carrier_name)
-                                                                    setSelectedCarrier(item.carrier_name)
-                                                                }}
-                                                            >
-                                                                {item.carrier_name}
-                                                            </SelectItemWihtoutIndicator>
-                                                        ))
-                                                        }
-                                                    </SelectGroup>
-                                                    <SelectGroup>
-                                                        <SelectLabel className="px-0.5 border-b text-xs space-y-1 font-bolds ">Other</SelectLabel>
-                                                        <div className=" pt-1 flex flex-row gap-1">
-                                                            <Input
-                                                                autoComplete="off"
-                                                                id="carrier_code"
-                                                                className="text-xs h-[30px] w-[120px] rounded-sm px-2 py-0 "
-                                                                placeholder="Input Carrier"
-                                                                value={selectedCarrier || ""}
-                                                                onValueChange={(e) => {
-                                                                    setSelectedCarrier(e.target.value);
-                                                                    setCarrierOpen(true);
-                                                                    forms.setValue = ("carrier_code", e.target.value)
-                                                                }}
-                                                                onKeyPress={(e) => {
-                                                                    if (e.key === "Enter") {
-                                                                        setCarrierOpen(false)
-                                                                        handleSelectedCarrier({ target: { value: e.target.value } });
-                                                                        e.preventDefault(); // Prevent form submission
-                                                                    }
-                                                                }}
-                                                                {...field}
-                                                            />
-                                                        </div>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormItem>
-                                    </>
-                                )}
-                            />
-                        </div> */}
+
                         <FormField
                             className="w-full"
-                            name="SCAC"
+                            name="carrier_code"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full">
-                                        <FormLabel className="font-bold">SCAC Carrier Code</FormLabel>
+                                        <FormLabel className="font-bold">{`${form.watch('type') === "PARS" ? "HCC" : "SCAC"}`} Carrier Code</FormLabel>
                                         <FormControl>
                                             <Input
                                                 size="new"
                                                 disabled={true}
-                                                id="SCAC"
+                                                id="carrier_code"
                                                 placeholder="AC 12312"
                                                 className="px-2"
                                                 {...field} />
@@ -273,7 +212,7 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
                             )}
                         />
                         <FormField
-                            name="CodeStart"
+                            name="code_start"
                             className="w-[40%]"
                             control={form.control}
                             render={({ field }) => (
@@ -281,8 +220,9 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
                                     <FormItem className="w-[40%]">
                                         <FormLabel className="font-bold "  >Code Start #</FormLabel>
                                         <FormControl >
-                                            <Input size="new"
-                                                type="text" id="CodeStart" placeholder="0000001" className="px-2"  {...field} />
+                                            <Input
+                                                size="new"
+                                                type="Number" id="Codecode_startStart" placeholder="0001" className="px-2"  {...field} />
                                         </FormControl>
 
                                     </FormItem>
@@ -290,19 +230,20 @@ export const PARSForms = ({ close, data = null, setIsReload }) => {
                             )}
                         />
                         <FormField
-                            name="CodeRange"
+                            name="code_end"
                             className="w-[30%]"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-[30%]">
-                                        <FormLabel className="font-bold" >Code Range</FormLabel>
+                                        <FormLabel className="font-bold" >Code End</FormLabel>
                                         <FormControl >
                                             <Input size="new"
-                                                type="number" id="CodeStart" placeholder="100" className="px-2"   {...field} />
+                                                type="number" id="codeEnd" placeholder="1000" className="px-2"   {...field} />
                                         </FormControl>
-
+                                        <FormMessage name="code_end" className="text-xs" />
                                     </FormItem>
+
                                 </>
                             )}
                         />

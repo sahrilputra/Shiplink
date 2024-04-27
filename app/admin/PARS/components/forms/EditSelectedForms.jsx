@@ -19,14 +19,27 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Loaders } from '@/components/ui/loaders'
 import axios from 'axios'
 
-const formSchema = yup.object().shape({
-    Type: yup.string(),
-    SCAC: yup.string(),
-    CodeStart: yup.number(),
-    CodeRange: yup.string(),
-    action: yup.string()
-})
 
+const formSchema = yup.object().shape({
+    id: yup.number(),
+    type: yup.string(),
+    carrier_code: yup.string(),
+    code_end: yup.string().when('code_start', (code_start, schema) =>
+        schema.test({
+            test: function (code_end) {
+                if (code_start && code_end && code_end <= code_start) {
+                    return this.createError({
+                        message: 'Code end must be greater than code start',
+                        path: 'code_end',
+                    });
+                }
+                return true;
+            }
+        })
+    ).required(),
+    code_start: yup.string(),
+    action: yup.string(),
+});
 
 
 export const EditSelectedNumberForms = ({ close, data = null, reload }) => {
@@ -36,11 +49,12 @@ export const EditSelectedNumberForms = ({ close, data = null, reload }) => {
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            Type: data?.type || "PARS",
-            SCAC: data?.carrier_code || "",
-            CodeStart: data?.code_start || "",
-            CodeRange: data?.code_range || "",
-            action: "edit"
+            id: 0,
+            type: data?.type || "PARS",
+            carrier_code: data?.carrier_code || "",
+            code_end: data?.code_end || "",
+            code_start: data?.code_start || "",
+            action: "edit",
         },
         mode: "onChange",
     })
@@ -87,7 +101,7 @@ export const EditSelectedNumberForms = ({ close, data = null, reload }) => {
                     <div className="profile flex flex-col gap-2 w-full text-xs">
                         <FormField
                             className="w-full"
-                            name="CodeStart"
+                            name="code_start"
                             control={form.control}
                             render={({ field }) => (
                                 <>
@@ -108,12 +122,12 @@ export const EditSelectedNumberForms = ({ close, data = null, reload }) => {
                         />
                         <FormField
                             className="w-full"
-                            name="CodeRange"
+                            name="code_end"
                             control={form.control}
                             render={({ field }) => (
                                 <>
                                     <FormItem className="w-full text-neutral-900">
-                                        <FormLabel className="text-sm">Code Range</FormLabel>
+                                        <FormLabel className="text-sm">Code End</FormLabel>
                                         <FormControl>
                                             <Input
                                                 id="CodeRange"
@@ -121,7 +135,7 @@ export const EditSelectedNumberForms = ({ close, data = null, reload }) => {
                                                 className="text-sm"
                                                 {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}

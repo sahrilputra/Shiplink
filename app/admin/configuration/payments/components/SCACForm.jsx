@@ -13,6 +13,7 @@ import { Loaders } from '@/components/ui/loaders'
 
 const formSchema = yup.object().shape({
     SCAC: yup.string().required(),
+    HCC: yup.string(),
 })
 export const SCACForm = () => {
 
@@ -20,6 +21,7 @@ export const SCACForm = () => {
     const { toast } = useToast();
     const [data, setData] = useState({
         SCAC: "",
+        HCC: "",
     })
 
 
@@ -27,6 +29,7 @@ export const SCACForm = () => {
         resolver: yupResolver(formSchema),
         defaultValues: {
             SCAC: "",
+            HCC: "",
         },
         mode: "onChange",
     })
@@ -41,6 +44,7 @@ export const SCACForm = () => {
             const responseData = response.data
             setData({
                 SCAC: responseData.data.scac_code,
+                HCC: responseData.data.hcc_code,
             })
         } catch (error) {
             console.error(error)
@@ -53,7 +57,9 @@ export const SCACForm = () => {
 
     useEffect(() => {
         form.setValue("SCAC", data?.SCAC || "")
+        form.setValue("HCC", data?.HCC || "")
     }, [data])
+
     const handleCancel = () => {
         form.reset();
         fetchData();
@@ -68,6 +74,7 @@ export const SCACForm = () => {
                 `/api/admin/config/SCAC/setData`,
                 {
                     SCAC: form.watch("SCAC"),
+                    HCC: form.watch("HCC"),
                 }
             )
             if (response.data.status === true || response.data.status === "true") {
@@ -111,6 +118,31 @@ export const SCACForm = () => {
                                                     <div className="text-xs w-[120px] bg-myBlue text-white h-[30px] flex items-center px-2 text-center rounded-l-sm justify-center">SCAC Code</div>
                                                     <Input
                                                         placeholder="Enter your SCAC Code"
+                                                        className="rounded-l-none"
+                                                        size="xs"
+                                                        {...field}
+                                                    />
+                                                </div>
+
+                                            </>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="flex flex-row w-full items-center">
+                            <FormField
+                                name="HCC"
+                                className="w-full text-neutral-900"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="w-full">
+                                        <FormControl >
+                                            <>
+                                                <div className="flex flex-row w-full items-center">
+                                                    <div className="text-xs w-[120px] bg-myBlue text-white h-[30px] flex items-center px-2 text-center rounded-l-sm justify-center">HCC Code</div>
+                                                    <Input
+                                                        placeholder="Enter your HCC Code"
                                                         className="rounded-l-none"
                                                         size="xs"
                                                         {...field}

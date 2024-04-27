@@ -277,7 +277,7 @@ export function PARSTable({ isReload, setIsReload }) {
                         <div className="">
                             <Button
                                 variant="destructive"
-                                size="sm"
+                                size="xs"
                                 className="w-[100px]"
                                 onClick={() => handlerDelete(selectedRowID)}
                                 disabled={Object.keys(rowSelection).length === 0} // Check if any item is checked

@@ -15,6 +15,7 @@ import CheckoutForm from '../CheckoutForm';
 import { SucessPayemnts } from '../../../notif/Sucess';
 import { set } from 'date-fns';
 import { CheckCircle, XCircleIcon, Loader2 } from "lucide-react";
+import { useToast } from '@/components/ui/use-toast';
 
 
 const GetPayments = async () => {
@@ -45,6 +46,7 @@ export const CrossBorderPayments = (
     }
 ) => {
 
+    const { toast } = useToast();
     const toggleSelect = (selectedButtons) => { isSelected(selectedButtons) }
     const [clientSecret, setClientSecret] = useState("");
     const [totalAmount, setTotalAmount] = useState(0);
@@ -55,6 +57,8 @@ export const CrossBorderPayments = (
 
     const [openInformation, setOpenInformation] = useState(false);
     const [paymentStatus, setPaymentStatus] = React.useState(null);
+    const [parsCodeNumber, setParsCodeNumber] = React.useState(null);
+    console.log("🚀 ~ parsCodeNumber:", parsCodeNumber)
     const [message, setMessage] = React.useState(null);
     // const stripePromise = loadStripe(paymentPublic);
 
@@ -113,6 +117,10 @@ export const CrossBorderPayments = (
                 if (forms.watch("broker") === "Use Shiplink Broker") {
                     console.log("Running PARS")
                 }
+                if (forms.watch("pars") === "") {
+                    console.log("🚀 ~ handleCrossBorder ~ PARS:")
+                    await handlePARS();
+                }
                 const response = await axios.post(
                     '/api/admin/actions/cross_border',
                     {
@@ -121,11 +129,11 @@ export const CrossBorderPayments = (
                         "file_invoices": forms?.watch("invoice"),
                         "warehouse_destination": forms?.watch("warehouse"),
                         "entry_number": forms?.watch("entry_number"),
-                        "parspaps_number": forms?.watch("pars"),
+                        "parspaps_number": forms?.watch("pars") === "" ? parsCodeNumber : forms?.watch("pars"),
                     },
-                )
+                );
 
-                console.log("🚀 ~ handleCrossBorder ~ response:", response)
+                console.log("🚀 ~ handleCrossBorder ~ response:", response);
                 if (response.status === 200) {
                     console.log("🚀 ~ handleCrossBorder ~ SUCESS:")
                     setClientSecret(response.data.clientSecret);
@@ -157,8 +165,15 @@ export const CrossBorderPayments = (
                     data: trackingId,
                 }
             );
-            const responseData = response.data;
-            console.log("🚀 ~ handlePARS ~ responseData:", responseData);
+            const responseData = await response.data;
+            console.log("🚀 ~ handlePARS ~ responseData:", responseData.code_number);
+            setParsCodeNumber(responseData.code_number);
+            if (response.data.status !== true) {
+                toast({
+                    title: "Error",
+                    description: `${responseData.message}`,
+                })
+            }
         } catch (error) {
             console.log("Erorr : ", error);
         }
@@ -169,6 +184,10 @@ export const CrossBorderPayments = (
         try {
             if (forms.watch("broker") === "Use Shiplink Broker") {
                 console.log("RUNNING PARS")
+                handlePARS();
+            }
+            if (forms.watch("parspaps_number") === "") {
+                console.log("🚀 ~ handleCrossBorder ~ PARS:")
                 handlePARS();
             }
             const dataToSend = forms?.watch("package_content").map((item) => {

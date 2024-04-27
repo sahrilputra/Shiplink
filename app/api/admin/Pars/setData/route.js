@@ -8,22 +8,24 @@ const agent = new https.Agent({
 export async function POST(request) {
     try {
         const {
-            Type,
-            SCAC,
-            CodeStart,
-            CodeRange,
+            type,
+            carrier_code,
+            code_start,
+            code_end,
             action,
             dataId,
+
         } = await request.json();
         const tokenAccess = await getAccessToken(request)
         const response = await axios.post(
             `${process.env.API_URL}/ParsPaps/set_sequence`,
             {
-                id: dataId,
-                type: Type,
-                carrier_code: SCAC,
-                code_range: CodeRange,
-                code_start: CodeStart,
+
+                id: 0,
+                type: type,
+                carrier_code: carrier_code,
+                code_end: code_end,
+                code_start: code_start,
                 action: action
 
             },
@@ -40,7 +42,7 @@ export async function POST(request) {
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
             };
             return NextResponse.json(responseData, { status: 200 });
