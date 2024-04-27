@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { RefreshCcw } from 'lucide-react'
 
 export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode, setTaxID, setProvinceCode }) => {
     console.log("🚀 ~ ProvinceList ~ countryCode:", countryCode)
@@ -53,6 +55,9 @@ export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode,
         fetchData();
     }, [query, countryCode]);
 
+    const reloadData = () => {
+        fetchData();
+    }
     if (!countryName) {
         return null;
     }
@@ -60,7 +65,22 @@ export const ProvinceList = ({ countryName, handleSelect, isSelect, countryCode,
     return (
         <>
             <div className="w-full justify-start gap-1 flex flex-col">
-                <div className="text-black text-sm font-bold ">Province : </div>
+                <div className="text-black text-sm font-bold w-full flex flex-row items-center justify-between">
+                    <p>Province :</p>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className=" w-[30px] h-[30px] text-xs active:transition-transform "
+                        onClick={reloadData}
+                    >
+                        <RefreshCcw
+                            width={14}
+                            height={14}
+                            className={`text-red-600 refresh-icon ${loading ? "animate-spin" : ""}`}
+                        />
+                    </Button>
+                </div>
                 {
                     loading ? (
                         <>

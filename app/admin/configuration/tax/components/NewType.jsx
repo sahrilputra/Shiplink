@@ -20,13 +20,22 @@ import { Loaders } from "@/components/ui/loaders";
 import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = yup.object().shape({
+    tax_assignment_id: yup.string(),
     tax_assignment_name: yup.string(),
     abbreviation: yup.string().required(),
     tax_number: yup.string().required(),
     tax_rate: yup.string().required(),
+    country_code: yup.string(),
+    province_code: yup.string(),
+    status: yup.number(),
+    show_inv_status: yup.number(),
+    action: yup.string(),
 });
 
 export const NewType = ({ close, data = null, selected, countryCode, provinceCode }) => {
+    console.log("🚀 ~ NewType ~ selected:", selected)
+    console.log("🚀 ~ NewType ~ provinceCode:", provinceCode)
+
     const [openDialog, setOpenDialog] = useState(false);
     const [clicked, isClicked] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -37,6 +46,7 @@ export const NewType = ({ close, data = null, selected, countryCode, provinceCod
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
+            tax_assignment_id: "",
             tax_assignment_name: "",
             abbreviation: "",
             tax_number: "",
@@ -45,6 +55,7 @@ export const NewType = ({ close, data = null, selected, countryCode, provinceCod
             province_code: provinceCode,
             status: 0,
             show_inv_status: 0,
+            action: "add",
         },
         mode: "onChange",
     });
@@ -52,18 +63,17 @@ export const NewType = ({ close, data = null, selected, countryCode, provinceCod
     useEffect(() => {
         const handleCoutnryChange = () => {
             form.setValue("country_code", countryCode)
+            form.setValue("province_code", provinceCode)
         }
         handleCoutnryChange()
-    }, [countryCode, form])
+    }, [countryCode, provinceCode])
 
     const handleSave = async (formData) => {
-        console.log("data", formData)
         setLoading(true)
-        formData.action = "add"
-        formData.tax_assignment_id = ""
+        console.log("SENDER DATA", formData)
         try {
             const response = await axios.post(
-                `/api/admin/config/tax/assign/setData`,
+                `/api/admin/config/tax/setData`,
                 formData
             );
             setLoading(false)

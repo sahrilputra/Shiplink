@@ -16,14 +16,12 @@ export const TaxDetailsList = ({ setChange, data, handleClick, taxAssignID }) =>
     const { toast } = useToast()
     // Menginisialisasi array status checked dengan nilai false
     const [checkedItems, setCheckedItems] = useState(Array(data.length).fill(false));
-
     useEffect(() => {
-        // Mengupdate status checked berdasarkan taxAssignID dan data
-        const updatedCheckedItems = data.map((item, index) => {
-            return item && data[index] && item.tax_assignment_id === data[index].tax_assignment_id;
+        const updatedCheckedItems = data.map((item) => {
+            return item.status === 1;
         });
         setCheckedItems(updatedCheckedItems);
-    }, [taxAssignID, data])
+    }, [data])
 
     const handleCheck = (index) => {
         // Mendapatkan status checked terkini
@@ -44,7 +42,7 @@ export const TaxDetailsList = ({ setChange, data, handleClick, taxAssignID }) =>
                 toast({
                     title: response.data.message,
                     description: response.data.status,
-                    status: response.data.status === 200 ? 'success' : 'error',
+                    status: response.data.status === true ? 'success' : 'error',
                 })
             })
         } catch (error) {

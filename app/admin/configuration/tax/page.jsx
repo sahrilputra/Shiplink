@@ -168,7 +168,8 @@ export default function Tax() {
                                 />
                             </>
                         )}
-                        <TaxDetails close={handleClose}
+                        <TaxDetails
+                            close={handleClose}
                             taxAssignID={taxAssignID}
                             countryCode={countryCode}
                             province_code={provinceCode}

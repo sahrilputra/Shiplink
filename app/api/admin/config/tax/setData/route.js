@@ -21,6 +21,20 @@ export async function POST(request) {
             action,
         } = await request.json();
 
+        console.log("request data : ", request.body); // Log the request body
+
+        console.log("tax_assignment_id : ", tax_assignment_id);
+        console.log("tax_assignment_name : ", tax_assignment_name);
+        console.log("abbreviation : ", abbreviation);
+        console.log("tax_number : ", tax_number);
+        console.log("tax_rate : ", tax_rate);
+        console.log("country_code : ", country_code);
+        console.log("province_code : ", province_code);
+        console.log("status : ", status);
+        console.log("show_inv_status : ", show_inv_status);
+        console.log("action : ", action);
+        
+
         const response = await axios.post(
             `${process.env.API_URL}/Config/TaxAssignment_setdata`,
             {
