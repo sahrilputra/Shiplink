@@ -121,6 +121,9 @@ export const CrossBorderPayments = (
                     console.log("🚀 ~ handleCrossBorder ~ PARS:")
                     await handlePARS();
                 }
+
+                console.log("CONTINUE ...", parsCodeNumber)
+
                 const response = await axios.post(
                     '/api/admin/actions/cross_border',
                     {
@@ -160,19 +163,25 @@ export const CrossBorderPayments = (
     const handlePARS = async () => {
         console.log("🚀 ~ handlePARS ~ trackingId:", trackingId)
         try {
-            const response = await axios.post(`/api/admin/packages/assign_pars`,
-                {
-                    data: trackingId,
-                }
-            );
+            const response = await axios.post(`/api/admin/packages/assign_pars`, {
+                data: trackingId,
+            });
+
             const responseData = await response.data;
             console.log("🚀 ~ handlePARS ~ responseData:", responseData.code_number);
-            setParsCodeNumber(responseData.code_number);
+            await new Promise((resolve) => {
+                setParsCodeNumber(responseData.code_number);
+                if(parsCodeNumber !== ""){
+                    forms.setValue("pars", responseData.code_number)
+                }
+                resolve();
+            });
+
             if (response.data.status !== true) {
                 toast({
                     title: "Error",
                     description: `${responseData.message}`,
-                })
+                });
             }
         } catch (error) {
             console.log("Erorr : ", error);
