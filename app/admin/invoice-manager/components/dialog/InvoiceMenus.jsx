@@ -11,11 +11,34 @@ import {
 import { MoreHorizontalIcon } from "lucide-react"
 import { Dialog, DialogContent, } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
+import axios from 'axios'
+
 export const InvoiceMenus = ({ handler, invID, handlerDelete }) => {
+    const { toast } = useToast();
     const [isDetailsOpen, setDetailsOpen] = useState(false);
     const downloadInvoice = () => {
         window.open(`https://sla.webelectron.com/api/InvoiceManager/download_invoicepdf?invoice_id=${invID}`, '_blank');
     };
+
+    const handleSentToEmail = async () => {
+        try {
+            const response = await axios.post(
+                `/api/admin/invoice/sentTo`,
+                {
+                    data: invID
+                }
+            )
+            console.log("🚀 ~ handleSentToEmail ~ response:", response)
+            toast({
+                title: `${response.data.status ? 'Success' : 'Error'}`,
+                description: `${response.data.message}`,
+            })
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
 
     return (
         <>
@@ -35,6 +58,11 @@ export const InvoiceMenus = ({ handler, invID, handlerDelete }) => {
                             onClick={downloadInvoice}
                         >
                             <p className="text-xs text-myBlue">Download Invoice</p>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={handleSentToEmail}
+                        >
+                            <p className="text-xs text-myBlue">Sent to Email</p>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => { handler(invID) }}
