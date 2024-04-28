@@ -72,14 +72,14 @@ export async function POST(request) {
             }
         );
 
-        console.log("Response Message : ", response.data.message);
+        console.log("Response Message : ", response);
         console.log("Response Status : ", response.status);
         console.log("Response data : ", response.data);
 
 
         if (response.status === 200) {
             const responseData = {
-                status: true,
+                status: response.data.status,
                 message: response.data.message,
                 tracking_id: response.data.tracking_id,
             };

@@ -46,8 +46,9 @@ import {
 import { cn } from "@/lib/utils"
 import axios from 'axios';
 import { Loaders } from '@/components/ui/loaders'
-import { format } from "date-fns"
+import { format, set } from "date-fns"
 import { ContentForms } from './ContentForms'
+import { useToast } from '@/components/ui/use-toast'
 
 const formSchema = yup.object().shape({
     InvoiceNo: yup.string(),
@@ -55,18 +56,18 @@ const formSchema = yup.object().shape({
     InvoiceCurrency: yup.string(),
     InvoiceTerms: yup.string(),
     BilledToName: yup.string(),
-    BilledToAddress: yup.string(),
+    BilledToAddress: yup.string().required("Billed To Address is required"),
     BilledToZip: yup.string(),
     BilledToCountry: yup.string(),
     ShippedToName: yup.string(),
-    ShippedToAddress: yup.string(),
-    ShippedToZip: yup.string(),
+    ShippedToAddress: yup.string().required("Shipped To Address is required"),
+    ShippedToZip: yup.string().required("Shipped To Zip is required"),
     ShippedToCountry: yup.string(),
     note: yup.string(),
     userName: yup.string(),
     userID: yup.string(),
     userPhone: yup.string(),
-    userEmails: yup.string().email(),
+    userEmails: yup.string().email().required("Email is required"),
     items: yup.array().of(
         yup.object().shape({
             itemDescription: yup.string(),
@@ -85,6 +86,8 @@ const formSchema = yup.object().shape({
 
 
 export const InvoiceForms = ({ customer = null, data = null }) => {
+
+    const { toast } = useToast();
     console.log("🚀 ~ InvoiceForms ~ data:", data)
     const today = format(new Date(), "yyyy-MM-dd");
     const form = useForm({
@@ -92,8 +95,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         defaultValues: {
             InvoiceNo: "",
             InvoiceDate: today || "",
-            InvoiceCurrency: "",
-            InvoiceTerms: "",
+            InvoiceCurrency: "CAD",
+            InvoiceTerms: "Upon Receipt",
             BilledToName: "",
             BilledToAddress: "",
             BilledToZip: "",
@@ -126,7 +129,9 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         mode: "onChange",
     })
 
+
     const [customerData, setCustomerData] = useState([])
+    console.log("🚀 ~ InvoiceForms ~ customerData:", customerData)
     const [loading, setLoading] = useState(false);
     const [taxList, setTaxList] = useState([]);
     const [query, setQuery] = useState({
@@ -143,10 +148,14 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
             ...query,
             keyword: e,
         });
-
     }
+
+    // const findCountry
+
     const [taxQuery, setTaxQuery] = useState({
         keyword: "",
+        country_code: "CAN",
+        province_code: "",
         page: 1,
         limit: 0,
         index: 0
@@ -191,12 +200,12 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         const fetchData = async () => {
             try {
                 const response = await axios.post(
-                    `/api/admin/config/tax/list`,
+                    `/api/admin/config/tax/typeDetails`,
                     taxQuery
                 );
                 console.log("🚀 ~ fetchData ~ response:", response)
                 const data = await response.data;
-                setTaxList(data.tax);
+                setTaxList(data.taxassignment);
             } catch (error) {
                 console.log('Error:', error);
             }
@@ -213,6 +222,105 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
 
     console.log("🚀 ~ InvoiceForms ~ fields:", fields)
 
+
+    const [disbaleBilled, setDisbaleBilled] = useState(false)
+    const [customerBilled_id, setCustomerBilled_id] = useState("")
+    const [customerBilledData, setCustomerBilledData] = useState(null)
+
+    const getCustomerBilledData = async () => {
+        setDisbaleBilled(true)
+        try {
+            const response = await axios.post(
+                `/api/customerAPI/payments/getBilling`,
+                {
+                    user_code: customerBilled_id,
+                    limit: 1,
+                }
+            )
+            const data = response.data;
+            const firstBilling = data.billing.length > 0 ? data.billing[0] : null;
+            console.log("🚀 ~ fetchUserData ~ data:", firstBilling)
+            setCustomerBilledData(firstBilling);
+            setDisbaleBilled(false)
+        } catch (e) {
+            console.log(e)
+            setDisbaleBilled(false)
+        }
+    }
+
+    useEffect(() => {
+        if (customerBilled_id) {
+            getCustomerBilledData();
+        } else {
+            setCustomerBilledData(null);
+            form.setValue('BilledToName', "");
+            form.setValue('BilledToAddress', "");
+            form.setValue('BilledToZip', "");
+            form.setValue('BilledToCountry', "");
+        }
+    }, [customerBilled_id]);
+
+    useEffect(() => {
+        if (customerBilledData) {
+            form.setValue('BilledToName', customerBilledData?.name);
+            form.setValue('BilledToAddress', customerBilledData?.street_address);
+            form.setValue('BilledToZip', customerBilledData?.postal_code);
+            form.setValue('BilledToCountry', customerBilledData?.country_name);
+            if (customerBilledData?.country_name) {
+                findCoutryByNameToCode(customerBilledData?.country_name)
+            }
+        } else {
+            form.setValue('BilledToName', "");
+            form.setValue('BilledToAddress', "");
+            form.setValue('BilledToZip', "");
+            form.setValue('BilledToCountry', "");
+        }
+    }, [customerBilledData, form]);
+
+    const [countryCode, setCountryCode] = useState("")
+    console.log("🚀 ~ InvoiceForms ~ countryCode:", countryCode)
+
+    useEffect(() => {
+        findCoutryByNameToCode(form.watch('BilledToCountry'));
+    }, [form.watch('BilledToCountry')])
+
+    const findCoutryByNameToCode = async (name) => {
+        console.log("findCoutryByNameToCode")
+        try {
+            const response = await axios.post(
+                `/api/admin/config/countries/list`,
+                {
+                    keyword: name,
+                    province_code: "",
+                    page: 0,
+                    limit: 0,
+                    index: 0,
+                }
+            )
+            console.log("🚀 ~ findCoutryByNameToCode ~ response:", response)
+            const data = response.data;
+            const findCountry = data.country.find(item => item.country_name === name || item.country_code === name)
+            console.log("🚀 ~ findCoutryByNameToCode ~ findCountry:", findCountry)
+            setCountryCode(findCountry?.country_code)
+            setTaxQuery({
+                country_code: findCountry?.country_code
+            })
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    // useEffect(() => {
+    //     if (form.watch('BilledToCountry')) {
+    //         findCoutryByNameToCode(form.watch('BilledToCountry'))
+    //         setTaxQuery({
+    //             ...taxQuery,
+    //             keyword: countryCode
+    //         })
+    //     }
+    // }, [countryCode, form.watch('BilledToCountry')])
+
     const items = watch('items');
     const itemTax = parseFloat(watch('itemTax') || 0);
     const itemDiscount = parseFloat(watch('itemDiscount') || 0);
@@ -224,7 +332,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     }
 
     const handleSave = async (formData) => {
-        console.log(formData)
+        console.log("Saved Data : ", formData)
         setLoading(true);
         try {
             const response = await axios.post(
@@ -232,9 +340,20 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                 formData
             );
             console.log("response from invoice manager : ", response.data)
-            if (response.status === 200) {
+            if (response.data.status === true) {
                 setLoading(false);
-                console.log("Data has been saved")
+                toast({
+                    title: "Invoice Created",
+                    description: "Invoice has been created successfully",
+                    type: "success",
+                });
+            } else {
+                setLoading(false);
+                toast({
+                    title: "Failed to create invoice",
+                    description: `${response.data.message}`,
+                    type: "error",
+                });
             }
         } catch (error) {
             setLoading(false);
@@ -424,6 +543,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                             className="w-full"
                                             name="BilledToName"
                                             control={form.control}
+                                            disabled={disbaleBilled}
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="text-xs space-y-1 w-full">
@@ -445,6 +565,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                             className="w-full"
                                             name="BilledToZip"
                                             control={form.control}
+                                            disabled={disbaleBilled}
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="text-xs space-y-1 w-full">
@@ -465,6 +586,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                             className="w-full"
                                             name="BilledToAddress"
                                             control={form.control}
+                                            disabled={disbaleBilled}
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="text-xs space-y-1 w-full">
@@ -483,6 +605,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                             className="w-full"
                                             name="BilledToCountry"
                                             control={form.control}
+                                            disabled={disbaleBilled}
                                             render={({ field }) => (
                                                 <>
                                                     <FormItem className="text-xs space-y-1 w-full">
@@ -559,7 +682,10 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Input
                                                                 size="new"
-                                                                id="ShippedToAddress" className="text-xs" placeholder="Address" {...field} />
+                                                                id="ShippedToAddress"
+                                                                className="text-xs"
+                                                                placeholder="Address"
+                                                                {...field} />
                                                         </FormControl>
                                                         <FormMessage className="text-xs" />
                                                     </FormItem>
@@ -626,8 +752,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     control={form.control}
                                     name="userName"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-col">
-                                            <FormLabel>Customer </FormLabel>
+                                        <FormItem className="flex flex-col space-y-1">
+                                            <FormLabel className="font-bold">Customer</FormLabel>
                                             <Popover
                                                 modal={true}
                                                 open={openCustomer}
@@ -640,7 +766,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                             variant="outline"
                                                             role="combobox"
                                                             size="new"
-                                                            className={`w-[full] text-xs h-[30px] rounded-sm px-2 py-0 text-left justify-start ${!field.value && "text-muted-foreground"}`}
+                                                            className={`w-[full] text-xs h-[30px] rounded-sm px-2 py-0 text-left justify-start shadow-none ${!field.value && "text-muted-foreground"}`}
                                                         >
                                                             {field.value ? field.value : "Customer"}
                                                         </Button>
@@ -671,6 +797,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                                 ...query,
                                                                                 keyword: ""
                                                                             })
+                                                                            setCustomerBilled_id(item.customer_id)
                                                                             setOpenCustomer(false)
                                                                         }}
                                                                     >
@@ -870,7 +997,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                                     form.setValue('itemTax', item?.tax_rate)
                                                                                 }}
                                                                             >
-                                                                                {item?.tax_rate}
+                                                                                % {item?.tax_rate} - {item?.abbreviation}
                                                                             </SelectItem>
                                                                         ))
                                                                 }
