@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, Image } from '@react-pdf/renderer'
 
-export const InvoiceHead = () => {
+export const InvoiceHead = ({ data, invoice_id }) => {
     const styles = StyleSheet.create({
     });
     return (
@@ -23,22 +23,22 @@ export const InvoiceHead = () => {
                     <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: '10px', width: '80px' }}>Invoice No </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
-                        <Text style={{ fontWeight: 'light', color: '#5A5A5A', fontSize: '10px' }}>13672</Text>
+                        <Text style={{ fontWeight: 'light', color: '#5A5A5A', fontSize: '10px' }}>{invoice_id || "-"}</Text>
                     </View>
                     <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                         <Text style={{ fontWeight: 'extrabold', fontSize: '10px', width: '80px' }}>Invoice Date</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
-                        <Text style={{ fontWeight: 'extrabold', color: '#5A5A5A', fontSize: '10px' }}>13 May 2023</Text>
+                        <Text style={{ fontWeight: 'extrabold', color: '#5A5A5A', fontSize: '10px' }}>{data?.date || "-"}</Text>
                     </View>
                     <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                         <Text style={{ fontWeight: 'extrabold', fontSize: '10px', width: '80px' }}>Due Date</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
-                        <Text style={{ fontWeight: 'extrabold', color: '#5A5A5A', fontSize: '10px' }}>13 May 2023</Text>
+                        <Text style={{ fontWeight: 'extrabold', color: '#5A5A5A', fontSize: '10px' }}>{data?.terms || "-"}</Text>
                     </View>
                     <View style={{ display: 'flex', justifyContent: "flex-start", gap: '3px', alignItems: 'center', flexDirection: 'row' }}>
                         <Text style={{ fontWeight: 'extrabold', fontSize: '10px', width: '80px' }}>Amount Due</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: '10px' }}>:</Text>
-                        <Text style={{ fontWeight: '500', color: '#5A5A5A', fontSize: '10px' }}>$ 52.79</Text>
+                        <Text style={{ fontWeight: '500', color: '#5A5A5A', fontSize: '10px' }}>$ {data?.total || "-"}</Text>
                     </View>
                 </View>
             </View>

@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export const InvoiceTableRow = () => {
+export const InvoiceTableRow = ({ data }) => {
     return (
         <View style={styles.row}>
-            <Text style={styles.description}>Product 1</Text>
-            <Text style={styles.qty}>2</Text>
-            <Text style={styles.rate}>$12</Text>
-            <Text style={styles.amount}>$123</Text>
+            <Text style={styles.description}>{data?.description || "-"}</Text>
+            <Text style={styles.qty}>{data?.qty || "-"}</Text>
+            <Text style={styles.rate}>$ {data?.price || "-"}</Text>
+            <Text style={styles.amount}>$ {data?.total || "-"}</Text>
         </View>
     )
 }

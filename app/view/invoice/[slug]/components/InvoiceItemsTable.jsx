@@ -14,13 +14,18 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 });
-export const InvoiceItemsTable = () => {
+
+
+export const InvoiceItemsTable = ({ data }) => {
     return (
         <View style={styles.tableContainer}>
             <InvoiceTableHead />
-            <InvoiceTableRow />
-            <InvoiceTableRow />
-            <TableFooter />
+            {
+                data?.items?.map((item, index) => {
+                    return <InvoiceTableRow key={index} data={item} />
+                })
+            }
+            <TableFooter data={data} />
         </View>
     )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View } from '@react-pdf/renderer'
 
-export const InvoiceBillled = () => {
+export const InvoiceBillled = ({ data }) => {
 
 
     return (
@@ -10,16 +10,16 @@ export const InvoiceBillled = () => {
                 Billed To
             </Text>
             <Text style={{ fontWeight: 'bold' }}>
-                James Smith
+                {data?.billed_name || "-"}
             </Text>
             <Text style={{ fontWeight: 'light', color: '#5a5a5a' }}>
-                Nasuha, 473 Amherst St.
+                {data?.billed_address || "-"}
             </Text>
             <Text style={{ fontWeight: 'light', color: '#5a5a5a' }}>
-                Unit 7193828, NH, 03063
+                {data?.billed_zip || "-"}
             </Text>
             <Text style={{ fontWeight: 'light', color: '#5a5a5a' }}>
-                USA
+                {data?.billed_country || "-"}
             </Text>
         </View>
     )

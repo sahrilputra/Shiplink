@@ -24,12 +24,12 @@ import { Input } from '@/components/ui/input'
 export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => {
 
     useEffect(() => {
-        const qty = form.watch(`items[${index}].itemQty`)
-        const price = form.watch(`items[${index}].itemPrice`)
-        form.setValue(`items[${index}].itemAmount`, qty * price)
+        const qty = form.watch(`items[${index}].qty`)
+        const price = form.watch(`items[${index}].price`)
+        form.setValue(`items[${index}].total`, qty * price)
         handleSubTotal();
 
-    }, [form.watch(`items[${index}].itemQty`), form.watch(`items[${index}].itemPrice`), index])
+    }, [form.watch(`items[${index}].qty`), form.watch(`items[${index}].price`), index])
     return (
         <>
             <TableRow
@@ -58,7 +58,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                 <TableCell>
                     <FormField
                         className="w-full"
-                        name={`items[${index}].itemDescription`}
+                        name={`items[${index}].description`}
                         control={form.control}
                         render={({ field }) => (
                             <>
@@ -66,7 +66,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                                     <FormControl>
                                         <Input
                                             size="new"
-                                            id="itemDescription" className="text-xs" placeholder="Description" {...field} />
+                                            id="description" className="text-xs" placeholder="Description" {...field} />
                                     </FormControl>
 
                                 </FormItem>
@@ -77,7 +77,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                 <TableCell>
                     <FormField
                         className="w-[100px]"
-                        name={`items[${index}].itemQty`}
+                        name={`items[${index}].qty`}
                         control={form.control}
                         render={({ field }) => (
                             <>
@@ -85,7 +85,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                                     <FormControl>
                                         <Input
                                             size="new"
-                                            id="itemQty" type="number" className="text-xs" placeholder="1" {...field} />
+                                            id="qty" type="number" className="text-xs" placeholder="1" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -95,7 +95,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                 <TableCell>
                     <FormField
                         className="w-[10%]"
-                        name={`items[${index}].itemPrice`}
+                        name={`items[${index}].price`}
                         control={form.control}
                         render={({ field }) => (
                             <>
@@ -103,7 +103,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                                     <FormControl>
                                         <Input
                                             size="new"
-                                            id="itemPrice" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
+                                            id="price" type="number" className="text-xs text-right" placeholder="$ 00.00" {...field} />
                                     </FormControl>
                                 </FormItem>
                             </>
@@ -111,10 +111,10 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                     />
                 </TableCell>
                 <TableCell>
-                    <p className='text-right'>$ {form.watch(`${`items[${index}].itemAmount`}`)}</p>
+                    <p className='text-right'>$ {form.watch(`${`items[${index}].total`}`)}</p>
                     {/* <FormField
                         className="w-[10%]"
-                        name={`items[${index}].itemAmount`}
+                        name={`items[${index}].total`}
                         control={form.control}
                         render={({ field }) => (
                             <>
@@ -122,7 +122,7 @@ export const ContentForms = ({ form, index, field, remove, handleSubTotal }) => 
                                     <FormControl>
                                         <Input
                                             size="new"
-                                            id="itemAmount"
+                                            id="total"
                                             type="number"
                                             className="text-xs text-right"
                                             placeholder="$ 00.00" {...field} />

@@ -70,10 +70,10 @@ const formSchema = yup.object().shape({
     userEmails: yup.string().email().required("Email is required"),
     items: yup.array().of(
         yup.object().shape({
-            itemDescription: yup.string(),
-            itemQty: yup.number(),
-            itemPrice: yup.number(),
-            itemAmount: yup.number(),
+            description: yup.string(),
+            qty: yup.number(),
+            price: yup.number(),
+            total: yup.number(),
             itemID: yup.string(),
         })
     ),
@@ -113,10 +113,10 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
             userEmails: "",
             items: [
                 {
-                    itemDescription: "",
-                    itemQty: 0,
-                    itemPrice: 0,
-                    itemAmount: 0,
+                    description: "",
+                    qty: 0,
+                    price: 0,
+                    total: 0,
                     itemID: "",
                 }
             ],
@@ -189,9 +189,9 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         fetchData();
 
         if (data !== null && data.tracking_id !== undefined) {
-            form.setValue(`items[0].itemDescription`, `Logistic Service For Package : ${data.tracking_id}`)
-            form.setValue(`items[0].itemQty`, 1)
-            form.setValue(`items[0].itemPrice`, data.total_price)
+            form.setValue(`items[0].description`, `Logistic Service For Package : ${data.tracking_id}`)
+            form.setValue(`items[0].qty`, 1)
+            form.setValue(`items[0].price`, data.total_price)
         }
 
     }, [query, data]);
@@ -365,7 +365,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         console.log('running counting subtotal')
         let total = 0;
         fields.map((item, index) => {
-            const itemAmount = form.watch(`items[${index}].itemAmount`)
+            const itemAmount = form.watch(`items[${index}].total`)
             total += parseFloat(itemAmount)
         })
         setSubTotal(total)
@@ -912,10 +912,10 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                             onClick={() => {
                                                 append({
                                                     itemID: fields.length + 1,
-                                                    itemQty: 0,
-                                                    itemPrice: 0,
-                                                    itemAmount: 0,
-                                                    itemDescription: "",
+                                                    qty: 0,
+                                                    price: 0,
+                                                    total: 0,
+                                                    description: "",
                                                 })
                                             }}
                                         >
