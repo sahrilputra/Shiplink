@@ -173,7 +173,15 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         index: 0
     });
 
+    // useEffect(() => {
 
+    //     const formatDate = format(form.watch('InvoiceDate'), "yyyy-MM-dd")
+    //     form.setValue('InvoiceDate', formatDate)
+
+    // }, [form.watch('InvoiceDate')])
+
+
+    console.log("DATE", form.watch('InvoiceDate'))
     const handleSearchCustomer = (e) => {
         console.log("Search Customer : ", e)
         setQuery({
@@ -371,6 +379,10 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     console.log("🚀 ~ InvoiceForms ~ invoiceIDs:", invoiceIDs)
     const handleSave = async (formData) => {
         console.log("Saved Data : ", formData)
+        const formatDate = format(form.watch('InvoiceDate'), 'yyyy-MM-dd')
+        form.setValue('InvoiceDate', formatDate)
+        console.log("Submit DATE : ", form.watch('InvoiceDate'))
+
         setLoading(true);
         try {
             const response = await axios.post(
@@ -575,14 +587,18 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         <FormControl>
                                                             <Button
                                                                 variant={"outline"}
-                                                                className={`w-[100%] pl-3 text-left text-xs shadow-none h-[30px] font-normal ${!field.value && "text-muted-foreground"}`}
+                                                                className={`w-[100%] pl-3 text-left text-xs shadow-none h-[30px] font-normal 
+                                                                ${!field.value && "text-muted-foreground"}`}
                                                             >
                                                                 {field.value ? (
                                                                     format(field.value, "yyyy-MM-dd")
                                                                 ) : (
                                                                     <span>Pick a date</span>
                                                                 )}
-                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                                <CalendarIcon
+                                                                    format={field.value ? "yyyy-MM-dd" : ""}
+                                                                    className="ml-auto h-4 w-4 opacity-50"
+                                                                />
                                                             </Button>
                                                         </FormControl>
                                                     </PopoverTrigger>
