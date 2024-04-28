@@ -1,7 +1,9 @@
 'use client'
 import React, { useState } from 'react'
-import data from '../../../../data/admin/PARSData.json'
+// import data from '../../../../data/admin/PARSData.json'
 import { AssignmetnsTabled } from '../components/ListTable/AssignmentsTable'
+import axios from 'axios'
+
 
 export default function Assignments() {
     const [select, selectedMenus] = useState(null);
@@ -9,6 +11,7 @@ export default function Assignments() {
     const [open, setOpen] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [openEdit, setOpenEdit] = useState(false)
+
 
     const selectedIDHandler = (id) => {
         setSelectedID(id)
@@ -25,7 +28,6 @@ export default function Assignments() {
     return (
         <>
             <AssignmetnsTabled
-                data={data}
                 selectedMenus={select}
                 selectedMenusState={menuItemClickHandler}
                 selectedIDHandler={selectedIDHandler}

@@ -109,6 +109,7 @@ export default function PackageDetails() {
     };
     const handleSearchChange = (event) => {
         setQuery({
+            ...query,
             keyword: event.target.value
         });
     };
