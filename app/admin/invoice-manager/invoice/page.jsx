@@ -11,6 +11,7 @@ export default function NewInvoice() {
     const searchParams = useSearchParams()
     const myParam = searchParams.get('customer')
     const package_id = searchParams.get('package_id') || ""
+    const edit_id = searchParams.get('edit') || ""
     const [open, setOpen] = useState(false);
     console.log("🚀 ~ ArrivalScanPage ~ router:", myParam)
     console.log("🚀 ~ ArrivalScanPage ~ package_id:", package_id)
@@ -43,6 +44,26 @@ export default function NewInvoice() {
             fetchData();
         }
     }, [query, package_id]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(
+                    `/api/admin/invoice/details`,
+                    {
+                        data: edit_id
+                    }
+                );
+                console.log("🚀 ~ fetchData ~ response:", response)
+                const data = await response.data;
+                setData(data.data);
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [edit_id]);
     return (
         <Suspense>
             <>

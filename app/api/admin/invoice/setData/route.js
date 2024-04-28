@@ -24,6 +24,7 @@ export async function POST(request) {
             ShippedToZip,
             ShippedToCountry,
             note,
+            subtotal,
             userName,
             userID,
             userCode,
@@ -31,6 +32,7 @@ export async function POST(request) {
             userEmails,
             items,
             itemTax,
+            tax_id,
             itemTotal,
             itemDiscount,
             action,
@@ -52,8 +54,8 @@ export async function POST(request) {
                 shipped_zip: ShippedToZip,
                 shipped_address: ShippedToAddress,
                 shipped_country: ShippedToCountry,
-                subtotal: 0,
-                tax_id: "string",
+                subtotal: subtotal,
+                tax_id: tax_id,
                 tax_value: itemTax,
                 discount: itemDiscount,
                 total: itemTotal,
@@ -61,7 +63,7 @@ export async function POST(request) {
                 note: note,
                 user_code: userID,
                 email: userEmails,
-                action: "add",
+                action: action,
             },
             {
                 httpsAgent: agent,
@@ -81,7 +83,7 @@ export async function POST(request) {
             const responseData = {
                 status: response.data.status,
                 message: response.data.message,
-                tracking_id: response.data.tracking_id,
+                invoice_id: response.data.invoice_id,
             };
             return NextResponse.json(responseData, { status: 200 });
         } else {

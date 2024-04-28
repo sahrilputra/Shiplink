@@ -79,8 +79,10 @@ const formSchema = yup.object().shape({
     ),
     subtotal: yup.number(),
     itemTax: yup.number(),
+    tax_id: yup.string(),
     itemTotal: yup.number(),
     itemDiscount: yup.number(),
+    action: yup.string(),
 })
 
 
@@ -122,13 +124,42 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
             ],
             subtotal: 0,
             itemTax: 0,
+            tax_id: "",
             itemTotal: 0,
             itemDiscount: 0,
-
+            action: "add",
         },
         mode: "onChange",
     })
 
+    useEffect(() => {
+        if (data) {
+            form.setValue('InvoiceNo', data.invoice_no)
+            form.setValue('InvoiceDate', data.invoice_date)
+            form.setValue('InvoiceCurrency', data.currency)
+            form.setValue('InvoiceTerms', data.terms)
+            form.setValue('BilledToName', data.billed_name)
+            form.setValue('BilledToAddress', data.billed_address)
+            form.setValue('BilledToZip', data.billed_zip)
+            form.setValue('BilledToCountry', data.billed_country)
+            form.setValue('ShippedToName', data.shipped_name)
+            form.setValue('ShippedToAddress', data.shipped_address)
+            form.setValue('ShippedToZip', data.shipped_zip)
+            form.setValue('ShippedToCountry', data.shipped_country)
+            form.setValue('note', data.note)
+            form.setValue('userEmails', data.email)
+            form.setValue('userName', data.shipped_name)
+            form.setValue('userID', data.user_code)
+            form.setValue('items', data.items)
+            form.setValue('subtotal', data.subtotal)
+            form.setValue('itemTax', data.tax)
+            form.setValue('itemTotal', data.total)
+            form.setValue('itemDiscount', data.discount)
+            form.setValue("action", "edit");
+        } else {
+            null
+        }
+    }, [data])
 
     const [customerData, setCustomerData] = useState([])
     console.log("🚀 ~ InvoiceForms ~ customerData:", customerData)
@@ -180,6 +211,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                     form.setValue("ShippedToAddress", findCustomer.address)
                     form.setValue("ShippedToZip", findCustomer.postal_code)
                     form.setValue("ShippedToCountry", findCustomer.country_name)
+                    form.setValue("action", "edit")
                 }
                 setCustomerData(data.customer);
             } catch (error) {
@@ -331,6 +363,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         console.log("Form Errors", error)
     }
 
+    const [invoiceIDs, setInvoiceIds] = useState("")
+    console.log("🚀 ~ InvoiceForms ~ invoiceIDs:", invoiceIDs)
     const handleSave = async (formData) => {
         console.log("Saved Data : ", formData)
         setLoading(true);
@@ -342,6 +376,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
             console.log("response from invoice manager : ", response.data)
             if (response.data.status === true) {
                 setLoading(false);
+                await setInvoiceIds(response.data.invoice_id)
                 toast({
                     title: "Invoice Created",
                     description: "Invoice has been created successfully",
@@ -388,6 +423,34 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         };
         calculateTotal();
     }, [form.watch('subtotal'), form.watch('itemTax'), form.watch('itemDiscount')]);
+
+
+
+    const handleSentToEmail = async () => {
+        try {
+            await handleSave(form.getValues()); // Tunggu hingga handleSave selesai
+            await new Promise((resolve) => { // Tunggu hingga invoiceIDs tersedia
+                if (invoiceIDs) {
+                    resolve();
+                } else {
+                    const interval = setInterval(() => {
+                        if (invoiceIDs) {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, 100); // Cek setiap 100ms apakah invoiceIDs sudah tersedia
+                }
+            });
+            const response = await axios.post( // Gunakan await untuk menunggu respons dari post request
+                `/api/admin/invoice/sentTo`,
+                { data: invoiceIDs }
+            );
+            console.log("🚀 ~ handleSentToEmail ~ invoiceIDs:", invoiceIDs);
+            console.log("response ", response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 
     const [openCustomer, setOpenCustomer] = useState(false);
@@ -823,11 +886,11 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     render={({ field }) => (
                                         <>
                                             <FormItem className=" text-xs space-y-1">
-                                                <FormLabel className="text-xs font-bold text-zinc-600">Emails</FormLabel>
+                                                <FormLabel className="text-xs font-bold text-zinc-600">Email</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         size="new"
-                                                        id="userEmails" type="emails" className="text-xs" placeholder="Emails" {...field} />
+                                                        id="userEmails" type="emails" className="text-xs" placeholder="Email" {...field} />
                                                 </FormControl>
                                                 <FormMessage className="text-xs" />
                                             </FormItem>
@@ -865,7 +928,10 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     </Button>
                                     <Button
                                         variant="destructive"
-                                        type="submit"
+                                        type="button"
+                                        onClick={() => {
+                                            handleSentToEmail()
+                                        }}
                                         className=" h-[30px] rounded-sm px-4 py-0 w-full"
                                         size="sm"
                                     >
@@ -995,6 +1061,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                                 className="text-xs"
                                                                                 onClick={() => {
                                                                                     form.setValue('itemTax', item?.tax_rate)
+                                                                                    form.setValue('tax_id', item?.tax_assignment_id)
+
                                                                                 }}
                                                                             >
                                                                                 % {item?.tax_rate} - {item?.abbreviation}
