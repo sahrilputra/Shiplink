@@ -43,7 +43,7 @@ export async function POST(request) {
         const response = await axios.post(
             `${process.env.API_URL}/InvoiceManager/Invoice_setdata`,
             {
-                date: date,
+                date: InvoiceDate,
                 currency: InvoiceCurrency,
                 terms: InvoiceTerms,
                 billed_name: BilledToName,

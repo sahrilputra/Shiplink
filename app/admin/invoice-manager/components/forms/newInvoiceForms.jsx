@@ -89,6 +89,7 @@ const formSchema = yup.object().shape({
 
 export const InvoiceForms = ({ customer = null, data = null }) => {
 
+    const [openSelect, setOpenSelect] = useState(false)
     const { toast } = useToast();
     console.log("🚀 ~ InvoiceForms ~ data:", data)
     const today = format(new Date(), "yyyy-MM-dd");
@@ -343,6 +344,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         }
     }
 
+    console.log("🚀 ~ InvoiceForms ~ TAX ID:", form.watch('tax_id'))
     // useEffect(() => {
     //     if (form.watch('BilledToCountry')) {
     //         findCoutryByNameToCode(form.watch('BilledToCountry'))
@@ -356,6 +358,8 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     const items = watch('items');
     const itemTax = parseFloat(watch('itemTax') || 0);
     const itemDiscount = parseFloat(watch('itemDiscount') || 0);
+    const taxId = watch('tax_id');
+    console.log("🚀 ~ InvoiceForms ~ taxId:", taxId)
     const [subTotal, setSubTotal] = useState(0);
     console.log("🚀 ~ InvoiceForms ~ subTotal:", subTotal)
 
@@ -407,23 +411,23 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         form.setValue('subtotal', total)
     }
     // Totals
+    const calculateTotal = () => {
+        // Apply discount first
+        const discountAmount = (form.getValues('subtotal') * form.getValues('itemDiscount')) / 100;
+        const subtotalAfterDiscount = form.getValues('subtotal') - discountAmount;
+
+        // Apply tax to subtotal after discount
+        const taxAmount = (subtotalAfterDiscount * form.getValues('itemTax')) / 100;
+
+        // Calculate total
+        const total = subtotalAfterDiscount + taxAmount;
+        setValue("itemTotal", total);
+        return total;
+    };
+
     useEffect(() => {
-        const calculateTotal = () => {
-
-            // Apply tax
-            const taxAmount = (form.getValues('subtotal') * form.getValues('itemTax')) / 100;
-
-            // Apply discount
-            const discountAmount = (form.getValues('subtotal') * form.getValues('itemDiscount')) / 100;
-
-            // Calculate total
-            const total = form.getValues('subtotal') + taxAmount - discountAmount;
-            setValue("itemTotal", total);
-            return total;
-        };
         calculateTotal();
-    }, [form.watch('subtotal'), form.watch('itemTax'), form.watch('itemDiscount')]);
-
+    }, [form.watch('subtotal'), form.watch('itemTax'), form.watch('itemDiscount'), form.watch('tax_id')]);
 
 
     const handleSentToEmail = async () => {
@@ -451,6 +455,12 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
             console.log(error);
         }
     };
+
+    const hanldeTaxId = (e) => {
+        console.log("🚀 ~ hanldeTaxId ~ e:", e)
+        form.setValue('tax_id', e)
+        handleSubTotal()
+    }
 
 
     const [openCustomer, setOpenCustomer] = useState(false);
@@ -1039,15 +1049,17 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                     <FormItem className="space-y-1 w-[100%]">
                                                         <Select
                                                             className="w-full text-xs h-[30px]"
+                                                            open={openSelect}
+                                                            onOpenChange={setOpenSelect}
                                                             onValueChange={field.onChange}
-                                                            defaultValue={field.value}
                                                         >
                                                             <FormControl>
                                                                 <SelectTrigger className="text-xs h-[30px] rounded-sm">
                                                                     <SelectValue
                                                                         className="w-full text-xs h-[30px]"
-                                                                        placeholder="Select Tax"
+
                                                                     />
+                                                                    % {field.value ? field.value : "Select Tax"}
                                                                 </SelectTrigger>
                                                             </FormControl>
                                                             <SelectContent>
@@ -1055,18 +1067,19 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                     taxList
                                                                         ?.filter((item, index, self) => self.findIndex(t => t.tax_rate === item.tax_rate) === index)
                                                                         .map((item, index) => (
-                                                                            <SelectItem
-                                                                                key={index}
-                                                                                value={`${item?.tax_rate}`}
-                                                                                className="text-xs"
-                                                                                onClick={() => {
-                                                                                    form.setValue('itemTax', item?.tax_rate)
-                                                                                    form.setValue('tax_id', item?.tax_assignment_id)
-
-                                                                                }}
-                                                                            >
-                                                                                % {item?.tax_rate} - {item?.abbreviation}
-                                                                            </SelectItem>
+                                                                            <>
+                                                                                <div className="cursor-pointer text-xs w-full px-2 py-1 hover:bg-gray-100"
+                                                                                    onClick={() => {
+                                                                                        form.setValue('itemTax', item?.tax_rate)
+                                                                                        form.setValue('tax_id', item?.tax_assignment_id)
+                                                                                        setOpenSelect(false)
+                                                                                        calculateTotal();
+                                                                                    }}
+                                                                                    value={item?.tax_rate}
+                                                                                >
+                                                                                    % {item?.tax_rate} - {item?.abbreviation}
+                                                                                </div>
+                                                                            </>
                                                                         ))
                                                                 }
                                                             </SelectContent>
