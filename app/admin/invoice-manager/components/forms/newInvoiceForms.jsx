@@ -132,34 +132,34 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         mode: "onChange",
     })
 
-    useEffect(() => {
-        if (data) {
-            form.setValue('InvoiceNo', data.invoice_no)
-            form.setValue('InvoiceDate', data.invoice_date)
-            form.setValue('InvoiceCurrency', data.currency)
-            form.setValue('InvoiceTerms', data.terms)
-            form.setValue('BilledToName', data.billed_name)
-            form.setValue('BilledToAddress', data.billed_address)
-            form.setValue('BilledToZip', data.billed_zip)
-            form.setValue('BilledToCountry', data.billed_country)
-            form.setValue('ShippedToName', data.shipped_name)
-            form.setValue('ShippedToAddress', data.shipped_address)
-            form.setValue('ShippedToZip', data.shipped_zip)
-            form.setValue('ShippedToCountry', data.shipped_country)
-            form.setValue('note', data.note)
-            form.setValue('userEmails', data.email)
-            form.setValue('userName', data.shipped_name)
-            form.setValue('userID', data.user_code)
-            form.setValue('items', data.items)
-            form.setValue('subtotal', data.subtotal)
-            form.setValue('itemTax', data.tax)
-            form.setValue('itemTotal', data.total)
-            form.setValue('itemDiscount', data.discount)
-            form.setValue("action", "edit");
-        } else {
-            null
-        }
-    }, [data])
+    // useEffect(() => {
+    //     if (data) {
+    //         form.setValue('InvoiceNo', data.invoice_no)
+    //         form.setValue('InvoiceDate', data.invoice_date)
+    //         form.setValue('InvoiceCurrency', data.currency)
+    //         form.setValue('InvoiceTerms', data.terms)
+    //         form.setValue('BilledToName', data.billed_name)
+    //         form.setValue('BilledToAddress', data.billed_address)
+    //         form.setValue('BilledToZip', data.billed_zip)
+    //         form.setValue('BilledToCountry', data.billed_country)
+    //         form.setValue('ShippedToName', data.shipped_name)
+    //         form.setValue('ShippedToAddress', data.shipped_address)
+    //         form.setValue('ShippedToZip', data.shipped_zip)
+    //         form.setValue('ShippedToCountry', data.shipped_country)
+    //         form.setValue('note', data.note)
+    //         form.setValue('userEmails', data.email)
+    //         form.setValue('userName', data.shipped_name)
+    //         form.setValue('userID', data.user_code)
+    //         form.setValue('items', data.items)
+    //         form.setValue('subtotal', data.subtotal)
+    //         form.setValue('itemTax', data.tax)
+    //         form.setValue('itemTotal', data.total)
+    //         form.setValue('itemDiscount', data.discount)
+    //         form.setValue("action", "edit");
+    //     } else {
+    //         null
+    //     }
+    // }, [data])
 
     const [customerData, setCustomerData] = useState([])
     console.log("🚀 ~ InvoiceForms ~ customerData:", customerData)
