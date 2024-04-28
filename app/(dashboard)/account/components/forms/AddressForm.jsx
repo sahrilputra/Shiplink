@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -31,9 +32,11 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import axios from 'axios'
 import { useToast } from '@/components/ui/use-toast'
 import { Loaders } from '@/components/ui/loaders'
+import InputMask from 'react-input-mask';
+
 const formSchema = yup.object().shape({
-    fullName: yup.string().required().max(50, "character is too long"),
-    email: yup.string().email().required(),
+    fullName: yup.string().required("Full Name Is Required").max(50, "character is too long"),
+    email: yup.string().email().required("Email Is Required"),
     phone_number: yup.string().required(),
     street_address: yup.string().required(),
     city: yup.string().required(),
@@ -46,24 +49,65 @@ const formSchema = yup.object().shape({
 
 export const AddressForms = ({ userCode }) => {
     const { toast } = useToast()
-    const [disable, setDisable] = useState(true);
+    const [disable, setDisable] = useState(false);
+
+    const [defaultData, setDefaultData] = useState(null);
+    console.log("🚀 ~ AddressForms ~ defaultData:", defaultData?.city)
+
     const form = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            fullName: "",
-            email: "",
-            phone_number: "",
-            street_address: "",
-            city: "",
+            fullName: defaultData?.name || "",
+            email: defaultData?.email || "",
+            phone_number: defaultData?.phone_number || "",
+            street_address: defaultData?.street_address || "",
+            city: defaultData?.city || "",
+            postal_code: defaultData?.postal_code || "",
+            country: defaultData?.country_name || "",
+            province: defaultData?.province_name || "",
             province_code: "",
-            postal_code: "",
             country_code: "",
-            country: "",
-            province: "",
         },
         mode: "onChange",
         disabled: disable,
     })
+
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.post(
+                `/api/customerAPI/payments/getBilling`,
+                {
+                    user_code: userCode,
+                    limit: 1,
+                }
+            )
+            const data = await response.data;
+            const firstBilling = data.billing.length > 0 ? data.billing[0] : null;
+            console.log("🚀 ~ fetchUserData ~ data:", firstBilling)
+            setDefaultData(firstBilling);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        fetchUserData();
+    }, [userCode])
+
+    useEffect(() => {
+        if (defaultData) {
+            form.setValue("fullName", defaultData?.name || "")
+            form.setValue("email", defaultData?.email || "")
+            form.setValue("phone_number", defaultData?.phone_number || "")
+            form.setValue("street_address", defaultData?.street_address || "")
+            form.setValue("city", defaultData?.city || "")
+            form.setValue("postal_code", defaultData?.postal_code || "")
+            form.setValue("country", defaultData?.country_name || "")
+            form.setValue("province", defaultData?.province_name || "")
+        }
+    }, [defaultData])
+
+
     const [query, setQuery] = useState({
         keyword: "",
         page: 0,
@@ -72,6 +116,7 @@ export const AddressForms = ({ userCode }) => {
     })
     const [queryProvince, setQueryProvince] = useState({
         keyword: "",
+        country_code: "",
         page: 0,
         limit: 0,
         index: 0,
@@ -82,7 +127,6 @@ export const AddressForms = ({ userCode }) => {
     const [province, setProvince] = useState([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
-        
         const fetchData = async () => {
             try {
                 const response = await axios.post(
@@ -147,6 +191,20 @@ export const AddressForms = ({ userCode }) => {
     const onError = (error) => {
         console.log("error", error)
     }
+
+    const handleProvinceChange = (e) => {
+        setQueryProvince({
+            ...queryProvince,
+            keyword: e,
+        })
+    }
+
+    const handleCountryChange = (e) => {
+        setQuery({
+            ...query,
+            keyword: e,
+        })
+    }
     return (
         <>
             {loading && <Loaders />}
@@ -168,7 +226,7 @@ export const AddressForms = ({ userCode }) => {
                                         <FormControl>
                                             <Input variant="new" id="name" placeholder="john" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -179,12 +237,28 @@ export const AddressForms = ({ userCode }) => {
                             control={form.control}
                             render={({ field }) => (
                                 <>
-                                    <FormItem className="w-full space-y-1">
+                                    <FormItem className="w-full">
                                         <FormLabel>Phone Number</FormLabel>
-                                        <FormControl>
-                                            <Input variant="new" type="number" id="phone" placeholder="Phone Number" {...field} />
+                                        <FormControl >
+                                            <InputMask
+                                                mask="+9.999.999.9999"
+                                                maskChar={null}
+                                                maskPlaceholder="0000.00.0000"
+                                                {...field}
+                                                disabled={disable}
+                                            >
+                                                {(inputProps) => (
+                                                    <Input
+                                                        className="text-xs"
+                                                        id="phoneNumber"
+                                                        type="text"
+                                                        placeholder="+1.000.000.0000"
+                                                        {...inputProps}
+                                                        disabled={disable}
+                                                    />
+                                                )}
+                                            </InputMask>
                                         </FormControl>
-                                        <FormMessage />
                                     </FormItem>
                                 </>
                             )}
@@ -198,9 +272,9 @@ export const AddressForms = ({ userCode }) => {
                                     <FormItem className="w-full space-y-1">
                                         <FormLabel>Email</FormLabel>
                                         <FormControl >
-                                            <Input variant="new" type="email" id="email" placeholder="Emails" {...field} />
+                                            <Input variant="new" type="email" id="email" placeholder="Email" {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -218,7 +292,7 @@ export const AddressForms = ({ userCode }) => {
                                         <FormControl >
                                             <Input variant="new" type="text" id="address" placeholder="Street Address"  {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="text-xs" />
                                     </FormItem>
                                 </>
                             )}
@@ -235,7 +309,7 @@ export const AddressForms = ({ userCode }) => {
                                             <FormControl >
                                                 <Input variant="new" type="text" id="city" placeholder="City" {...field} />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -246,17 +320,18 @@ export const AddressForms = ({ userCode }) => {
                                 control={form.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full">
+                                        <FormItem className="w-full space-y-1">
                                             <FormLabel>State / Province</FormLabel>
-                                            <Popover oppen={popProvince} onOpenChange={setPopProvince}>
+                                            <Popover oppen={popProvince} onOpenChange={setPopProvince} modal={true}>
                                                 <PopoverTrigger asChild>
                                                     <FormControl >
                                                         <Button
-                                                            onClick={() => setPopProvince(!popProvince)}
+                                                            onClick={() => setPopProvince(true)}
                                                             type="button"
                                                             className="shadow-none w-full text-xs h-9 text-left justify-start"
                                                             variant="outline"
                                                             id="state"
+                                                            disabled={disable}
                                                         >
                                                             {field.value ? field.value : "State / Province"}
                                                         </Button>
@@ -264,10 +339,11 @@ export const AddressForms = ({ userCode }) => {
                                                 </PopoverTrigger>
                                                 <PopoverContent className="w-[300px] p-0">
                                                     <Command>
-                                                        <CommandInput
+                                                        {/* <CommandInput
                                                             placeholder="Search Province..."
                                                             className="h-9 text-xs"
-                                                        />
+                                                            onValueChange={(e) => handleProvinceChange(e)}
+                                                        /> */}
                                                         <CommandEmpty className="text-xs text-center">The Province Unavailable</CommandEmpty>
                                                         <ScrollArea className="h-[150px]" >
                                                             <CommandGroup>
@@ -279,7 +355,7 @@ export const AddressForms = ({ userCode }) => {
                                                                         onSelect={() => {
                                                                             form.setValue("province", item.province_name)
                                                                             form.setValue("province_code", item.province_code)
-                                                                            setPopProvince(false)
+                                                                            setPopProvince(false);
                                                                         }}
                                                                     >
                                                                         {item.province_name}
@@ -293,7 +369,7 @@ export const AddressForms = ({ userCode }) => {
                                                     </Command>
                                                 </PopoverContent>
                                             </Popover>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -306,7 +382,7 @@ export const AddressForms = ({ userCode }) => {
                                 control={form.control}
                                 render={({ field }) => (
                                     <>
-                                        <FormItem className="w-full">
+                                        <FormItem className="w-full space-y-1">
                                             <FormLabel>Country</FormLabel>
                                             <Popover open={popCountry} onOpenChange={setPopCountry} className="w-[100%]">
                                                 <PopoverTrigger asChild>
@@ -316,6 +392,7 @@ export const AddressForms = ({ userCode }) => {
                                                             className="shadow-none w-full text-xs h-9 text-left justify-start"
                                                             variant="outline"
                                                             id="state"
+                                                            disabled={disable}
                                                             onClick={() => setPopCountry(!popCountry)}
                                                         >
                                                             {field.value ? field.value : "Country"}
@@ -327,6 +404,7 @@ export const AddressForms = ({ userCode }) => {
                                                         <CommandInput
                                                             placeholder="Search Country..."
                                                             className="h-9 text-xs"
+                                                            onValueChange={(e) => handleCountryChange(e)}
                                                         />
                                                         <CommandEmpty className="text-xs text-center">The Country Unavailable.</CommandEmpty>
                                                         <ScrollArea className="h-[150px]" >
@@ -340,6 +418,14 @@ export const AddressForms = ({ userCode }) => {
                                                                             setPopCountry(false)
                                                                             form.setValue("country", item.country_name)
                                                                             form.setValue("country_code", item.country_code)
+                                                                            form.setValue("province", "")
+                                                                            setQuery({
+                                                                                keyword: "",
+                                                                            })
+                                                                            setQueryProvince({
+                                                                                keyword: "",
+                                                                                country_code: item.country_code,
+                                                                            })
                                                                         }}
                                                                     >
                                                                         {item.country_name}
@@ -353,7 +439,7 @@ export const AddressForms = ({ userCode }) => {
                                                     </Command>
                                                 </PopoverContent>
                                             </Popover>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
@@ -369,13 +455,13 @@ export const AddressForms = ({ userCode }) => {
                                             <FormControl >
                                                 <Input variant="new" type="text" id="state" placeholder="Zip"  {...field} />
                                             </FormControl>
-                                            <FormMessage />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     </>
                                 )}
                             />
                         </div>
-                        <div className="w-full flex justify-end gap-5">
+                        <div className="w-full flex justify-end gap-5 mt-[20px]">
                             {
                                 disable ?
                                     <Button
@@ -391,6 +477,7 @@ export const AddressForms = ({ userCode }) => {
                                             <Button
                                                 variant="redOutline"
                                                 type="button"
+                                                className="w-[100px]"
                                                 size="xs"
                                                 onClick={() => setDisable(true)}
                                             >
@@ -399,9 +486,10 @@ export const AddressForms = ({ userCode }) => {
                                             <Button
                                                 variant="destructive"
                                                 type="submit"
+                                                className="w-[100px]"
                                                 size="xs"
                                             >
-                                                Save
+                                                Update
                                             </Button>
                                         </>
                                     )

@@ -401,7 +401,7 @@ export default function VerificationPages({ params }) {
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
                                                     <p>PAPS/PARS</p>
-                                                    <p className='text-sm font-bold'>{data?.pars || "-"}</p>
+                                                    <p className='text-sm font-bold'>{data?.parspaps_number || "-"}</p>
                                                 </div>
                                                 <div className="flex flex-col text-xs text-zinc-500">
                                                     <p className=' linen'>Entry Number</p>

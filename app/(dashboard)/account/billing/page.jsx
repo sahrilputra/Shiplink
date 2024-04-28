@@ -58,9 +58,9 @@ export default function Page() {
                         userCode={userCode}
                     />
                 </div>
-                <div className="separator py-3 px-5">
+                {/* <div className="separator py-3 px-5">
                     <Separator className="py-[1px]" />
-                </div>
+                </div> */}
 
                 {/* Issues 16 Hidding Credit Details */}
                 {/* <div className="creditDetails p-5 flex flex-row gap-5 w-full justify-between">
