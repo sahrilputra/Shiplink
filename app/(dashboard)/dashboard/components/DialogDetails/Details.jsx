@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/carousel"
 
 export const DetailsModals = ({ item, date }) => {
+    console.log("🚀 ~ DetailsModals ~ item:", item)
     const images = item?.images || null
     const [filteredImages, setFilteredImages] = useState([]);
     useEffect(() => {
@@ -151,6 +152,8 @@ export const DetailsModals = ({ item, date }) => {
                                     <p className='text-sm'>{item?.status}</p>
                                     <p className='text-xs text-zinc-500'>Location :</p>
                                     <p className='text-sm'>{item?.warehouse_name_arrival} WR, {item?.country_code_arrival}</p>
+                                    <p className='text-xs text-zinc-500'>PARS/PAPS :</p>
+                                    <p className='text-sm'>{item.parspaps_number || "-"}</p>
                                 </div>
                             </div>
 
