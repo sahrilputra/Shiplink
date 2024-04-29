@@ -39,6 +39,14 @@ import {
     CommandItem,
 } from "@/components/ui/command"
 import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -49,6 +57,7 @@ import { Loaders } from '@/components/ui/loaders'
 import { format, set } from "date-fns"
 import { ContentForms } from './ContentForms'
 import { useToast } from '@/components/ui/use-toast'
+import { PopoverClose } from '@radix-ui/react-popover'
 
 const formSchema = yup.object().shape({
     InvoiceNo: yup.string(),
@@ -90,6 +99,7 @@ const formSchema = yup.object().shape({
 export const InvoiceForms = ({ customer = null, data = null }) => {
 
     const [openSelect, setOpenSelect] = useState(false)
+    const [openDate, setOpenDate] = useState(false)
     const { toast } = useToast();
     console.log("🚀 ~ InvoiceForms ~ data:", data)
     const today = format(new Date(), "yyyy-MM-dd");
@@ -270,6 +280,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
 
     const getCustomerBilledData = async () => {
         setDisbaleBilled(true)
+        form.resetField('itemTax')
         try {
             const response = await axios.post(
                 `/api/customerAPI/payments/getBilling`,
@@ -377,6 +388,42 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
 
     const [invoiceIDs, setInvoiceIds] = useState("")
     console.log("🚀 ~ InvoiceForms ~ invoiceIDs:", invoiceIDs)
+
+    const resetForm = () => {
+        form.reset();
+        form.reset({
+            items: [
+                {
+                    description: "",
+                    qty: 0,
+                    price: 0,
+                    total: 0,
+                    itemID: "",
+                }
+            ],
+            subtotal: 0,
+            itemTax: 0,
+            tax_id: "",
+            itemTotal: 0,
+            itemDiscount: 0,
+            action: "add",
+            'BilledToAddress': "",
+            'BilledToZip': "",
+            'BilledToCountry': "",
+            'ShippedToName': "",
+            'ShippedToAddress': "",
+            'ShippedToZip': "",
+            'ShippedToCountry': "",
+            'note': "",
+            'userName': "",
+            'userID': "",
+            'userCode': "",
+            'userPhone': "",
+            total: 0,
+            'userEmails': "",
+            subtotal: 0,
+        })
+    }
     const handleSave = async (formData) => {
         console.log("Saved Data : ", formData)
         const formatDate = format(form.watch('InvoiceDate'), 'yyyy-MM-dd')
@@ -398,6 +445,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                     description: "Invoice has been created successfully",
                     type: "success",
                 });
+                resetForm();
             } else {
                 setLoading(false);
                 toast({
@@ -442,6 +490,17 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     }, [form.watch('subtotal'), form.watch('itemTax'), form.watch('itemDiscount'), form.watch('tax_id')]);
 
 
+    const handleShippedCustomer = (item) => {
+
+        form.setValue("userName", item.customer_name)
+        form.setValue("userID", item.customer_id)
+        form.setValue("userEmails", item.email)
+        form.setValue("ShippedToName", item.customer_name)
+        form.setValue("ShippedToAddress", item?.address || "")
+        form.setValue("ShippedToCountry", item.country_name || "-")
+        form.setValue("ShippedToZip", item?.postal_code || "")
+    }
+
     const handleSentToEmail = async () => {
         try {
             await handleSave(form.getValues()); // Tunggu hingga handleSave selesai
@@ -475,6 +534,12 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     }
 
 
+    useEffect(() => {
+        const formatDate = format(form.watch('InvoiceDate'), "yyyy-MM-dd")
+        form.setValue('InvoiceDate', formatDate)
+    }, [form.watch('InvoiceDate')])
+
+    
     const [openCustomer, setOpenCustomer] = useState(false);
     return (
         <>
@@ -490,6 +555,138 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                 >
 
                     <div className="flex w-full gap-3 flex-row">
+                        <div className={`${styles.rightForms} w-[30%] flex flex-col px-2 py-2 justify-between`}>
+                            <div className="px-3 py-2">
+                                <p className='text-base font-bold '>Send Invoice To</p>
+                            </div>
+
+                            <div className="flex flex-col w-full gap-2 px-3">
+                                <FormField
+                                    control={form.control}
+                                    name="userName"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col space-y-1">
+                                            <FormLabel className="font-bold">Customer</FormLabel>
+                                            <Popover
+                                                modal={true}
+                                                open={openCustomer}
+                                                onOpenChange={setOpenCustomer}
+                                            >
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            onClick={() => setOpenCustomer(true)}
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            size="new"
+                                                            className={`w-[full] text-xs h-[30px] rounded-sm px-2 py-0 text-left justify-start shadow-none ${!field.value && "text-muted-foreground"}`}
+                                                        >
+                                                            {field.value ? field.value : "Customer"}
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[300px] p-0"  >
+                                                    <Command>
+                                                        <CommandInput
+                                                            placeholder="Search Customer..."
+                                                            className="h-9 text-xs w-full"
+                                                            onValueChange={(e) => handleSearchCustomer(e)}
+                                                        />
+                                                        <CommandEmpty className="text-xs text-center">No Customer found.</CommandEmpty>
+                                                        <CommandGroup className="">
+                                                            <ScrollArea className="h-[200px] ">
+                                                                {customerData.map((item) => (
+                                                                    <CommandItem
+                                                                        value={item.customer_name}
+                                                                        key={item.customer_id}
+                                                                        onSelect={() => {
+                                                                            handleShippedCustomer(item)
+                                                                            setQuery({
+                                                                                ...query,
+                                                                                keyword: ""
+                                                                            })
+                                                                            setCustomerBilled_id(item.customer_id)
+                                                                            setOpenCustomer(false)
+                                                                        }}
+                                                                    >
+                                                                        <div className='text-xs w-full justify-between flex flex-row px-2'>
+                                                                            <p>{item.customer_id} | </p>
+                                                                            <p>{item.customer_name}</p>
+                                                                        </div>
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </ScrollArea>
+                                                        </CommandGroup>
+                                                    </Command>
+
+                                                </PopoverContent>
+                                            </Popover>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    className="w-full"
+                                    name="userEmails"
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <>
+                                            <FormItem className=" text-xs space-y-1">
+                                                <FormLabel className="text-xs font-bold text-zinc-600">Email</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        size="new"
+                                                        id="userEmails" type="emails" className="text-xs" placeholder="Email" {...field} />
+                                                </FormControl>
+                                                <FormMessage className="text-xs" />
+                                            </FormItem>
+                                        </>
+                                    )}
+                                />
+
+                            </div>
+                            <div className="button-group flex flex-row gap-2 py-2 w-full mx-auto px-3">
+                                {/* <div className="flex flex-row justify-between gap-3">
+                                        <Button
+                                            variant="redOutline"
+                                            type="button"
+                                            className=" h-[30px] w-full rounded-sm px-4 py-0"
+                                            size="sm"
+
+                                        >
+                                            <p className='text-xs'>Preview</p>
+                                        </Button>
+                                        <Button
+                                            variant="redOutline"
+                                            type="button"
+                                            className=" h-[30px] w-full rounded-sm px-4 py-0"
+                                            size="sm"
+                                        >
+                                            <p className='text-xs'>Download</p>
+                                        </Button>
+                                    </div> */}
+                                <Button
+                                    variant="redOutline"
+                                    type="submit"
+                                    className=" h-[30px] rounded-sm px-4 py-0 w-full"
+                                    size="sm"
+                                >
+                                    <p className='text-xs'>Register Invoice</p>
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    type="button"
+                                    onClick={() => {
+                                        handleSentToEmail()
+                                    }}
+                                    className=" h-[30px] rounded-sm px-4 py-0 w-full"
+                                    size="sm"
+                                >
+                                    <p className='text-xs'>Send to email</p>
+                                </Button>
+                            </div>
+
+                        </div>
+
                         {/* Left Form */}
                         <div className="w-[70%] left flex flex-col gap-2">
                             <div className="flex flex-col justify-start gap-2 w-full">
@@ -603,12 +800,15 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                         </FormControl>
                                                     </PopoverTrigger>
                                                     <PopoverContent className="w-auto p-0" align="start">
-                                                        <Calendar
-                                                            mode="single"
-                                                            selected={field.value}
-                                                            onSelect={field.onChange}
-                                                            initialFocus
-                                                        />
+                                                        <PopoverClose>
+                                                            <Calendar
+                                                                mode="single"
+                                                                format="yyyy-MM-dd"
+                                                                selected={field.value}
+                                                                onSelect={field.onChange}
+                                                                initialFocus
+                                                            />
+                                                        </PopoverClose>
                                                     </PopoverContent>
                                                 </Popover>
                                                 <FormMessage className="text-xs" />
@@ -624,6 +824,94 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                             </div>
 
                             <div className="flex flex-row justify-between gap-3">
+
+                                {/* shiipedTo */}
+                                <div className="flex flex-col gap-1 w-full">
+                                    <h2 className='text-sm font-bold'>Shipped To</h2>
+                                    <div className="flex flex-row justify-between gap-3">
+                                        <FormField
+                                            className="w-full "
+                                            name="ShippedToName"
+                                            control={form.control}
+                                            render={({ field }) => (
+                                                <>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Name</FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToName"
+                                                                className="text-xs"
+                                                                placeholder="Name"
+                                                                {...field} />
+                                                        </FormControl>
+                                                        <FormMessage className="text-xs" />
+                                                    </FormItem>
+                                                </>
+                                            )}
+                                        />
+                                        <FormField
+                                            className="w-full"
+                                            name="ShippedToZip"
+                                            control={form.control}
+                                            render={({ field }) => (
+                                                <>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToZip" className="text-xs" placeholder="A1B 2C3" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage className="text-xs" />
+                                                    </FormItem>
+                                                </>
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="flex flex-row justify-between gap-3">
+                                        <FormField
+                                            className="w-full"
+                                            name="ShippedToAddress"
+                                            control={form.control}
+                                            render={({ field }) => (
+                                                <>
+                                                    <FormItem className="text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Address</FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToAddress"
+                                                                className="text-xs"
+                                                                placeholder="Address"
+                                                                {...field} />
+                                                        </FormControl>
+                                                        <FormMessage className="text-xs" />
+                                                    </FormItem>
+                                                </>
+                                            )}
+                                        />
+                                        <FormField
+                                            className="w-full"
+                                            name="ShippedToCountry"
+                                            control={form.control}
+                                            render={({ field }) => (
+                                                <>
+                                                    <FormItem className=" text-xs space-y-1 w-full">
+                                                        <FormLabel className="text-xs font-bold text-zinc-600">Country</FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                size="new"
+                                                                id="ShippedToCountry" className="text-xs" placeholder="Canada" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage className="text-xs" />
+                                                    </FormItem>
+                                                </>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
                                 {/* billedTo */}
                                 <div className="flex flex-col gap-1  w-full">
                                     <h2 className='text-sm font-bold'>Billed To</h2>
@@ -714,93 +1002,6 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                     </div>
                                 </div>
 
-
-                                {/* shiipedTo */}
-                                <div className="flex flex-col gap-1 w-full">
-                                    <h2 className='text-sm font-bold'>Shipped To</h2>
-                                    <div className="flex flex-row justify-between gap-3">
-                                        <FormField
-                                            className="w-full "
-                                            name="ShippedToName"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs space-y-1 w-full">
-                                                        <FormLabel className="text-xs font-bold text-zinc-600">Name</FormLabel>
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="ShippedToName"
-                                                                className="text-xs"
-                                                                placeholder="Name"
-                                                                {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                        <FormField
-                                            className="w-full"
-                                            name="ShippedToZip"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs space-y-1 w-full">
-                                                        <FormLabel className="text-xs font-bold text-zinc-600">Zip/Postal Code *</FormLabel>
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="ShippedToZip" className="text-xs" placeholder="A1B 2C3" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </div>
-                                    <div className="flex flex-row justify-between gap-3">
-                                        <FormField
-                                            className="w-full"
-                                            name="ShippedToAddress"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className="text-xs space-y-1 w-full">
-                                                        <FormLabel className="text-xs font-bold text-zinc-600">Address</FormLabel>
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="ShippedToAddress"
-                                                                className="text-xs"
-                                                                placeholder="Address"
-                                                                {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                        <FormField
-                                            className="w-full"
-                                            name="ShippedToCountry"
-                                            control={form.control}
-                                            render={({ field }) => (
-                                                <>
-                                                    <FormItem className=" text-xs space-y-1 w-full">
-                                                        <FormLabel className="text-xs font-bold text-zinc-600">Country</FormLabel>
-                                                        <FormControl>
-                                                            <Input
-                                                                size="new"
-                                                                id="ShippedToCountry" className="text-xs" placeholder="Canada" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage className="text-xs" />
-                                                    </FormItem>
-                                                </>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
                             </div>
 
                             <div className="w-full">
@@ -831,142 +1032,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                         </div>
 
                         {/* Right Form */}
-                        <div className={`${styles.rightForms} w-[30%] flex flex-col px-2 py-2 `}>
-                            <div className="px-3 py-2">
-                                <p className='text-base font-bold '>Send Invoice To</p>
-                            </div>
 
-                            <div className="flex flex-col w-full gap-2 px-3">
-                                <FormField
-                                    control={form.control}
-                                    name="userName"
-                                    render={({ field }) => (
-                                        <FormItem className="flex flex-col space-y-1">
-                                            <FormLabel className="font-bold">Customer</FormLabel>
-                                            <Popover
-                                                modal={true}
-                                                open={openCustomer}
-                                                onOpenChange={setOpenCustomer}
-                                            >
-                                                <PopoverTrigger asChild>
-                                                    <FormControl>
-                                                        <Button
-                                                            onClick={() => setOpenCustomer(true)}
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            size="new"
-                                                            className={`w-[full] text-xs h-[30px] rounded-sm px-2 py-0 text-left justify-start shadow-none ${!field.value && "text-muted-foreground"}`}
-                                                        >
-                                                            {field.value ? field.value : "Customer"}
-                                                        </Button>
-                                                    </FormControl>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-[300px] p-0"  >
-                                                    <Command>
-                                                        <CommandInput
-                                                            placeholder="Search Customer..."
-                                                            className="h-9 text-xs w-full"
-                                                            onValueChange={(e) => handleSearchCustomer(e)}
-                                                        />
-                                                        <CommandEmpty className="text-xs text-center">No Customer found.</CommandEmpty>
-                                                        <CommandGroup className="">
-                                                            <ScrollArea className="h-[200px] ">
-                                                                {customerData.map((item) => (
-                                                                    <CommandItem
-                                                                        value={item.customer_name}
-                                                                        key={item.customer_id}
-                                                                        onSelect={() => {
-                                                                            form.setValue("userName", item.customer_name)
-                                                                            form.setValue("userID", item.customer_id)
-                                                                            form.setValue("userEmails", item.email)
-                                                                            form.setValue("ShippedToName", item.customer_name)
-                                                                            form.setValue("ShippedToAddress", item.address)
-                                                                            form.setValue("ShippedToCountry", item.country_name || "-")
-                                                                            setQuery({
-                                                                                ...query,
-                                                                                keyword: ""
-                                                                            })
-                                                                            setCustomerBilled_id(item.customer_id)
-                                                                            setOpenCustomer(false)
-                                                                        }}
-                                                                    >
-                                                                        <div className='text-xs w-full justify-between flex flex-row px-2'>
-                                                                            <p>{item.customer_id} | </p>
-                                                                            <p>{item.customer_name}</p>
-                                                                        </div>
-                                                                    </CommandItem>
-                                                                ))}
-                                                            </ScrollArea>
-                                                        </CommandGroup>
-                                                    </Command>
-
-                                                </PopoverContent>
-                                            </Popover>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    className="w-full"
-                                    name="userEmails"
-                                    control={form.control}
-                                    render={({ field }) => (
-                                        <>
-                                            <FormItem className=" text-xs space-y-1">
-                                                <FormLabel className="text-xs font-bold text-zinc-600">Email</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        size="new"
-                                                        id="userEmails" type="emails" className="text-xs" placeholder="Email" {...field} />
-                                                </FormControl>
-                                                <FormMessage className="text-xs" />
-                                            </FormItem>
-                                        </>
-                                    )}
-                                />
-
-                                <div className="button-group flex flex-row gap-2 py-2 w-full mx-auto">
-                                    {/* <div className="flex flex-row justify-between gap-3">
-                                        <Button
-                                            variant="redOutline"
-                                            type="button"
-                                            className=" h-[30px] w-full rounded-sm px-4 py-0"
-                                            size="sm"
-
-                                        >
-                                            <p className='text-xs'>Preview</p>
-                                        </Button>
-                                        <Button
-                                            variant="redOutline"
-                                            type="button"
-                                            className=" h-[30px] w-full rounded-sm px-4 py-0"
-                                            size="sm"
-                                        >
-                                            <p className='text-xs'>Download</p>
-                                        </Button>
-                                    </div> */}
-                                    <Button
-                                        variant="redOutline"
-                                        type="submit"
-                                        className=" h-[30px] rounded-sm px-4 py-0 w-full"
-                                        size="sm"
-                                    >
-                                        <p className='text-xs'>Register Invoice</p>
-                                    </Button>
-                                    <Button
-                                        variant="destructive"
-                                        type="button"
-                                        onClick={() => {
-                                            handleSentToEmail()
-                                        }}
-                                        className=" h-[30px] rounded-sm px-4 py-0 w-full"
-                                        size="sm"
-                                    >
-                                        <p className='text-xs'>Send to email</p>
-                                    </Button>
-                                </div>
-                            </div>
-
-                        </div>
                     </div>
 
                     {/* Table */}
@@ -1053,6 +1119,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                         />
                                     </div>
                                 </div>
+
                                 <div className="flex flex-row justify-between items-center ">
                                     <p className='font-bold w-full text-myBlue text-sm'>Tax</p>
                                     <div className="w-[50%]">
@@ -1062,44 +1129,52 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                             control={form.control}
                                             render={({ field }) => (
                                                 <>
-                                                    <FormItem className="space-y-1 w-[100%]">
-                                                        <Select
+                                                    <FormItem className=" text-sm  space-y-1 flex flex-row items-center">
+                                                        <p className='font-bold text-myBlue text-sm px-2'>%</p>
+                                                        <DropdownMenu
                                                             className="w-full text-xs h-[30px]"
                                                             open={openSelect}
                                                             onOpenChange={setOpenSelect}
-                                                            onValueChange={field.onChange}
+                                                        // onValueChange={field.onChange}
                                                         >
                                                             <FormControl>
-                                                                <SelectTrigger className="text-xs h-[30px] rounded-sm">
-                                                                    <SelectValue
-                                                                        className="w-full text-xs h-[30px]"
-
-                                                                    />
-                                                                    % {field.value ? field.value : "Select Tax"}
-                                                                </SelectTrigger>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button
+                                                                        className="w-full text-xs h-[30px] text-left shadow-none  justify-start"
+                                                                        onClick={() => setOpenSelect(true)}
+                                                                        variant="outline"
+                                                                        size="xs"
+                                                                        type="button"
+                                                                    >
+                                                                        <p className='text-left'>{field.value ? field.value : "Select Tax"}</p>
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
                                                             </FormControl>
-                                                            <SelectContent>
+                                                            <DropdownMenuContent>
                                                                 {
                                                                     taxList
                                                                         ?.filter((item, index, self) => self.findIndex(t => t.tax_rate === item.tax_rate) === index)
                                                                         .map((item, index) => (
                                                                             <>
-                                                                                <div className="cursor-pointer text-xs w-full px-2 py-1 hover:bg-gray-100"
-                                                                                    onClick={() => {
-                                                                                        form.setValue('itemTax', item?.tax_rate)
-                                                                                        form.setValue('tax_id', item?.tax_assignment_id)
-                                                                                        setOpenSelect(false)
-                                                                                        calculateTotal();
-                                                                                    }}
-                                                                                    value={item?.tax_rate}
-                                                                                >
-                                                                                    % {item?.tax_rate} - {item?.abbreviation}
-                                                                                </div>
+                                                                                <DropdownMenuItem className="cursor-pointer text-xs w-full px-2 py-1 hover:bg-gray-100">
+                                                                                    <div
+                                                                                        className='px-2'
+                                                                                        onClick={() => {
+                                                                                            form.setValue('itemTax', item?.tax_rate)
+                                                                                            form.setValue('tax_id', item?.tax_assignment_id)
+                                                                                            setOpenSelect(false)
+                                                                                            calculateTotal();
+                                                                                        }}
+                                                                                        value={item?.tax_rate}
+                                                                                    >
+                                                                                        {item?.tax_rate} - {item?.abbreviation}
+                                                                                    </div>
+                                                                                </DropdownMenuItem>
                                                                             </>
                                                                         ))
                                                                 }
-                                                            </SelectContent>
-                                                        </Select>
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
                                                     </FormItem>
                                                     {/* <FormItem className="space-y-1 w-[100%]">
                                                         <Select
@@ -1143,7 +1218,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                 <Separator className="w-full" />
                                 <div className="flex flex-row justify-between items-center ">
                                     <p className='font-bold w-full text-myBlue text-sm'>Total Due</p>
-                                    <p className='font-bold text-myBlue text-sm px-2 w-[50%] '>$ {form.getValues('itemTotal')}</p>
+                                    <p className='font-bold text-myBlue text-sm px-2 w-[50%] text-right '>$ {form.getValues('itemTotal')}</p>
                                 </div>
                             </div>
 
