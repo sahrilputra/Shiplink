@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
-import { ExternalLink, MoreHorizontalIcon, Plus, Delete, ChevronsRightIcon, ChevronRight, ChevronLeft, ChevronsLeftIcon } from "lucide-react";
+import { ExternalLink, MoreHorizontalIcon, Plus, Delete, ChevronsRightIcon, ChevronRight, ChevronLeft, ChevronsLeftIcon, ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
@@ -62,15 +62,32 @@ export function InvoiceTable({ isOpen, setOpen }) {
         from: "",
         to: "",
     });
+
+
+
     const formatDate = (dateString) => {
         return format(new Date(dateString), "yyyy-MM-dd");
     };
     const [query, setQuery] = useState({
         keyword: "",
         invoice_id: "",
+        sort_by: "",
+        sort_type: "",
         page: 1,
         limit: 10,
         index: 0
+    });
+
+    const [isASC, setIsASC] = useState({
+        invoice_id: true,
+        date: true,
+        billed_name: true,
+        total: true,
+        status: true,
+        origin: true,
+        destination: true,
+        location: true,
+
     });
 
     const [pagination, setPagination] = useState({
@@ -113,6 +130,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
         }
     };
 
+
     const handlerPaginationChange = (page) => {
         if (page >= 0) {
             console.log("🚀 ~ handlerPaginationChange ~ page:", page);
@@ -129,13 +147,26 @@ export function InvoiceTable({ isOpen, setOpen }) {
     };
 
     const handleSearchChange = (event) => {
-        setQuery({
-            ...query,
-            keyword: event.target.value,
-            page: 1,
-            limit: 10,
-            index: 0,
-        });
+        if (event.target.value.startsWith("INV")) {
+            setQuery({
+                ...query,
+                keyword: "",
+                page: 1,
+                limit: 10,
+                index: 0,
+                invoice_id: event.target.value,
+            });
+        } else {
+            setQuery({
+                ...query,
+                keyword: event.target.value,
+                page: 1,
+                limit: 10,
+                index: 0,
+                invoice_id: "",
+            });
+        }
+
         setPagination({
             pageIndex: 0,
             pageSize: 10,
@@ -160,6 +191,82 @@ export function InvoiceTable({ isOpen, setOpen }) {
         fetchData();
     }, [query]);
 
+
+    const handleSortDestination = () => {
+        setQuery({
+            ...query,
+            sort_by: "invoice_id",
+            sort_type: isASC.invoice_id ? "asc" : "desc"
+        });
+        setIsASC({
+            invoice_id: !isASC.invoice_id,
+            date: true,
+            billed_name: true,
+            total: true,
+            status: true,
+            location: true,
+        });
+    }
+    const handlSortDate = () => {
+        setQuery({
+            ...query,
+            sort_by: "date",
+            sort_type: isASC.date ? "asc" : "desc"
+        });
+        setIsASC({
+            invoice_id: true,
+            date: !isASC.date,
+            billed_name: true,
+            total: true,
+            status: true,
+            location: true,
+        });
+    }
+    const handleSortBilled = () => {
+        setQuery({
+            ...query,
+            sort_by: "billed_name",
+            sort_type: isASC.billed_name ? "asc" : "desc"
+        });
+        setIsASC({
+            invoice_id: true,
+            date: true,
+            billed_name: !isASC.billed_name,
+            total: true,
+            status: true,
+            location: true,
+        });
+    }
+    const handleSortTotal = () => {
+        setQuery({
+            ...query,
+            sort_by: "total",
+            sort_type: isASC.total ? "asc" : "desc"
+        });
+        setIsASC({
+            invoice_id: true,
+            date: true,
+            billed_name: true,
+            total: !isASC.total,
+            status: true,
+            location: true,
+        });
+    }
+    const handleSortSatus = () => {
+        setQuery({
+            ...query,
+            sort_by: "status",
+            sort_type: isASC.status ? "asc" : "desc"
+        });
+        setIsASC({
+            invoice_id: true,
+            date: true,
+            billed_name: true,
+            total: true,
+            status: !isASC.status,
+            location: true,
+        });
+    }
     const columns = [
         {
             accessorKey: "select",
@@ -188,7 +295,16 @@ export function InvoiceTable({ isOpen, setOpen }) {
         },
         {
             accessorKey: "invoice_id",
-            header: "Inovice ID",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortDestination}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Invoice ID</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.invoice_id ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             cell: ({ row }) => {
                 return (
                     <p
@@ -202,7 +318,16 @@ export function InvoiceTable({ isOpen, setOpen }) {
         },
         {
             accessorKey: "date",
-            header: "Date",
+            header: ({ row }) => {
+                return (
+                    <div
+                        // onClick={handlSortDate}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Date</p>
+                        {/* <ChevronDown className={`w-4 h-4 ${!isASC.date ? 'rotate-180' : ""}`} /> */}
+                    </div>
+                )
+            },
             cell: ({ row }) => {
                 return (
                     <p
@@ -216,7 +341,17 @@ export function InvoiceTable({ isOpen, setOpen }) {
         },
         {
             accessorKey: "billed_name",
-            header: "Billed To",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortBilled}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Billed To</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.billed_name ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
+
         },
         {
             accessorKey: "email",
@@ -226,7 +361,16 @@ export function InvoiceTable({ isOpen, setOpen }) {
         },
         {
             accessorKey: "total",
-            header: "Total Due",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortTotal}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Total Due</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.total ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             cell: ({ row }) => {
                 return (
                     <p
@@ -240,7 +384,16 @@ export function InvoiceTable({ isOpen, setOpen }) {
         },
         {
             accessorKey: "status",
-            header: "Status",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortSatus}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Status</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.status ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
         },
         {
             id: "Action",
@@ -332,8 +485,29 @@ export function InvoiceTable({ isOpen, setOpen }) {
         setInvStatusID(data)
     }
 
+    const handleSortStatus = () => {
+        setQuery({
+            ...query,
+            sort_by: "status_id",
+            sort_type: isASC.status ? "asc" : "desc"
+        });
+        setIsASC({
+            tracking_id: true,
+            customer_name: true,
+            destination: true,
+            location: true,
+            status: !isASC.status
+        });
+    }
     const handlerSearch = (e) => {
-        setQuery({ ...query, keyword: e.target.value })
+        setQuery({
+            ...query,
+            keyword: e.target.value,
+            page: 1,
+            limit: 10,
+            index: 0
+
+        })
     }
     const selectedRows = table.getSelectedRowModel().rows.map(row => row.original.invoice_id);
     return (
@@ -346,22 +520,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                         <TableHead colSpan={9} className="p-4  border border-zinc-300 rounded-md" >
                             <div className="flex flex-row justify-between rounded-md">
                                 <div className="wrap inline-flex gap-[10px]  justify-evenly items-center text-black">
-                                    <div className="relative">
-                                        <Input type="text"
-                                            placeholder="Search..."
-                                            className="pr-8 pl-4 text-xs"
-                                            value={(table.getColumn("invoice_id")?.getFilterValue()) ?? ""}
-                                            onChange={(event) =>
-                                                table.getColumn("invoice_id")?.setFilterValue(event.target.value)
-                                            }
-                                        />
-                                        <div className="absolute top-0 bottom-0 w-4 h-4 my-auto text-gray-500 right-3 text-xs"  >
-                                            <SearchIcon
-                                                width={15}
-                                                height={15}
-                                            />
-                                        </div>
-                                    </div>
+                                    <SearchBar handleSearch={handleSearchChange} />
                                     <Button
                                         variant="filter"
                                         size="filter"
@@ -370,7 +529,7 @@ export function InvoiceTable({ isOpen, setOpen }) {
                                             className=""
                                             fill="#CC0019" />
                                     </Button>
-                                    <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} />
+                                    {/* <DatePickerWithRange className={"text-black"} mySetdate={handleSetDate} /> */}
                                 </div>
                                 <div>
 
