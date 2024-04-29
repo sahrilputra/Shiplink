@@ -52,7 +52,7 @@ export default function Dashboard() {
         if (!isFetchingPaused) {
             timer = setTimeout(() => {
                 fetchData();
-            }, 2000);
+            }, 500);
         }
         return () => clearTimeout(timer);
     }, [isFetchingPaused, query]);

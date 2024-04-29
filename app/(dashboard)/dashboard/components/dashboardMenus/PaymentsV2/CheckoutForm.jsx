@@ -131,6 +131,7 @@ export default function CheckoutForm(
         }
 
         setIsLoading(true);
+    
         try {
             const { paymentIntent, error } = await stripe.confirmPayment({
                 elements,
@@ -139,7 +140,6 @@ export default function CheckoutForm(
                 },
                 redirect: "if_required",
             });
-
             if (error) {
                 setMessage(error.message);
                 setPaymentStatus("failed");
@@ -180,9 +180,9 @@ export default function CheckoutForm(
                 status: 'error',
             });
         } finally {
-            setIsLoading(false);
-            setOpen(false);
+            await setOpen(false);
             setOpenInformation(true);
+            setIsLoading(false);
         }
     };
 

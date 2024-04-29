@@ -112,6 +112,7 @@ export const TableDashboard =
 
         console.log("🚀 ~ TableDashboard ~ isContentEdit:", isContentEdit)
 
+
         useEffect(() => {
             if (content.length > 0 && content[0].desc !== "" || content[0].hs_desc !== "" || content[0].hs_code !== "") {
                 setIsContentEdit(true)
@@ -128,7 +129,8 @@ export const TableDashboard =
             form.watch('package_content'.valueOf({
                 qty: 0,
                 value: 0,
-            }))])
+            }))
+        ])
 
 
         const calculateSubtotal = () => {
@@ -140,16 +142,28 @@ export const TableDashboard =
             calculateTotals();
         };
 
+        console.log("WATHCING TOTAL ", form.watch('total'))
+
         const calculateTotals = () => {
             const values = form.getValues('package_content');
             let total = 0;
             values.forEach((item) => {
                 total += item.subtotal;
             });
-            form.setValue('total', total);
+            console.log("🚀 ~ calculateTotals ~ total:", total)
+            if (total === NaN || total === undefined || total === null || total === 0) {
+                form.setValue('total', 0)
+            } else {
+                form.setValue('total', total);
+            }
         };
 
-
+        useEffect(() => {
+            const watchedTotal = form.watch('total');
+            if (isNaN(watchedTotal) || watchedTotal === undefined || watchedTotal === null || watchedTotal === 0) {
+                form.setValue('total', 0);
+            }
+        }, [form.watch('total')]);
 
         const { fields, append, remove } = useFieldArray({
             control: form.control,
