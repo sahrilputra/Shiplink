@@ -57,7 +57,7 @@ export function NewPasswordDialog({ open, setOpen, data = null, reload }) {
                 }
             );
             console.log("🚀 ~ handleSave ~ response:", response)
-            if (response.status === 200) {
+            if (response.data.status === true) {
                 toast({
                     title: `Success! Password Has been change`,
                     description: "Success",
@@ -132,6 +132,7 @@ export function NewPasswordDialog({ open, setOpen, data = null, reload }) {
                                     <Button
                                         type="button"
                                         variant="redOutline"
+                                        size="xs"
                                         className="w-full"
                                         onClick={close}
                                     >
@@ -140,6 +141,7 @@ export function NewPasswordDialog({ open, setOpen, data = null, reload }) {
                                     <Button
                                         className="w-full"
                                         type="submit"
+                                        size="xs"
                                         variant="destructive"
                                     >Save changes
                                     </Button>

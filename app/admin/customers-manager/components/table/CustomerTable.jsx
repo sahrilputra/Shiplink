@@ -89,6 +89,7 @@ export function CustomerTable({ data, open, setOpen }) {
                 }
             );
             const data = await response.data;
+            console.log("🚀 ~ fetchData ~ data:", data)
             setCustomer(data.customer);
             setRowTotalData({
                 page_limit: data.page_limit,

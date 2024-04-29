@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ArrowDownV2Icons, FilterIcons, SearchIcon } from "@/components/icons/iconCollection";
-import { ExternalLink, MoreHorizontalIcon, Plus, Delete } from "lucide-react";
+import { ExternalLink, MoreHorizontalIcon, Plus, Delete, ChevronsLeftIcon, ChevronLeft, ChevronRight, ChevronsRightIcon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SearchBar } from "@/components/ui/searchBar";
 import { DatePickerWithRange } from "@/components/date/DateRangePicker";
@@ -44,8 +44,11 @@ import axios from 'axios'
 import { UpdateInvoiceStatus } from "@/app/admin/invoice-manager/components/dialog/UpdateInvoiceStatus";
 import { MenusInv } from "./MenusInv";
 import { DeleteInvoiceDialog } from "@/app/admin/invoice-manager/components/dialog/DeleteInvoiceDialog";
+import { useTimeFormat } from "@/context/TimeFormatProvider";
+import moment from "moment";
 
 export function CustomerInvoiceTable({ CustomerID }) {
+    const { dateFormat, timeFormat } = useTimeFormat();
     const [isSkeleton, setIsSkeleton] = useState(true);
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false);
@@ -85,10 +88,30 @@ export function CustomerInvoiceTable({ CustomerID }) {
         {
             accessorKey: "invoice_id",
             header: "Inovice ID",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.invoice_id}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "date",
             header: "Date",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {moment(row.original.date).format(`${dateFormat}`)}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "billed_name",
@@ -101,6 +124,16 @@ export function CustomerInvoiceTable({ CustomerID }) {
         {
             accessorKey: "total",
             header: "Total Due",
+            cell: ({ row }) => {
+                return (
+                    <p
+                        className="text-xs"
+                        style={{ fontFamily: 'roboto' }}
+                    >
+                        {row.original.total}
+                    </p>
+                )
+            },
         },
         {
             accessorKey: "status",
@@ -245,51 +278,66 @@ export function CustomerInvoiceTable({ CustomerID }) {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-between space-x-2 py-1 w-full">
-                <div className="w-full flex justify-end">
-                    <Pagination className={"justify-end"}>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        table.previousPage();
-                                    }}
-                                    disabled={!table.getCanPreviousPage()}
-                                />
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationNext
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        table.nextPage();
-                                    }}
-                                    disabled={!table.getCanNextPage()}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+            <div className="flex justify-between w-full items-center mt-3 pb-2">
+                <div className="flex items-start gap-1 text-xs text-zinc-500 flex-row px-3">
+                    {/* <strong>
+                        {table.getFilteredSelectedRowModel().rows.length}
+                    </strong>
+                    of{" "}
+                    <div className="flex flex-row gap-1">
+                        <strong>
+                            {table.getFilteredRowModel().rows.length}
+                        </strong>
+                        <p className="text-nowrap"> row(s) selected.</p>
+                    </div> */}
                 </div>
-                {/* <div className="space-x-2">
+                <Pagination className={'flex justify-end w-full items-center gap-2'}>
+                    <div className="flex items-center gap-1 text-xs text-zinc-500">
+                        <div>Page</div>
+                        <strong>
+                            {table.getState().pagination.pageIndex + 1} of{' '}
+                            {table.getPageCount().toLocaleString()}
+                        </strong>
+                    </div>
                     <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
+                        variant={`redOutline`}
+                        onClick={() => handlerPaginationChange(0)}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
                         disabled={!table.getCanPreviousPage()}
                     >
-                        Previous
+                        <ChevronsLeftIcon className="h-4 w-4" />
                     </Button>
+
                     <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman pertama
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    <Button
+                        variant={`destructive`}
+                        className="px-2 py-2 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(pagination.pageIndex + 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman berikutnya
                         disabled={!table.getCanNextPage()}
                     >
-                        Next
+                        <ChevronRight className="h-4 w-4" />
                     </Button>
-                </div> */}
+                    <Button
+                        variant={`redOutline`}
+                        className="px-1 py-1 h-[30px] w-[30px] text-xs"
+                        onClick={() => handlerPaginationChange(table.getPageCount() - 1)} // Menggunakan handlerPaginationChange untuk mengatur halaman terakhir
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronsRightIcon className="h-4 w-4" />
+                    </Button>
+                    <PaginationContent>
+
+
+                    </PaginationContent>
+                </Pagination>
             </div>
         </>
     )
