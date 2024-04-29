@@ -67,6 +67,7 @@ export function ProvinceTabled({ }) {
     const [isEditDialog, setIsEditDialog] = useState(false);
     const [createNewDialogOpen, setCreateNewDialogOpen] = useState(false);
     const [open, setOpen] = useState(false)
+    const [countryName, setCountryName] = useState("")
     const [countryCode, setCountryCode] = useState("")
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [deleteID, setDeleteID] = useState([])
@@ -100,7 +101,7 @@ export function ProvinceTabled({ }) {
 
     useEffect(() => {
         fetchData();
-    }, [query]);    
+    }, [query]);
 
     const reloadData = () => {
         fetchData();
@@ -288,7 +289,7 @@ export function ProvinceTabled({ }) {
     return (
         <>
             <DeletePronviceDialog open={deleteDialog} setOpen={setDeleteDialog} deleteID={deleteID} reloadData={reloadData} />
-            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} countryData={countryCode} />
+            <NewProvinceDialog open={createNewDialogOpen} setOpen={setCreateNewDialogOpen} reloadData={reloadData} countryData={countryCode} countryName={countryName} />
             <EditProvinceDialog key={selectedRowData?.province_id} open={isEditDialog} setOpen={setIsEditDialog} reloadData={reloadData} data={selectedRowData} />
             <Table className=" rounded-md">
                 <TableHeader className="text-sm bg-white text-black rounded-md ">
@@ -325,6 +326,7 @@ export function ProvinceTabled({ }) {
                                                                 className="text-xs"
                                                                 onSelect={(currentValue) => {
                                                                     setCountryCode(item.country_code)
+                                                                    setCountryName(item.country_name)
                                                                     setValue(currentValue === value ? "" : currentValue)
                                                                     setOpen(false)
                                                                 }}

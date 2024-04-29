@@ -43,7 +43,9 @@ const formSchema = yup.object().shape({
 })
 
 
-export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) => {
+export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData, countryName }) => {
+    console.log("🚀 ~ NewProvinceDialog ~ countryName:", countryName)
+    console.log("🚀 ~ NewProvinceDialog ~ countryData:", countryData)
     const { toast } = useToast()
     const form = useForm({
         resolver: yupResolver(formSchema),
@@ -94,6 +96,10 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) =>
         setOpen(false)
     }
 
+    useEffect(() => {
+        form.setValue('country_code', countryData);
+    }, [countryData])
+
     const handleSave = async (formData) => {
         setLoading(true)
         try {
@@ -116,6 +122,8 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) =>
             }
             reloadData();
             onClose();
+
+            form.reset();
         } catch (error) {
             console.log('Error', error);
             setLoading(false)
@@ -128,7 +136,7 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) =>
 
 
     useEffect(() => {
-     
+
         const fetchData = async () => {
             try {
                 const response = await axios.post(
@@ -150,6 +158,11 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) =>
 
         fetchData();
 
+
+    }, [query]);
+
+
+    useEffect(() => {
         if (countryData) {
             country.find((item) => {
                 if (item.country_code === countryData) {
@@ -161,7 +174,7 @@ export const NewProvinceDialog = ({ open, setOpen, reloadData, countryData }) =>
                 }
             })
         }
-    }, [query, countryData, country]);
+    }, [countryData])
 
 
     return (

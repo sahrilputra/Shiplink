@@ -174,7 +174,7 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
                                             className=''
                                             action="">
                                             <div className="flex flex-col gap-3">
-                                                <div className="flex flex-row w-full gap-4 text-xs">
+                                                {/* <div className="flex flex-row w-full gap-4 text-xs">
                                                     <div className="relative w-[100%]">
                                                         <div className="flex flex-col gap-1 w-full">
                                                             <p className="text-sm text-neutral-900 space-y-1">Country</p>
@@ -233,7 +233,7 @@ export const EditProvinceDialog = ({ open, setOpen, data = null, reloadData }) =
                                                         )}
                                                     />
 
-                                                </div>
+                                                </div> */}
                                                 <div className="flex flex-row gap-4 text-xs">
                                                     <FormField
                                                         className="w-full"
