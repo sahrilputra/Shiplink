@@ -167,8 +167,9 @@ export const SelectWarehouse = ({ forms, arrivalCode }) => {
                                                 <div className="w-[100px] h-9 px-1 py-2 bg-blue-900 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
                                                     <div className="text-white text-xs leading-tight">Warehouse</div>
                                                 </div>
-                                                <SelectTrigger className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400">
+                                                <SelectTrigger className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 ">
                                                     <SelectValue
+                                                        className='placeholder:text-zinc-400'
                                                         placeholder="Warehouse..."
                                                     />
                                                 </SelectTrigger>
@@ -223,9 +224,9 @@ export const PARSInput = ({ forms }) => {
                                                 <div className="text-white text-xs leading-tight">PARS/PAPS</div>
                                             </div>
                                             <Input
-                                                className="w-[100px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
-                                                type="number"
-                                                placeholder="12313131231"
+                                                className="w-[100px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 placeholder:text-zinc-400"
+                                                type="text"
+                                                placeholder="SP123456"
                                                 {...field}
                                             />
                                         </div >
@@ -259,9 +260,9 @@ export const EntryNumber = ({ forms }) => {
                                                 <div className="text-white text-xs leading-tight">Entry Number</div>
                                             </div>
                                             <Input
-                                                className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
+                                                className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 placeholder:text-zinc-400"
                                                 type="number"
-                                                placeholder="12313131231"
+                                                placeholder="1234"
                                                 {...field}
                                             />
                                         </div >

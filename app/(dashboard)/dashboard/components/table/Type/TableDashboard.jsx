@@ -45,7 +45,12 @@ const formSchema = yup.object().shape({
             otherwise: (schema) => schema.notRequired(),
         }),
     pars: yup.string(),
-    entry_number: yup.string(),
+    entry_number: yup.string().
+        when('broker', {
+            is: "Use Own Broker",
+            then: (schema) => schema.required("Please enter an entry number"),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     warehouse: yup.string().required("Please select a warehouse"),
 })
 

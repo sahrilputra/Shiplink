@@ -33,6 +33,7 @@ export default function Dashboard() {
 
 
     const [isFetchingPaused, setIsFetchingPaused] = useState(false);
+    console.log("🚀 ~ Dashboard ~ isFetchingPaused:", isFetchingPaused)
 
 
 
@@ -47,6 +48,7 @@ export default function Dashboard() {
         }
     }
 
+
     useEffect(() => {
         let timer;
         if (!isFetchingPaused) {
@@ -55,7 +57,7 @@ export default function Dashboard() {
             }, 100);
         }
         return () => clearTimeout(timer);
-    }, [isFetchingPaused, query]);
+    }, [isFetchingPaused]);
 
     useEffect(() => {
         if (total >= data.length) {
@@ -101,7 +103,7 @@ export default function Dashboard() {
         }
     };
     const closeExpand = () => {
-        setIsFetchingPaused(false)
+        setIsFetchingPaused(!isFetchingPaused)
         setExpandedItemId(null)
     }
     const [selectedButton, setSelectedButton] = useState(null);
