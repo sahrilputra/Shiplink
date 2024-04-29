@@ -64,11 +64,11 @@ const formSchema = yup.object().shape({
     InvoiceDate: yup.string(),
     InvoiceCurrency: yup.string(),
     InvoiceTerms: yup.string(),
-    BilledToName: yup.string(),
+    BilledToName: yup.string().required("Billed To Name is required"),
     BilledToAddress: yup.string().required("Billed To Address is required"),
-    BilledToZip: yup.string(),
+    BilledToZip: yup.string().required("Billed To Zip is required"),
     BilledToCountry: yup.string(),
-    ShippedToName: yup.string(),
+    ShippedToName: yup.string().required("Shipped To Name is required"),
     ShippedToAddress: yup.string().required("Shipped To Address is required"),
     ShippedToZip: yup.string().required("Shipped To Zip is required"),
     ShippedToCountry: yup.string(),
@@ -173,7 +173,6 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     // }, [data])
 
     const [customerData, setCustomerData] = useState([])
-    console.log("🚀 ~ InvoiceForms ~ customerData:", customerData)
     const [loading, setLoading] = useState(false);
     const [taxList, setTaxList] = useState([]);
     const [query, setQuery] = useState({
@@ -191,7 +190,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     // }, [form.watch('InvoiceDate')])
 
 
-    console.log("DATE", form.watch('InvoiceDate'))
+    // console.log("DATE", form.watch('InvoiceDate'))
     const handleSearchCustomer = (e) => {
         console.log("Search Customer : ", e)
         setQuery({
@@ -363,7 +362,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         }
     }
 
-    console.log("🚀 ~ InvoiceForms ~ TAX ID:", form.watch('tax_id'))
+    // console.log("🚀 ~ InvoiceForms ~ TAX ID:", form.watch('tax_id'))
     // useEffect(() => {
     //     if (form.watch('BilledToCountry')) {
     //         findCoutryByNameToCode(form.watch('BilledToCountry'))
@@ -386,7 +385,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         console.log("Form Errors", error)
     }
 
-    const [invoiceIDs, setInvoiceIds] = useState("")
+    const [invoiceIDs, setInvoiceIds] = useState(null)
     console.log("🚀 ~ InvoiceForms ~ invoiceIDs:", invoiceIDs)
 
     const resetForm = () => {
@@ -426,10 +425,19 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
     }
     const handleSave = async (formData) => {
         console.log("Saved Data : ", formData)
+        const isValid = await form.trigger(); // Trigger validation
+
         const formatDate = format(form.watch('InvoiceDate'), 'yyyy-MM-dd')
         form.setValue('InvoiceDate', formatDate)
-        console.log("Submit DATE : ", form.watch('InvoiceDate'))
 
+        if (!isValid) {
+            toast({
+                title: "Validation Error",
+                description: "Please fill in all required fields correctly.",
+                type: "error",
+            });
+            return; // Hentikan eksekusi selanjutnya jika validasi gagal
+        }
         setLoading(true);
         try {
             const response = await axios.post(
@@ -439,7 +447,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
             console.log("response from invoice manager : ", response.data)
             if (response.data.status === true) {
                 setLoading(false);
-                await setInvoiceIds(response.data.invoice_id)
+                setInvoiceIds(response.data.invoice_id)
                 toast({
                     title: "Invoice Created",
                     description: "Invoice has been created successfully",
@@ -452,6 +460,70 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                     title: "Failed to create invoice",
                     description: `${response.data.message}`,
                     type: "error",
+                });
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log('Error:', error);
+        }
+    }
+
+    const handleRegisterWithEmail = async (formData) => {
+        console.log("Saved Data handleRegisterWithEmail : ", formData)
+        const isValid = await form.trigger(); // Trigger validation
+
+        const formatDate = format(form.watch('InvoiceDate'), 'yyyy-MM-dd')
+        form.setValue('InvoiceDate', formatDate)
+
+        if (!isValid) {
+            toast({
+                title: "Validation Error",
+                description: "Please fill in all required fields correctly.",
+                type: "error",
+            });
+            return; // Hentikan eksekusi selanjutnya jika validasi gagal
+        }
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `/api/admin/invoice/setData`,
+                formData
+            );
+            console.log("response from invoice manager handleRegisterWithEmail : ", response.data)
+            if (response.data.status === true) {
+                setLoading(false);
+                setInvoiceIds(response.data.invoice_id)
+                let invoiceId = response.data.invoice_id;
+                console.log("🚀 ~ handleRegisterWithEmail ~ invoiceId:", invoiceId)
+                toast({
+                    title: "Invoice Created",
+                    description: "Invoice has been created successfully",
+                });
+                try {
+                    const responseEmail = await axios.post(
+                        `/api/admin/invoice/sentTo`,
+                        { data: invoiceId }
+                    );
+                    if (responseEmail.data.status === true) {
+                        toast({
+                            title: "Invoice Sent",
+                            description: "Invoice has been sent to email",
+                        });
+                    } else {
+                        toast({
+                            title: "Failed to send invoice",
+                            description: `${responseEmail.data.message}`,
+                        });
+                    }
+                } catch (e) {
+                    console.log(e)
+                }
+                resetForm();
+            } else {
+                setLoading(false);
+                toast({
+                    title: "Failed to create invoice",
+                    description: `${response.data.message}`,
                 });
             }
         } catch (error) {
@@ -501,31 +573,49 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         form.setValue("ShippedToZip", item?.postal_code || "")
     }
 
-    const handleSentToEmail = async () => {
-        try {
-            await handleSave(form.getValues()); // Tunggu hingga handleSave selesai
-            await new Promise((resolve) => { // Tunggu hingga invoiceIDs tersedia
-                if (invoiceIDs) {
-                    resolve();
-                } else {
-                    const interval = setInterval(() => {
-                        if (invoiceIDs) {
-                            clearInterval(interval);
-                            resolve();
-                        }
-                    }, 100); // Cek setiap 100ms apakah invoiceIDs sudah tersedia
-                }
-            });
-            const response = await axios.post( // Gunakan await untuk menunggu respons dari post request
-                `/api/admin/invoice/sentTo`,
-                { data: invoiceIDs }
-            );
-            console.log("🚀 ~ handleSentToEmail ~ invoiceIDs:", invoiceIDs);
-            console.log("response ", response);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const handleSentToEmail = async () => {
+    //     try {
+    //         await handleSave(form.getValues());
+    //         console.log("Retturn To Handle")
+    //         await new Promise((resolve) => {
+    //             if (invoiceIDs) {
+    //                 console.log("🚀 ~ awaitnewPromise ~ invoiceIDs:", invoiceIDs)
+    //                 resolve(); // Langsung resolve jika invoiceIDs sudah tersedia
+    //             } else {
+    //                 // Jika invoiceIDs belum tersedia, cek setiap 100ms
+    //                 const interval = setInterval(() => {
+    //                     if (invoiceIDs) {
+    //                         clearInterval(interval); // Hentikan interval jika invoiceIDs tersedia
+    //                         console.log("🚀 ~ interval ~ invoiceIDs:", invoiceIDs)
+    //                         resolve(); // Resolve promise
+    //                     }
+    //                 }, 100);
+    //             }
+    //         }).then(async () => {
+    //             console.log("Retturn To Handle 2")
+    //             const response = await axios.post(
+    //                 `/api/admin/invoice/sentTo`,
+    //                 { data: invoiceIDs }
+    //             );
+    //             console.log("Retturn To Handle 3")
+    //             if (response.data.status === true) {
+    //                 toast({
+    //                     title: "Invoice Sent",
+    //                     description: "Invoice has been sent to email",
+    //                     type: "success",
+    //                 });
+    //             } else {
+    //                 toast({
+    //                     title: "Failed to send invoice",
+    //                     description: `${response.data.message}`,
+    //                     type: "error",
+    //                 });
+    //             }
+    //         });
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const hanldeTaxId = (e) => {
         console.log("🚀 ~ hanldeTaxId ~ e:", e)
@@ -539,7 +629,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
         form.setValue('InvoiceDate', formatDate)
     }, [form.watch('InvoiceDate')])
 
-    
+
     const [openCustomer, setOpenCustomer] = useState(false);
     return (
         <>
@@ -635,7 +725,12 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                 <FormControl>
                                                     <Input
                                                         size="new"
-                                                        id="userEmails" type="emails" className="text-xs" placeholder="Email" {...field} />
+                                                        id="userEmails"
+                                                        type="emails"
+                                                        className="text-xs"
+                                                        placeholder="Email"
+                                                        {...field}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage className="text-xs" />
                                             </FormItem>
@@ -675,9 +770,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                 <Button
                                     variant="destructive"
                                     type="button"
-                                    onClick={() => {
-                                        handleSentToEmail()
-                                    }}
+                                    onClick={form.handleSubmit(handleRegisterWithEmail, onError)}
                                     className=" h-[30px] rounded-sm px-4 py-0 w-full"
                                     size="sm"
                                 >
@@ -933,7 +1026,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 placeholder="Name"
                                                                 {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -952,7 +1045,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 size="new"
                                                                 id="BilledToZip" className="text-xs" placeholder="A1B 2C3" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -973,7 +1066,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 size="new"
                                                                 id="BilledToAddress" className="text-xs" placeholder="Address" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
@@ -994,7 +1087,7 @@ export const InvoiceForms = ({ customer = null, data = null }) => {
                                                                 className="text-xs"
                                                                 placeholder="Country" {...field} />
                                                         </FormControl>
-                                                        <FormMessage />
+                                                        <FormMessage className="text-xs" />
                                                     </FormItem>
                                                 </>
                                             )}
