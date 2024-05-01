@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog } from '@/components/ui/dialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { MoreHorizontalIcon } from 'lucide-react'
+import { ChevronDown, MoreHorizontalIcon } from 'lucide-react'
 import NextLink from 'next/link'
 import { FilterIcons } from "@/components/icons/iconCollection";
 import { SearchBar } from "@/components/ui/searchBar";
@@ -63,6 +63,8 @@ export function UserTable() {
         page: 1,
         limit: 10,
         index: 0,
+        sort_by: "",
+        sort_type: "",
     });
 
     const [pagination, setPagination] = useState({
@@ -120,6 +122,72 @@ export function UserTable() {
     }, [query]);
 
 
+
+    const [isASC, setIsASC] = useState({
+        user_code: true,
+        email: true,
+        name: true,
+        role: true,
+        warehouse_name: true,
+    });
+
+
+    const handleSortByCustomer_name = () => {
+        setQuery({
+            ...query,
+            sort_by: "name",
+            sort_type: isASC.name ? "asc" : "desc"
+        });
+        setIsASC({
+            name: !isASC.name,
+            email: true,
+            role: true,
+            warehouse_name: true,
+        });
+    }
+
+
+    const handleSortByCustomer_email = () => {
+        setQuery({
+            ...query,
+            sort_by: "email",
+            sort_type: isASC.email ? "asc" : "desc"
+        });
+        setIsASC({
+            name: true,
+            email: !isASC.email,
+            role: true,
+            warehouse_name: true,
+        });
+    }
+    const handleSortByCustomer_role = () => {
+        setQuery({
+            ...query,
+            sort_by: "role_id",
+            sort_type: isASC.role ? "asc" : "desc"
+        });
+        setIsASC({
+            name: true,
+            email: true,
+            role: !isASC.role,
+            warehouse_name: true,
+        });
+    }
+    const handleSortByCustomer_WR = () => {
+        setQuery({
+            ...query,
+            sort_by: "warehouse_id",
+            sort_type: isASC.warehouse_name ? "asc" : "desc"
+        });
+        setIsASC({
+            name: true,
+            email: true,
+            role: true,
+            warehouse_name: !isASC.warehouse_name,
+        });
+    }
+
+
     const columns = [
         {
             accessorKey: "select",
@@ -148,20 +216,56 @@ export function UserTable() {
         },
         {
             accessorKey: "name",
-            header: "User Name",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_name}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>User Name</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.name ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             className: "text-xs",
         },
         {
             accessorKey: "email",
-            header: "Email",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_email}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Email</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.email ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
         },
         {
             accessorKey: "role",
-            header: "Role",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_role}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Role</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.role ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
         },
         {
             accessorKey: "warehouse_name",
-            header: "Warehouse Name",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_WR}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Warehouse Name</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.warehouse_name ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
         },
 
         {
