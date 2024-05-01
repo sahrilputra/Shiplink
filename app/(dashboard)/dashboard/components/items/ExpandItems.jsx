@@ -98,6 +98,10 @@ export const ExpandItems = (
 
     const handleCopy = (textToCopy) => {
         navigator.clipboard.writeText(textToCopy);
+        toast({
+            title: `PARS/PAPS Number Copied!`,
+            status: 'success',
+        });
     };
 
     const handleSave = async (formData) => {
@@ -194,7 +198,7 @@ export const ExpandItems = (
                                                 </div>
                                                 <Button
                                                     variant={'destructive'}
-                                                    className="w-[140px]  justify-center items-center gap-2.5 flex"
+                                                    className="w-[120px]  justify-center items-center gap-2.5 flex"
                                                     size="xs"
                                                     type="button"
                                                     onClick={(e) => {

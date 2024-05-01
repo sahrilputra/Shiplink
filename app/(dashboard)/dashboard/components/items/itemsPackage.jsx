@@ -118,14 +118,27 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
                     }
                 }}
                 className={`
-            container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50 
+            container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50
             ${isExpand
                         ? "hover:bg-white cursor-default"
                         : "hover:bg-gray-300/10 cursor-pointer"
                     }
             `}
             >
-                <div className="flex flex-row justify-between items-center gap-5 relative ">
+                <div
+                    className={
+                        `flex flex-row justify-between items-center gap-5 relative hover:cursor-pointer
+                        ${isExpand
+                            ? "hover:bg-gray-300/10"
+                            : ""
+                        }
+                        `
+                    }
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpanded();
+                    }}
+                >
                     <div className="justify-start items-center gap-[15px] flex">
                         <PackageType
                             variant={status_id}
@@ -267,6 +280,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
                                     aria-label="arrow"
                                     variant="ghost"
                                     size="small"
+                                    type="button"
                                     className={`w-[30px] h-[30px] ${isExpand ? "rotate-180" : ""
                                         }`}
                                     onClick={(e) => {
