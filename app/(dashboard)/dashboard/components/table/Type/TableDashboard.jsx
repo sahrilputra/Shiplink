@@ -229,11 +229,11 @@ export const TableDashboard =
                             <div className="">
                                 <Table className="overflow-visible">
                                     <TableHeader className="bg-sky-50 border ">
-                                        <TableHead className="p-0 h-8 px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
-                                        <TableHead className="p-0 h-8 px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
-                                        <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs">Description</TableHead>
-                                        <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
-                                        <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-[90px]">
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Qty</TableHead>
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 w-[100px] text-myBlue font-bold text-xs">Value</TableHead>
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 text-myBlue font-bold text-xs">Description</TableHead>
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 text-myBlue font-bold text-xs ">HS Description</TableHead>
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 text-myBlue font-bold text-xs w-[90px]">
                                             <div className="text-xs flex flex-row items-center gap-2">
                                                 HS Code
                                                 <NextLink passHref href={'https://uscensus.prod.3ceonline.com/#!%23current-question-pos'}>
@@ -241,8 +241,8 @@ export const TableDashboard =
                                                 </NextLink>
                                             </div>
                                         </TableHead>
-                                        <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs w-max text-nowrap text-center">Made in</TableHead>
-                                        <TableHead className="p-0 h-8 px-2 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 text-myBlue font-bold text-xs w-max text-nowrap text-center">Made in</TableHead>
+                                        <TableHead className="p-0 h-[30px] px-2 py-3 text-myBlue font-bold text-xs text-right w-[40px]"></TableHead>
                                     </TableHeader>
                                     <TableBody className="">
                                         {fields.map((field, index) => (
@@ -304,24 +304,26 @@ export const TableDashboard =
                                                 <div className="flex flex-row gap-3">
                                                     <Button
                                                         variant="redOutline"
-                                                        className="h-[35px] w-[100px] px-4 shadow"
+                                                        className="h-[30px] w-[100px] px-4 shadow"
+                                                        size="xs"
                                                         onClick={() => {
                                                             toggleExpanded();
                                                             form.reset();
                                                         }}
                                                     >
-                                                        <div className="text-red-700 text-sm  font-normal ">Cancel</div>
+                                                        <div className="text-red-700 text-xs  font-normal ">Cancel</div>
                                                     </Button>
 
                                                     <Button
                                                         variant="destructive"
                                                         type="button"
-                                                        className="h-[35px] w-[100px] px-4 bg-red-700 shadow "
+                                                        className="h-[30px] w-[100px] px-4 bg-red-700 shadow "
+                                                        size="xs"
                                                         onClick={() => {
                                                             validateForm();
                                                         }}
                                                     >
-                                                        <div className="text-white text-sm font-normal">Save</div>
+                                                        <div className="text-white text-xs font-normal">Save</div>
                                                     </Button>
                                                 </div>
                                             </div>

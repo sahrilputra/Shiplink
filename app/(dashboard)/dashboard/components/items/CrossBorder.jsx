@@ -5,7 +5,7 @@ export const CrossBorderTable = ({ toggleExpanded, tracking_id, reload, arrivalC
     return (
         <>
             <div className="my-[10px] ">
-                <div className="left-[3px] top-0 text-zinc-900 text-[14px] font-semiBold">Declare Content</div>
+                <div className="left-[3px] top-0 text-zinc-900 text-xs font-semiBold">Declare Content</div>
                 <TableDashboard
                     key={tracking_id}
                     toggleExpanded={toggleExpanded}

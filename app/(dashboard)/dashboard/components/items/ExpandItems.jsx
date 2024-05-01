@@ -44,7 +44,7 @@ export const ExpandItems = (
                 </div>
                 <div className="flex-col justify-start items-start gap-2.5 inline-flex">
                     <div className="justify-between items-start inline-flex ">
-                        <div className={`text-zinc-900 text-sm font-semiBold ${item?.status !== 'Received' ? "hidden" : "block"}`}>Confirm Your Order</div>
+                        <div className={`text-zinc-900 text-sm font-semiBold ${item?.status !== 'Received' ? "hidden" : "block"} text-xs`}>Confirm Your Order</div>
                     </div>
                     {
                         item?.status === 'in transit' ? (
