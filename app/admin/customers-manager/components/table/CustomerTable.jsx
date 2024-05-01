@@ -34,7 +34,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon } from "lucide-react"
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon } from "lucide-react"
 import CreateNewCustomer from "../dialog/CreateNewCustomer";
 import { Dialog } from "@/components/ui/dialog";
 import {
@@ -65,6 +65,8 @@ export function CustomerTable({ data, open, setOpen }) {
         page: 1,
         limit: 10,
         index: 0,
+        sort_by: "",
+        sort_type: "",
     });
 
     const [pagination, setPagination] = useState({
@@ -77,6 +79,17 @@ export function CustomerTable({ data, open, setOpen }) {
         page_total: 0,
         total: 0
     })
+
+
+    const [isASC, setIsASC] = useState({
+        customer_id: true,
+        customer_name: true,
+        email: true,
+        phone_number: true,
+        customer_plans: true,
+    });
+
+
 
     const fetchData = async () => {
         try {
@@ -187,10 +200,89 @@ export function CustomerTable({ data, open, setOpen }) {
 
 
 
+    const handleSortByCustomer_id = () => {
+        setQuery({
+            ...query,
+            sort_by: "customer_id",
+            sort_type: isASC.customer_id ? "asc" : "desc"
+        });
+        setIsASC({
+            customer_id: !isASC.customer_id,
+            customer_name: true,
+            email: true,
+            phone_number: true,
+            customer_plans: true,
+        });
+    }
+    const handleSortByCustomer_name = () => {
+        setQuery({
+            ...query,
+            sort_by: "customer_name",
+            sort_type: isASC.customer_name ? "asc" : "desc"
+        });
+        setIsASC({
+            customer_id: true,
+            customer_name: !isASC.customer_name,
+            email: true,
+            phone_number: true,
+            customer_plans: true,
+        });
+    }
+    const handleSortByCustomer_email = () => {
+        setQuery({
+            ...query,
+            sort_by: "email",
+            sort_type: isASC.email ? "asc" : "desc"
+        });
+        setIsASC({
+            customer_id: true,
+            customer_name: true,
+            email: !isASC.email,
+            phone_number: true,
+            customer_plans: true,
+        });
+    }
+    const handleSortByCustomer_phone = () => {
+        setQuery({
+            ...query,
+            sort_by: "phone_number",
+            sort_type: isASC.phone_number ? "asc" : "desc"
+        });
+        setIsASC({
+            customer_id: true,
+            customer_name: true,
+            email: true,
+            phone_number: !isASC.phone_number,
+            customer_plans: true,
+        });
+    }
+    const handleSortByCustomer_membership = () => {
+        setQuery({
+            ...query,
+            sort_by: "customer_plans",
+            sort_type: isASC.customer_plans ? "asc" : "desc"
+        });
+        setIsASC({
+            customer_id: true,
+            customer_name: true,
+            email: true,
+            phone_number: true,
+            customer_plans: !isASC.customer_plans,
+        });
+    }
     const columns = [
         {
             accessorKey: "customer_id",
-            header: "Unit ID",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_id}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Unit ID</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.customer_id ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             className: "text-xs",
             size: 30,
             cell: ({ row }) => {
@@ -206,17 +298,44 @@ export function CustomerTable({ data, open, setOpen }) {
         },
         {
             accessorKey: "customer_name",
-            header: "Customer Name",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_name}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Customer Name</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.customer_name ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             size: 50,
         },
         {
             accessorKey: "email",
-            header: "Email",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_email}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Email</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.email ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             size: 59,
         },
         {
             accessorKey: "phone_number",
-            header: "Phone Number",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_phone}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Phone Number</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.phone_number ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             cell: ({ row }) => {
                 return (
                     <p
@@ -230,7 +349,16 @@ export function CustomerTable({ data, open, setOpen }) {
         },
         {
             accessorKey: "customer_plans",
-            header: "Membership",
+            header: ({ row }) => {
+                return (
+                    <div
+                        onClick={handleSortByCustomer_membership}
+                        className="flex flex-row justify-between w-full items-center cursor-pointer">
+                        <p>Membership</p>
+                        <ChevronDown className={`w-4 h-4 ${!isASC.customer_plans ? 'rotate-180' : ""}`} />
+                    </div>
+                )
+            },
             size: 50,
             cell: ({ row }) => {
                 return (
