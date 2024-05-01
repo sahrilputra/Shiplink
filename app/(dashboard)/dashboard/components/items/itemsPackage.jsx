@@ -22,6 +22,7 @@ import format from 'date-fns/format';
 
 
 export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, pauseFetch }) => {
+    // console.log("🚀 ~ ItemsPackage ~ item:", item)
     const { toast } = useToast();
 
     const {
@@ -51,6 +52,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
         status_id,
         status_forcustomer,
         date,
+        services,
         time,
         country_name_arrival,
         country_code_arrival,
@@ -83,7 +85,8 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
 
     const toggleExpanded = () => {
         onExpand(tracking_id); // Call onExpand to toggle expanded state in the parent component
-        setIsExpanded(!isExpanded);
+        // setIsExpanded(!isExpanded);
+        setIsExpanded(prevIsExpanded => !prevIsExpanded);
         onClickButton(null);
 
         if (isExpand === false) {
@@ -122,7 +125,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
                     }
             `}
             >
-                <div className="flex flex-row justify-between items-center gap-5 relative">
+                <div className="flex flex-row justify-between items-center gap-5 relative ">
                     <div className="justify-start items-center gap-[15px] flex">
                         <PackageType
                             variant={status_id}
@@ -291,6 +294,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
                             buttonEnabled={buttonEnabled}
                             reload={reload}
                             toggleExpanded={toggleExpanded}
+                            pauseFetch={pauseFetch}
                         />
 
                         <div className="w-[100%] flex justify-center align-middle mx-auto ">
@@ -301,6 +305,7 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
                                         <>
                                             {selectedButton === "Cross Border Forward" ? (
                                                 <CrossBorderTable
+
                                                     key={tracking_id}
                                                     dataContent={content}
                                                     toggleExpanded={toggleExpanded}

@@ -45,12 +45,7 @@ const formSchema = yup.object().shape({
             otherwise: (schema) => schema.notRequired(),
         }),
     pars: yup.string(),
-    entry_number: yup.string().
-        when('broker', {
-            is: "Use Own Broker",
-            then: (schema) => schema.required("Please enter an entry number"),
-            otherwise: (schema) => schema.notRequired(),
-        }),
+    entry_number: yup.string(),
     warehouse: yup.string().required("Please select a warehouse"),
 })
 
@@ -74,7 +69,7 @@ export const TableDashboard =
                 invoice: [],
                 pars: "",
                 warehouse: "",
-                entry_number: "",
+                entry_number: "1234",
                 package_content: Array.from({ length: content.length }, (_, index) => ({
                     tracking_id: "",
                     qty: 0,
@@ -339,33 +334,34 @@ export const TableDashboard =
                                             <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center flex-wrap'>
                                                 <SelectBroker onSelect={handleSelectBroker} />
                                                 <UploadInvoice forms={form} />
-                                                <PARSInput forms={form} />
-                                                <EntryNumber forms={form} />
-                                            </div>
-                                            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-between items-center'>
                                                 <SelectWarehouse forms={form} arrivalCode={arrivalCode} />
+                                            </div>
+                                            <div className='body w-full px-[5px] py-2.5 bg-white border border-neutral-200 gap-2.5 flex flex-row justify-end items-center'>
+                                                {/* <SelectWarehouse forms={form} arrivalCode={arrivalCode} /> */}
                                                 <div className="flex flex-row gap-3">
                                                     <Button
                                                         variant="redOutline"
-                                                        className="h-[35px] w-[100px] px-4 shadow"
+                                                        className="h-[30px] w-[100px] px-4 shadow"
                                                         type="button"
+                                                        size="xs"
                                                         onClick={() => {
                                                             toggleExpanded();
                                                             form.reset();
                                                         }}
                                                     >
-                                                        <div className="text-red-700 text-sm  font-normal ">Cancel</div>
+                                                        <div className="text-red-700 text-xs  font-normal ">Cancel</div>
                                                     </Button>
 
                                                     <Button
                                                         variant="destructive"
-                                                        className="h-[35px] w-[100px] px-4 bg-red-700 shadow"
+                                                        className="h-[30px] w-[100px] px-4 bg-red-700 shadow"
+                                                        size="xs"
                                                         type="button"
                                                         onClick={() => {
                                                             validateForm();
                                                         }}
                                                     >
-                                                        <div className="text-white text-sm font-normal">Save</div>
+                                                        <div className="text-white text-xs font-normal">Save</div>
                                                     </Button>
                                                 </div>
                                             </div>

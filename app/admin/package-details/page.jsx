@@ -216,7 +216,8 @@ export default function PackageDetails() {
                     <div className="text-xs flex flex-col flex-wrap number tabular-nums">
                         <span
                             style={{ fontFamily: 'roboto' }}
-                            className=''>{`${row.original.tracking_id}`}</span>
+                            className=''>{`${row.original.tracking_id}`}
+                        </span>
                     </div>
                 )
             }

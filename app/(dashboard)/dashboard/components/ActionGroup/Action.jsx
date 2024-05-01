@@ -32,7 +32,7 @@ export const SelectBroker = ({ onSelect }) => {
                         <div className="text-white text-xs leading-tight">Select Broker</div>
                     </div>
                     <SelectTrigger
-                        className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-400"
+                        className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 text-zinc-800"
                     >
                         <SelectValue placeholder="Choose Broker" />
                     </SelectTrigger>
@@ -167,7 +167,7 @@ export const SelectWarehouse = ({ forms, arrivalCode }) => {
                                                 <div className="w-[100px] h-9 px-1 py-2 bg-blue-900 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
                                                     <div className="text-white text-xs leading-tight">Warehouse</div>
                                                 </div>
-                                                <SelectTrigger className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 ">
+                                                <SelectTrigger className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 placeholder:text-zinc-400">
                                                     <SelectValue
                                                         className='placeholder:text-zinc-400'
                                                         placeholder="Warehouse..."
@@ -245,7 +245,7 @@ export const PARSInput = ({ forms }) => {
 export const EntryNumber = ({ forms }) => {
     return (
         <>
-            <div className=" h-9 rounded-lg justify-start items-start inline-flex">
+            <div className=" h-[30px] rounded-lg justify-start items-start inline-flex">
                 <FormField
                     className="w-full flex flex-row justify-center items-end"
                     name={'entry_number'}
@@ -256,13 +256,14 @@ export const EntryNumber = ({ forms }) => {
                                 <FormControl>
                                     <>
                                         <div className=" h-9 rounded-lg justify-start items-start inline-flex">
-                                            <div className="w-[100px] h-9 px-1 py-2 bg-blue-900 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
+                                            <div className="w-[100px] h-[30px] px-1 py-2 bg-blue-900 rounded-tl rounded-bl justify-center gap-1.5 flex items-center">
                                                 <div className="text-white text-xs leading-tight">Entry Number</div>
                                             </div>
                                             <Input
-                                                className="w-[150px] h-9 rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 placeholder:text-zinc-400"
+                                                className="w-[150px] h-[30px] rounded-tl-none rounded-bl-none rounded-tr rounded-br text-xs bg-stone-50 placeholder:text-zinc-400"
                                                 type="number"
-                                                placeholder="1234"
+                                                autoComplete="off"
+                                                placeholder="Entry Number"
                                                 {...field}
                                             />
                                         </div >

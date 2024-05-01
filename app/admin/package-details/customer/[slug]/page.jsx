@@ -47,11 +47,14 @@ import {
     TableRow,
 } from "@/components/ui/tableDashboard"
 import { useRouter } from 'next/navigation'
+import moment from 'moment'
+import { useTimeFormat } from '@/context/TimeFormatProvider'
 import { ChevronLeft, ChevronRight, ChevronsLeftIcon, ChevronsRightIcon, ExternalLink } from 'lucide-react'
 export default function CustomerPackage({ params }) {
     console.log("Helo", params.slug)
 
     const router = useRouter()
+    const { dateFormat, timeFormat } = useTimeFormat()
 
     const handleBack = () => {
         router.back()
@@ -125,14 +128,73 @@ export default function CustomerPackage({ params }) {
         {
             accessorKey: "destination",
             header: "Destination",
+            cell: ({ row }) => {
+                const countryCode = row.original.country_code_destination ? row.original.country_code_destination.substring(0, 2).toLowerCase() : '';
+                return (
+                    <>
+                        {
+                            row.original.warehouse_name_destination === null && row.original.warehouse_name_destination === null ?
+                                (
+                                    <>
+                                        -
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs flex flex-row gap-1 items-center flex-wrap">
+                                            <img src={`https://flagcdn.com/${countryCode}.svg`} alt="country icon" style={{ objectFit: 'fill', width: '25px', height: '25px' }} />
+                                            <span className='text-nowrap'>
+                                                {`- ${row.original.warehouse_name_destination} WH`} {`${row.original.services === "Hold pickup" ? "- HFP" : ""}`}
+                                            </span>
+                                        </div>
+                                    </>
+                                )
+                        }
+                    </>
+                )
+            }
+
         },
         {
             accessorKey: "updated_at",
-            header: "Last Update",
+            sortingFn: "datetime",
+            header: ({ getSorting }) => {
+                return (
+                    <div
+                        className="cursor-pointer select-none w-[100%] text-center"
+
+                    >
+                        <div className="flex flex-row gap-2 items-center text-center">
+                            Last Update
+                        </div>
+                    </div>
+                );
+            },
+            cell: ({ row }) => {
+                return (
+                    <div
+                        className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                        >
+                            {moment(row.original.updated_at).format(`${dateFormat}, ${timeFormat}`)}
+                        </span>
+                    </div>
+                )
+            }
         },
         {
             accessorKey: "bin_location",
             header: "Bin Location",
+            cell: ({ row }) => {
+                return (
+                    <div className="text-xs flex flex-col flex-wrap number tabular-nums">
+                        <span
+                            style={{ fontFamily: 'roboto' }}
+                            className=''>{`${row.original.bin_location === "Undefined" ? "-" : row.original.bin_location}`}
+                        </span>
+                    </div>
+                )
+            },
         },
         {
             id: "Action",

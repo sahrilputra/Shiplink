@@ -32,7 +32,7 @@ export default function Dashboard() {
     })
 
     const [isFetchingPaused, setIsFetchingPaused] = useState(false);
-    console.log("🚀 ~ Dashboard ~ isFetchingPaused:", isFetchingPaused)
+    // console.log("🚀 ~ Dashboard ~ isFetchingPaused:", isFetchingPaused)
 
     const fetchData = async () => {
         if (!isFetchingPaused) {
