@@ -8,6 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios'
@@ -171,7 +172,7 @@ export const CrossBorderPayments = (
             console.log("🚀 ~ handlePARS ~ responseData:", responseData.code_number);
             await new Promise((resolve) => {
                 setParsCodeNumber(responseData.code_number);
-                if(parsCodeNumber !== ""){
+                if (parsCodeNumber !== "") {
                     forms.setValue("pars", responseData.code_number)
                 }
                 resolve();
@@ -237,6 +238,7 @@ export const CrossBorderPayments = (
             <Dialog
                 open={open}
                 onOpenChange={setOpen}
+                modal={true}
             >
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>

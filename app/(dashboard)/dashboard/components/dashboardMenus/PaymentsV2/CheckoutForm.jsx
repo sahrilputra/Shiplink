@@ -64,59 +64,6 @@ export default function CheckoutForm(
         }
     }
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log("🚀 ~ handleSubmit ")
-    //     if (!stripe || !elements) {
-    //         return;
-    //     }
-
-    //     setIsLoading(true);
-    //     const { paymentIntent, error } = await stripe.confirmPayment({
-    //         elements,
-    //         confirmParams: {
-    //             return_url: `${window.location.origin}/dashboard`,
-    //         },
-    //         redirect: "if_required",
-    //     });
-
-    //     setDisplayForm(false);
-    //     if (error) {
-    //         setMessage(error.message);
-    //         setPaymentStatus("failed");
-    //     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-    //         console.log("🚀 ~ handleSubmit ~ paymentIntent:", paymentIntent)
-    //         setMessage("Payment succeeded!");
-    //         setPaymentStatus("succeeded");
-    //         confirmPayment(paymentIntent.id, paymentIntent.client_secret, trackingId);
-    //         if (type === "CrossBorder") {
-    //             console.log("Running Cross Border")
-    //             handleSubmitForms();
-    //         }
-    //         reload();
-    //         toggleExpanded();
-    //         toast({
-    //             title: `Success!`,
-    //             description: `Your payment was successful.`,
-    //             status: 'success',
-    //         });
-    //         setIsLoading(false);
-    //     } else {
-    //         setMessage("Your payment was not successful, please try again.");
-    //         setPaymentStatus("failed");
-    //         reload();
-    //         toast({
-    //             title: `Failed!`,
-    //             description: `Your payment was not successful, please try again.`,
-    //             status: 'Error',
-    //         });
-
-    //     }
-
-    //     setTimeout(() => {
-    //         setIsLoading(false);
-    //     }, 3000)
-    // };
 
     const handleClose = (e) => {
         e.preventDefault();
@@ -131,7 +78,7 @@ export default function CheckoutForm(
         }
 
         setIsLoading(true);
-    
+
         try {
             const { paymentIntent, error } = await stripe.confirmPayment({
                 elements,
@@ -152,8 +99,8 @@ export default function CheckoutForm(
                     console.log("Running Cross Border")
                     await handleSubmitForms();
                 }
+                await toggleExpanded(e);
                 await reload();
-                toggleExpanded();
                 toast({
                     title: `Success!`,
                     description: `Your payment was successful.`,
@@ -180,9 +127,11 @@ export default function CheckoutForm(
                 status: 'error',
             });
         } finally {
-            await setOpen(false);
+            // await setOpen(false);
             setOpenInformation(true);
             setIsLoading(false);
+            // await toggleExpanded();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Tunggu sebentar sebelum memanggil toggleExpanded
         }
     };
 

@@ -31,33 +31,30 @@ export default function Dashboard() {
         index: 0,
     })
 
-
     const [isFetchingPaused, setIsFetchingPaused] = useState(false);
     console.log("🚀 ~ Dashboard ~ isFetchingPaused:", isFetchingPaused)
 
-
-
     const fetchData = async () => {
-        try {
-            const response = await axios.post(`/api/admin/packages/list`, query)
-            setData(response.data.package_info)
-            setTotal(response.data.total)
-            setIsSkeleton(false)
-        } catch (error) {
-            console.log("🚀 ~ error", error)
+        if (!isFetchingPaused) {
+            try {
+                const response = await axios.post(`/api/admin/packages/list`, query)
+                setData(await response.data.package_info)
+                setTotal(response.data.total)
+                setIsSkeleton(false)
+            } catch (error) {
+                console.log("🚀 ~ error", error)
+            }
+        } else {
+            return null
         }
     }
 
-
     useEffect(() => {
-        let timer;
-        if (!isFetchingPaused) {
-            timer = setTimeout(() => {
-                fetchData();
-            }, 100);
-        }
-        return () => clearTimeout(timer);
-    }, [isFetchingPaused]);
+        const fetchDataInterval = setInterval(() => {
+            fetchData();
+        }, 500); // Mengambil data setiap 5 detik
+        return () => clearInterval(fetchDataInterval);
+    }, [query, isFetchingPaused]); // Kondisi kosong, sehingga efek hanya dipanggil sekali saat komponen dimuat
 
     useEffect(() => {
         if (total >= data.length) {
@@ -85,13 +82,13 @@ export default function Dashboard() {
 
     const reloadData = () => {
         // fetchData()
+        closeExpand()
         setQuery((prevQuery) => ({
             ...prevQuery,
             keyword: ""
         }));
         console.log("RELOAD DATA")
         setExpandedItemId(null)
-        closeExpand()
     }
     const toggleExpand = (itemId) => {
         if (expandedItemId === itemId) {
@@ -205,7 +202,7 @@ export default function Dashboard() {
                                             item={item}
                                             onExpand={toggleExpand}
                                             isExpand={expandedItemId === item.tracking_id}
-                                            reload={reloadData}
+                                            reload={fetchData}
                                         />
                                     ))
                                 )
