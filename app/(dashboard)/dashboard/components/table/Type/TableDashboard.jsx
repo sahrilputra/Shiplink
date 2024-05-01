@@ -64,7 +64,7 @@ export const TableDashboard =
         total_price,
     }) => {
 
-        console.log("🚀 ~ TableDashboard ~ content:", content)
+        console.log("🚀 ~ TableDashboard ~ total_price:", total_price, tracking_id)
         const { toast } = useToast()
         const form = useForm({
             resolver: yupResolver(formSchema),
@@ -164,11 +164,15 @@ export const TableDashboard =
         };
 
         useEffect(() => {
-            const watchedTotal = form.watch('total');
-            if (isNaN(watchedTotal) || watchedTotal === undefined || watchedTotal === null || watchedTotal === 0) {
+            // const watchedTotal = form.watch('total');
+            if (isNaN(total_price) || total_price === undefined || total_price === null || total_price === 0) {
                 form.setValue('total', 0);
+            } else {
+                form.setValue('total', total_price);
             }
-        }, [form.watch('total')]);
+
+            console.log("🚀 ~ useEffect ~ watchedTotal", form.watch('total'))
+        }, [total_price]);
 
         const { fields, append, remove } = useFieldArray({
             control: form.control,
