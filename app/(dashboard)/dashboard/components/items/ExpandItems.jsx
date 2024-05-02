@@ -109,7 +109,7 @@ export const ExpandItems = (
         console.log("dikirim", formData)
         try {
             const response = await axios.post(
-                `/api/admin/customs_broker/setData`,
+                `/api/admin/verification/assign_entry`,
                 formData
             );
             console.log("🚀 ~ handleSave ~ response:", response)
@@ -169,7 +169,7 @@ export const ExpandItems = (
                         <div className={`text-zinc-900 text-sm font-semiBold ${item?.status !== 'Received' ? "hidden" : "block"} text-xs`}>Confirm Your Order</div>
                     </div>
                     {
-                        item?.services === "Cross Border Pickup" && item?.status === "Declared" && item?.entry_number === "1234" ? (
+                        item?.status_id === 24 ? (
                             <>
                                 <div className="flex flex-row justify-between">
                                     <Form {...form}>
@@ -238,7 +238,7 @@ export const ExpandItems = (
                                     </div>
                                 </div>
                             </>
-                        ) : item?.status_id !== 12 && item.status_id !== 2 && item.status_id !== 1 && item.status_id !== 11 && item?.entry_number !== "1234" ? (
+                        ) : item?.status_id !== 12 && item.status_id !== 2 && item.status_id !== 1 && item.status_id !== 11 && item?.status_id !== 24 ? (
                             <>
                                 <div className="justify-between items-center gap-5 flex rounded-sm flex-row flex-wrap border border-zinc-400/30 px-[10px] py-[10px] w-full">
                                     <div className="flex-row flex justify-start items-center gap-2 w-max pr-6 ">

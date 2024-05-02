@@ -69,7 +69,7 @@ export const TableDashboard =
                 invoice: [],
                 pars: "",
                 warehouse: "",
-                entry_number: "1234",
+                entry_number: "",
                 package_content: Array.from({ length: content.length }, (_, index) => ({
                     tracking_id: "",
                     qty: 0,

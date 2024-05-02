@@ -120,22 +120,22 @@ export const ItemsPackage = ({ onClickButton, item, onExpand, isExpand, reload, 
                 className={`
             container  w-full px-5 py-2.5 bg-white rounded-md shadow-md border border-zinc-600 border-opacity-50
             ${isExpand
-                        ? "hover:bg-white cursor-default"
+                        ? "hover:bg-gradient-to-r from-white via-gray-400/10 to-white"
                         : "hover:bg-gray-300/10 cursor-pointer"
                     }
             `}
             >
                 <div
                     className={
-                        `flex flex-row justify-between items-center gap-5 relative hover:cursor-pointer
+                        `transition-all flex flex-row justify-between items-center gap-5 relative hover:cursor-pointer
                         ${isExpand
-                            ? "hover:bg-gray-300/10"
+                            ? "hover:bg-gradient-to-r from-white via-gray-400/10 to-white"
                             : ""
                         }
                         `
                     }
                     onClick={(e) => {
-                        e.stopPropagation();
+                        e.preventDefault();
                         toggleExpanded();
                     }}
                 >
