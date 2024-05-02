@@ -170,7 +170,7 @@ export function MovePackageDialog({ open, setOpen, data, setRowSelection, reload
                                             >
                                                 <FormControl className='text-xs'>
                                                     <SelectTrigger>
-                                                        <SelectValue className='text-xs' placeholder="Status" />
+                                                        <SelectValue className='text-xs' placeholder="Select Bin" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>

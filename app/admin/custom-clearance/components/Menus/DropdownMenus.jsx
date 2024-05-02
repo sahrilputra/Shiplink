@@ -27,6 +27,7 @@ export function CustomBrokerDropdownMenus({
     console.log("🚀 ~ documents:", documents)
     // Menggunakan nilai awal langsung untuk useState
     const [documentsData, setDocumentsData] = useState(documents ? documents.split(',') : []);
+    console.log("🚀 ~ documentsData:", documentsData.length, dataID)
 
     useEffect(() => {
         // Periksa apakah documents adalah string sebelum membaginya menjadi array
@@ -76,7 +77,6 @@ export function CustomBrokerDropdownMenus({
                     variant="tableBlue"
                     size="tableIcon"
                     className={`w-max px-[5px] h-[25px]`}
-                    onClick={() => toggleOpenChange()}
                 >
                     <MoreHorizontalIcon width={15} height={15} />
                 </Button>
@@ -84,22 +84,27 @@ export function CustomBrokerDropdownMenus({
             <DropdownMenuContent className="text-xs" side="left" align="left">
                 <DropdownMenuGroup>
                     {
-                        documentsData.map((item, index) => {
-                            return (
-                                <NextLink
-                                    key={index}
-                                    href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${item}`}
-                                    passHref
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <DropdownMenuItem className="text-xs text-myBlue">
-                                        Lot Documents {index + 1}
-                                    </DropdownMenuItem>
-                                </NextLink>
-                            )
-                        })
-                    }
+                        documentsData.length > 0 &&
+                        (
+                            documentsData.map((item, index) => {
+                                return (
+                                    <NextLink
+                                        key={index}
+                                        href={`https://sla.webelectron.com/api/Package/getimages?fullName=/Assets/doc/lots/${item}`}
+                                        passHref
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <DropdownMenuItem
+                                            disabled={item === "" ? true : false}
+                                            className={`text-xs text-myBlue ${item === "" ? 'hidden' : ""}`}>
+                                            Lot Documents {index + 1}
+                                        </DropdownMenuItem>
+                                    </NextLink>
+                                )
+                            })
+                        )}
+
 
 
                     <NextLink href={`/admin/Lots_Details/${dataID}`} passHref>
